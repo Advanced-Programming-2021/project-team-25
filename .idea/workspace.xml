@@ -4,39 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/AP/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/.idea/.gitignore" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/.idea/description.html" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/description.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/.idea/project-template.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project-template.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AP/.idea/vcs.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/AP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AP.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/out/production/AP/Deck.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AP/Deck.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/out/production/AP/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AP/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/project-team-25" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/DataBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/Menu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/ProgramController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ProgramController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/Regex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/Regex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/Response.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/Response.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/menues/DeckMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/DeckMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/menues/DuelMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/DuelMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/menues/LoginMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/LoginMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/menues/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/MainMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/menues/ProfileMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/ProfileMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/menues/ScoreBoardMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/ScoreBoardMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/controllers/menues/ShopMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/ShopMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/models/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Card.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/models/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/Deck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP/src/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/User.java" afterDir="false" />
+    <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="commit">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/ProgramController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ProgramController.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -170,7 +140,7 @@
       <workItem from="1618412065665" duration="658000" />
       <workItem from="1618412748358" duration="845000" />
       <workItem from="1618454885822" duration="12857000" />
-      <workItem from="1618489005309" duration="1243000" />
+      <workItem from="1618489005309" duration="1861000" />
     </task>
     <task id="LOCAL-00001" summary="commit">
       <created>1618483170809</created>
@@ -179,7 +149,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618483170809</updated>
     </task>
-    <option name="localTasksCounter" value="2" />
+    <task id="LOCAL-00002" summary="commit">
+      <created>1618490423452</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1618490423452</updated>
+    </task>
+    <option name="localTasksCounter" value="3" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
