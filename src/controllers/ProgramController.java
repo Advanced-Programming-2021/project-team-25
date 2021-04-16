@@ -1,23 +1,20 @@
 package controllers;
 
 import controllers.menues.*;
-
-import java.util.Scanner;
+import view.UserInterface;
 
 public class ProgramController {
 
     public static Menu currentMenu = Menu.LOGIN_MENU;
-    public static Scanner scanner = new Scanner(System.in);
-
     public void run() {
         while (currentMenu != Menu.EXIT) {
-            String command = scanner.nextLine();
+            String command = UserInterface.getUserInput();
             if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
 
             else if (currentMenu == Menu.LOGIN_MENU) new LoginMenu().runLoginMenu(command);
 
             else if (currentMenu == Menu.MAIN_MENU) {
-                new MainMenu().runMainMenu(command);
+                new MainMenu().runMainMenu();
                 chooseMenu(command);
             }
             chooseMenu(command);
