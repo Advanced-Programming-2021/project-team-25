@@ -3,7 +3,7 @@ package models;
 import java.util.ArrayList;
 
 public class User {
-
+    private static ArrayList<User> users = new ArrayList<>();
     private final String username;
     private final String password;
     private final String nickName;
@@ -17,5 +17,21 @@ public class User {
         this.username = username;
         this.password = password;
         this.nickName = nickname;
+        users.add(this);
+    }
+
+    public static User getUserByUsername(String username) {
+        for(User user : users)
+            if(user.getUsername().equals(username)) return user;
+
+        return null;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
     }
 }
