@@ -1,11 +1,13 @@
 package controllers;
 
 import controllers.menues.*;
+import models.User;
 import view.UserInterface;
 
 public class ProgramController {
 
     public static Menu currentMenu = Menu.LOGIN_MENU;
+    public User loggedUser = null;
     public void run() {
         while (currentMenu != Menu.EXIT) {
             String command = UserInterface.getUserInput();
@@ -14,7 +16,7 @@ public class ProgramController {
             else if (currentMenu == Menu.LOGIN_MENU) new LoginMenu().runLoginMenu(command);
 
             else if (currentMenu == Menu.MAIN_MENU) {
-                new MainMenu().runMainMenu();
+                new MainMenu().runMainMenu(command);
                 chooseMenu(command);
             }
             chooseMenu(command);
@@ -29,4 +31,7 @@ public class ProgramController {
         else if (currentMenu == Menu.SCOREBOARD_MENU) new ScoreBoardMenu().runScoreBoardMenu(command);
     }
 
+    public void setLoggedUser(User loggedUser) {
+        this.loggedUser = loggedUser;
+    }
 }
