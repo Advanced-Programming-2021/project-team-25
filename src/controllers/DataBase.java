@@ -1,12 +1,15 @@
 package controllers;
 
+import models.Deck;
+
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 
 public class DataBase {
-    public void Database() {
-        String deckName = "";
+
+    static public  void addDeck(Deck deck){
+        String deckName = deck.getDeckName();
         try {
             File myObj = new File(deckName + ".txt");
             if (myObj.createNewFile()) System.out.println("File created: " + myObj.getName());
@@ -21,5 +24,13 @@ public class DataBase {
             System.out.println("An error occurred.");
             e.printStackTrace();
         }
+    }
+
+    static public Deck getDeckByName(String name) {
+        File myObj = new File(name + ".txt");
+        if (myObj.exists()){
+            System.out.println("File created: " + myObj.getName());
+        }
+        return null;
     }
 }

@@ -1,7 +1,9 @@
 package controllers.menues;
 
 import controllers.Regex;
-import controllers.Response;
+import models.User;
+import view.Responses;
+import view.UserInterface;
 
 import java.util.regex.Matcher;
 
@@ -11,7 +13,7 @@ public class MainMenu {
         Matcher matcher;
         if ((matcher = Regex.getMatcher(command, Regex.menuEnter)).matches()) directMenu(matcher);
         else if (Regex.getMatcher(command, Regex.menuExit).matches()) quit();
-        else System.out.println(Response.invalidFormat);
+        else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
     private void directMenu(Matcher matcher){
@@ -21,4 +23,6 @@ public class MainMenu {
     private void quit(){
 
     }
+
+
 }

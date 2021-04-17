@@ -6,7 +6,8 @@ public enum Responses {
     LOGIN_FIRST_ERROR("please login first"),
     USER_PASS_NOT_MATCHED_ERROR("Username and password didn't match!"),
     LOGIN_SUCCESS("user logged in successfully!"),
-    LOGOUT_SUCCESS("user logged out successfully!");
+    LOGOUT_SUCCESS("user logged out successfully!"),
+    DECK_CREATE_SUCCESS("deck created successfully!");
 
     private final String message;
 

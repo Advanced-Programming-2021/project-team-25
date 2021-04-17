@@ -1,10 +1,8 @@
 package controllers.menues;
 
-import controllers.Menu;
-import controllers.ProgramController;
 import controllers.Regex;
-import controllers.Response;
-import models.User;
+import view.Responses;
+import view.UserInterface;
 
 import java.util.regex.Matcher;
 
@@ -16,7 +14,7 @@ public class LoginMenu {
         else if ((matcher = Regex.getMatcher(command, Regex.userCreate)).matches()) createNewUser(matcher);
         else if ((matcher = Regex.getMatcher(command, Regex.userLogin)).matches()) loginUser(matcher);
         else if ((matcher = Regex.getMatcher(command, Regex.userLogout)).matches()) logoutUser(matcher);
-        else System.out.println(Response.invalidFormat);
+        else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
     private void directMenu(Matcher matcher){

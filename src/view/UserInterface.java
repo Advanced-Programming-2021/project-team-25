@@ -5,7 +5,7 @@ import java.util.Scanner;
 
 public class UserInterface {
     public static String invalidFormat = "invalid command";
-    private static Scanner scanner = new Scanner(System.in);
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void printResponse(Responses response) {
         System.out.println(response.getMessage());
