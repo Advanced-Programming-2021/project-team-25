@@ -4,18 +4,37 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="Some Better Base">
-      <change afterPath="$PROJECT_DIR$/src/models/Duelist.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/models/Field.java" afterDir="false" />
+    <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="DeckMenue &amp; loggedUser">
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/encodings.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/project-template.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/project-template.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/DataBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/ProgramController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/ProgramController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/Regex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/Regex.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/menues/DeckMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/DeckMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/menues/LoginMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/LoginMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/controllers/menues/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/controllers/menues/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AP.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AP/.idea/vcs.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AP/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/AP/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/AP/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/DataBase.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/Menu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/ProgramController.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/Regex.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/DeckMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/DuelMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/LoginMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/MainMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/ProfileMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/ScoreBoardMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/ShopMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Card.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Deck.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Duelist.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Field.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/models/User.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/view/Responses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/Responses.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/view/UserInterface.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/UserInterface.java" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
