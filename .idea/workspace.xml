@@ -5,17 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="DeckMenue &amp; loggedUser">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_5.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/DataBase.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/Menu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/ProgramController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/Regex.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/DeckMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/DuelMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/MainMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/ProfileMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/ScoreBoardMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/ShopMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/models/Card.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/models/Deck.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/models/Duelist.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/models/Field.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/view/UserInterface.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/AP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AP.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AP/Deck.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/out/production/AP/Main.class" beforeDir="false" afterPath="$PROJECT_DIR$/out/production/AP/Main.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/view/Responses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/Responses.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/out/production/AP/Main.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/User.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -112,6 +121,9 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.0" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
@@ -167,7 +179,7 @@
       <workItem from="1618544055755" duration="5896000" />
       <workItem from="1618639340054" duration="1121000" />
       <workItem from="1618658533213" duration="3268000" />
-      <workItem from="1618664393298" duration="4150000" />
+      <workItem from="1618664393298" duration="6906000" />
     </task>
     <task id="LOCAL-00001" summary="commit">
       <created>1618483170809</created>
@@ -197,7 +209,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618545645424</updated>
     </task>
-    <option name="localTasksCounter" value="5" />
+    <task id="LOCAL-00005" summary="new DataBase">
+      <created>1618668858431</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1618668858431</updated>
+    </task>
+    <option name="localTasksCounter" value="6" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -218,6 +237,7 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="commit" />
     <MESSAGE value="Some Better Base" />
-    <option name="LAST_COMMIT_MESSAGE" value="Some Better Base" />
+    <MESSAGE value="new DataBase" />
+    <option name="LAST_COMMIT_MESSAGE" value="new DataBase" />
   </component>
 </project>
