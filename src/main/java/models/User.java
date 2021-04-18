@@ -1,23 +1,41 @@
 package models;
 
+import controllers.Database.StoreAndReadData;
+
+import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Objects;
 
-public class User {
-
-    static public ArrayList<User> allUsers = new ArrayList<>();
+public class User implements Serializable {
+    private static ArrayList<User> users = new ArrayList<>();
     private final String username;
     private final String password;
     private final String nickName;
     private int score;
-    private Deck activeDeck = null;
+    private ArrayList<Deck> decks = new ArrayList<>();
+    private Deck activeDeck;
+    private ArrayList<Card> cardsBought = new ArrayList<>();
     private int money;
-    public ArrayList<Card> cardsBought = new ArrayList<>();
 
     public User(String username , String password , String nickname){
         this.username = username;
         this.password = password;
         this.nickName = nickname;
-        allUsers.add(this);
+        users.add(this);
+        StoreAndReadData.saveTheUserList(users);
+    }
+
+    public static User getUserByUsername(String username) {
+        for(User user : users)
+            if(user.getUsername().equals(username)) return user;
+
+        return null;
+    }
+    public static User getUserByNickName(String nickName) {
+        for(User user : users)
+            if(user.getUsername().equals(nickName)) return user;
+
+        return null;
     }
 
     public String getUsername() {
@@ -28,24 +46,19 @@ public class User {
         return password;
     }
 
-    public String getNickName() {
-        return nickName;
+    public static ArrayList<User> getUsers() {
+        return users;
     }
 
-    public Deck getActiveDeck() {
-        return activeDeck;
-    }
-
-    public void setActiveDeck(Deck activeDeck) {
-        this.activeDeck = activeDeck;
-    }
-
-    public int getScore() {
-        return score;
+    public static void setUsers(ArrayList<User> users) {
+        if(!Objects.isNull(users))User.users = users;
     }
 
     @Override
     public String toString() {
-        return nickName + ": " + score ;
+        return new StringBuilder().append("User{").append("username: ")
+                .append(username).append(", password: ")
+                .append(password).append(", nickname: ")
+                .append(nickName).append("}").toString();
     }
 }

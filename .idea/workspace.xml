@@ -4,20 +4,36 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="some bugs">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_googlecode_json_simple_json_simple_1_1_1.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__junit_junit_4_10.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__org_hamcrest_hamcrest_core_1_1.xml" afterDir="false" />
+    <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="user login complete">
+      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/libraries/Maven__com_google_code_gson_gson_2_8_0.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/savedList.list" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/Constants/Initialize.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/Database/StoreAndReadData.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/userList.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/AP.iml" beforeDir="false" afterPath="$PROJECT_DIR$/AP.iml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/DataBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ProgramController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ProgramController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/menues/DeckMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/DeckMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/menues/ScoreBoardMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/ScoreBoardMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Deck.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/User.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/view/Responses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/Responses.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/Main.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/DataBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/Menu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/Menu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/ProgramController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ProgramController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/Regex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/Regex.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/DeckMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/DeckMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/DuelMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/DuelMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/LoginMenu.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/ProfileMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/ProfileMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/ScoreBoardMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/ScoreBoardMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/controllers/menues/ShopMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/ShopMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Card.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Card.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Deck.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/Responses.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/Responses.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/view/UserInterface.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/view/UserInterface.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -27,6 +43,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="Enum" />
         <option value="Class" />
       </list>
     </option>
@@ -107,6 +124,7 @@
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
+    <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
     <property name="ASKED_SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
@@ -114,9 +132,16 @@
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.0" />
-    <property name="project.structure.side.proportion" value="0.0" />
+    <property name="project.structure.side.proportion" value="0.2" />
     <property name="settings.editor.selected.configurable" value="project.propVCSSupport.Mappings" />
   </component>
   <component name="RecentsManager">
@@ -134,6 +159,17 @@
       <option name="WORKING_DIRECTORY" value="file://$PROJECT_DIR$" />
       <RunnerSettings RunnerId="Run" />
       <ConfigurationWrapper RunnerId="Run" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration default="true" type="ArquillianJUnit" factoryName="" nameIsGenerated="true">
+      <option name="arquillianRunConfiguration">
+        <value>
+          <option name="containerStateName" value="" />
+        </value>
+      </option>
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -156,11 +192,9 @@
       <workItem from="1618412748358" duration="845000" />
       <workItem from="1618454885822" duration="12857000" />
       <workItem from="1618489005309" duration="2515000" />
-      <workItem from="1618544055755" duration="5896000" />
-      <workItem from="1618639340054" duration="1121000" />
-      <workItem from="1618658533213" duration="3268000" />
-      <workItem from="1618664393298" duration="7919000" />
-      <workItem from="1618713441620" duration="7462000" />
+      <workItem from="1618544055755" duration="1556000" />
+      <workItem from="1618648696377" duration="10718000" />
+      <workItem from="1618720712935" duration="1830000" />
     </task>
     <task id="LOCAL-00001" summary="commit">
       <created>1618483170809</created>
@@ -183,26 +217,26 @@
       <option name="project" value="LOCAL" />
       <updated>1618491075534</updated>
     </task>
-    <task id="LOCAL-00004" summary="Some Better Base">
-      <created>1618545645424</created>
+    <task id="LOCAL-00004" summary="added errors and success of users.">
+      <created>1618560023392</created>
       <option name="number" value="00004" />
       <option name="presentableId" value="LOCAL-00004" />
       <option name="project" value="LOCAL" />
-      <updated>1618545645424</updated>
+      <updated>1618560023392</updated>
     </task>
-    <task id="LOCAL-00005" summary="new DataBase">
-      <created>1618668858431</created>
+    <task id="LOCAL-00005" summary="added errors and success Responses.">
+      <created>1618561441229</created>
       <option name="number" value="00005" />
       <option name="presentableId" value="LOCAL-00005" />
       <option name="project" value="LOCAL" />
-      <updated>1618668858431</updated>
+      <updated>1618561441229</updated>
     </task>
-    <task id="LOCAL-00006" summary="some bugs">
-      <created>1618671407777</created>
+    <task id="LOCAL-00006" summary="user login complete">
+      <created>1618583313908</created>
       <option name="number" value="00006" />
       <option name="presentableId" value="LOCAL-00006" />
       <option name="project" value="LOCAL" />
-      <updated>1618671407777</updated>
+      <updated>1618583313908</updated>
     </task>
     <option name="localTasksCounter" value="7" />
     <servers />
@@ -223,10 +257,57 @@
     <option name="oldMeFiltersMigrated" value="true" />
   </component>
   <component name="VcsManagerConfiguration">
+    <option name="ADD_EXTERNAL_FILES_SILENTLY" value="true" />
     <MESSAGE value="commit" />
-    <MESSAGE value="Some Better Base" />
-    <MESSAGE value="new DataBase" />
-    <MESSAGE value="some bugs" />
-    <option name="LAST_COMMIT_MESSAGE" value="some bugs" />
+    <MESSAGE value="added errors and success of users." />
+    <MESSAGE value="added errors and success Responses." />
+    <MESSAGE value="user login complete" />
+    <option name="LAST_COMMIT_MESSAGE" value="user login complete" />
+  </component>
+  <component name="XDebuggerManager">
+    <breakpoint-manager>
+      <breakpoints>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
+          <line>6</line>
+          <option name="timeStamp" value="3" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/controllers/ProgramController.java</url>
+          <line>9</line>
+          <option name="timeStamp" value="4" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java</url>
+          <line>15</line>
+          <option name="timeStamp" value="5" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java</url>
+          <line>27</line>
+          <option name="timeStamp" value="6" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/models/User.java</url>
+          <line>22</line>
+          <option name="timeStamp" value="7" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/controllers/Database/StoreAndReadData.java</url>
+          <line>21</line>
+          <option name="timeStamp" value="10" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/Main.java</url>
+          <line>5</line>
+          <option name="timeStamp" value="12" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="java-line">
+          <url>file://$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java</url>
+          <line>45</line>
+          <option name="timeStamp" value="13" />
+        </line-breakpoint>
+      </breakpoints>
+    </breakpoint-manager>
   </component>
 </project>
