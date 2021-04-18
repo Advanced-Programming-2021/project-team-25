@@ -1,5 +1,7 @@
 package controllers.menues;
 
+import controllers.Menu;
+import controllers.ProgramController;
 import controllers.Regex;
 import models.User;
 import view.Responses;
@@ -11,16 +13,10 @@ import java.util.regex.Pattern;
 
 public class LoginMenu {
     public void runLoginMenu(String command){
-        Matcher matcher;
 
-        if ((matcher = Regex.getMatcher(command, Regex.menuEnter)).matches()) directMenu(matcher);
-        else if (command.startsWith("user login")) loginUser(command);
+        if (command.startsWith("user login")) loginUser(command);
         else if (command.startsWith("user create")) createNewUser(Regex.getMatcher(command,Regex.userCreate));
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
-    }
-
-    private void directMenu(Matcher matcher){
-
     }
 
     private void createNewUser(Matcher matcher){
@@ -60,7 +56,7 @@ public class LoginMenu {
                 UserInterface.printResponse(Responses.USER_PASS_NOT_MATCHED_ERROR);
             else {
                 UserInterface.printResponse(Responses.LOGIN_SUCCESS);
-                new MainMenu().runMainMenu(command);
+                ProgramController.currentMenu = Menu.MAIN_MENU;
             }
         }
         else
@@ -70,9 +66,11 @@ public class LoginMenu {
     private void logoutUser(Matcher matcher){
 
     }
+
     private boolean isExistUsername(String username){
         return  !Objects.isNull(User.getUserByUsername(username));
     }
+
     private boolean isExistNickname(String nickname){
         return  !Objects.isNull(User.getUserByNickName(nickname));
     }
