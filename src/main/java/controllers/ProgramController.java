@@ -4,11 +4,18 @@ import controllers.menues.*;
 import models.User;
 import view.UserInterface;
 
+import static models.User.allUsers;
+import static models.Deck.allDecks;
+
 public class ProgramController {
 
     public static Menu currentMenu = Menu.LOGIN_MENU;
     public User loggedUser = null;
     public void run() {
+
+        allUsers = DataBase.restoreUsers();
+        allDecks = DataBase.restoreDecks();
+
         while (currentMenu != Menu.EXIT) {
             String command = UserInterface.getUserInput();
             if (Regex.getMatcher(command, Regex.menuShowCurrent).matches())
@@ -22,6 +29,8 @@ public class ProgramController {
             }
             chooseMenu(command);
         }
+
+        DataBase.storeData();
     }
 
     private void chooseMenu(String command) {

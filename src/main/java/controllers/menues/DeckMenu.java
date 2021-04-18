@@ -1,6 +1,5 @@
 package controllers.menues;
 
-import controllers.DataBase;
 import controllers.ProgramController;
 import controllers.Regex;
 import models.Deck;
@@ -8,6 +7,8 @@ import view.Responses;
 import view.UserInterface;
 
 import java.util.regex.Matcher;
+
+import static models.Deck.allDecks;
 
 public class DeckMenu {
     public void runDeckMenu(String command){
@@ -27,21 +28,42 @@ public class DeckMenu {
 
     private void createDeck(Matcher matcher){
         String deckName = matcher.group(1);
-        if(DataBase.getDeckByName(deckName) == null) UserInterface.printResponse(Responses.INVALID_COMMAND);
-        else{
-            Deck deck = new Deck(deckName);
-            DataBase.addDeck(deck);
+        for (Deck deck:allDecks){
+            if (deck.getDeckName().equals(deckName)){
+                UserInterface.printResponse(Responses.INVALID_COMMAND);
+                return;
+            }
         }
+        UserInterface.printResponse(Responses.DECK_CREATE_SUCCESS);
+        new Deck(deckName , new ProgramController().loggedUser.getUsername());
     }
 
     private void deleteDeck(Matcher matcher){
-        String deckName = matcher.group(1);
-        if(DataBase.getDeckByName(deckName) == null) UserInterface.printResponse(Responses.INVALID_COMMAND);
-        else DataBase.deleteDeck(deckName);
+        boolean exists = false;
+        for (Deck deck:allDecks)
+            if (deck.getDeckName().equals(matcher.group(1))) {
+                exists = true;
+                break;
+            }
+
+        if (exists) {
+            allDecks.removeIf(deck -> deck.getDeckName().equals(matcher.group(1)));
+            UserInterface.printResponse(Responses.DECK_DELETE_SUCCESS);
+        }
+        else
+            UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
     private void setActive(Matcher matcher){
-
+        String deckName = matcher.group(1);
+        for (Deck deck:allDecks){
+            if (deck.getDeckName().equals(deckName)){
+                new ProgramController().loggedUser.setActiveDeck(deck);
+                UserInterface.printResponse(Responses.DECK_ACTIVE_SUCCESS);
+                return;
+            }
+        }
+        UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
     private void addCard(Matcher matcher){
