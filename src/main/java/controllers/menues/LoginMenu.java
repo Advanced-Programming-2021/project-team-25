@@ -30,21 +30,19 @@ public class LoginMenu {
             String nickname = matcher.group("nickname");
 
             if(isExistUsername(username))
-                UserInterface.printResponse("user with username "+username+" already exist!");
+                UserInterface.printResponse("user with username " + username + " already exist!");
             else if(isExistNickname(nickname))
-                UserInterface.printResponse("user with nickname "+nickname+" already exist!");
+                UserInterface.printResponse("user with nickname " + nickname + " already exist!");
             else
                 new User(username,password,nickname);
         }
         else
             UserInterface.printResponse(Responses.INVALID_COMMAND);
-
     }
 
     private void loginUser(String command){
-        //defining variables
-        String username = null;
-        String password = null;
+        String username;
+        String password;
         Matcher matcher = Pattern.compile(Regex.userLogin).matcher(command);
 
         if(matcher.find()) {
@@ -66,10 +64,7 @@ public class LoginMenu {
             }
         }
         else
-                UserInterface.printResponse(Responses.INVALID_COMMAND);
-
-
-
+            UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
     private void logoutUser(Matcher matcher){

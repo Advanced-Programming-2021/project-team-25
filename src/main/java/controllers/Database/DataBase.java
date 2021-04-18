@@ -6,7 +6,9 @@ import java.io.*;
 import java.util.*;
 
 public class DataBase {
+
     public static final String savedArrayListName = "savedList.list";
+
     public static void saveTheUserList(ArrayList<User> users) {
         try {
             FileOutputStream fileOut = new FileOutputStream(savedArrayListName, true);
@@ -32,4 +34,5 @@ public class DataBase {
         }
         return null;
     }
+
 }

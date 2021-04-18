@@ -4,6 +4,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Regex {
+
     public static String menuEnter = "^menu enter (\\S+)$";
     public static String menuExit = "^menu exit$";
     public static String menuShowCurrent = "^menu Show Current$";

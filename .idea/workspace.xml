@@ -4,17 +4,17 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="some bugs">
+    <list default="true" id="7ce1697e-ddea-48c1-b7ff-a71a84946a8d" name="Default Changelist" comment="merged with masterOnPC">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/Constants/Initialize.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/Constants/Initialize.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/Database/DataBase.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/Database/StoreAndReadData.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/ProgramController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/ProgramController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/savedList.list" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/Database/DataBase.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/Database/DataBase.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/Regex.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/Regex.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/menues/DeckMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/DeckMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/LoginMenu.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/menues/MainMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/MainMenu.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/controllers/menues/ScoreBoardMenu.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/controllers/menues/ScoreBoardMenu.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/Deck.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/Deck.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/models/User.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/models/User.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/userList.json" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -30,6 +30,11 @@
     </option>
   </component>
   <component name="Git.Settings">
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="master" />
+      </map>
+    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
     <option name="ROOT_SYNC" value="DONT_SYNC" />
   </component>
@@ -40,6 +45,13 @@
       <filtered-out-file-type name="TAG" />
       <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
     </file-type-list>
+  </component>
+  <component name="GithubPullRequestsUISettings">
+    <option name="hiddenUrls">
+      <set>
+        <option value="https://github.com/Advanced-Programming-2021/project-team-25" />
+      </set>
+    </option>
   </component>
   <component name="ProjectId" id="1rAHdZ8m92k0GsAsnf1vUdx7X9z" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
@@ -221,7 +233,14 @@
       <option name="project" value="LOCAL" />
       <updated>1618583313908</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="merged with masterOnPC">
+      <created>1618731100331</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1618731100331</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -257,6 +276,7 @@
     <MESSAGE value="added errors and success of users." />
     <MESSAGE value="added errors and success Responses." />
     <MESSAGE value="user login complete" />
-    <option name="LAST_COMMIT_MESSAGE" value="user login complete" />
+    <MESSAGE value="merged with masterOnPC" />
+    <option name="LAST_COMMIT_MESSAGE" value="merged with masterOnPC" />
   </component>
 </project>

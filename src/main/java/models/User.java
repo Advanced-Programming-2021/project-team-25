@@ -30,6 +30,7 @@ public class User implements Serializable {
 
         return null;
     }
+
     public static User getUserByNickName(String nickName) {
         for(User user : users)
             if(user.getUsername().equals(nickName)) return user;
@@ -55,9 +56,9 @@ public class User implements Serializable {
 
     @Override
     public String toString() {
-        return new StringBuilder().append("User{").append("username: ")
-                .append(username).append(", password: ")
-                .append(password).append(", nickname: ")
-                .append(nickName).append("}").toString();
+        return "User{" + "username: " +
+                username + ", password: " +
+                password + ", nickname: " +
+                nickName + "}";
     }
 }

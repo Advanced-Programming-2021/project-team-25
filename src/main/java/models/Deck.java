@@ -21,4 +21,7 @@ public class Deck {
         return deckName;
     }
 
+    public String getOwnerName() {
+        return ownerName;
+    }
 }
