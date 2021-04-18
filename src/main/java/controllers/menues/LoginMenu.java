@@ -58,7 +58,7 @@ public class LoginMenu {
             //checking user exist
             User currUser = User.getUserByUsername(username);
             //checking correct password
-            if(Objects.isNull(currUser) || currUser.getPassword().equals(password))
+            if(Objects.isNull(currUser) || !currUser.getPassword().equals(password))
                 UserInterface.printResponse(Responses.USER_PASS_NOT_MATCHED_ERROR);
             else {
                 UserInterface.printResponse(Responses.LOGIN_SUCCESS);
