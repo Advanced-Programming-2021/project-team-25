@@ -1,27 +1,24 @@
 package models;
 
-import models.Card;
-
 import java.util.ArrayList;
 
 public class Deck {
 
-    static int idCounter = 1;
+    public static ArrayList<Deck> allDecks = new ArrayList<>();
     private final String deckName;
-    private final int id;
+    private final String ownerName;
+
     private ArrayList<Card> mainDeck = new ArrayList<>();
     private ArrayList<Card> sideDeck = new ArrayList<>();
 
-    public Deck(String deckName){
-        this.id=idCounter;
+    public Deck(String deckName , String ownerName){
         this.deckName = deckName;
+        this.ownerName = ownerName;
+        allDecks.add(this);
     }
 
     public String getDeckName() {
         return deckName;
     }
 
-    public int getId() {
-        return id;
-    }
 }

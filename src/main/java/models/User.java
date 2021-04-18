@@ -1,6 +1,6 @@
 package models;
 
-import controllers.Database.StoreAndReadData;
+import controllers.Database.DataBase;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -12,7 +12,6 @@ public class User implements Serializable {
     private final String password;
     private final String nickName;
     private int score;
-    private ArrayList<Deck> decks = new ArrayList<>();
     private Deck activeDeck;
     private ArrayList<Card> cardsBought = new ArrayList<>();
     private int money;
@@ -22,7 +21,7 @@ public class User implements Serializable {
         this.password = password;
         this.nickName = nickname;
         users.add(this);
-        StoreAndReadData.saveTheUserList(users);
+        DataBase.saveTheUserList(users);
     }
 
     public static User getUserByUsername(String username) {

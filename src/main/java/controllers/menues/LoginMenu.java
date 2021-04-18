@@ -62,7 +62,7 @@ public class LoginMenu {
                 UserInterface.printResponse(Responses.USER_PASS_NOT_MATCHED_ERROR);
             else {
                 UserInterface.printResponse(Responses.LOGIN_SUCCESS);
-                new MainMenu().runMainMenu();
+                new MainMenu().runMainMenu(command);
             }
         }
         else
