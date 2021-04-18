@@ -18,9 +18,10 @@ public class ProgramController {
 
         while (currentMenu != Menu.EXIT) {
             String command = UserInterface.getUserInput();
-            if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
-
-            else if (currentMenu == Menu.LOGIN_MENU) new LoginMenu().runLoginMenu(command);
+            if (Regex.getMatcher(command, Regex.menuShowCurrent).matches())
+                System.out.println(currentMenu);
+            else if (currentMenu == Menu.LOGIN_MENU)
+                new LoginMenu().runLoginMenu(command);
 
             else if (currentMenu == Menu.MAIN_MENU) {
                 new MainMenu().runMainMenu(command);

@@ -17,7 +17,7 @@ public class Regex {
     public static String deckCreate = "^deck create (\\S+)$";
     public static String deckDelete = "^^deck delete (\\S+)$";
     public static String deckSetActive = "^deck set-activate (\\S+)$";
-    public static String deckAddCard = "^scoreboard show$";
+    public static String deckAddCard = "^deck add-card --card (\\S+) --deck (\\S+)$";
     public static String deckRemoveCard = "^scoreboard show$";
     public static String deckShowAll = "^scoreboard show$";
     public static String deckShowDeckName = "^scoreboard show$";
@@ -29,4 +29,5 @@ public class Regex {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
     }
+
 }
