@@ -30,6 +30,7 @@ public class LoginMenu {
             else if(isExistNickname(nickname))
                 UserInterface.printResponse("user with nickname " + nickname + " already exist!");
             else
+                UserInterface.printResponse(Responses.USER_CREATE_SUCCESS);
                 new User(username,password,nickname);
         }
         else

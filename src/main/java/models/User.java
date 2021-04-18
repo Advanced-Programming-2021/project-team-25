@@ -61,4 +61,12 @@ public class User implements Serializable {
                 password + ", nickname: " +
                 nickName + "}";
     }
+
+    public int getScore() {
+        return score;
+    }
+
+    public String getNickName() {
+        return nickName;
+    }
 }
