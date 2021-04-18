@@ -11,7 +11,7 @@ public class DataBase {
 
     public static void saveTheUserList(ArrayList<User> users) {
         try {
-            FileOutputStream fileOut = new FileOutputStream(savedArrayListName, true);
+            FileOutputStream fileOut = new FileOutputStream(savedArrayListName, false);
             ObjectOutputStream oos = new ObjectOutputStream(fileOut);
             oos.writeObject(users);
             oos.close();
