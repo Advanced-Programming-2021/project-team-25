@@ -1,14 +1,15 @@
 package controllers.menues;
 
 import controllers.Regex;
-import controllers.Response;
+import view.Responses;
+import view.UserInterface;
 
 
 public class ScoreBoardMenu {
     public void runScoreBoardMenu(String command){
 
         if (Regex.getMatcher(command, Regex.scoreBoardShow).matches()) showScoreBoard();
-        else System.out.println(Response.invalidFormat);
+        else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
     private  void showScoreBoard(){

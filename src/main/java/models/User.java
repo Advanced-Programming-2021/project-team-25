@@ -1,8 +1,12 @@
 package models;
 
-import java.util.ArrayList;
+import controllers.Database.StoreAndReadData;
 
-public class User {
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Objects;
+
+public class User implements Serializable {
     private static ArrayList<User> users = new ArrayList<>();
     private final String username;
     private final String password;
@@ -18,11 +22,18 @@ public class User {
         this.password = password;
         this.nickName = nickname;
         users.add(this);
+        StoreAndReadData.saveTheUserList(users);
     }
 
     public static User getUserByUsername(String username) {
         for(User user : users)
             if(user.getUsername().equals(username)) return user;
+
+        return null;
+    }
+    public static User getUserByNickName(String nickName) {
+        for(User user : users)
+            if(user.getUsername().equals(nickName)) return user;
 
         return null;
     }
@@ -33,5 +44,21 @@ public class User {
 
     public String getPassword() {
         return password;
+    }
+
+    public static ArrayList<User> getUsers() {
+        return users;
+    }
+
+    public static void setUsers(ArrayList<User> users) {
+        if(!Objects.isNull(users))User.users = users;
+    }
+
+    @Override
+    public String toString() {
+        return new StringBuilder().append("User{").append("username: ")
+                .append(username).append(", password: ")
+                .append(password).append(", nickname: ")
+                .append(nickName).append("}").toString();
     }
 }
