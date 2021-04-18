@@ -52,8 +52,10 @@ public class LoginMenu {
               password = matcher.group("password2");
               username = matcher.group("username2");
             }
+            //checking user exist
+            User currUser = User.getUserByUsername(username);
             //checking correct password
-            if(!Objects.requireNonNull(User.getUserByUsername(username)).getPassword().equals(password))
+            if(Objects.isNull(currUser) || !currUser.getPassword().equals(password))
                 UserInterface.printResponse(Responses.USER_PASS_NOT_MATCHED_ERROR);
             else {
                 UserInterface.printResponse(Responses.LOGIN_SUCCESS);

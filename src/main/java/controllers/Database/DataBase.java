@@ -20,6 +20,7 @@ public class DataBase {
             ObjectOutputStream oos = new ObjectOutputStream(fileOut);
             oos.writeObject(users);
             oos.close();
+            fileOut.flush();
         } catch (Exception e) {
             e.printStackTrace();
         }
