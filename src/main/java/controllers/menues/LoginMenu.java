@@ -1,5 +1,6 @@
 package controllers.menues;
 
+import controllers.ProgramController;
 import controllers.Regex;
 import models.User;
 import view.Responses;
@@ -20,6 +21,10 @@ public class LoginMenu {
     }
 
     private void directMenu(Matcher matcher){
+        if ( new ProgramController().loggedUser == null ) UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
+        else{
+            //new ProgramController().
+        }
 
     }
 

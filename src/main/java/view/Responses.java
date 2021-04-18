@@ -7,7 +7,9 @@ public enum Responses {
     USER_PASS_NOT_MATCHED_ERROR("Username and password didn't match!"),
     LOGIN_SUCCESS("user logged in successfully!"),
     LOGOUT_SUCCESS("user logged out successfully!"),
-    DECK_CREATE_SUCCESS("deck created successfully!");
+    DECK_CREATE_SUCCESS("deck created successfully!"),
+    DECK_DELETE_SUCCESS("deck deleted successfully!"),
+    DECK_ACTIVE_SUCCESS("deck activated successfully!");
 
     private final String message;
 
