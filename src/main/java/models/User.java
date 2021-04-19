@@ -13,7 +13,7 @@ public class User implements Serializable {
     private final String nickName;
     private int score;
     private Deck activeDeck;
-    private ArrayList<Card> cardsBought = new ArrayList<>();
+    public ArrayList<Card> cardsBought = new ArrayList<>();
     private int money;
 
     public User(String username , String password , String nickname){

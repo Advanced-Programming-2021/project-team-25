@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import models.Deck;
 import models.User;
+import models.Card;
 
 import java.io.*;
 import java.util.*;
@@ -83,4 +84,48 @@ public class DataBase {
         }
         return myReader.nextLine();
     }
+
+    public static ArrayList<Card> loadMonsters() throws IOException {
+        ArrayList<Card> temp = new ArrayList<>();
+        String line ;
+        int i =0;
+        BufferedReader br = new BufferedReader(new FileReader("Monster.csv"));
+        while ((line = br.readLine()) != null) {
+            if(i==0){
+                i++;
+                continue;
+            }
+            String[] cardInfo = line.split(",");
+
+             temp.add(new Card(cardInfo[0],
+                        Integer.parseInt(cardInfo[1]),
+                        cardInfo[2],
+                        cardInfo[3],
+                        cardInfo[4],
+                        Integer.parseInt(cardInfo[5]),
+                        Integer.parseInt(cardInfo[6]),
+                        cardInfo[7],
+                        Integer.parseInt(cardInfo[8])
+                ));
+//            else {
+//                switch (cardInfo[1]) {
+//                    case "Card Destruction" -> temp.add(new CardDestruction(cardInfo[1], cardInfo[2]));
+//                    case "Change Of Heart" -> temp.add(new ChangeOfHeart(cardInfo[1], cardInfo[2]));
+//                    case "Dark Hole" -> temp.add(new DarkHole(cardInfo[1], cardInfo[2]));
+//                    case "Graceful Dice" -> temp.add(new GracefulDice(cardInfo[1], cardInfo[2]));
+//                    case "Harpie's Feather Duster" -> temp.add(new HarpieFeatherDuster(cardInfo[1], cardInfo[2]));
+//                    case "Heavy Storm" -> temp.add(new HeavyStorm(cardInfo[1], cardInfo[2]));
+//                    case "Mage Power" -> temp.add(new MagePower(cardInfo[1], cardInfo[2]));
+//                    case "Monster Reborn" -> temp.add(new MonsterReborn(cardInfo[1], cardInfo[2]));
+//                    case "Pot of Greed" -> temp.add(new PotOfGreed(cardInfo[1], cardInfo[2]));
+//                    case "Raigeki" -> temp.add(new Raigeki(cardInfo[1], cardInfo[2]));
+//                    default ->
+//                }
+        }
+        br.close();
+        return (temp);
+    }
 }
+
+
+
