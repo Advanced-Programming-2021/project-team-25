@@ -1,4 +1,11 @@
 package models.Cards.Traps;
 
-public class Trap {
+import models.Cards.Card;
+
+public class Trap extends Card {
+
+    @Override
+    protected void action() {
+
+    }
 }

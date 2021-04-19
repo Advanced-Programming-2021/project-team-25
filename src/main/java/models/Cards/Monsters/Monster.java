@@ -11,7 +11,8 @@ public class Monster extends Card {
 
     }
 
-    private void action(){
+    @Override
+    protected void action(){
 
     }
 }
