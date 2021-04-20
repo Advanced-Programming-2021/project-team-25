@@ -11,7 +11,7 @@ public class ScoreBoardMenu {
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
-    private  void showScoreBoard(){
+    private void showScoreBoard(){
         int i = 0;
         User[] allUsers = new User[User.getUsers().size()];
         User temp;

@@ -14,7 +14,7 @@ public class Regex {
     public static String scoreBoardShow = "^scoreboard show$";
     public static String changeNickname = "^scoreboard show$";
     public static String changePassword = "^scoreboard show$";
-    public static String cardShow = "^scoreboard show$";
+    public static String cardShow = "^card show (\\S+)$";
     public static String deckCreate = "^deck create (\\S+)$";
     public static String deckDelete = "^^deck delete (\\S+)$";
     public static String deckSetActive = "^deck set-activate (\\S+)$";
@@ -23,8 +23,8 @@ public class Regex {
     public static String deckShowAll = "^scoreboard show$";
     public static String deckShowDeckName = "^scoreboard show$";
     public static String deckShowCards = "^scoreboard show$";
-    public static String shopBuy = "^scoreboard show$";
-    public static String shopShowAll = "^scoreboard show$";
+    public static String shopBuy = "^shop buy (\\S+)$";
+    public static String shopShowAll = "^shop show --all$";
 
     public static Matcher getMatcher(String input, String regex) {
         Pattern pattern = Pattern.compile(regex);

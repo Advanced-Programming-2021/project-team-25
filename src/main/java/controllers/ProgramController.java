@@ -1,11 +1,14 @@
 package controllers;
 
 import controllers.Constants.Initialize;
+import controllers.Database.DataBase;
 import controllers.menues.*;
+import models.Card;
 import models.User;
 import view.Responses;
 import view.UserInterface;
 
+import java.io.IOException;
 import java.util.regex.Matcher;
 
 public class ProgramController {
@@ -15,6 +18,11 @@ public class ProgramController {
 
     public void run() {
         Initialize.init();
+        try {
+            Card.allCards = DataBase.loadMonsters();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while (currentMenu != Menu.EXIT) {
             String command = UserInterface.getUserInput();
 
@@ -47,13 +55,16 @@ public class ProgramController {
 
     private void directMenu(Matcher matcher){
         if ( loggedUser == null ) System.out.println("please login first");
-        else if(matcher.group(1).equals("Login")) currentMenu = Menu.LOGIN_MENU;
         else if(matcher.group(1).equals("Main")) currentMenu = Menu.MAIN_MENU;
-        else if(matcher.group(1).equals("Duel")) currentMenu = Menu.DUEL_MENU;
-        else if(matcher.group(1).equals("Shop")) currentMenu = Menu.SHOP_MENU;
-        else if(matcher.group(1).equals("Deck")) currentMenu = Menu.DECK_MENU;
-        else if(matcher.group(1).equals("ScoreBoard")) currentMenu = Menu.SCOREBOARD_MENU;
-        else if(matcher.group(1).equals("Profile")) currentMenu = Menu.PROFILE_MENU;
+        else if(currentMenu == Menu.MAIN_MENU || currentMenu  == Menu.LOGIN_MENU){
+            if (matcher.group(1).equals("Login")) currentMenu = Menu.LOGIN_MENU;
+            else if (matcher.group(1).equals("Duel")) currentMenu = Menu.DUEL_MENU;
+            else if (matcher.group(1).equals("Shop")) currentMenu = Menu.SHOP_MENU;
+            else if (matcher.group(1).equals("Deck")) currentMenu = Menu.DECK_MENU;
+            else if (matcher.group(1).equals("ScoreBoard")) currentMenu = Menu.SCOREBOARD_MENU;
+            else if (matcher.group(1).equals("Profile")) currentMenu = Menu.PROFILE_MENU;
+        }
+        else System.out.println("menu navigation is not possible");
     }
 
     private void exitMenu(){
