@@ -1,0 +1,8 @@
+{
+  "level": 4,
+  "attack": 1000,
+  "defense": 1000,
+  "type": "Warrior/Effect",
+  "name": "Command knight",
+  "description": "All warrior-monster you control against 400 attack."
+}
