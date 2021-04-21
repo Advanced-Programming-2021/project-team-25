@@ -6,6 +6,7 @@ import models.Card;
 import models.CardStufs.Type;
 import models.Monster.Monster;
 import models.Deck;
+import models.SpellAndTrap.SpellAndTrap;
 import models.User;
 
 
@@ -93,16 +94,14 @@ public class DataBase {
     public static HashMap<String,Card> loadMonsters() throws IOException {
         HashMap<String,Card> temp = new HashMap<>();
         String line;
-        int i =0;
+        int i = 0;
         BufferedReader br = new BufferedReader(new FileReader("Monster.csv"));
         while ((line = br.readLine()) != null) {
             if(i==0){
                 i++;
                 continue;
             }
-
-            Pattern monsterPattern = Pattern.compile("(.+),(.+),(.+),(.+),(.+),(.+),(.+),(.+),(.+)");
-            Matcher matcher = monsterPattern.matcher(line);
+            Matcher matcher = Pattern.compile("(.+),(.+),(.+),(.+),(.+),(.+),(.+),(.+),(.+)").matcher(line);
 
             if(matcher.find()) {
                 temp.put(matcher.group(1).replace("%",",").replace("\"",""),
@@ -119,22 +118,42 @@ public class DataBase {
                         Integer.parseInt(matcher.group(7))
                         ));
             }
-//            else {
-//                switch (cardInfo[1]) {
-//                    case "Card Destruction" -> temp.add(new CardDestruction(cardInfo[1], cardInfo[2]));
-//                    case "Change Of Heart" -> temp.add(new ChangeOfHeart(cardInfo[1], cardInfo[2]));
-//                    case "Dark Hole" -> temp.add(new DarkHole(cardInfo[1], cardInfo[2]));
-//                    case "Graceful Dice" -> temp.add(new GracefulDice(cardInfo[1], cardInfo[2]));
-//                    case "Harpie's Feather Duster" -> temp.add(new HarpieFeatherDuster(cardInfo[1], cardInfo[2]));
-//                    case "Heavy Storm" -> temp.add(new HeavyStorm(cardInfo[1], cardInfo[2]));
-//                    case "Mage Power" -> temp.add(new MagePower(cardInfo[1], cardInfo[2]));
-//                    case "Monster Reborn" -> temp.add(new MonsterReborn(cardInfo[1], cardInfo[2]));
-//                    case "Pot of Greed" -> temp.add(new PotOfGreed(cardInfo[1], cardInfo[2]));
-//                    case "Raigeki" -> temp.add(new Raigeki(cardInfo[1], cardInfo[2]));
-//                    default ->
-//                }
         }
         br.close();
+
+        BufferedReader br1 = new BufferedReader(new FileReader("SpellTrap.csv"));
+        while ((line = br1.readLine()) != null) {
+            if(i==1){
+                i++;
+                continue;
+            }
+
+            Matcher matcher = Pattern.compile("(.+),(.+),(.+),(.+),(.+),(.+)").matcher(line);
+
+            if(matcher.find()) {
+                if(matcher.group(2).equals("Trap"))
+                    temp.put(matcher.group(1).replace("%",",").replace("\"",""),
+                            new SpellAndTrap(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.TRAP,
+                                    matcher.group(4).replace("%",",").replace("\"",""),
+                                    Integer.parseInt(matcher.group(6)),
+                                    matcher.group(3),
+                                    matcher.group(5)
+                            ));
+                else
+                    temp.put(matcher.group(1).replace("%",",").replace("\"",""),
+                            new SpellAndTrap(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.SPELL,
+                                    matcher.group(4).replace("%",",").replace("\"",""),
+                                    Integer.parseInt(matcher.group(6)),
+                                    matcher.group(3),
+                                    matcher.group(5)
+                            ));
+            }
+        }
+        br1.close();
         return (temp);
     }
 }
