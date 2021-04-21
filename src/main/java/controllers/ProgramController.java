@@ -31,8 +31,8 @@ public class ProgramController {
                 new DuelMenu().runDuelMenu(command);
             else if (currentMenu == Menu.DECK_MENU)
                 new DeckMenu().runDeckMenu(command);
-            else if (currentMenu == Menu.SHOP_MENU)
-                new ShopMenu().runShopMenu(command);
+//            else if (currentMenu == Menu.SHOP_MENU)
+//                new ShopMenu().runShopMenu(command);
             else if (currentMenu == Menu.PROFILE_MENU)
                 new ProfileMenu().runProfileMenu(command);
             else if (currentMenu == Menu.SCOREBOARD_MENU)

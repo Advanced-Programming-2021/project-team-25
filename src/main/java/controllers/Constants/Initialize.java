@@ -1,7 +1,7 @@
 package controllers.Constants;
 
 import controllers.Database.DataBase;
-import models.Cards.Monsters.Monster;
+import models.Card;
 import models.User;
 
 import java.io.File;
@@ -12,7 +12,7 @@ public class Initialize {
     public static void init() {
         initUserList();
         try {
-            Monster.allMonsters = DataBase.loadMonsters();
+            Card.allCards = DataBase.loadMonsters();
         } catch (IOException e) {
             e.printStackTrace();
         }

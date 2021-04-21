@@ -2,7 +2,9 @@ package controllers.Database;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-import models.Cards.Monsters.Monster;
+import models.Card;
+import models.CardStufs.Type;
+import models.Monster.Monster;
 import models.Deck;
 import models.User;
 
@@ -88,8 +90,8 @@ public class DataBase {
         return myReader.nextLine();
     }
 
-    public static ArrayList<Monster> loadMonsters() throws IOException {
-        ArrayList<Monster> temp = new ArrayList<>();
+    public static HashMap<String,Card> loadMonsters() throws IOException {
+        HashMap<String,Card> temp = new HashMap<>();
         String line;
         int i =0;
         BufferedReader br = new BufferedReader(new FileReader("Monster.csv"));
@@ -103,16 +105,19 @@ public class DataBase {
             Matcher matcher = monsterPattern.matcher(line);
 
             if(matcher.find()) {
-                temp.add(new Monster(matcher.group(1).replace("%",",").replace("\"",""),
+                temp.put(matcher.group(1).replace("%",",").replace("\"",""),
+                        new Monster(
+                        matcher.group(1).replace("%",",").replace("\"",""),
+                        Type.MONSTER,
+                        matcher.group(8).replace("%",",").replace("\"",""),
+                        Integer.parseInt(matcher.group(9)),
                         Integer.parseInt(matcher.group(2)),
                         matcher.group(3),
                         matcher.group(4),
                         matcher.group(5),
                         Integer.parseInt(matcher.group(6)),
-                        Integer.parseInt(matcher.group(7)),
-                        matcher.group(8).replace("%",",").replace("\"",""),
-                        Integer.parseInt(matcher.group(9))
-                ));
+                        Integer.parseInt(matcher.group(7))
+                        ));
             }
 //            else {
 //                switch (cardInfo[1]) {

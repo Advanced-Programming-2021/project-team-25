@@ -1,7 +1,6 @@
 package models;
 
 import java.util.ArrayList;
-import models.Cards.Card;
 
 public class Deck {
 
@@ -9,8 +8,8 @@ public class Deck {
     private final String deckName;
     private final String ownerName;
 
-    private ArrayList<Card> mainDeck = new ArrayList<>();
-    private ArrayList<Card> sideDeck = new ArrayList<>();
+    public ArrayList<Card> mainDeck = new ArrayList<>();
+    public ArrayList<Card> sideDeck = new ArrayList<>();
 
     public Deck(String deckName , String ownerName){
         this.deckName = deckName;

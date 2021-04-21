@@ -1,7 +1,6 @@
 package models;
 
 import controllers.Database.DataBase;
-import models.Cards.Card;
 
 import java.io.Serializable;
 import java.util.ArrayList;
