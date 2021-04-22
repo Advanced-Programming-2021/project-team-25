@@ -19,8 +19,8 @@ public class Regex {
     public static String deckDelete = "^^deck delete (\\S+)$";
     public static String deckSetActive = "^deck set-activate (\\S+)$";
     public static String deckAddCard = "^deck add-card --card (\\S+) --deck (\\S+)$";
-    public static String deckRemoveCard = "^scoreboard show$";
-    public static String deckShowAll = "^scoreboard show$";
+    public static String deckRemoveCard = "^deck rm-card --card (\\S+) --deck (\\S+)$";
+    public static String deckShowAll = "^deck show --all$";
     public static String deckShowDeckName = "^scoreboard show$";
     public static String deckShowCards = "^scoreboard show$";
     public static String shopBuy = "^shop buy (\\S+)$";

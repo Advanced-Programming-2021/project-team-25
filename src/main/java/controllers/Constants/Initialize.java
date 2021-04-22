@@ -13,7 +13,7 @@ public class Initialize {
     public static void init() {
         initUserList();
         try {
-            Card.allCards = DataBase.loadMonsters();
+            Card.allCards = DataBase.loadCards();
         } catch (IOException e) {
             e.printStackTrace();
         }

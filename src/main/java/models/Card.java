@@ -73,6 +73,20 @@ public abstract class Card {
         return price;
     }
 
+    @Override
+    public String toString() {
+        return "Card{" +
+                "name='" + name + '\'' +
+                ", cardsType=" + cardsType +
+                ", cardsFace=" + cardsFace +
+                ", cardsLocation=" + cardsLocation +
+                ", setChanged=" + setChanged +
+                ", isSetThisTurn=" + isSetThisTurn +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
+
 
 //    public abstract void action (/*check with other members*/){
 //

@@ -21,6 +21,8 @@ public class DeckMenu {
         else if ((matcher = Regex.getMatcher(command, Regex.deckDelete)).matches()) deleteDeck(matcher);
         else if ((matcher = Regex.getMatcher(command, Regex.deckSetActive)).matches()) setActive(matcher);
         else if ((matcher = Regex.getMatcher(command, Regex.deckAddCard)).matches()) addCard(matcher);
+        else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCard)).matches()) removeCard(matcher);
+        else if (Regex.getMatcher(command, Regex.deckShowAll).matches()) deckShowAll();
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
         DataBase.storeData();
     }
@@ -76,6 +78,31 @@ public class DeckMenu {
             new ProgramController().loggedUser.cardsBought.remove(Card.allCards.get(cardName));
             Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.add(Card.allCards.get(cardName));
             System.out.println("card added to deck successfully");
+        }
+    }
+
+    private void removeCard(Matcher matcher){
+        String cardName = matcher.group(1) ,deckName = matcher.group(2);
+
+        if(Deck.getDeckByName(deckName) == null ) System.out.println("deck with "+ deckName + "does not exists");
+        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 0) System.out.println("card with name " + cardName + " does not exist in main deck");
+        else{
+            new ProgramController().loggedUser.cardsBought.add(Card.allCards.get(cardName));
+            Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.remove(Card.allCards.get(cardName));
+            System.out.println("card removed from deck successfully");
+        }
+    }
+
+    private void deckShowAll(){
+        Deck activeDeck = new ProgramController().loggedUser.activeDeck;
+        System.out.println("Decks:");
+        System.out.println("Active Deck:");
+        if(activeDeck!= null)
+            System.out.println(activeDeck.getDeckName() + ": " + activeDeck.mainDeck.size() + ", " + activeDeck.sideDeck.size() + ", " + "valid");
+        System.out.println("Other Decks:");
+        for (Deck deck: allDecks) {
+            if(deck.getOwnerName().equals(new ProgramController().loggedUser.getUsername()) && !deck.getDeckName().equals(activeDeck.getDeckName()))
+                System.out.println(deck.getDeckName() + ": " + deck.mainDeck.size() + ", " + deck.sideDeck.size() + ", " + "valid");
         }
     }
 
