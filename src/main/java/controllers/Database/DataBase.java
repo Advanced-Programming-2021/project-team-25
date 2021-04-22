@@ -4,14 +4,16 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import models.Card;
 import models.CardStufs.Type;
-import models.Monster.Monster;
+import models.Monster.*;
 import models.Deck;
-import models.SpellAndTrap.SpellAndTrap;
+import models.SpellAndTrap.*;
 import models.User;
 
 
 import java.io.*;
-import java.util.*;
+import java.util.Scanner;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -91,19 +93,166 @@ public class DataBase {
             Matcher matcher = Pattern.compile("(.+),(.+),(.+),(.+),(.+),(.+),(.+),(.+),(.+)").matcher(line);
 
             if(matcher.find()) {
-                temp.put(matcher.group(1).replace("%",",").replace("\"",""),
-                        new Monster(
-                        matcher.group(1).replace("%",",").replace("\"",""),
-                        Type.MONSTER,
-                        matcher.group(8).replace("%",",").replace("\"",""),
-                        Integer.parseInt(matcher.group(9)),
-                        Integer.parseInt(matcher.group(2)),
-                        matcher.group(3),
-                        matcher.group(4),
-                        matcher.group(5),
-                        Integer.parseInt(matcher.group(6)),
-                        Integer.parseInt(matcher.group(7))
-                        ));
+                if (matcher.group(1).equals("Yomi Ship")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new YomiShip(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Suijin")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new Suijin(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Man-Eater Bug")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new ManEaterBug(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Gate Guardian")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new GateGuardian(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Scanner")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new models.Monster.Scanner(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Marshmallon")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new Marshmallon(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Beast King Barbaros")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new BeastKingBarbaros(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Texchanger")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new Texchanger(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("The Calculator")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new TheCalculator(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Mirage Dragon")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new MirageDragon(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Herald of Creation")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new HeraldOfCreation(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Exploder Dragon")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new ExploderDragon(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Terratiger% the Empowered Warrior")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new TerratigerTheEmpoweredWarrior(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("The Tricky")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new TheTricky(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else if (matcher.group(1).equals("Command Knight")){
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new CommandKnight(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
+                else{
+                    temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                            new Monster(
+                                    matcher.group(1).replace("%",",").replace("\"",""),
+                                    Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
+                                    Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
+                                    matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
+                                    Integer.parseInt(matcher.group(7))
+                            ));
+                }
             }
         }
         br.close();
@@ -118,26 +267,290 @@ public class DataBase {
             Matcher matcher = Pattern.compile("(.+),(.+),(.+),(.+),(.+),(.+)").matcher(line);
 
             if(matcher.find()) {
-                if(matcher.group(2).equals("Trap"))
-                    temp.put(matcher.group(1).replace("%",",").replace("\"",""),
-                            new SpellAndTrap(
-                                    matcher.group(1).replace("%",",").replace("\"",""),
-                                    Type.TRAP,
-                                    matcher.group(4).replace("%",",").replace("\"",""),
-                                    Integer.parseInt(matcher.group(6)),
-                                    matcher.group(3),
-                                    matcher.group(5)
-                            ));
-                else
-                    temp.put(matcher.group(1).replace("%",",").replace("\"",""),
-                            new SpellAndTrap(
-                                    matcher.group(1).replace("%",",").replace("\"",""),
-                                    Type.SPELL,
-                                    matcher.group(4).replace("%",",").replace("\"",""),
-                                    Integer.parseInt(matcher.group(6)),
-                                    matcher.group(3),
-                                    matcher.group(5)
-                            ));
+                if(matcher.group(2).equals("Trap")) {
+                    if (matcher.group(1).equals("Trap Hole")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new TrapHole(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Mirror Force")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new MirrorForce(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Magic Cylinder")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new MagicCylinder(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Mind Crush")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new MindCrush(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Torrential Tribute")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new TorrentialTribute(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Time Seal")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new TimeSeal(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Negate Attack")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new NegateAttack(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Solemn Warning")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new SolemnWarning(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Magic Jamamer")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new MagicJamamer(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Call of The Haunted")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new CallOfTheHaunted(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Vanity's Emptiness")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new VanitysEmptiness(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Wall of Revealing Light")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new WallOfRevealingLight(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Wall of Revealing Light")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new WallOfRevealingLight(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                }
+                else {
+                    if (matcher.group(1).equals("Monster Reborn")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new MonsterReborn(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Terraforming")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new Terraforming(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Pot of Greed")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new PotOfGreed(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Raigeki")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new Raigeki(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Change of Heart")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new ChangeOfHeart(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Swords of Revealing Light")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new SwordsOfRevealingLight(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Harpie's Feather Duster")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new HarpiesFeatherDuster(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Dark Hole")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new DarkHole(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Supply Squad")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new SupplySquad(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Spell Absorption")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new SpellAbsorption(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Messenger of peace")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new MessengerOfPeace(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Twin Twisters")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new TwinTwisters(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Mystical space typhoon")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new MysticalSpaceTyphoon(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Ring of defense")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new RingOfDefense(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Yami")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new Yami(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Forest")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new Forest(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Closed Forest")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new ClosedForest(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Umiiruka")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new Umiiruka(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Sword of dark destruction")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new SwordOfDarkDestruction(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Black Pendant")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new BlackPendant(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("United We Stand")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new UnitedWeStand(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                    else if (matcher.group(1).equals("Magnum Shield")){
+                        temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                                new MagnumShield(
+                                        matcher.group(1).replace("%", ",").replace("\"", ""),
+                                        Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                                        Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                                ));
+                    }
+                }
             }
         }
         br1.close();
