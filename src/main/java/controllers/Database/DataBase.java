@@ -50,12 +50,6 @@ public class DataBase {
 
     static public void storeData(){
         try {
-            File myObjUser = new File("allUsers.txt");
-
-            FileWriter myWriterUser = new FileWriter(myObjUser);
-            myWriterUser.write(new Gson().toJson(User.getUsers()));
-            myWriterUser.close();
-
             File myObjDeck = new File("allDecks.txt");
 
             FileWriter myWriterDeck = new FileWriter(myObjDeck);
@@ -71,13 +65,6 @@ public class DataBase {
         File myObj = new File("allDecks.txt");
         if(myObj.exists())
             return new Gson().fromJson(getFileAsString(myObj), new TypeToken<ArrayList<Deck>>() {}.getType());
-        return null;
-    }
-
-    static public ArrayList<User> restoreUsers(){
-        File myObj = new File("allUsers.txt");
-        if(myObj.exists())
-            return new Gson().fromJson(getFileAsString(myObj), new TypeToken<ArrayList<User>>() {}.getType());
         return null;
     }
 
@@ -156,6 +143,7 @@ public class DataBase {
         br1.close();
         return (temp);
     }
+
 }
 
 

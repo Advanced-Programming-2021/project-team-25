@@ -1,6 +1,7 @@
 package models;
 
 import java.util.ArrayList;
+import java.util.Objects;
 
 public class Deck {
 
@@ -23,5 +24,21 @@ public class Deck {
 
     public String getOwnerName() {
         return ownerName;
+    }
+
+    public static Deck getDeckByName(String name){
+        for (Deck deck: allDecks)
+            if (deck.getDeckName().equals(name)) return deck;
+        return null;
+    }
+
+    public static int getNumberOfCardsInDeck(String deckName , String cardName){
+        int i = 0;
+        for (Card card: Objects.requireNonNull(getDeckByName(deckName)).mainDeck)
+            if (card.getName().equals(cardName)) i++;
+        for (Card card: Objects.requireNonNull(getDeckByName(deckName)).sideDeck)
+            if (card.getName().equals(cardName)) i++;
+
+        return i;
     }
 }

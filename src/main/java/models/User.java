@@ -12,7 +12,7 @@ public class User implements Serializable {
     private final String password;
     private final String nickName;
     private int score;
-    private Deck activeDeck;
+    public Deck activeDeck;
     public ArrayList<Card> cardsBought = new ArrayList<>();
     public int money = 100000;
 
