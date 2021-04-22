@@ -22,7 +22,7 @@ public abstract class Card {
         this.cardsType = cardsType;
         this.description = description;
         this.price = price;
-        allCards.put(name, this);
+        if (!allCards.containsKey(name)) allCards.put(name, this);
     }
 
     public String getName() {
@@ -72,4 +72,9 @@ public abstract class Card {
     public int getPrice() {
         return price;
     }
+
+
+//    public abstract void action (/*check with other members*/){
+//
+//    }
 }

@@ -61,4 +61,10 @@ public class Monster extends Card {
     public int getDefence() {
         return defence;
     }
+
+
+//    @Override
+//    public void action() {
+//
+//    }
 }
