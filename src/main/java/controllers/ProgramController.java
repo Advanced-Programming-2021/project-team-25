@@ -3,6 +3,7 @@ package controllers;
 import controllers.Constants.Initialize;
 import controllers.Database.DataBase;
 import controllers.menues.*;
+import models.Card;
 import models.User;
 import view.Responses;
 import view.UserInterface;

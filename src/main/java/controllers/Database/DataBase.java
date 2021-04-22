@@ -78,7 +78,7 @@ public class DataBase {
         return myReader.nextLine();
     }
 
-    public static HashMap<String,Card> loadMonsters() throws IOException {
+    public static HashMap<String,Card> loadCards() throws IOException {
         HashMap<String,Card> temp = new HashMap<>();
         String line;
         int i = 0;

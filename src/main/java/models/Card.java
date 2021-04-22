@@ -72,4 +72,18 @@ public abstract class Card {
     public int getPrice() {
         return price;
     }
+
+    @Override
+    public String toString() {
+        return "Card{" +
+                "name='" + name + '\'' +
+                ", cardsType=" + cardsType +
+                ", cardsFace=" + cardsFace +
+                ", cardsLocation=" + cardsLocation +
+                ", setChanged=" + setChanged +
+                ", isSetThisTurn=" + isSetThisTurn +
+                ", description='" + description + '\'' +
+                ", price=" + price +
+                '}';
+    }
 }
