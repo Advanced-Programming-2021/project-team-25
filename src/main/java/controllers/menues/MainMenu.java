@@ -16,7 +16,7 @@ public class MainMenu {
         this.currUser=currUser;
         String command = UserInterface.getUserInput();
         while(!command.equals("menu exit")){
-            if(command.startsWith("Menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),command);
+            if(command.startsWith("Menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),command,currUser);
             else if(command.equals("user logout")) logoutUser();
             else if(command.equals("scoreboard show")) ScoreBoardMenu.showScoreBoard();
             else if(command.equals("menu show-current")) UserInterface.printResponse("Main Menu");
@@ -25,27 +25,23 @@ public class MainMenu {
             command = UserInterface.getUserInput();
         }
     }
-    private void changeMenu(Matcher matcher, String command){
+    static void changeMenu(Matcher matcher, String command, User currUser){
         if(matcher.find()) {
             switch (matcher.group(1)) {
-                case "Duel":
+                case "Duel" -> {
                     ProgramController.currentMenu = Menu.DUEL_MENU;
                     new DuelMenu().runDuelMenu(command);
-                    break;
-                case "Shop":
-                    ProgramController.currentMenu = Menu.SHOP_MENU;
-                    break;
-                case "Deck":
+                }
+                case "Shop" -> ProgramController.currentMenu = Menu.SHOP_MENU;
+                case "Deck" -> {
                     ProgramController.currentMenu = Menu.DECK_MENU;
                     new DeckMenu(currUser).runDeckMenu(command);
-                    break;
-                case "ScoreBoard":
-                    ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
-                    break;
-                case "Profile":
+                }
+                case "ScoreBoard" -> ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
+                case "Profile" -> {
                     ProgramController.currentMenu = Menu.PROFILE_MENU;
                     ProfileMenu.runProfileMenu(currUser);
-                    break;
+                }
             }
         }
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
