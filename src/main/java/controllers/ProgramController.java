@@ -9,13 +9,14 @@ import view.Responses;
 import view.UserInterface;
 
 import java.util.ArrayList;
+import java.util.Objects;
 import java.util.regex.Matcher;
 
 public class ProgramController {
 
     public static Menu currentMenu = Menu.LOGIN_MENU;
-    public static ArrayList<User> loggedInUsers = new ArrayList<>();
-
+   // public static ArrayList<User> loggedInUsers = new ArrayList<>();
+      public static User currUser;
     public static void run() {
         Initialize.init();
 
@@ -31,7 +32,7 @@ public class ProgramController {
             else if (currentMenu == Menu.LOGIN_MENU)
                 new LoginMenu().runLoginMenu(command);
             else if (currentMenu == Menu.DUEL_MENU)
-                new DuelMenu(loggedInUsers.get(0)).runDuelMenu(command);
+                new DuelMenu(currUser).runDuelMenu(command);
 //            else if (currentMenu == Menu.DECK_MENU)
 //                new DeckMenu().runDeckMenu(command);
 //            else if (currentMenu == Menu.SHOP_MENU)
@@ -46,7 +47,7 @@ public class ProgramController {
     }
 
     private static void directMenu(Matcher matcher){
-        if ( loggedInUsers.isEmpty()) UserInterface.printResponse("please login first");
+        if (Objects.isNull(currUser)) UserInterface.printResponse("please login first");
         else if(matcher.group(1).equals("Main")) currentMenu = Menu.MAIN_MENU;
         else if(currentMenu == Menu.MAIN_MENU || currentMenu  == Menu.LOGIN_MENU){
             switch (matcher.group(1)) {
@@ -80,9 +81,9 @@ public class ProgramController {
     }
 
     public static void setLoggedInUsers(User user) {
-        loggedInUsers.add(user);
+        currUser = user;
     }
-    public static void setLoggedOutUsers(User user) {
-        loggedInUsers.remove(user);
+    public static void setLoggedOutUsers() {
+        currUser = null;
     }
 }
