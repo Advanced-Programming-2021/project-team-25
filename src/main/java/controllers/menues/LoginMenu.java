@@ -35,10 +35,15 @@ public class LoginMenu {
             else if(isExistNickname(nickname))
                 UserInterface.printResponse("user with nickname " + nickname + " already exist!");
             else
+            {
                 UserInterface.printResponse(Responses.USER_CREATE_SUCCESS);
+                //creating new user
+                User newUser = new User(username,password,nickname);
                 // by default user be logged in
+                ProgramController.setLoggedInUsers(newUser);
                 //change menu to main menu
-                new MainMenu(new User(username,password,nickname));
+                new MainMenu(newUser);
+            }
         }
         else
             UserInterface.printResponse(Responses.INVALID_COMMAND);
