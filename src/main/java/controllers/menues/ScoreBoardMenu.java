@@ -10,12 +10,8 @@ import java.util.Collections;
 import java.util.Comparator;
 
 public class ScoreBoardMenu {
-    public void runScoreBoardMenu(String command){
-        if (Regex.getMatcher(command, Regex.scoreBoardShow).matches()) showScoreBoard();
-        else UserInterface.printResponse(Responses.INVALID_COMMAND);
-    }
 
-    private void showScoreBoard(){
+    static void showScoreBoard(){
         //getting users
         ArrayList<User> users = User.getUsers();
         //compare users
