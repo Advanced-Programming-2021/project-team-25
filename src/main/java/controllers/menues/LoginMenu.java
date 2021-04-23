@@ -36,7 +36,9 @@ public class LoginMenu {
                 UserInterface.printResponse("user with nickname " + nickname + " already exist!");
             else
                 UserInterface.printResponse(Responses.USER_CREATE_SUCCESS);
-                new User(username,password,nickname);
+                // by default user be logged in
+                //change menu to main menu
+                new MainMenu(new User(username,password,nickname));
         }
         else
             UserInterface.printResponse(Responses.INVALID_COMMAND);
@@ -67,6 +69,8 @@ public class LoginMenu {
                 //set the user logged in
                 currUser.setIsLoggedIn(true);
                 ProgramController.currentMenu = Menu.MAIN_MENU;
+                //change menu to main menu
+                new MainMenu(currUser);
             }
         }
         else
