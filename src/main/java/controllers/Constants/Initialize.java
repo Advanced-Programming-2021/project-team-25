@@ -19,8 +19,9 @@ public class Initialize {
     }
 
     public static void initUserList(){
-        new User("admin","admin","Game");
-        User.setUsers(DataBase.loadTheList());
+        File tmpDir = new File("savedList.list");
+        if(tmpDir.exists()) User.setUsers(DataBase.loadTheList());
+        else new User("admin","admin","Game");
     }
 
 }
