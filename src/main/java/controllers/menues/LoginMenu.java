@@ -17,6 +17,10 @@ public class LoginMenu {
 
         if (command.startsWith("user login")) loginUser(command);
         else if (command.startsWith("user create")) createNewUser(Regex.getMatcher(command,Regex.userCreate));
+        else if(command.startsWith("menu enter"))
+            UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
+        else if(command.equals("menu show-current"))
+            UserInterface.printResponse("Login Menu");
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
@@ -60,15 +64,13 @@ public class LoginMenu {
                 UserInterface.printResponse(Responses.USER_PASS_NOT_MATCHED_ERROR);
             else {
                 UserInterface.printResponse(Responses.LOGIN_SUCCESS);
+                //set the user logged in
+                currUser.setIsLoggedIn(true);
                 ProgramController.currentMenu = Menu.MAIN_MENU;
             }
         }
         else
             UserInterface.printResponse(Responses.INVALID_COMMAND);
-    }
-
-    private void logoutUser(Matcher matcher){
-
     }
 
     private boolean isExistUsername(String username){
