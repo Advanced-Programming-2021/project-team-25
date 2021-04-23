@@ -12,6 +12,7 @@ public class User implements Serializable {
     private final String password;
     private final String nickName;
     private int score;
+    private boolean isLoggedIn;
     public Deck activeDeck;
     public ArrayList<Card> cardsBought = new ArrayList<>();
     public int money = 100000;
@@ -20,6 +21,7 @@ public class User implements Serializable {
         this.username = username;
         this.password = password;
         this.nickName = nickname;
+        this.isLoggedIn = true; //When a User created by default be logged in
         users.add(this);
         DataBase.saveTheUserList(users);
     }
@@ -68,5 +70,40 @@ public class User implements Serializable {
 
     public String getNickName() {
         return nickName;
+    }
+
+    public void setScore(int score) {
+        this.score = score;
+    }
+
+    public void setActiveDeck(Deck activeDeck) {
+        this.activeDeck = activeDeck;
+    }
+
+    public void setCardsBought(ArrayList<Card> cardsBought) {
+        this.cardsBought = cardsBought;
+    }
+
+    public void setMoney(int money) {
+        this.money = money;
+    }
+
+    public ArrayList<Card> getCardsBought() {
+        return cardsBought;
+    }
+
+    public Deck getActiveDeck() {
+        return activeDeck;
+    }
+
+    public int getMoney() {
+        return money;
+    }
+
+    public boolean isLoggedIn() {
+        return isLoggedIn;
+    }
+    public void setIsLoggedIn(boolean isLoggedIn) {
+        this.isLoggedIn= isLoggedIn;
     }
 }
