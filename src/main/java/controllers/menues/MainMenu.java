@@ -28,20 +28,24 @@ public class MainMenu {
     static void changeMenu(Matcher matcher, String command, User currUser){
         if(matcher.find()) {
             switch (matcher.group(1)) {
-                case "Duel" -> {
+                case "Duel" :
                     ProgramController.currentMenu = Menu.DUEL_MENU;
                     new DuelMenu(currUser).runDuelMenu(command);
-                }
-                case "Shop" -> ProgramController.currentMenu = Menu.SHOP_MENU;
-                case "Deck" -> {
+                    break;
+                case "Shop" :
+                    ProgramController.currentMenu = Menu.SHOP_MENU;
+                    break;
+                case "Deck" :
                     ProgramController.currentMenu = Menu.DECK_MENU;
                     new DeckMenu(currUser).runDeckMenu(command);
-                }
-                case "ScoreBoard" -> ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
-                case "Profile" -> {
+                    break;
+                case "ScoreBoard" :
+                    ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
+                    break;
+                case "Profile" :
                     ProgramController.currentMenu = Menu.PROFILE_MENU;
                     ProfileMenu.runProfileMenu(currUser);
-                }
+                    break;
             }
         }
         else UserInterface.printResponse(Responses.INVALID_COMMAND);

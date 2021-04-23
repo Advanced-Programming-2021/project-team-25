@@ -25,8 +25,8 @@ public class DuelMenu {
     private void newDuel(Matcher matcher){
     String duelistName = matcher.group(1) , round = matcher.group(2);
     if(User.getUserByUsername(duelistName) == null)
-        System.out.println("there is no player with this username");
-    else if(currUser.activeDeck == null) System.out.println(currUser.getUsername() + "has no active deck");
+        UserInterface.printResponse("there is no player with this username");
+    else if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + "has no active deck");
     else if(Objects.requireNonNull(User.getUserByUsername(duelistName)).activeDeck == null) System.out.println(duelistName + "has no active deck");
 
 
