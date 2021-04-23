@@ -8,14 +8,15 @@ import models.User;
 import view.Responses;
 import view.UserInterface;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 
 public class ProgramController {
 
     public static Menu currentMenu = Menu.LOGIN_MENU;
-    public User loggedUser = null;
+    public static ArrayList<User> loggedInUsers = new ArrayList<>();
 
-    public void run() {
+    public static void run() {
         Initialize.init();
 
         while (currentMenu != Menu.EXIT) {
@@ -31,8 +32,8 @@ public class ProgramController {
                 new LoginMenu().runLoginMenu(command);
             else if (currentMenu == Menu.DUEL_MENU)
                 new DuelMenu().runDuelMenu(command);
-            else if (currentMenu == Menu.DECK_MENU)
-                new DeckMenu().runDeckMenu(command);
+//            else if (currentMenu == Menu.DECK_MENU)
+//                new DeckMenu().runDeckMenu(command);
 //            else if (currentMenu == Menu.SHOP_MENU)
 //                new ShopMenu().runShopMenu(command);
             else if (currentMenu == Menu.PROFILE_MENU)
@@ -44,8 +45,8 @@ public class ProgramController {
         }
     }
 
-    private void directMenu(Matcher matcher){
-        if ( loggedUser == null ) System.out.println("please login first");
+    private static void directMenu(Matcher matcher){
+        if ( loggedInUsers.isEmpty()) UserInterface.printResponse("please login first");
         else if(matcher.group(1).equals("Main")) currentMenu = Menu.MAIN_MENU;
         else if(currentMenu == Menu.MAIN_MENU || currentMenu  == Menu.LOGIN_MENU){
             switch (matcher.group(1)) {
@@ -69,13 +70,19 @@ public class ProgramController {
                     break;
             }
         }
-        else System.out.println("menu navigation is not possible");
+        else UserInterface.printResponse("menu navigation is not possible");
     }
 
-    private void exitMenu(){
+    private static void exitMenu(){
         if(currentMenu == Menu.LOGIN_MENU ) currentMenu = Menu.EXIT;
         else if(currentMenu == Menu.MAIN_MENU ) currentMenu = Menu.LOGIN_MENU;
         else currentMenu = Menu.MAIN_MENU;
     }
 
+    public static void setLoggedInUsers(User user) {
+        loggedInUsers.add(user);
+    }
+    public static void setLoggedOutUsers(User user) {
+        loggedInUsers.remove(user);
+    }
 }
