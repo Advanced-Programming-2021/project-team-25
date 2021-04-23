@@ -4,11 +4,14 @@ import controllers.Database.DataBase;
 import controllers.ProgramController;
 import controllers.Regex;
 import models.Card;
+import models.CardStufs.Type;
 import models.Deck;
 import models.User;
 import view.Responses;
 import view.UserInterface;
 
+import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
@@ -31,6 +34,8 @@ public class DeckMenu {
         else if ((matcher = Regex.getMatcher(command, Regex.deckAddCard)).matches()) addCard(matcher);
         else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCard)).matches()) removeCard(matcher);
         else if (Regex.getMatcher(command, Regex.deckShowAll).matches()) deckShowAll();
+        else if ((matcher = Regex.getMatcher(command, Regex.deckShowDeckName)).matches()) showDeck(matcher);
+        else if (Regex.getMatcher(command, Regex.deckShowCards).matches()) deckShowCards();
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
         DataBase.storeDecks();
     }
@@ -108,10 +113,57 @@ public class DeckMenu {
         if(activeDeck!= null)
             UserInterface.printResponse(activeDeck.getDeckName() + ": " + activeDeck.mainDeck.size() + ", " + activeDeck.sideDeck.size() + ", " + "valid");
         UserInterface.printResponse("Other Decks:");
+        ArrayList<Deck> decks = new ArrayList<>();
         for (Deck deck: allDecks) {
-            if(deck.getOwnerName().equals(currUser.getUsername()) && !deck.getDeckName().equals(activeDeck.getDeckName()))
-                UserInterface.printResponse(deck.getDeckName() + ": " + deck.mainDeck.size() + ", " + deck.sideDeck.size() + ", " + "valid");
+            if(deck.getOwnerName().equals(currUser.getUsername()) && !deck.getDeckName().equals(Objects.requireNonNull(activeDeck).getDeckName())){
+                decks.add(deck);
+            }
         }
+        Comparator<Deck> orderedDecks = Comparator.comparing(Deck::getDeckName);
+
+        decks.sort(orderedDecks);
+        for (Deck deck: decks) {
+            UserInterface.printResponse(deck.getDeckName() + ": " + deck.mainDeck.size() + ", " + deck.sideDeck.size() + ", " + "valid");
+        }
+    }
+
+    private void showDeck(Matcher matcher){
+        String deckName = matcher.group(1);
+        if(Deck.getDeckByName(deckName)==null)
+            UserInterface.printResponse("deck with name" + deckName + "does not exist");
+        else {
+            UserInterface.printResponse("Deck: " + deckName);
+            UserInterface.printResponse("Main deck:");
+            UserInterface.printResponse("Monsters:");
+            ArrayList<Card> monsters = new ArrayList<>();
+            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck) {
+                if(card.getCardsType() == Type.MONSTER) monsters.add(card);
+            }
+            Comparator<Card> orderedCards = Comparator.comparing(Card::getName);
+
+            monsters.sort(orderedCards);
+            for (Card card : monsters) {
+                UserInterface.printResponse(card.getName() + " : " + card.getDescription());
+            }
+
+            UserInterface.printResponse("Spell and Traps:");
+            ArrayList<Card> spellAndTraps = new ArrayList<>();
+            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck) {
+                if(card.getCardsType() != Type.MONSTER) spellAndTraps.add(card);
+            }
+
+            spellAndTraps.sort(orderedCards);
+            for (Card card : spellAndTraps) {
+                UserInterface.printResponse(card.getName() + " : " + card.getDescription());
+            }
+        }
+    }
+
+    private void deckShowCards(){
+        Comparator<Card> orderedCards = Comparator.comparing(Card::getName);
+        currUser.cardsBought.sort(orderedCards);
+        for (Card card : currUser.cardsBought)
+            UserInterface.printResponse(card.getName() + " : " + card.getDescription());
     }
 
 }
