@@ -36,10 +36,10 @@ public class ProgramController {
 //                new DeckMenu().runDeckMenu(command);
 //            else if (currentMenu == Menu.SHOP_MENU)
 //                new ShopMenu().runShopMenu(command);
-            else if (currentMenu == Menu.PROFILE_MENU)
-                new ProfileMenu().runProfileMenu(command);
-            else if (currentMenu == Menu.SCOREBOARD_MENU)
-                new ScoreBoardMenu().runScoreBoardMenu(command);
+//            else if (currentMenu == Menu.PROFILE_MENU)
+//                new ProfileMenu().runProfileMenu(command);
+//            else if (currentMenu == Menu.SCOREBOARD_MENU)
+//                new ScoreBoardMenu().runScoreBoardMenu(command);
             else
                 UserInterface.printResponse(Responses.INVALID_COMMAND);
         }
