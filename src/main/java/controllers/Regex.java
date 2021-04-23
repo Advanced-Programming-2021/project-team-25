@@ -21,8 +21,8 @@ public class Regex {
     public static String deckAddCard = "^deck add-card --card (\\S+) --deck (\\S+)$";
     public static String deckRemoveCard = "^deck rm-card --card (\\S+) --deck (\\S+)$";
     public static String deckShowAll = "^deck show --all$";
-    public static String deckShowDeckName = "^scoreboard show$";
-    public static String deckShowCards = "^scoreboard show$";
+    public static String deckShowDeckName = "^deck show --deck-name (\\S+)$";
+    public static String deckShowCards = "^deck show --cards$";
     public static String shopBuy = "^shop buy (\\S+)$";
     public static String shopShowAll = "^shop show --all$";
     public static String select = "^select (\\S+)$";
