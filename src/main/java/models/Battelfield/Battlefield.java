@@ -3,12 +3,12 @@ package models.Battelfield;
 import models.Card;
 import models.Duelist;
 
-public class Battelfield {
+public class Battlefield {
     private Duelist turn;
     private Duelist opponent;
     private Duelist winner;
     private Card selectedCard;
-
+    private Phase phase;
     public void showBattleField(){
 
     }
