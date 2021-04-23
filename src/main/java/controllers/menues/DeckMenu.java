@@ -78,39 +78,39 @@ public class DeckMenu {
     private void addCard(Matcher matcher){
         String cardName = matcher.group(1) ,deckName = matcher.group(2);
 
-        if(!currUser.cardsBought.contains(Card.allCards.get(cardName))) System.out.println("card with " + cardName + "does not exists");
-        else if(Deck.getDeckByName(deckName) == null ) System.out.println("deck with "+ deckName + "does not exists");
-        else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() == 60) System.out.println("main deck is full");
-        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 3) System.out.println("there are already three cards whit name " + cardName + "in deck " + deckName);
+        if(!currUser.cardsBought.contains(Card.allCards.get(cardName))) UserInterface.printResponse("card with " + cardName + "does not exists");
+        else if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with "+ deckName + "does not exists");
+        else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() == 60) UserInterface.printResponse("main deck is full");
+        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards whit name " + cardName + "in deck " + deckName);
         else{
             currUser.cardsBought.remove(Card.allCards.get(cardName));
             Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.add(Card.allCards.get(cardName));
-            System.out.println("card added to deck successfully");
+            UserInterface.printResponse("card added to deck successfully");
         }
     }
 
     private void removeCard(Matcher matcher){
         String cardName = matcher.group(1) ,deckName = matcher.group(2);
 
-        if(Deck.getDeckByName(deckName) == null ) System.out.println("deck with "+ deckName + "does not exists");
-        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 0) System.out.println("card with name " + cardName + " does not exist in main deck");
+        if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with "+ deckName + "does not exists");
+        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in main deck");
         else{
             currUser.cardsBought.add(Card.allCards.get(cardName));
             Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.remove(Card.allCards.get(cardName));
-            System.out.println("card removed from deck successfully");
+            UserInterface.printResponse("card removed from deck successfully");
         }
     }
 
     private void deckShowAll(){
         Deck activeDeck = currUser.activeDeck;
-        System.out.println("Decks:");
-        System.out.println("Active Deck:");
+        UserInterface.printResponse("Decks:");
+        UserInterface.printResponse("Active Deck:");
         if(activeDeck!= null)
-            System.out.println(activeDeck.getDeckName() + ": " + activeDeck.mainDeck.size() + ", " + activeDeck.sideDeck.size() + ", " + "valid");
-        System.out.println("Other Decks:");
+            UserInterface.printResponse(activeDeck.getDeckName() + ": " + activeDeck.mainDeck.size() + ", " + activeDeck.sideDeck.size() + ", " + "valid");
+        UserInterface.printResponse("Other Decks:");
         for (Deck deck: allDecks) {
             if(deck.getOwnerName().equals(currUser.getUsername()) && !deck.getDeckName().equals(activeDeck.getDeckName()))
-                System.out.println(deck.getDeckName() + ": " + deck.mainDeck.size() + ", " + deck.sideDeck.size() + ", " + "valid");
+                UserInterface.printResponse(deck.getDeckName() + ": " + deck.mainDeck.size() + ", " + deck.sideDeck.size() + ", " + "valid");
         }
     }
 
