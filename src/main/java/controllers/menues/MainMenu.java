@@ -18,8 +18,11 @@ public class MainMenu {
         while(!command.equals("menu exit")){
             if(command.startsWith("Menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),command);
             else if(command.equals("user logout")) logoutUser();
+            else if(command.equals("scoreboard show")) ScoreBoardMenu.showScoreBoard();
             else if(command.equals("menu show-current")) UserInterface.printResponse("Main Menu");
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
+
+            command = UserInterface.getUserInput();
         }
     }
     private void changeMenu(Matcher matcher, String command){
@@ -41,7 +44,7 @@ public class MainMenu {
                     break;
                 case "Profile":
                     ProgramController.currentMenu = Menu.PROFILE_MENU;
-                    new ProfileMenu().runProfileMenu(command);
+                    ProfileMenu.runProfileMenu(currUser);
                     break;
             }
         }
