@@ -16,7 +16,8 @@ public class LoginMenu {
     public void runLoginMenu(String command){
 
         if (command.startsWith("user login")) loginUser(command);
-        else if (command.startsWith("user create")) createNewUser(Regex.getMatcher(command,Regex.userCreate));
+        else if (command.startsWith("user create"))
+            createNewUser(Regex.getMatcher(command,Regex.userCreate));
         else if(command.startsWith("menu enter"))
             UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
         else if(command.equals("menu show-current"))

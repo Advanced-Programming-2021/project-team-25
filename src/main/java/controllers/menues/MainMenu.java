@@ -11,18 +11,18 @@ import java.util.regex.Matcher;
 
 public class MainMenu {
     private User currUser;
-
+    private boolean isUserLoggedOut = false;
     public MainMenu(User currUser) {
         this.currUser=currUser;
         String command = UserInterface.getUserInput();
-        while(!command.equals("menu exit")){
+        while(!command.equals("menu exit") && !isUserLoggedOut){
             if(command.startsWith("Menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),command,currUser);
             else if(command.equals("user logout")) logoutUser();
             else if(command.equals("scoreboard show")) ScoreBoardMenu.showScoreBoard();
             else if(command.equals("menu show-current")) UserInterface.printResponse("Main Menu");
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
-            command = UserInterface.getUserInput();
+            if(!isUserLoggedOut) command = UserInterface.getUserInput();
         }
     }
     static void changeMenu(Matcher matcher, String command, User currUser){
@@ -51,8 +51,9 @@ public class MainMenu {
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
     private void logoutUser(){
-        ProgramController.setLoggedOutUsers(currUser);
+        ProgramController.setLoggedOutUsers();
         currUser.setIsLoggedIn(false);
         UserInterface.printResponse(Responses.LOGOUT_SUCCESS);
+        isUserLoggedOut = true;
     }
 }

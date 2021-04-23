@@ -4,6 +4,7 @@ import controllers.Database.DataBase;
 import models.Deck;
 import models.User;
 
+import java.io.File;
 import java.io.IOException;
 
 public class Initialize {
