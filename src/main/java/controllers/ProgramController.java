@@ -31,7 +31,7 @@ public class ProgramController {
             else if (currentMenu == Menu.LOGIN_MENU)
                 new LoginMenu().runLoginMenu(command);
             else if (currentMenu == Menu.DUEL_MENU)
-                new DuelMenu().runDuelMenu(command);
+                new DuelMenu(loggedInUsers.get(0)).runDuelMenu(command);
 //            else if (currentMenu == Menu.DECK_MENU)
 //                new DeckMenu().runDeckMenu(command);
 //            else if (currentMenu == Menu.SHOP_MENU)

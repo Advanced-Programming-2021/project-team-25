@@ -80,7 +80,7 @@ public class DataBase {
         return myReader.nextLine();
     }
 
-    public static HashMap<String,Card> loadCards() throws IOException {
+    public static void loadCards() throws IOException {
         HashMap<String,Card> temp = new HashMap<>();
         String line;
         int i = 0;
@@ -554,7 +554,7 @@ public class DataBase {
             }
         }
         br1.close();
-        return (temp);
+        Card.allCards=temp;
     }
 
 }

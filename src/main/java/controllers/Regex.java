@@ -25,6 +25,7 @@ public class Regex {
     public static String deckShowCards = "^deck show --cards$";
     public static String shopBuy = "^shop buy (\\S+)$";
     public static String shopShowAll = "^shop show --all$";
+    public static String duelNew = "^duel --new --second-player (\\S+) --round(1|3)$";
     public static String select = "^select (\\S+)$";
     public static String selectOpponent = "^select (\\S+) --opponent$";
     public static String deselect = "^select -d$";

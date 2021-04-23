@@ -15,10 +15,13 @@ import java.util.regex.Matcher;
 import static models.Deck.allDecks;
 
 public class DeckMenu {
-    private User currUser;
+
+    private final User currUser;
+
     public DeckMenu(User currUser){
         this.currUser=currUser;
     }
+
     public void runDeckMenu(String command){
         Matcher matcher;
 
@@ -29,7 +32,7 @@ public class DeckMenu {
         else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCard)).matches()) removeCard(matcher);
         else if (Regex.getMatcher(command, Regex.deckShowAll).matches()) deckShowAll();
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
-        DataBase.storeData();
+        DataBase.storeDecks();
     }
 
     private void createDeck(Matcher matcher){
