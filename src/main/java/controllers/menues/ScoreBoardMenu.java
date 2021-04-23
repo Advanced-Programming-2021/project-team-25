@@ -26,7 +26,7 @@ public class ScoreBoardMenu {
         int rank=1;
         //itrate users
         for (User user : users) {
-            UserInterface.printResponse(rank + " " + user.toString());
+            UserInterface.printResponse(rank + "- " + user.getNickName() + ":" + user.getScore());
             rank++;
         }
         /*int i = 0;
