@@ -1,4 +1,4 @@
-package models.Battelfield;
+package controllers.Battelfield;
 
 public enum Phase {
     DRAW_PHASE,

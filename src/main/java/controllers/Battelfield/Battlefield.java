@@ -1,4 +1,4 @@
-package models.Battelfield;
+package controllers.Battelfield;
 
 import models.Card;
 import models.Duelist;
