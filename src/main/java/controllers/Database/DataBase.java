@@ -50,7 +50,7 @@ public class DataBase {
         return null;
     }
 
-    static public void storeData(){
+    static public void storeDecks(){
         try {
             File myObjDeck = new File("allDecks.txt");
 
@@ -84,7 +84,7 @@ public class DataBase {
         HashMap<String,Card> temp = new HashMap<>();
         String line;
         int i = 0;
-        BufferedReader br = new BufferedReader(new FileReader("Monster.csv"));
+        BufferedReader br = new BufferedReader(new FileReader("project-team-25\\Monster.csv"));
         while ((line = br.readLine()) != null) {
             if(i==0){
                 i++;
@@ -257,7 +257,7 @@ public class DataBase {
         }
         br.close();
 
-        BufferedReader br1 = new BufferedReader(new FileReader("SpellTrap.csv"));
+        BufferedReader br1 = new BufferedReader(new FileReader("project-team-25\\SpellTrap.csv"));
         while ((line = br1.readLine()) != null) {
             if(i==1){
                 i++;
