@@ -5,6 +5,10 @@ import models.User;
 import view.Responses;
 import view.UserInterface;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+
 public class ScoreBoardMenu {
     public void runScoreBoardMenu(String command){
         if (Regex.getMatcher(command, Regex.scoreBoardShow).matches()) showScoreBoard();
@@ -12,7 +16,20 @@ public class ScoreBoardMenu {
     }
 
     private void showScoreBoard(){
-        int i = 0;
+        //getting users
+        ArrayList<User> users = User.getUsers();
+        //compare users
+        Comparator<User> orderedUsers = Comparator.comparing(User::getScore).thenComparing(User::getNickName);
+        //sorting users
+        users.sort(orderedUsers);
+        //for ranking users
+        int rank=1;
+        //itrate users
+        for (User user : users) {
+            UserInterface.printResponse(rank + " " + user.toString());
+            rank++;
+        }
+        /*int i = 0;
         User[] allUsers = new User[User.getUsers().size()];
         User temp;
         for (User user: User.getUsers()) {
@@ -39,7 +56,7 @@ public class ScoreBoardMenu {
         for (int j = 0; j < User.getUsers().size(); j++) {
             System.out.println(rank + " " + allUsers[j].toString());
             if( allUsers[j].getScore() != allUsers[j+1].getScore() ) rank = j+2;
-        }
+        }*/
 
     }
 }
