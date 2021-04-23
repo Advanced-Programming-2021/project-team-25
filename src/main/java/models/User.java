@@ -9,8 +9,8 @@ import java.util.Objects;
 public class User implements Serializable {
     private static ArrayList<User> users = new ArrayList<>();
     private final String username;
-    private final String password;
-    private final String nickName;
+    private String password;
+    private String nickName;
     private int score;
     private boolean isLoggedIn;
     public Deck activeDeck;
@@ -73,6 +73,14 @@ public class User implements Serializable {
 
     public void setScore(int score) {
         this.score = score;
+    }
+
+    public void setNickName(String nickName) {
+        this.nickName = nickName;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public void setActiveDeck(Deck activeDeck) {
