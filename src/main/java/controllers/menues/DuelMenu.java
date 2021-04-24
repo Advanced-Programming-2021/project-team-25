@@ -1,5 +1,6 @@
 package controllers.menues;
 
+import com.google.inject.Singleton;
 import controllers.Regex;
 import models.User;
 import view.Responses;
@@ -10,9 +11,10 @@ import java.util.regex.Matcher;
 
 public class DuelMenu {
 
+    private static DuelMenu single_instance = null;
     private final User currUser;
 
-    public DuelMenu(User currUser){
+    private DuelMenu(User currUser){
         this.currUser=currUser;
     }
     public void runDuelMenu(String command){
@@ -29,7 +31,13 @@ public class DuelMenu {
     else if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + "has no active deck");
     else if(Objects.requireNonNull(User.getUserByUsername(duelistName)).activeDeck == null) System.out.println(duelistName + "has no active deck");
 
+    }
 
-
+    // static method to create instance of Singleton class
+    public static DuelMenu getInstance(User currUser)
+    {
+        if (single_instance == null)
+            single_instance = new DuelMenu(currUser);
+        return single_instance;
     }
 }
