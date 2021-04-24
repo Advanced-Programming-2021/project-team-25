@@ -11,7 +11,7 @@ public class Initialize {
 
     public static void init() {
         initUserList();
-        Deck.allDecks = DataBase.restoreDecks();
+        if(DataBase.restoreDecks() != null) Deck.allDecks = DataBase.restoreDecks();
         try {
             DataBase.loadCards();
         } catch (IOException e) {

@@ -18,6 +18,7 @@ public class DuelMenu {
         this.currUser=currUser;
         runDuelMenu(UserInterface.getUserInput());
     }
+
     public void runDuelMenu(String command){
         Matcher matcher;
 
