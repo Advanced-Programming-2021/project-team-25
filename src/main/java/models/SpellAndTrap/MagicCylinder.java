@@ -8,6 +8,12 @@ public class MagicCylinder extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public MagicCylinder (Object object){
+        super(((MagicCylinder)object).getName(), ((MagicCylinder)object).getCardsType(),
+                ((MagicCylinder)object).getDescription(), ((MagicCylinder)object).getPrice(),
+                ((MagicCylinder)object).getIcon(), ((MagicCylinder)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

@@ -8,6 +8,12 @@ public class TorrentialTribute extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public TorrentialTribute (Object object){
+        super(((TorrentialTribute)object).getName(), ((TorrentialTribute)object).getCardsType(),
+                ((TorrentialTribute)object).getDescription(), ((TorrentialTribute)object).getPrice(),
+                ((TorrentialTribute)object).getIcon(), ((TorrentialTribute)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

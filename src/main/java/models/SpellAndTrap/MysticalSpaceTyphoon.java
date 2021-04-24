@@ -8,6 +8,12 @@ public class MysticalSpaceTyphoon extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public MysticalSpaceTyphoon (Object object){
+        super(((MysticalSpaceTyphoon)object).getName(), ((MysticalSpaceTyphoon)object).getCardsType(),
+                ((MysticalSpaceTyphoon)object).getDescription(), ((MysticalSpaceTyphoon)object).getPrice(),
+                ((MysticalSpaceTyphoon)object).getIcon(), ((MysticalSpaceTyphoon)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

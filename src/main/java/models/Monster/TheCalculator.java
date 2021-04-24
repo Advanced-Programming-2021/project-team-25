@@ -9,6 +9,14 @@ public class TheCalculator extends Monster {
         super(name, cardType, description, price, level, attribute, monsterType, cardTypeInExel, attack, defence);
     }
 
+    public TheCalculator (Object object){
+        super(((TheCalculator)object).getName(), ((TheCalculator)object).getCardsType(),
+                ((TheCalculator)object).getDescription(), ((TheCalculator)object).getPrice(),
+                ((TheCalculator)object).getLevel(), ((TheCalculator)object).getAttribute(),
+                ((TheCalculator)object).getMonsterType(), ((TheCalculator)object).getCardTypeInExel(),
+                ((TheCalculator)object).getAttack(), ((TheCalculator)object).getDefence());
+    }
+
 //    @Override
 //    public void action() {
 //

@@ -8,6 +8,12 @@ public class SpellAbsorption extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public SpellAbsorption (Object object){
+        super(((SpellAbsorption)object).getName(), ((SpellAbsorption)object).getCardsType(),
+                ((SpellAbsorption)object).getDescription(), ((SpellAbsorption)object).getPrice(),
+                ((SpellAbsorption)object).getIcon(), ((SpellAbsorption)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

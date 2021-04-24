@@ -8,6 +8,12 @@ public class MirrorForce extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public MirrorForce (Object object){
+        super(((MirrorForce)object).getName(), ((MirrorForce)object).getCardsType(),
+                ((MirrorForce)object).getDescription(), ((MirrorForce)object).getPrice(),
+                ((MirrorForce)object).getIcon(), ((MirrorForce)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

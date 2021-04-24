@@ -8,6 +8,12 @@ public class SwordsOfRevealingLight extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public SwordsOfRevealingLight (Object object){
+        super(((SwordsOfRevealingLight)object).getName(), ((SwordsOfRevealingLight)object).getCardsType(),
+                ((SwordsOfRevealingLight)object).getDescription(), ((SwordsOfRevealingLight)object).getPrice(),
+                ((SwordsOfRevealingLight)object).getIcon(), ((SwordsOfRevealingLight)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

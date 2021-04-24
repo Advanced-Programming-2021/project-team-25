@@ -8,6 +8,12 @@ public class CallOfTheHaunted extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public CallOfTheHaunted (Object object){
+        super(((CallOfTheHaunted)object).getName(), ((CallOfTheHaunted)object).getCardsType(),
+                ((CallOfTheHaunted)object).getDescription(), ((CallOfTheHaunted)object).getPrice(),
+                ((CallOfTheHaunted)object).getIcon(), ((CallOfTheHaunted)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

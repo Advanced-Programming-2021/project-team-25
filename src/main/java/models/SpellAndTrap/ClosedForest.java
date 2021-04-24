@@ -8,6 +8,12 @@ public class ClosedForest extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public ClosedForest (Object object){
+        super(((ClosedForest)object).getName(), ((ClosedForest)object).getCardsType(),
+                ((ClosedForest)object).getDescription(), ((ClosedForest)object).getPrice(),
+                ((ClosedForest)object).getIcon(), ((ClosedForest)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

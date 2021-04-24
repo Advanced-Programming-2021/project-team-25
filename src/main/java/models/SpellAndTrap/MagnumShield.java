@@ -8,6 +8,12 @@ public class MagnumShield extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public MagnumShield (Object object){
+        super(((MagnumShield)object).getName(), ((MagnumShield)object).getCardsType(),
+                ((MagnumShield)object).getDescription(), ((MagnumShield)object).getPrice(),
+                ((MagnumShield)object).getIcon(), ((MagnumShield)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

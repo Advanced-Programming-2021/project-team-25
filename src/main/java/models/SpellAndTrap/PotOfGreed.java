@@ -8,6 +8,12 @@ public class PotOfGreed extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public PotOfGreed (Object object){
+        super(((PotOfGreed)object).getName(), ((PotOfGreed)object).getCardsType(),
+                ((PotOfGreed)object).getDescription(), ((PotOfGreed)object).getPrice(),
+                ((PotOfGreed)object).getIcon(), ((PotOfGreed)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

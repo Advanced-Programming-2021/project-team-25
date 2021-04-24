@@ -8,6 +8,12 @@ public class RingOfDefense extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public RingOfDefense (Object object){
+        super(((RingOfDefense)object).getName(), ((RingOfDefense)object).getCardsType(),
+                ((RingOfDefense)object).getDescription(), ((RingOfDefense)object).getPrice(),
+                ((RingOfDefense)object).getIcon(), ((RingOfDefense)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

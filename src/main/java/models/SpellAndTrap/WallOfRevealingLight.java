@@ -8,6 +8,12 @@ public class WallOfRevealingLight extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public WallOfRevealingLight (Object object){
+        super(((WallOfRevealingLight)object).getName(), ((WallOfRevealingLight)object).getCardsType(),
+                ((WallOfRevealingLight)object).getDescription(), ((WallOfRevealingLight)object).getPrice(),
+                ((WallOfRevealingLight)object).getIcon(), ((WallOfRevealingLight)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

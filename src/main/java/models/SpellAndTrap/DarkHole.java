@@ -8,6 +8,12 @@ public class DarkHole extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public DarkHole (Object object){
+        super(((DarkHole)object).getName(), ((DarkHole)object).getCardsType(),
+                ((DarkHole)object).getDescription(), ((DarkHole)object).getPrice(),
+                ((DarkHole)object).getIcon(), ((DarkHole)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

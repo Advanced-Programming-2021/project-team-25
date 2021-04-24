@@ -9,6 +9,14 @@ public class GateGuardian extends Monster {
         super(name, cardType, description, price, level, attribute, monsterType, cardTypeInExel, attack, defence);
     }
 
+    public GateGuardian (Object object){
+        super(((GateGuardian)object).getName(), ((GateGuardian)object).getCardsType(),
+                ((GateGuardian)object).getDescription(), ((GateGuardian)object).getPrice(),
+                ((GateGuardian)object).getLevel(), ((GateGuardian)object).getAttribute(),
+                ((GateGuardian)object).getMonsterType(), ((GateGuardian)object).getCardTypeInExel(),
+                ((GateGuardian)object).getAttack(), ((GateGuardian)object).getDefence());
+    }
+
 //    @Override
 //    public void action() {
 //

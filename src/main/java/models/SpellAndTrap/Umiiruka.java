@@ -8,6 +8,12 @@ public class Umiiruka extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public Umiiruka (Object object){
+        super(((Umiiruka)object).getName(), ((Umiiruka)object).getCardsType(),
+                ((Umiiruka)object).getDescription(), ((Umiiruka)object).getPrice(),
+                ((Umiiruka)object).getIcon(), ((Umiiruka)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

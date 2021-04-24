@@ -8,6 +8,12 @@ public class SwordOfDarkDestruction extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public SwordOfDarkDestruction (Object object){
+        super(((SwordOfDarkDestruction)object).getName(), ((SwordOfDarkDestruction)object).getCardsType(),
+                ((SwordOfDarkDestruction)object).getDescription(), ((SwordOfDarkDestruction)object).getPrice(),
+                ((SwordOfDarkDestruction)object).getIcon(), ((SwordOfDarkDestruction)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

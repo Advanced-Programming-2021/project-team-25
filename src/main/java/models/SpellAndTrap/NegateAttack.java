@@ -8,6 +8,12 @@ public class NegateAttack extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public NegateAttack (Object object){
+        super(((NegateAttack)object).getName(), ((NegateAttack)object).getCardsType(),
+                ((NegateAttack)object).getDescription(), ((NegateAttack)object).getPrice(),
+                ((NegateAttack)object).getIcon(), ((NegateAttack)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

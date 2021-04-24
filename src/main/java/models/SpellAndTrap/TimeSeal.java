@@ -8,6 +8,12 @@ public class TimeSeal extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public TimeSeal (Object object){
+        super(((TimeSeal)object).getName(), ((TimeSeal)object).getCardsType(),
+                ((TimeSeal)object).getDescription(), ((TimeSeal)object).getPrice(),
+                ((TimeSeal)object).getIcon(), ((TimeSeal)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

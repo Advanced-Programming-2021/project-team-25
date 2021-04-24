@@ -9,6 +9,14 @@ public class BeastKingBarbaros extends Monster {
         super(name, cardType, description, price, level, attribute, monsterType, cardTypeInExel, attack, defence);
     }
 
+    public BeastKingBarbaros (Object object){
+        super(((BeastKingBarbaros)object).getName(), ((BeastKingBarbaros)object).getCardsType(),
+                ((BeastKingBarbaros)object).getDescription(), ((BeastKingBarbaros)object).getPrice(),
+                ((BeastKingBarbaros)object).getLevel(), ((BeastKingBarbaros)object).getAttribute(),
+                ((BeastKingBarbaros)object).getMonsterType(), ((BeastKingBarbaros)object).getCardTypeInExel(),
+                ((BeastKingBarbaros)object).getAttack(), ((BeastKingBarbaros)object).getDefence());
+    }
+
 //    @Override
 //    public void action() {
 //

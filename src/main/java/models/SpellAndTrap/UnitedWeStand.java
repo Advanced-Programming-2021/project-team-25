@@ -8,6 +8,12 @@ public class UnitedWeStand extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public UnitedWeStand (Object object){
+        super(((UnitedWeStand)object).getName(), ((UnitedWeStand)object).getCardsType(),
+                ((UnitedWeStand)object).getDescription(), ((UnitedWeStand)object).getPrice(),
+                ((UnitedWeStand)object).getIcon(), ((UnitedWeStand)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

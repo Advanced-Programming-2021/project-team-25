@@ -8,6 +8,12 @@ public class ChangeOfHeart extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public ChangeOfHeart (Object object){
+        super(((ChangeOfHeart)object).getName(), ((ChangeOfHeart)object).getCardsType(),
+                ((ChangeOfHeart)object).getDescription(), ((ChangeOfHeart)object).getPrice(),
+                ((ChangeOfHeart)object).getIcon(), ((ChangeOfHeart)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

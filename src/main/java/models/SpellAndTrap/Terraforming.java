@@ -8,6 +8,12 @@ public class Terraforming extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public Terraforming (Object object){
+        super(((Terraforming)object).getName(), ((Terraforming)object).getCardsType(),
+                ((Terraforming)object).getDescription(), ((Terraforming)object).getPrice(),
+                ((Terraforming)object).getIcon(), ((Terraforming)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

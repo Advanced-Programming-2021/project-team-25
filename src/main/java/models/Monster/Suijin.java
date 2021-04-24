@@ -9,6 +9,14 @@ public class Suijin extends Monster {
         super(name, cardType, description, price, level, attribute, monsterType, cardTypeInExel, attack, defence);
     }
 
+    public Suijin (Object object){
+        super(((Suijin)object).getName(), ((Suijin)object).getCardsType(),
+                ((Suijin)object).getDescription(), ((Suijin)object).getPrice(),
+                ((Suijin)object).getLevel(), ((Suijin)object).getAttribute(),
+                ((Suijin)object).getMonsterType(), ((Suijin)object).getCardTypeInExel(),
+                ((Suijin)object).getAttack(), ((Suijin)object).getDefence());
+    }
+
 //    @Override
 //    public void action() {
 //

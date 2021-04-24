@@ -9,6 +9,14 @@ public class HeraldOfCreation extends Monster {
         super(name, cardType, description, price, level, attribute, monsterType, cardTypeInExel, attack, defence);
     }
 
+    public HeraldOfCreation (Object object){
+        super(((HeraldOfCreation)object).getName(), ((HeraldOfCreation)object).getCardsType(),
+                ((HeraldOfCreation)object).getDescription(), ((HeraldOfCreation)object).getPrice(),
+                ((HeraldOfCreation)object).getLevel(), ((HeraldOfCreation)object).getAttribute(),
+                ((HeraldOfCreation)object).getMonsterType(), ((HeraldOfCreation)object).getCardTypeInExel(),
+                ((HeraldOfCreation)object).getAttack(), ((HeraldOfCreation)object).getDefence());
+    }
+
 //    @Override
 //    public void action() {
 //

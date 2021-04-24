@@ -8,6 +8,12 @@ public class Forest extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public Forest (Object object){
+        super(((Forest)object).getName(), ((Forest)object).getCardsType(),
+                ((Forest)object).getDescription(), ((Forest)object).getPrice(),
+                ((Forest)object).getIcon(), ((Forest)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

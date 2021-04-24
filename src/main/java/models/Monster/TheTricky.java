@@ -9,6 +9,14 @@ public class TheTricky extends Monster {
         super(name, cardType, description, price, level, attribute, monsterType, cardTypeInExel, attack, defence);
     }
 
+    public TheTricky (Object object){
+        super(((TheTricky)object).getName(), ((TheTricky)object).getCardsType(),
+                ((TheTricky)object).getDescription(), ((TheTricky)object).getPrice(),
+                ((TheTricky)object).getLevel(), ((TheTricky)object).getAttribute(),
+                ((TheTricky)object).getMonsterType(), ((TheTricky)object).getCardTypeInExel(),
+                ((TheTricky)object).getAttack(), ((TheTricky)object).getDefence());
+    }
+
 //    @Override
 //    public void action() {
 //

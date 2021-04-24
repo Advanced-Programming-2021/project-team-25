@@ -8,6 +8,12 @@ public class TwinTwisters extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public TwinTwisters (Object object){
+        super(((TwinTwisters)object).getName(), ((TwinTwisters)object).getCardsType(),
+                ((TwinTwisters)object).getDescription(), ((TwinTwisters)object).getPrice(),
+                ((TwinTwisters)object).getIcon(), ((TwinTwisters)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

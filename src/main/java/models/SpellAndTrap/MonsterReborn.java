@@ -8,6 +8,12 @@ public class MonsterReborn extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public MonsterReborn (Object object){
+        super(((MonsterReborn)object).getName(), ((MonsterReborn)object).getCardsType(),
+                ((MonsterReborn)object).getDescription(), ((MonsterReborn)object).getPrice(),
+                ((MonsterReborn)object).getIcon(), ((MonsterReborn)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

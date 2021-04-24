@@ -8,6 +8,12 @@ public class AdvancedRitualArt extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public AdvancedRitualArt (Object object){
+        super(((AdvancedRitualArt)object).getName(), ((AdvancedRitualArt)object).getCardsType(),
+                ((AdvancedRitualArt)object).getDescription(), ((AdvancedRitualArt)object).getPrice(),
+                ((AdvancedRitualArt)object).getIcon(), ((AdvancedRitualArt)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

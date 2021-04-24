@@ -561,6 +561,14 @@ public class DataBase {
                             Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
                     ));
         }
+        else if (matcher.group(1).equals("Advanced Ritual Art")){
+            temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
+                    new AdvancedRitualArt(
+                            matcher.group(1).replace("%", ",").replace("\"", ""),
+                            Type.SPELL, matcher.group(4).replace("%", ",").replace("\"", ""),
+                            Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
+                    ));
+        }
     }
 }
 

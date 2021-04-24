@@ -8,6 +8,12 @@ public class SolemnWarning extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public SolemnWarning (Object object){
+        super(((SolemnWarning)object).getName(), ((SolemnWarning)object).getCardsType(),
+                ((SolemnWarning)object).getDescription(), ((SolemnWarning)object).getPrice(),
+                ((SolemnWarning)object).getIcon(), ((SolemnWarning)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

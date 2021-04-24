@@ -9,6 +9,14 @@ public class YomiShip extends Monster {
         super(name, cardType, description, price, level, attribute, monsterType, cardTypeInExel, attack, defence);
     }
 
+    public YomiShip (Object object){
+        super(((YomiShip)object).getName(), ((YomiShip)object).getCardsType(),
+                ((YomiShip)object).getDescription(), ((YomiShip)object).getPrice(),
+                ((YomiShip)object).getLevel(), ((YomiShip)object).getAttribute(),
+                ((YomiShip)object).getMonsterType(), ((YomiShip)object).getCardTypeInExel(),
+                ((YomiShip)object).getAttack(), ((YomiShip)object).getDefence());
+    }
+
 //    @Override
 //    public void action() {
 //

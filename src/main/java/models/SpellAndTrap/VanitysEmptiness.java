@@ -8,6 +8,12 @@ public class VanitysEmptiness extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public VanitysEmptiness (Object object){
+        super(((VanitysEmptiness)object).getName(), ((VanitysEmptiness)object).getCardsType(),
+                ((VanitysEmptiness)object).getDescription(), ((VanitysEmptiness)object).getPrice(),
+                ((VanitysEmptiness)object).getIcon(), ((VanitysEmptiness)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //

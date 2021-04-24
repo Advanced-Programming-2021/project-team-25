@@ -9,6 +9,14 @@ public class TerratigerTheEmpoweredWarrior extends Monster {
         super(name, cardType, description, price, level, attribute, monsterType, cardTypeInExel, attack, defence);
     }
 
+    public TerratigerTheEmpoweredWarrior (Object object){
+        super(((TerratigerTheEmpoweredWarrior)object).getName(), ((TerratigerTheEmpoweredWarrior)object).getCardsType(),
+                ((TerratigerTheEmpoweredWarrior)object).getDescription(), ((TerratigerTheEmpoweredWarrior)object).getPrice(),
+                ((TerratigerTheEmpoweredWarrior)object).getLevel(), ((TerratigerTheEmpoweredWarrior)object).getAttribute(),
+                ((TerratigerTheEmpoweredWarrior)object).getMonsterType(), ((TerratigerTheEmpoweredWarrior)object).getCardTypeInExel(),
+                ((TerratigerTheEmpoweredWarrior)object).getAttack(), ((TerratigerTheEmpoweredWarrior)object).getDefence());
+    }
+
 //    @Override
 //    public void action() {
 //

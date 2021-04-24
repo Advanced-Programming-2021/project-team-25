@@ -8,6 +8,12 @@ public class BlackPendant extends SpellAndTrap {
         super(name, cardType, description, price, icon, status);
     }
 
+    public BlackPendant (Object object){
+        super(((BlackPendant)object).getName(), ((BlackPendant)object).getCardsType(),
+                ((BlackPendant)object).getDescription(), ((BlackPendant)object).getPrice(),
+                ((BlackPendant)object).getIcon(), ((BlackPendant)object).getStatus());
+    }
+
 //    @Override
 //    public void action() {
 //
