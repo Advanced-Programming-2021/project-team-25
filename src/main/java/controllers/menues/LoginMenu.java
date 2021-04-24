@@ -1,5 +1,6 @@
 package controllers.menues;
 
+import controllers.Database.DataBase;
 import controllers.Menu;
 import controllers.ProgramController;
 import controllers.Regex;
@@ -13,19 +14,24 @@ import java.util.regex.Pattern;
 
 public class LoginMenu {
 
-    public void runLoginMenu(String command){
+    public static void runLoginMenu(String command){
 
-        if (command.startsWith("user login")) loginUser(command);
-        else if (command.startsWith("user create"))
-            createNewUser(Regex.getMatcher(command,Regex.userCreate));
-        else if(command.startsWith("menu enter"))
-            UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
-        else if(command.equals("menu show-current"))
-            UserInterface.printResponse("Login Menu");
-        else UserInterface.printResponse(Responses.INVALID_COMMAND);
+        while(!command.equals("menu exit"))
+        {
+            if (command.startsWith("user login")) loginUser(command);
+            else if (command.startsWith("user create"))
+                createNewUser(Regex.getMatcher(command,Regex.userCreate));
+            else if(command.startsWith("menu enter"))
+                UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
+            else if(command.equals("menu show-current"))
+                UserInterface.printResponse("Login Menu");
+            else UserInterface.printResponse(Responses.INVALID_COMMAND);
+            command = UserInterface.getUserInput();
+        }
+
     }
 
-    private void createNewUser(Matcher matcher){
+    private static void createNewUser(Matcher matcher){
         if(matcher.find()) {
             String username = matcher.group("username");
             String password = matcher.group("password");
@@ -50,7 +56,7 @@ public class LoginMenu {
             UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
-    private void loginUser(String command){
+    private static void loginUser(String command){
         String username;
         String password;
         Matcher matcher = Pattern.compile(Regex.userLogin).matcher(command);
@@ -83,11 +89,11 @@ public class LoginMenu {
             UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
-    private boolean isExistUsername(String username){
+    private static boolean isExistUsername(String username){
         return !Objects.isNull(User.getUserByUsername(username));
     }
 
-    private boolean isExistNickname(String nickname){
+    private static boolean isExistNickname(String nickname){
         return !Objects.isNull(User.getUserByNickName(nickname));
     }
 }
