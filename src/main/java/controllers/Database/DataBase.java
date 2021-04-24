@@ -52,11 +52,12 @@ public class DataBase {
 
     static public void storeDecks(){
         try {
-            File myObjDeck = new File("allDecks.txt");
-
-            FileWriter myWriterDeck = new FileWriter(myObjDeck);
-            myWriterDeck.write(new Gson().toJson(allDecks));
-            myWriterDeck.close();
+            ArrayList<Deck> decks = Deck.getAllDecks();
+            FileOutputStream fileOut = new FileOutputStream("decks.list", false);
+            ObjectOutputStream oos = new ObjectOutputStream(fileOut);
+            oos.writeObject(decks);
+            oos.close();
+            fileOut.flush();
         }
         catch (IOException e) {
             e.printStackTrace();
