@@ -16,7 +16,7 @@ public class MainMenu {
         this.currUser=currUser;
         String command = UserInterface.getUserInput();
         while(!command.equals("menu exit") && !isUserLoggedOut){
-            if(command.startsWith("Menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),command,currUser);
+            if(command.startsWith("Menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),currUser);
             else if(command.equals("user logout")) logoutUser();
             else if(command.equals("scoreboard show")) ScoreBoardMenu.showScoreBoard();
             else if(command.equals("menu show-current")) UserInterface.printResponse("Main Menu");
@@ -25,7 +25,7 @@ public class MainMenu {
             if(!isUserLoggedOut) command = UserInterface.getUserInput();
         }
     }
-    static void changeMenu(Matcher matcher, String command, User currUser){
+    static void changeMenu(Matcher matcher, User currUser){
         if(matcher.find()) {
             switch (matcher.group(1)) {
                 case "Duel" :
