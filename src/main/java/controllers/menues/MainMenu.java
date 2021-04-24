@@ -30,17 +30,15 @@ public class MainMenu {
             switch (matcher.group(1)) {
                 case "Duel" :
                     ProgramController.currentMenu = Menu.DUEL_MENU;
-                    new DuelMenu(currUser).runDuelMenu(command);
+                    DuelMenu.getInstance(currUser);
                     break;
                 case "Shop" :
                     ProgramController.currentMenu = Menu.SHOP_MENU;
+                    /*run your menu by function*/
                     break;
                 case "Deck" :
                     ProgramController.currentMenu = Menu.DECK_MENU;
-                    new DeckMenu(currUser).runDeckMenu(command);
-                    break;
-                case "ScoreBoard" :
-                    ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
+                    /*run your menu by function*/
                     break;
                 case "Profile" :
                     ProgramController.currentMenu = Menu.PROFILE_MENU;
