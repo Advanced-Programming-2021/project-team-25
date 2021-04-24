@@ -14,7 +14,7 @@ public class User implements Serializable {
     private int score;
     private boolean isLoggedIn;
     public Deck activeDeck;
-    public ArrayList<Card> cardsBought = new ArrayList<>();
+    public ArrayList<String> cardsBought = new ArrayList<>();
     public int money = 100000;
 
     public User(String username , String password , String nickname){
@@ -87,7 +87,7 @@ public class User implements Serializable {
         this.activeDeck = activeDeck;
     }
 
-    public void setCardsBought(ArrayList<Card> cardsBought) {
+    public void setCardsBought(ArrayList<String> cardsBought) {
         this.cardsBought = cardsBought;
     }
 
@@ -95,7 +95,7 @@ public class User implements Serializable {
         this.money = money;
     }
 
-    public ArrayList<Card> getCardsBought() {
+    public ArrayList<String> getCardsBought() {
         return cardsBought;
     }
 
@@ -110,6 +110,7 @@ public class User implements Serializable {
     public boolean isLoggedIn() {
         return isLoggedIn;
     }
+
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn= isLoggedIn;
     }
