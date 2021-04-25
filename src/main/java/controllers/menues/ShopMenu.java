@@ -13,11 +13,15 @@ import view.Responses;
 import view.UserInterface;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-public class ShopMenu {
+import static controllers.ProgramController.currentMenu;
 
+
+public class ShopMenu {
     private final User currUser;
     private static ShopMenu singleToneClass = null;
 
@@ -33,19 +37,14 @@ public class ShopMenu {
     public void runShopMenu(){
         Matcher matcher;
 
-        while (true) {
+        while (currentMenu == Menu.SHOP_MENU) {
             String command = UserInterface.getUserInput();
             if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.shopBuy)).matches()) buyCard(matcher);
             else if (Regex.getMatcher(command, Regex.shopShowAll).matches()) showAllCards();
-            else if (Regex.getMatcher(command, Regex.menuShowCurrent).matches())
-                UserInterface.printResponse("shop menu");
-            else if (command.startsWith("menu enter"))
-                UserInterface.printResponse("menu navigation is not possible");
-            else if (command.equals("menu exit")){
-                ProgramController.currentMenu = Menu.MAIN_MENU;
-                break;
-            }
+            else if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
+            else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
+            else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
         }
     }
@@ -96,18 +95,11 @@ public class ShopMenu {
             allCards.add(key);
         }
 
-        for (int i = 0; i < allCards.size(); ++i){
-            for (int j = 0; j < allCards.size(); ++j){
-                if (allCards.get(i).compareTo(allCards.get(j)) > 0){
-                    String temp = allCards.get(i);
-                    allCards.set(i, allCards.get(j));
-                    allCards.set(j, temp);
-                }
-            }
-        }
+        Collections.sort(allCards);
 
-        for (int i = 0; i<allCards.size(); ++i){
-            UserInterface.printResponse(allCards.get(i) + ":" + Card.allCards.get(allCards.get(i)).getPrice());
+
+        for (String allCard : allCards) {
+            UserInterface.printResponse(allCard + ":" + Card.allCards.get(allCard).getPrice());
         }
     }
 
