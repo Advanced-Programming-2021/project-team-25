@@ -39,7 +39,7 @@ public class MainMenu {
                     break;
                 case "Deck" :
                     ProgramController.currentMenu = Menu.DECK_MENU;
-                    new DeckMenu(currUser).runDeckMenu();
+                    DeckMenu.getInstance(currUser).runDeckMenu();
                     break;
                 case "Profile" :
                     ProgramController.currentMenu = Menu.PROFILE_MENU;

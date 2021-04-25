@@ -29,4 +29,5 @@ public class Initialize {
         File tmpDir = new File(DataBase.savedDeckName);
         if(tmpDir.exists() && DataBase.restoreDecks() != null) Deck.allDecks = DataBase.restoreDecks();
     }
+
 }

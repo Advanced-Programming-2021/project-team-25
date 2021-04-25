@@ -25,9 +25,15 @@ import static models.Deck.allDecks;
 public class DeckMenu {
 
     private final User currUser;
+    private static DeckMenu singleToneClass = null;
 
     public DeckMenu(User currUser){
         this.currUser=currUser;
+    }
+
+    public static DeckMenu getInstance (User currUser){
+        if (singleToneClass == null) singleToneClass = new DeckMenu(currUser);
+        return singleToneClass;
     }
 
     public void runDeckMenu(){
@@ -50,8 +56,8 @@ public class DeckMenu {
             else if ((matcher = Regex.getMatcher(command, Regex.deckShowDeckName)).matches()) showDeck(matcher);
             else if (Regex.getMatcher(command, Regex.deckShowCards).matches()) deckShowCards();
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
-            //DataBase.storeDecks();
 
+            DataBase.storeDecks(allDecks);
         }
     }
 
