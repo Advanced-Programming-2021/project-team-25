@@ -10,25 +10,23 @@ import java.io.IOException;
 public class Initialize {
 
     public static void init() {
-        //users
         initUserList();
-
-        //decks
-        //if(DataBase.restoreDecks() != null) Deck.allDecks = DataBase.restoreDecks();
-
-        //cards
+        initDeckList();
         try {
             DataBase.loadCards();
         } catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     public static void initUserList(){
-        File tmpDir = new File("savedList.list");
+        File tmpDir = new File(DataBase.savedArrayListName);
         if(tmpDir.exists()) User.setUsers(DataBase.loadTheList());
         else new User("admin","admin","Game");
     }
 
+    public static void initDeckList(){
+        File tmpDir = new File(DataBase.savedDeckName);
+        if(tmpDir.exists() && DataBase.restoreDecks() != null) Deck.allDecks = DataBase.restoreDecks();
+    }
 }

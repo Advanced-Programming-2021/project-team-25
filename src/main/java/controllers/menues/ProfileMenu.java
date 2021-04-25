@@ -15,11 +15,15 @@ public class ProfileMenu {
     public static void runProfileMenu(User user){
     currUser=user;
     String command = UserInterface.getUserInput();
-        while(!command.equals("menu exit")){
+        while(true){
             if(command.startsWith("Menu enter")) MainMenu.changeMenu(Regex.getMatcher(command, Regex.menuEnter),currUser);
             else if(command.startsWith("profile change --nickname")) changeNickname(Regex.getMatcher(command,Regex.changeNickname));
             else if(command.equals("profile change --password")) changPass(Regex.getMatcher(command,Regex.changePassword));
             else if(command.equals("menu show-current")) UserInterface.printResponse("Main Menu");
+            else if (command.equals("menu exit")){
+                ProgramController.currentMenu = Menu.MAIN_MENU;
+                break;
+            }
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
         }
 
