@@ -16,7 +16,7 @@ public class LoginMenu {
 
     public static void runLoginMenu(String command){
 
-        while(!command.equals("menu exit"))
+        while(true)
         {
             if (command.startsWith("user login")) loginUser(command);
             else if (command.startsWith("user create"))
@@ -25,6 +25,10 @@ public class LoginMenu {
                 UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
             else if(command.equals("menu show-current"))
                 UserInterface.printResponse("Login Menu");
+            else if (command.equals("menu exit")){
+                ProgramController.currentMenu = Menu.MAIN_MENU;
+                break;
+            }
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
             command = UserInterface.getUserInput();
         }
