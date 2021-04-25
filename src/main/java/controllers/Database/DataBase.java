@@ -22,6 +22,7 @@ import static models.Deck.allDecks;
 public class DataBase {
 
     public static final String savedArrayListName = "savedList.list";
+    public static final String savedDeckName = "Decks.list";
 
     public static void saveTheUserList(ArrayList<User> users) {
         try {
@@ -50,23 +51,30 @@ public class DataBase {
         return null;
     }
 
-    static public void storeDecks(){
+    static public void storeDecks(ArrayList<Deck> decks){
         try {
-            File myObjDeck = new File("allDecks.txt");
-
-            FileWriter myWriterDeck = new FileWriter(myObjDeck);
-            myWriterDeck.write(new Gson().toJson(allDecks));
-            myWriterDeck.close();
-        }
-        catch (IOException e) {
+            FileOutputStream fileOut = new FileOutputStream(savedDeckName, false);
+            ObjectOutputStream oos = new ObjectOutputStream(fileOut);
+            oos.writeObject(decks);
+            oos.close();
+            fileOut.flush();
+        } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     static public ArrayList<Deck> restoreDecks(){
-        File myObj = new File("allDecks.txt");
-        if(myObj.exists())
-            return new Gson().fromJson(getFileAsString(myObj), new TypeToken<ArrayList<Deck>>() {}.getType());
+        try {
+            FileInputStream fin = new FileInputStream(savedArrayListName);
+            ObjectInputStream ois = new ObjectInputStream(fin);
+
+            ArrayList<Deck> myClassObj = (ArrayList<Deck>) ois.readObject();
+            ois.close();
+            System.out.println("Loaded Data of Decks from file");
+            return myClassObj;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
