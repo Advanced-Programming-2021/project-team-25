@@ -2,7 +2,9 @@ package models.Monster;
 
 import models.CardStufs.Type;
 
-public class HeraldOfCreation extends Monster {
+import java.io.Serializable;
+
+public class HeraldOfCreation extends Monster implements Serializable {
 
     public HeraldOfCreation (String name, Type cardType, String description, int price, int level, String attribute,
                               String monsterType, String cardTypeInExel, int attack, int defence){

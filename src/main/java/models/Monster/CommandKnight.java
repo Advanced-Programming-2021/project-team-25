@@ -2,7 +2,9 @@ package models.Monster;
 
 import models.CardStufs.Type;
 
-public class CommandKnight extends Monster {
+import java.io.Serializable;
+
+public class CommandKnight extends Monster implements Serializable {
 
     public CommandKnight (String name, Type cardType, String description, int price, int level, String attribute,
                               String monsterType, String cardTypeInExel, int attack, int defence){

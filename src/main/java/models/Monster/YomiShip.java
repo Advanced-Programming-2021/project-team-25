@@ -2,7 +2,9 @@ package models.Monster;
 
 import models.CardStufs.Type;
 
-public class YomiShip extends Monster {
+import java.io.Serializable;
+
+public class YomiShip extends Monster implements Serializable {
 
     public YomiShip (String name, Type cardType, String description, int price, int level, String attribute,
                       String monsterType, String cardTypeInExel, int attack, int defence){

@@ -2,7 +2,9 @@ package models.Monster;
 
 import models.CardStufs.Type;
 
-public class TerratigerTheEmpoweredWarrior extends Monster {
+import java.io.Serializable;
+
+public class TerratigerTheEmpoweredWarrior extends Monster implements Serializable {
 
     public TerratigerTheEmpoweredWarrior (String name, Type cardType, String description, int price, int level, String attribute,
                               String monsterType, String cardTypeInExel, int attack, int defence){
