@@ -105,7 +105,7 @@ public class DeckMenu {
         String cardName = matcher.group(1) ,deckName = matcher.group(2);
 
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
-        //else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
+        else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
         else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() == 60) UserInterface.printResponse("main deck is full");
         else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards with name " + cardName + " in deck " + deckName);
         else{
