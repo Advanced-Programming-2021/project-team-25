@@ -50,7 +50,7 @@ public class DeckMenu {
             else if ((matcher = Regex.getMatcher(command, Regex.deckShowDeckName)).matches()) showDeck(matcher);
             else if (Regex.getMatcher(command, Regex.deckShowCards).matches()) deckShowCards();
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
-            DataBase.storeDecks();
+            //DataBase.storeDecks();
 
         }
     }
@@ -97,10 +97,10 @@ public class DeckMenu {
     private void addCard(Matcher matcher){
         String cardName = matcher.group(1) ,deckName = matcher.group(2);
 
-        if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with "+ deckName + " does not exists");
-        else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with " + cardName + " does not exists");
+        if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
+        //else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
         else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() == 60) UserInterface.printResponse("main deck is full");
-        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards whit name " + cardName + "in deck " + deckName);
+        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards with name " + cardName + " in deck " + deckName);
         else{
             Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.add(Cards(cardName));
             UserInterface.printResponse("card added to deck successfully");
@@ -113,8 +113,12 @@ public class DeckMenu {
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with " + deckName + "does not exists");
         else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in main deck");
         else{
-            Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.remove(Card.allCards.get(cardName));
-            UserInterface.printResponse("card removed from deck successfully");
+            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck)
+                if(card.getName().equals(cardName)){
+                    Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.remove(card);
+                    UserInterface.printResponse("card removed from deck successfully");
+                    return;
+                }
         }
     }
 

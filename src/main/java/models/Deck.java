@@ -15,8 +15,7 @@ public class Deck {
     public Deck(String deckName , String ownerName){
         this.deckName = deckName;
         this.ownerName = ownerName;
-        //if(allDecks != null)
-            allDecks.add(this);
+        allDecks.add(this);
     }
 
     public String getDeckName() {

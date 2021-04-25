@@ -21,8 +21,8 @@ import static models.Deck.allDecks;
 
 public class DataBase {
 
+    //lists
     public static final String savedArrayListName = "savedList.list";
-
     public static void saveTheUserList(ArrayList<User> users) {
         try {
             FileOutputStream fileOut = new FileOutputStream(savedArrayListName, false);
@@ -34,7 +34,6 @@ public class DataBase {
             e.printStackTrace();
         }
     }
-
     public static ArrayList<User> loadTheList() {
         try {
             FileInputStream fin = new FileInputStream(savedArrayListName);
@@ -50,36 +49,43 @@ public class DataBase {
         return null;
     }
 
-    static public void storeDecks(){
-        try {
-            File myObjDeck = new File("allDecks.txt");
+    //decks
+//    static public void storeDecks(){
+//        try {
+////            File myObjDeck = new File("allDecks.txt");
+////
+////            FileWriter myWriterDeck = new FileWriter(myObjDeck);
+////            myWriterDeck.write(new Gson().toJson(allDecks));
+////            myWriterDeck.close();
+//
+//            ArrayList<Deck> decks = allDecks;
+//            FileOutputStream fileOut = new FileOutputStream("decks.list", false);
+//            ObjectOutputStream oos = new ObjectOutputStream(fileOut);
+//            oos.writeObject(decks);
+//            oos.close();
+//            fileOut.flush();
+//        }
+//        catch (IOException e) {
+//            e.printStackTrace();
+//        }
+//    }
+//    static public ArrayList<Deck> restoreDecks(){
+//        File myObj = new File("allDecks.txt");
+//        if(myObj.exists())
+//            return new Gson().fromJson(getFileAsString(myObj), new TypeToken<ArrayList<Deck>>() {}.getType());
+//        return null;
+//    }
+//    private static String getFileAsString(File myObj) {
+//        Scanner myReader = null;
+//        try {
+//            myReader = new Scanner(myObj);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        return myReader.nextLine();
+//    }
 
-            FileWriter myWriterDeck = new FileWriter(myObjDeck);
-            myWriterDeck.write(new Gson().toJson(allDecks));
-            myWriterDeck.close();
-        }
-        catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    static public ArrayList<Deck> restoreDecks(){
-        File myObj = new File("allDecks.txt");
-        if(myObj.exists())
-            return new Gson().fromJson(getFileAsString(myObj), new TypeToken<ArrayList<Deck>>() {}.getType());
-        return null;
-    }
-
-    private static String getFileAsString(File myObj) {
-        Scanner myReader = null;
-        try {
-            myReader = new Scanner(myObj);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return myReader.nextLine();
-    }
-
+    //cards
     public static void loadCards() throws IOException {
         HashMap<String,Card> temp = new HashMap<>();
         String line;
@@ -113,7 +119,6 @@ public class DataBase {
         br1.close();
         Card.allCards=temp;
     }
-
     private static void Monsters(HashMap<String, Card> temp, Matcher matcher) {
         if (matcher.group(1).equals("Yomi Ship")){
             temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
@@ -276,7 +281,6 @@ public class DataBase {
                     ));
         }
     }
-
     private static void Trap(HashMap<String, Card> temp, Matcher matcher) {
         if (matcher.group(1).equals("Trap Hole")){
             temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
@@ -383,7 +387,6 @@ public class DataBase {
                     ));
         }
     }
-
     private static void Spell(HashMap<String, Card> temp, Matcher matcher) {
         if (matcher.group(1).equals("Monster Reborn")){
             temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),

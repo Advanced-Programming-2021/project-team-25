@@ -10,13 +10,19 @@ import java.io.IOException;
 public class Initialize {
 
     public static void init() {
+        //users
         initUserList();
-        if(DataBase.restoreDecks() != null) Deck.allDecks = DataBase.restoreDecks();
+
+        //decks
+        //if(DataBase.restoreDecks() != null) Deck.allDecks = DataBase.restoreDecks();
+
+        //cards
         try {
             DataBase.loadCards();
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 
     public static void initUserList(){

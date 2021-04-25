@@ -1,6 +1,6 @@
 package controllers.menues;
 
-import com.google.inject.Singleton;
+//import com.google.inject.Singleton;
 import controllers.Regex;
 import models.User;
 import view.Responses;

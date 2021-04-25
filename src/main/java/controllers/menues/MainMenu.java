@@ -3,6 +3,7 @@ package controllers.menues;
 import controllers.Menu;
 import controllers.ProgramController;
 import controllers.Regex;
+import models.Deck;
 import models.User;
 import view.Responses;
 import view.UserInterface;
@@ -16,7 +17,7 @@ public class MainMenu {
         this.currUser=currUser;
         String command = UserInterface.getUserInput();
         while(!command.equals("menu exit") && !isUserLoggedOut){
-            if(command.startsWith("Menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),currUser);
+            if(command.startsWith("menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),currUser);
             else if(command.equals("user logout")) logoutUser();
             else if(command.equals("scoreboard show")) ScoreBoardMenu.showScoreBoard();
             else if(command.equals("menu show-current")) UserInterface.printResponse("Main Menu");
@@ -38,7 +39,7 @@ public class MainMenu {
                     break;
                 case "Deck" :
                     ProgramController.currentMenu = Menu.DECK_MENU;
-                    /*run your menu by function*/
+                    new DeckMenu(currUser).runDeckMenu();
                     break;
                 case "Profile" :
                     ProgramController.currentMenu = Menu.PROFILE_MENU;
