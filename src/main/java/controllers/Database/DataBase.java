@@ -77,7 +77,7 @@ public class DataBase {
         HashMap<String,Card> temp = new HashMap<>();
         String line;
         int i = 0;
-        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\noroo\\IdeaProjects\\ap\\project-team-25\\Monster.csv"));
+        BufferedReader br = new BufferedReader(new FileReader("Monster.csv"));
         while ((line = br.readLine()) != null) {
             if(i==0){
                 i++;
@@ -89,7 +89,7 @@ public class DataBase {
         }
         br.close();
 
-        BufferedReader br1 = new BufferedReader(new FileReader("C:\\Users\\noroo\\IdeaProjects\\ap\\project-team-25\\SpellTrap.csv"));
+        BufferedReader br1 = new BufferedReader(new FileReader("SpellTrap.csv"));
         while ((line = br1.readLine()) != null) {
             if(i==1){
                 i++;
