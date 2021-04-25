@@ -65,7 +65,7 @@ public class DataBase {
 
     static public ArrayList<Deck> restoreDecks(){
         try {
-            FileInputStream fin = new FileInputStream(savedArrayListName);
+            FileInputStream fin = new FileInputStream(savedDeckName);
             ObjectInputStream ois = new ObjectInputStream(fin);
 
             ArrayList<Deck> myClassObj = (ArrayList<Deck>) ois.readObject();
