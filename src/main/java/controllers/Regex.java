@@ -18,9 +18,12 @@ public class Regex {
     public static String deckCreate = "^deck create (.+)$";
     public static String deckDelete = "^deck delete (.+)$";
     public static String deckSetActive = "^deck set-activate (.+)$";
+    public static String deckAddCardToSide = "^deck add-card --card (.+) --deck (.+) --side$";
     public static String deckAddCard = "^deck add-card --card (.+) --deck (.+)$";
+    public static String deckRemoveCardFromSide = "^deck rm-card --card (.+) --deck (.+) --side$";
     public static String deckRemoveCard = "^deck rm-card --card (.+) --deck (.+)$";
     public static String deckShowAll = "^deck show --all$";
+    public static String deckShowDeckNameSide = "^deck show --deck-name (.+)$";
     public static String deckShowDeckName = "^deck show --deck-name (.+)$";
     public static String deckShowCards = "^deck show --cards$";
     public static String shopBuy = "^shop buy (\\S+)$";

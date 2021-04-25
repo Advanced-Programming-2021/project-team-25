@@ -7,7 +7,6 @@ import models.Deck;
 import models.SpellAndTrap.*;
 import models.User;
 
-
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -354,14 +353,6 @@ public class DataBase {
         else if (matcher.group(1).equals("Vanity's Emptiness")){
             temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
                     new VanitysEmptiness(
-                            matcher.group(1).replace("%", ",").replace("\"", ""),
-                            Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
-                            Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
-                    ));
-        }
-        else if (matcher.group(1).equals("Wall of Revealing Light")){
-            temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
-                    new WallOfRevealingLight(
                             matcher.group(1).replace("%", ",").replace("\"", ""),
                             Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
                             Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
