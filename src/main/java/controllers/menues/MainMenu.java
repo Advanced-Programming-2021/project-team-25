@@ -49,6 +49,7 @@ public class MainMenu {
         }
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
+
     private void logoutUser(){
         ProgramController.setLoggedOutUsers();
         currUser.setIsLoggedIn(false);

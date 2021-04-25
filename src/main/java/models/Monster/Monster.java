@@ -1,6 +1,5 @@
 package models.Monster;
 
-
 import models.Card;
 import models.CardStufs.Type;
 

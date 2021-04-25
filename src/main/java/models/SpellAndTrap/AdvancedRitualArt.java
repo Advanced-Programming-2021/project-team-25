@@ -2,7 +2,9 @@ package models.SpellAndTrap;
 
 import models.CardStufs.Type;
 
-public class AdvancedRitualArt extends SpellAndTrap {
+import java.io.Serializable;
+
+public class AdvancedRitualArt extends SpellAndTrap implements Serializable {
 
     public AdvancedRitualArt (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);

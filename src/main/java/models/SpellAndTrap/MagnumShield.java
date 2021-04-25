@@ -2,7 +2,9 @@ package models.SpellAndTrap;
 
 import models.CardStufs.Type;
 
-public class MagnumShield extends SpellAndTrap {
+import java.io.Serializable;
+
+public class MagnumShield extends SpellAndTrap  implements Serializable {
 
     public MagnumShield (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);

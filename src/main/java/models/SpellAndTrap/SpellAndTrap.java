@@ -3,7 +3,9 @@ package models.SpellAndTrap;
 import models.Card;
 import models.CardStufs.Type;
 
-public class SpellAndTrap extends Card {
+import java.io.Serializable;
+
+public class SpellAndTrap extends Card implements Serializable {
 
     private String icon;
     private String status;

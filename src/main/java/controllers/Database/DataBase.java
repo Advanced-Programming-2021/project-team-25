@@ -1,7 +1,5 @@
 package controllers.Database;
 
-//import com.google.gson.Gson;
-//import com.google.gson.reflect.TypeToken;
 import models.Card;
 import models.CardStufs.Type;
 import models.Monster.*;
@@ -11,13 +9,10 @@ import models.User;
 
 
 import java.io.*;
-import java.util.Scanner;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static models.Deck.allDecks;
 
 public class DataBase {
 
@@ -78,21 +73,11 @@ public class DataBase {
         return null;
     }
 
-    private static String getFileAsString(File myObj) {
-        Scanner myReader = null;
-        try {
-            myReader = new Scanner(myObj);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        return myReader.nextLine();
-    }
-
     public static void loadCards() throws IOException {
         HashMap<String,Card> temp = new HashMap<>();
         String line;
         int i = 0;
-        BufferedReader br = new BufferedReader(new FileReader("Monster.csv"));
+        BufferedReader br = new BufferedReader(new FileReader("C:\\Users\\noroo\\IdeaProjects\\ap\\project-team-25\\Monster.csv"));
         while ((line = br.readLine()) != null) {
             if(i==0){
                 i++;
@@ -104,7 +89,7 @@ public class DataBase {
         }
         br.close();
 
-        BufferedReader br1 = new BufferedReader(new FileReader("SpellTrap.csv"));
+        BufferedReader br1 = new BufferedReader(new FileReader("C:\\Users\\noroo\\IdeaProjects\\ap\\project-team-25\\SpellTrap.csv"));
         while ((line = br1.readLine()) != null) {
             if(i==1){
                 i++;

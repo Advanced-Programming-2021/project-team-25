@@ -2,7 +2,9 @@ package models.SpellAndTrap;
 
 import models.CardStufs.Type;
 
-public class ClosedForest extends SpellAndTrap {
+import java.io.Serializable;
+
+public class ClosedForest extends SpellAndTrap  implements Serializable {
 
     public ClosedForest (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);

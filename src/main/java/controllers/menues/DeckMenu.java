@@ -24,6 +24,7 @@ import static models.Deck.allDecks;
 
 public class DeckMenu {
 
+
     private final User currUser;
     private static DeckMenu singleToneClass = null;
 
@@ -57,7 +58,7 @@ public class DeckMenu {
             else if (Regex.getMatcher(command, Regex.deckShowCards).matches()) deckShowCards();
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
-            DataBase.storeDecks(allDecks);
+           if(allDecks!=null) DataBase.storeDecks(allDecks);
         }
     }
 
@@ -239,6 +240,7 @@ public class DeckMenu {
         else if (name.equals("Black Pendant")) temp = new BlackPendant(Card.allCards.get(name));
         else if (name.equals("United We Stand")) temp = new UnitedWeStand(Card.allCards.get(name));
         else if (name.equals("Magnum Shield")) temp = new MagnumShield(Card.allCards.get(name));
+        else if (name.equals("Advanced Ritual Art")) temp = new AdvancedRitualArt(Card.allCards.get(name));
         else temp = new Monster(Card.allCards.get(name));
         return temp;
     }

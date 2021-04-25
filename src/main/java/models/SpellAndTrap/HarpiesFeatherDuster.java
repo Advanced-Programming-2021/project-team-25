@@ -2,7 +2,9 @@ package models.SpellAndTrap;
 
 import models.CardStufs.Type;
 
-public class HarpiesFeatherDuster extends SpellAndTrap {
+import java.io.Serializable;
+
+public class HarpiesFeatherDuster extends SpellAndTrap implements Serializable {
 
     public HarpiesFeatherDuster (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
