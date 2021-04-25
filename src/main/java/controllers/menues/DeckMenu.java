@@ -57,7 +57,7 @@ public class DeckMenu {
             else if (Regex.getMatcher(command, Regex.deckShowCards).matches()) deckShowCards();
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
-            DataBase.storeDecks(allDecks);
+            if(!allDecks.isEmpty()) DataBase.storeDecks(allDecks);
         }
     }
 
