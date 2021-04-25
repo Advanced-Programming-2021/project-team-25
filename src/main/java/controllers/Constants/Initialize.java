@@ -11,7 +11,7 @@ public class Initialize {
 
     public static void init() {
         initUserList();
-        if(DataBase.restoreDecks() != null) Deck.allDecks = DataBase.restoreDecks();
+        initDeckList();
         try {
             DataBase.loadCards();
         } catch (IOException e) {
@@ -20,9 +20,13 @@ public class Initialize {
     }
 
     public static void initUserList(){
-        File tmpDir = new File("savedList.list");
+        File tmpDir = new File(DataBase.savedArrayListName);
         if(tmpDir.exists()) User.setUsers(DataBase.loadTheList());
         else new User("admin","admin","Game");
     }
 
+    public static void initDeckList(){
+        File tmpDir = new File(DataBase.savedDeckName);
+        if(tmpDir.exists() && DataBase.restoreDecks() != null) Deck.allDecks = DataBase.restoreDecks();
+    }
 }
