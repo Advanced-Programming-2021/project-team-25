@@ -1,9 +1,10 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Objects;
 
-public class Deck {
+public class Deck implements Serializable {
 
     public static ArrayList<Deck> allDecks = new ArrayList<>();
     private final String deckName;
