@@ -4,9 +4,10 @@ import models.CardStufs.FaceUp;
 import models.CardStufs.Location;
 import models.CardStufs.Type;
 
+import java.io.Serializable;
 import java.util.HashMap;
 
-public abstract class Card {
+public abstract class Card implements Serializable {
     public static HashMap<String, Card> allCards = new HashMap<>();
     private String name;
     private Type cardsType;
