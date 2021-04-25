@@ -33,13 +33,36 @@ public class Deck implements Serializable {
         return null;
     }
 
-    public static int getNumberOfCardsInDeck(String deckName , String cardName){
+    public static int getNumberOfCardsInWholeDeck(String deckName , String cardName){
         int i = 0;
         for (Card card: Objects.requireNonNull(getDeckByName(deckName)).mainDeck)
             if (card.getName().equals(cardName)) i++;
         for (Card card: Objects.requireNonNull(getDeckByName(deckName)).sideDeck)
             if (card.getName().equals(cardName)) i++;
+        return i;
+    }
+
+    public static int getNumberOfCardsInMainDeck(String deckName , String cardName){
+        int i = 0;
+        for (Card card: Objects.requireNonNull(getDeckByName(deckName)).mainDeck)
+            if (card.getName().equals(cardName)) i++;
 
         return i;
+    }
+
+    public static int getNumberOfCardsInSideDeck(String deckName , String cardName){
+        int i = 0;
+        for (Card card: Objects.requireNonNull(getDeckByName(deckName)).sideDeck)
+            if (card.getName().equals(cardName)) i++;
+
+        return i;
+    }
+
+    public static boolean isValid(String deckName){
+        return (
+                Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() <= 60 &&
+                Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() >= 40 &&
+                Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.size() <= 15
+        );
     }
 }

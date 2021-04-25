@@ -16,8 +16,8 @@ import java.util.ArrayList;
 import java.util.Map;
 import java.util.regex.Matcher;
 
-
 public class ShopMenu {
+
     private final User currUser;
     private static ShopMenu singleToneClass = null;
 

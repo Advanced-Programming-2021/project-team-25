@@ -44,7 +44,7 @@ public class DeckMenu {
             Matcher matcher;
 
             if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
-            else if(Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse("menu navigation is not possible");
+            else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse("menu navigation is not possible");
             else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
             else if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckCreate)).matches()) createDeck(matcher);
@@ -133,7 +133,7 @@ public class DeckMenu {
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
         else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
         else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.size() == 15) UserInterface.printResponse("side deck is full");
-        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards with name " + cardName + " in deck " + deckName);
+        else if(Deck.getNumberOfCardsInWholeDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards with name " + cardName + " in deck " + deckName);
         else{
             Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.add(Cards(cardName));
             UserInterface.printResponse("card added to deck successfully");
@@ -146,7 +146,7 @@ public class DeckMenu {
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
         else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
         else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() == 60) UserInterface.printResponse("main deck is full");
-        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards with name " + cardName + " in deck " + deckName);
+        else if(Deck.getNumberOfCardsInWholeDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards with name " + cardName + " in deck " + deckName);
         else{
             Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.add(Cards(cardName));
             UserInterface.printResponse("card added to deck successfully");
@@ -213,7 +213,7 @@ public class DeckMenu {
         String cardName = matcher.group(1) ,deckName = matcher.group(2);
 
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with " + deckName + "does not exists");
-        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in side deck");
+        else if(Deck.getNumberOfCardsInSideDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in side deck");
         else{
             for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck)
                 if(card.getName().equals(cardName)){
@@ -228,7 +228,7 @@ public class DeckMenu {
         String cardName = matcher.group(1) ,deckName = matcher.group(2);
 
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with " + deckName + "does not exists");
-        else if(Deck.getNumberOfCardsInDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in main deck");
+        else if(Deck.getNumberOfCardsInMainDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in main deck");
         else{
             for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck)
                 if(card.getName().equals(cardName)){
@@ -244,7 +244,7 @@ public class DeckMenu {
         for (String name: currUser.cardsBought)
             if(name.equals(cardName)) i++;
 
-        return i == Deck.getNumberOfCardsInDeck(deckName, cardName);
+        return i == Deck.getNumberOfCardsInWholeDeck(deckName, cardName);
     }
 
     private void deckShowAll(){
@@ -253,7 +253,10 @@ public class DeckMenu {
 
         UserInterface.printResponse("Decks:\nActive Deck:");
         if(activeDeck != null){
-            UserInterface.printResponse(activeDeck.getDeckName() + ": " + activeDeck.mainDeck.size() + ", " + activeDeck.sideDeck.size() + ", " + "valid");
+            if(Deck.isValid(activeDeck.getDeckName()))
+                UserInterface.printResponse(activeDeck.getDeckName() + ": " + activeDeck.mainDeck.size() + ", " + activeDeck.sideDeck.size() + ", " + "valid");
+            else
+                UserInterface.printResponse(activeDeck.getDeckName() + ": " + activeDeck.mainDeck.size() + ", " + activeDeck.sideDeck.size() + ", " + "invalid");
             activeDeckName = activeDeck.getDeckName();
         }
         UserInterface.printResponse("Other Decks:");
@@ -266,7 +269,10 @@ public class DeckMenu {
 
         decks.sort(orderedDecks);
         for (Deck deck: decks)
-            UserInterface.printResponse(deck.getDeckName() + ": " + deck.mainDeck.size() + ", " + deck.sideDeck.size() + ", " + "valid");
+            if(Deck.isValid(deck.getDeckName()))
+                UserInterface.printResponse(deck.getDeckName() + ": " + deck.mainDeck.size() + ", " + deck.sideDeck.size() + ", " + "valid");
+            else
+                UserInterface.printResponse(deck.getDeckName() + ": " + deck.mainDeck.size() + ", " + deck.sideDeck.size() + ", " + "invalid");
     }
 
     private void showSideDeck(Matcher matcher){
