@@ -4,7 +4,9 @@ package models.Monster;
 import models.Card;
 import models.CardStufs.Type;
 
-public class Monster extends Card {
+import java.io.Serializable;
+
+public class Monster extends Card implements Serializable {
 
     private int level;
     private String attribute;
