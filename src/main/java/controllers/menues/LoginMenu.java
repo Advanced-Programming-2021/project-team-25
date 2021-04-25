@@ -99,4 +99,5 @@ public class LoginMenu {
     private static boolean isExistNickname(String nickname){
         return !Objects.isNull(User.getUserByNickName(nickname));
     }
+
 }

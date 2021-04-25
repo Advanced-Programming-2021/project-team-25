@@ -8,13 +8,12 @@ import view.UserInterface;
 public class ProgramController {
 
     public static Menu currentMenu = Menu.LOGIN_MENU;
-
     public static User currUser;
 
     public static void run() {
-
+        //load data from dataBase
         Initialize.init();
-
+        //start from login menu
         LoginMenu.runLoginMenu(UserInterface.getUserInput());
     }
 

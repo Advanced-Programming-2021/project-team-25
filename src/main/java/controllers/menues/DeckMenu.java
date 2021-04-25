@@ -44,7 +44,7 @@ public class DeckMenu {
             Matcher matcher;
 
             if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
-            else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse("menu navigation is not possible");
+            else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
             else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
             else if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckCreate)).matches()) createDeck(matcher);
