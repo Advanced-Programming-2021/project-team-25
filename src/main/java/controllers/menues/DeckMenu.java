@@ -61,6 +61,7 @@ public class DeckMenu {
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
             if(allDecks!=null) DataBase.storeDecks(allDecks);
+            DataBase.saveTheUserList(User.getUsers());
         }
     }
 
@@ -119,7 +120,7 @@ public class DeckMenu {
         String deckName = matcher.group(1);
         for (Deck deck:allDecks){
             if (deck.getDeckName().equals(deckName)){
-                currUser.activeDeck = deck;
+                currUser.setActiveDeck(deck);
                 UserInterface.printResponse(Responses.DECK_ACTIVE_SUCCESS);
                 return;
             }
@@ -310,7 +311,7 @@ public class DeckMenu {
     private void showDeck(Matcher matcher){
         String deckName = matcher.group(1);
         if(Deck.getDeckByName(deckName)==null)
-            UserInterface.printResponse("deck with name" + deckName + "does not exist");
+            UserInterface.printResponse("deck with name " + deckName + " does not exist");
         else {
             UserInterface.printResponse("Deck: " + deckName);
             UserInterface.printResponse("Main deck:");

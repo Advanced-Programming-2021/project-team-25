@@ -28,7 +28,8 @@ public class Regex {
     public static String deckShowCards = "^deck show --cards$";
     public static String shopBuy = "^shop buy (\\S+)$";
     public static String shopShowAll = "^shop show --all$";
-    public static String duelNew = "^duel --new --second-player (.+) --round(.+)$";
+    public static String duelNew = "^duel --new --second-player (.+) --rounds (.+)$";
+    public static String duelNewAi = "^duel --new --ai --rounds (.+)$";
     public static String select = "^select (\\S+)$";
     public static String selectOpponent = "^select (\\S+) --opponent$";
     public static String deselect = "^select -d$";

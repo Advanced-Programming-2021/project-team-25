@@ -3,11 +3,13 @@ package models;
 public class Duelist {
 
     private User user;
-    private Field field;
-    private final int LP = 8000;
-    private boolean hasPutMonster = false;
+    public Field field = new Field();
+    public final int LP = 8000;
+    public boolean hasPutMonster = false;
+
     public Duelist(User user) {
         this.user = user;
+        this.field.deck = user.activeDeck.mainDeck;
     }
 
     public User getUser() {

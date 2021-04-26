@@ -3,6 +3,8 @@ package controllers.Battelfield;
 import models.Card;
 import models.Duelist;
 
+import java.util.Random;
+
 public class Battlefield {
     private Duelist turn;
     private Duelist opponent;
@@ -11,6 +13,19 @@ public class Battlefield {
     private Phase phase;
 
     public Battlefield(Duelist duelist, Duelist duelist1) {
+        Random ran = new Random();
+        if(ran.nextInt(2) == 0){
+            turn = duelist;
+            opponent = duelist1;
+        }
+        else {
+            turn = duelist1;
+            opponent = duelist;
+        }
+        runBattleField();
+    }
+
+    public void runBattleField(){
 
     }
 

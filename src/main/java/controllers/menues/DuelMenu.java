@@ -31,17 +31,24 @@ public class DuelMenu {
 
     public void runDuelMenu(){
         while (currentMenu == Menu.DUEL_MENU) {
-
             String command = UserInterface.getUserInput();
-
             Matcher matcher;
 
             if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
             else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
             else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
+            else if ((matcher = Regex.getMatcher(command, Regex.duelNewAi)).matches()) newDuelAi(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.duelNew)).matches()) newDuel(matcher);
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
         }
+    }
+
+    private void newDuelAi(Matcher matcher){
+        String round = matcher.group(1);
+        if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
+        else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
+        else if(!(round.equals("1") || round.equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
+        //else new Battlefield(new Duelist(currUser),new Duelist(User.getUserByUsername(duelistName)));
     }
 
     private void newDuel(Matcher matcher){

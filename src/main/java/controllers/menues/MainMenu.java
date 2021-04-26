@@ -45,6 +45,10 @@ public class MainMenu {
                     ProgramController.currentMenu = Menu.PROFILE_MENU;
                     ProfileMenu.runProfileMenu(currUser);
                     break;
+                case "Scoreboard" :
+                    ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
+                    ScoreBoardMenu.getInstance(currUser).runScoreBoardMenu();
+                    break;
             }
         }
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
