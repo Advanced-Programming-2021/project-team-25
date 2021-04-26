@@ -9,6 +9,11 @@ public class Battlefield {
     private Duelist winner;
     private Card selectedCard;
     private Phase phase;
+
+    public Battlefield(Duelist duelist, Duelist duelist1) {
+
+    }
+
     public void showBattleField(){
 
     }

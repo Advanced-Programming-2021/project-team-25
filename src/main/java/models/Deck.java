@@ -65,4 +65,5 @@ public class Deck implements Serializable {
                 Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.size() <= 15
         );
     }
+
 }

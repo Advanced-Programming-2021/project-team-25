@@ -14,7 +14,8 @@ public enum Responses {
     DECK_ACTIVE_SUCCESS("deck activated successfully!"),
     NO_CARD_WITH_THIS_NAME("there is no card with this name"),
     NOT_ENOUGH_MONEY("not enough money"),
-    SUCCESS_CARD_BUY("card bought successfully");
+    SUCCESS_CARD_BUY("card bought successfully"),
+    NOT_SUPPORTED_ROUNDS("number of rounds is not supported");
 
     private final String message;
 

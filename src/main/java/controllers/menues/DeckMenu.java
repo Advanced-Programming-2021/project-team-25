@@ -92,7 +92,7 @@ public class DeckMenu {
         String deckName = matcher.group(1);
             for (Deck deck : allDecks)
                 if (deck.getDeckName().equals(deckName)) {
-                    UserInterface.printResponse("deck with name " + deckName + "already exists");
+                    UserInterface.printResponse("deck with name " + deckName + " already exists");
                     return;
                 }
         UserInterface.printResponse(Responses.DECK_CREATE_SUCCESS);

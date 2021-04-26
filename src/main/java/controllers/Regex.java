@@ -23,12 +23,12 @@ public class Regex {
     public static String deckRemoveCardFromSide = "^deck rm-card --card (.+) --deck (.+) --side$";
     public static String deckRemoveCard = "^deck rm-card --card (.+) --deck (.+)$";
     public static String deckShowAll = "^deck show --all$";
-    public static String deckShowDeckNameSide = "^deck show --deck-name (.+)$";
+    public static String deckShowDeckNameSide = "^deck show --deck-name (.+) --side$";
     public static String deckShowDeckName = "^deck show --deck-name (.+)$";
     public static String deckShowCards = "^deck show --cards$";
     public static String shopBuy = "^shop buy (\\S+)$";
     public static String shopShowAll = "^shop show --all$";
-    public static String duelNew = "^duel --new --second-player (\\S+) --round(1|3)$";
+    public static String duelNew = "^duel --new --second-player (.+) --round(.+)$";
     public static String select = "^select (\\S+)$";
     public static String selectOpponent = "^select (\\S+) --opponent$";
     public static String deselect = "^select -d$";
