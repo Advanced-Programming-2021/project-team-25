@@ -19,6 +19,7 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 
 import static controllers.ProgramController.currentMenu;
+import static controllers.ShowCard.showCard;
 import static models.Deck.allDecks;
 
 public class DeckMenu {
@@ -62,30 +63,6 @@ public class DeckMenu {
 
             if(allDecks!=null) DataBase.storeDecks(allDecks);
             DataBase.saveTheUserList(User.getUsers());
-        }
-    }
-
-    private void showCard(Matcher matcher){
-        String cardsName = matcher.group(1);
-        if (!Card.allCards.containsKey(cardsName)) UserInterface.printResponse("there is no card with this name");
-        else{
-            if (Card.allCards.get(cardsName).getCardsType() == Type.MONSTER){
-                Monster monster = (Monster) Card.allCards.get(cardsName);
-                UserInterface.printResponse("Name: " + cardsName);
-                UserInterface.printResponse("Level: " + monster.getLevel());
-                UserInterface.printResponse("Type: " + monster.getCardTypeInExel());
-                UserInterface.printResponse("ATK: " + monster.getAttack());
-                UserInterface.printResponse("DEF" + monster.getDefence());
-                UserInterface.printResponse("Description" + monster.getDescription());
-            }
-            else{
-                SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(cardsName);
-                UserInterface.printResponse("Name: " + cardsName);
-                if (spellAndTrap.getCardsType() == Type.SPELL) UserInterface.printResponse("Spell");
-                else UserInterface.printResponse("Trap");
-                UserInterface.printResponse("Type: " + spellAndTrap.getIcon());
-                UserInterface.printResponse("Description: " + spellAndTrap.getDescription());
-            }
         }
     }
 

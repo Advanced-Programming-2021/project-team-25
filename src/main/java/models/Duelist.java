@@ -15,4 +15,8 @@ public class Duelist {
     public User getUser() {
         return user;
     }
+
+    public String getName(){
+        return user.getNickName();
+    }
 }

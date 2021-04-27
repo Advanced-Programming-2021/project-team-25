@@ -19,6 +19,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 
 import static controllers.ProgramController.currentMenu;
+import static controllers.ShowCard.showCard;
 
 
 public class ShopMenu {
@@ -46,30 +47,6 @@ public class ShopMenu {
             else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
             else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
-        }
-    }
-
-    private void showCard(Matcher matcher){
-        String cardsName = matcher.group(1);
-        if (!Card.allCards.containsKey(cardsName)) UserInterface.printResponse("there is no card with this name");
-        else{
-            if (Card.allCards.get(cardsName).getCardsType() == Type.MONSTER){
-                Monster monster = (Monster) Card.allCards.get(cardsName);
-                UserInterface.printResponse("Name: " + cardsName);
-                UserInterface.printResponse("Level: " + monster.getLevel());
-                UserInterface.printResponse("Type: " + monster.getCardTypeInExel());
-                UserInterface.printResponse("ATK: " + monster.getAttack());
-                UserInterface.printResponse("DEF" + monster.getDefence());
-                UserInterface.printResponse("Description" + monster.getDescription());
-            }
-            else{
-                SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(cardsName);
-                UserInterface.printResponse("Name: " + cardsName);
-                if (spellAndTrap.getCardsType() == Type.SPELL) UserInterface.printResponse("Spell");
-                else UserInterface.printResponse("Trap");
-                UserInterface.printResponse("Type: " + spellAndTrap.getIcon());
-                UserInterface.printResponse("Description: " + spellAndTrap.getDescription());
-            }
         }
     }
 
