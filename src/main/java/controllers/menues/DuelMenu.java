@@ -59,7 +59,7 @@ public class DuelMenu {
         else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
         else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(duelistName)).activeDeck.getDeckName())) UserInterface.printResponse(duelistName + "'s deck is not valid");
         else if(!(round.equals("1") || round.equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
-        else new Battlefield(new Duelist(currUser),new Duelist(User.getUserByUsername(duelistName)));
+        else new Battlefield(new Duelist(currUser),new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName))));
     }
 
 }

@@ -26,6 +26,7 @@ public class MainMenu {
             if(!isUserLoggedOut) command = UserInterface.getUserInput();
         }
     }
+
     static void changeMenu(Matcher matcher, User currUser){
         if(matcher.find()) {
             switch (matcher.group(1)) {
