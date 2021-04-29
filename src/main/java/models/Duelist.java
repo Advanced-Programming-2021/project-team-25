@@ -2,7 +2,7 @@ package models;
 
 public class Duelist {
 
-    private User user;
+    private final User user;
     public Field field = new Field();
     public final int LP = 8000;
     public boolean hasPutMonster = false;
