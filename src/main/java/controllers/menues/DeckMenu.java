@@ -27,7 +27,7 @@ public class DeckMenu {
     private final User currUser;
     private static DeckMenu singleToneClass = null;
 
-    public DeckMenu(User currUser){
+    private DeckMenu(User currUser){
         this.currUser=currUser;
     }
 
