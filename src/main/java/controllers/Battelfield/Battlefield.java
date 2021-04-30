@@ -57,13 +57,19 @@ public class Battlefield {
 
     private void whoStart(Duelist duelist1, Duelist duelist2) {
         Random ran = new Random();
-        if(ran.nextInt(2) == 0){
-            turn = duelist1;
-            opponent = duelist2;
-        }
-        else {
+        if(ran.nextInt(2) == 0) chooseStarter(duelist2, duelist1);
+        else chooseStarter(duelist1, duelist2);
+    }
+
+    private void chooseStarter(Duelist duelist1, Duelist duelist2) {
+        UserInterface.printResponse("I flipped a coin and " + duelist2.getName() + " can decide who start’s\n1." + duelist2.getName() + "\n2." + duelist1.getName());
+        String num = UserInterface.getUserInput();
+        if (num.equals("1")) {
             turn = duelist2;
             opponent = duelist1;
+        } else {
+            turn = duelist1;
+            opponent = duelist2;
         }
     }
 
@@ -167,6 +173,7 @@ public class Battlefield {
     public void set(){
 
     }
+
     public void setPosition(Matcher matcher){
         if(matcher.group(1).equals("attack")){
             if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
