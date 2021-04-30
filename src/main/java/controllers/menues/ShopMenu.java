@@ -40,7 +40,7 @@ public class ShopMenu {
 
         while (currentMenu == Menu.SHOP_MENU) {
             String command = UserInterface.getUserInput();
-            if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher);
+            if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
             else if ((matcher = Regex.getMatcher(command, Regex.shopBuy)).matches()) buyCard(matcher);
             else if (Regex.getMatcher(command, Regex.shopShowAll).matches()) showAllCards();
             else if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);

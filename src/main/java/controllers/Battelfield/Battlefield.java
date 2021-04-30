@@ -23,16 +23,8 @@ public class Battlefield {
     private Card selectedCard;
     private Phase phase;
 
-    public Battlefield(Duelist duelist, Duelist duelist1) {
-        Random ran = new Random();
-        if(ran.nextInt(2) == 0){
-            turn = duelist;
-            opponent = duelist1;
-        }
-        else {
-            turn = duelist1;
-            opponent = duelist;
-        }
+    public Battlefield(Duelist duelist1, Duelist duelist2) {
+        whoStart(duelist1, duelist2);
         runBattleField();
     }
 
@@ -53,11 +45,23 @@ public class Battlefield {
             else if (Regex.getMatcher(command, Regex.attackDirect).matches()) directAttack();
             else if (Regex.getMatcher(command, Regex.activateEffect).matches()) activeSpell();
             else if (Regex.getMatcher(command, Regex.showGraveyard).matches()) showGraveyard();
-            else if ((matcher=Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher);
+            else if ((matcher=Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
             else if (Regex.getMatcher(command, Regex.showSelectedCard).matches()) showSelectedCard();
             else if (Regex.getMatcher(command, Regex.surrender).matches()) surrender();
             //else if (Regex.getMatcher(command, Regex.cancel).matches()) showSelectedCard();
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
+        }
+    }
+
+    private void whoStart(Duelist duelist1, Duelist duelist2) {
+        Random ran = new Random();
+        if(ran.nextInt(2) == 0){
+            turn = duelist1;
+            opponent = duelist2;
+        }
+        else {
+            turn = duelist2;
+            opponent = duelist1;
         }
     }
 
@@ -124,7 +128,7 @@ public class Battlefield {
     }
 
     public void showSelectedCard(){
-
+        ShowCard.showCard(selectedCard.getName());
     }
 
     public void surrender(){
@@ -138,6 +142,7 @@ public class Battlefield {
     public void setWinner(Duelist winner) {
         this.winner = winner;
     }
+
     public void changeTurn(){
         Duelist temp;
         temp = turn;
@@ -146,6 +151,10 @@ public class Battlefield {
     }
 
     public void startGame(){
+        //draw 6 cards for each one
+        //lp = 8000
+        //cleanTurn();
+
 
     }
     public void drawCard(){

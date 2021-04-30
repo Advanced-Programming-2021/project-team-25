@@ -10,8 +10,7 @@ import java.util.regex.Matcher;
 
 public class ShowCard {
 
-    public static void showCard(Matcher matcher){
-        String cardsName = matcher.group(1);
+    public static void showCard(String cardsName){
         if (!Card.allCards.containsKey(cardsName)) UserInterface.printResponse("there is no card with this name");
         else{
             if (Card.allCards.get(cardsName).getCardsType() == Type.MONSTER){
