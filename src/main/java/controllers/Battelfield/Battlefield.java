@@ -1,10 +1,10 @@
 package controllers.Battelfield;
 
-import controllers.Menu;
 import controllers.Regex;
 import controllers.ShowCard;
 import models.Card;
 import models.CardStufs.FaceUp;
+import models.CardStufs.Type;
 import models.Duelist;
 import models.User;
 import view.Responses;
@@ -13,7 +13,6 @@ import view.UserInterface;
 import java.util.Random;
 import java.util.regex.Matcher;
 
-import static controllers.ProgramController.currentMenu;
 import static controllers.ShowCard.showCard;
 
 public class Battlefield {
@@ -155,6 +154,13 @@ public class Battlefield {
         if (phase == Phase.DRAW_PHASE ) drawCard();
     }
 
+    public void changeTurn(){
+        Duelist temp;
+        temp = turn;
+        turn = opponent;
+        opponent = temp;
+    }
+
     public void summon(){
 
     }
@@ -162,11 +168,36 @@ public class Battlefield {
 
     }
     public void setPosition(Matcher matcher){
-
+        if(matcher.group(1).equals("attack")){
+            if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
+            else if(!turn.field.monsterZone.contains(selectedCard)) UserInterface.printResponse("you can’t change this card position");
+            else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE)) UserInterface.printResponse("you can’t do this action in this phase");
+            else if(selectedCard.getCardsFace() == FaceUp.ATTACK) UserInterface.printResponse("this card is already in the wanted position");
+            else if(selectedCard.getSetChanged()) UserInterface.printResponse("you already changed this card position in this turn");
+            else{
+                selectedCard.setSetChanged(true);
+                selectedCard.setCardsFace(FaceUp.ATTACK);
+                UserInterface.printResponse("monster card position changed successfully");
+            }
+        }
+        else if(matcher.group(1).equals("defence")){
+            if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
+            else if(!turn.field.monsterZone.contains(selectedCard)) UserInterface.printResponse("you can’t change this card position");
+            else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE)) UserInterface.printResponse("you can’t do this action in this phase");
+            else if(selectedCard.getCardsFace() != FaceUp.ATTACK) UserInterface.printResponse("this card is already in the wanted position");
+            else if(selectedCard.getSetChanged()) UserInterface.printResponse("you already changed this card position in this turn");
+            else{
+                selectedCard.setSetChanged(true);
+                selectedCard.setCardsFace(FaceUp.DEFENSE_FRONT);
+                UserInterface.printResponse("monster card position changed successfully");
+            }
+        }
     }
+
     public void flipSummon(){
 
     }
+
     public void attack(Matcher matcher){
 
     }
@@ -191,14 +222,8 @@ public class Battlefield {
 
     }
 
-    public void changeTurn(){
-        Duelist temp;
-        temp = turn;
-        turn = opponent;
-        opponent = temp;
-    }
-
     public void cleanTurn(){
+        //setChanged For cards
 
     }
 
