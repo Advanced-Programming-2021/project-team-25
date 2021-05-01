@@ -16,7 +16,7 @@ public enum Responses {
     NOT_ENOUGH_MONEY("not enough money"),
     SUCCESS_CARD_BUY("card bought successfully"),
     NOT_SUPPORTED_ROUNDS("number of rounds is not supported"),
-    INVALID_CARD_SELECTION_ADDRESS("") ;
+    INVALID_CARD_SELECTION_ADDRESS("invalid selection");
 
     private final String message;
 
