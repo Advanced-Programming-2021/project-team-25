@@ -4,11 +4,14 @@ import controllers.Regex;
 import controllers.ShowCard;
 import models.Card;
 import models.CardStufs.FaceUp;
+import models.CardStufs.Type;
 import models.Duelist;
+import models.Monster.Monster;
 import view.Responses;
 import view.UserInterface;
 
 import java.util.Collections;
+import java.util.Objects;
 import java.util.Random;
 import java.util.regex.Matcher;
 
@@ -147,7 +150,7 @@ public class Battlefield {
     }
 
     public void deselectCard(){
-        if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
+        if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         else{
             UserInterface.printResponse("card deselected");
             selectedCard = null;
@@ -176,7 +179,21 @@ public class Battlefield {
     }
 
     public void summon(){
+        Monster monster = (Monster)selectedCard;
+        if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
+        else if(!turn.field.hand.contains(selectedCard) || !(selectedCard.getCardsType() == Type.MONSTER) || !monster.getCardTypeInExel().equals("normal"))
+            UserInterface.printResponse("you cant summon this card");
+        else if( !phase.equals(Phase.MAIN1_PHASE) || !phase.equals(Phase.MAIN2_PHASE))
+            UserInterface.printResponse("action not allowed in this phase");
+        else if(turn.field.monsterZone.size()==5)
+            UserInterface.printResponse("monster card zone is full");
+        else if(turn.hasPutMonster == false)
+            UserInterface.printResponse("you already summoned/set on this turn");
+        else if(monster.getLevel()>=5)
+            UserInterface.printResponse("there are not enough cards for tribute");
+        else{
 
+        }
     }
     public void set(){
 
