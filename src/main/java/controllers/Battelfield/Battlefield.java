@@ -10,6 +10,7 @@ import models.Monster.Monster;
 import view.Responses;
 import view.UserInterface;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
 import java.util.Random;
@@ -516,6 +517,10 @@ public class Battlefield {
             endGame();
             // calling the function that must be told to done when someone wins.
         }
+    }
+
+    public void removeElementFromArrayList(ArrayList<Card> cards,Card element){
+        cards.set(cards.indexOf(element),null);
     }
 
 }
