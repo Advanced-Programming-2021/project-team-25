@@ -101,6 +101,7 @@ public class Battlefield {
 
     private void addCardToPlayersDeck(Duelist turn) {
         turn.field.hand.add(turn.field.deck.get(0));
+        UserInterface.printResponse("new card added to the hand: "+turn.field.deck.get(0).getName());
         turn.field.deck.remove(0);
     }
 
@@ -332,6 +333,18 @@ public class Battlefield {
     }
 
     public void flipSummon(){
+        Monster monster = (Monster) selectedCard;
+        if(Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
+        else if(!turn.field.monsterZone.contains(monster))
+            UserInterface.printResponse("you can`t change this card position");
+        else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
+            UserInterface.printResponse("you can’t do this action in this phase");
+        else if(monster.getSetChanged() || selectedCard.getCardsFace() != FaceUp.DEFENSE_BACK)
+            UserInterface.printResponse("you can’t flip summon this card");
+        else{
+            selectedCard.setCardsFace(FaceUp.ATTACK);
+            UserInterface.printResponse("flip summoned successfully");
+        }
 
     }
     public void attack(Matcher matcher){
@@ -392,10 +405,12 @@ public class Battlefield {
         if(turn.field.deck.size()>0){
             if(turn.field.hand.size()<6){
                 addCardToPlayersDeck(turn);
+
             }
         }
         else {
             winner = opponent;
+            endGame();
             // calling the function that must be told to done when someone wins.
         }
     }
