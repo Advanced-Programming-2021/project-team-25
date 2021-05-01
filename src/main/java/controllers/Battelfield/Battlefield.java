@@ -501,7 +501,34 @@ public class Battlefield {
     }
 
     public void cleanTurn(){
-
+        turn.hasPutMonster = false;
+        opponent.hasPutMonster = false;
+        for (int i = 0; i<5; ++i){
+            if (turn.field.monsterZone.get(i) != null){
+                turn.field.monsterZone.get(i).setSetChanged(false);
+                turn.field.monsterZone.get(i).setIsSetThisTurn(false);
+            }
+            if (opponent.field.monsterZone.get(i) != null){
+                opponent.field.monsterZone.get(i).setSetChanged(false);
+                opponent.field.monsterZone.get(i).setIsSetThisTurn(false);
+            }
+            if (turn.field.spellTrapZone.get(i) != null){
+                turn.field.spellTrapZone.get(i).setSetChanged(false);
+                turn.field.spellTrapZone.get(i).setIsSetThisTurn(false);
+            }
+            if (opponent.field.spellTrapZone.get(i) != null){
+                opponent.field.spellTrapZone.get(i).setSetChanged(false);
+                opponent.field.spellTrapZone.get(i).setIsSetThisTurn(false);
+            }
+        }
+        if (turn.field.fieldZone != null) {
+            turn.field.fieldZone.setSetChanged(false);
+            turn.field.fieldZone.setIsSetThisTurn(false);
+        }
+        if (opponent.field.fieldZone != null) {
+            opponent.field.fieldZone.setSetChanged(false);
+            opponent.field.fieldZone.setIsSetThisTurn(false);
+        }
     }
 
     public void drawCard(){
