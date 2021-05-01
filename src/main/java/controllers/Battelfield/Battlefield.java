@@ -179,21 +179,82 @@ public class Battlefield {
     }
 
     public void summon(){
+
+        //loading the monster from selected card
         Monster monster = (Monster)selectedCard;
+        //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
+        //checking that if we have monster
         else if(!turn.field.hand.contains(selectedCard) || !(selectedCard.getCardsType() == Type.MONSTER) || !monster.getCardTypeInExel().equals("normal"))
             UserInterface.printResponse("you cant summon this card");
-        else if( !phase.equals(Phase.MAIN1_PHASE) || !phase.equals(Phase.MAIN2_PHASE))
+        //checking the correct phase
+        else if( !(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
             UserInterface.printResponse("action not allowed in this phase");
+        //checking is the zone filled
         else if(turn.field.monsterZone.size()==5)
             UserInterface.printResponse("monster card zone is full");
+        //checking if turn can summon
         else if(turn.hasPutMonster == false)
             UserInterface.printResponse("you already summoned/set on this turn");
-        else if(monster.getLevel()>=5)
-            UserInterface.printResponse("there are not enough cards for tribute");
-        else{
-
+        //summon level 5 or 6 monsters
+        else if(monster.getLevel()==5 || monster.getLevel()==6){
+            //checking if can tribute happened
+            if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
+            else {
+                UserInterface.printResponse("please select one card to tribute!");
+                tributeOneMonster();
+                //summon
+                summonedMonster();
+            }
         }
+        //summon level 7 , 8 monsters
+        else if(monster.getLevel()==7 || monster.getLevel()==8){
+            //checking if can tribute happened
+            if(turn.field.monsterZone.size()<2) UserInterface.printResponse("there are not enough cards for tribute");
+            else {
+                UserInterface.printResponse("please select two card to tribute!");
+                UserInterface.printResponse("please select the first one");
+                tributeOneMonster();
+                UserInterface.printResponse("please select the next one");
+                tributeOneMonster();
+                //summon
+                summonedMonster();
+            }
+        }
+        //normal summon
+        else if(monster.getLevel()<=4) summonedMonster();
+    }
+
+    private void summonedMonster() {
+        turn.hasPutMonster = true;
+        selectedCard.setSetChanged(true);
+        selectedCard.setCardsFace(FaceUp.ATTACK);
+        //putting card in last monster zone
+        turn.field.monsterZone.set(turn.field.monsterZone.size()+1,selectedCard);
+
+        UserInterface.printResponse("summoned successfully");
+    }
+
+    private void tributeOneMonster() {
+        //selecting card to tribute
+        String command = UserInterface.getUserInput();
+        //getting card address
+        Matcher matcher = Regex.getMatcher(command, Regex.select);
+
+        if(matcher.find()){
+            //get monster
+            Monster monsterForTribute = (Monster) turn.field.monsterZone.get(Integer.parseInt(matcher.group(1)));
+            //checking not empty
+            if(Objects.isNull(monsterForTribute))
+                UserInterface.printResponse("no card found in the given position");
+            //send tribute monster to graveyard
+            else{
+                turn.field.monsterZone.remove(monsterForTribute);
+                turn.field.graveYard.add(monsterForTribute);
+            }
+        }
+        else
+            UserInterface.printResponse(Responses.INVALID_CARD_SELECTION_ADDRESS);
     }
 
     public void set(){
