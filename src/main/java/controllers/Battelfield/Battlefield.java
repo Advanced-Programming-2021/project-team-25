@@ -24,6 +24,7 @@ public class Battlefield {
     private Duelist winner;
     private Card selectedCard;
     private Phase phase;
+    private boolean isRitualSummoned = false;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -35,8 +36,8 @@ public class Battlefield {
         while (winner == null) {
             String command = UserInterface.getUserInput();
             Matcher matcher;
-
-            if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
+            if(!isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
+            else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
             else if (Regex.getMatcher(command, Regex.nextPhase).matches()) nextPhase();
@@ -437,7 +438,29 @@ public class Battlefield {
 
     }
     public void ritualSummon(){
+        //getting the ritual monster in hand if exist
+        Monster ritualMonster = getRitualMonsterInHand();
+        //getting the sum of levels in monster zone
+        int sumOfLevels = getSumOfLevelsInZone();
+        if (Objects.isNull(ritualMonster) || sumOfLevels < 7)
+            UserInterface.printResponse("there is no way you could ritual summon a monster");
+        else if (ritualMonster != null) isRitualSummoned = true;
+    }
+    private Monster getRitualMonsterInHand () {
+        for (Card card : turn.field.hand) {
+            if (card.getCardsType().equals(Type.MONSTER) && ((Monster) card).getCardTypeInExel().equals("Ritual")) {
+                return (Monster) card;
+            }
+        }
+        return null;
+    }
 
+    private int getSumOfLevelsInZone () {
+        int sum = 0;
+        for (Card card : turn.field.monsterZone) {
+            sum += ((Monster) card).getLevel();
+        }
+        return sum;
     }
     public void showGraveyard(){
         if(turn.field.graveYard.isEmpty()) UserInterface.printResponse("graveyard empty");
