@@ -221,6 +221,8 @@ public class Battlefield {
                 tributeOneMonster();
                 //summon
                 summonedMonster();
+                //check monster put
+                turn.hasPutMonster = true;
             }
         }
         //summon level 7 , 8 monsters
@@ -235,10 +237,16 @@ public class Battlefield {
                 tributeOneMonster();
                 //summon
                 summonedMonster();
+                //check that monster put
+                turn.hasPutMonster = true;
             }
         }
         //normal summon
-        else if(monster.getLevel()<=4) summonedMonster();
+        else if(monster.getLevel()<=4){
+            summonedMonster();
+            //check that monster put
+            turn.hasPutMonster = true;
+        }
     }
 
     private void summonedMonster() {
