@@ -214,37 +214,45 @@ public class Battlefield {
             UserInterface.printResponse("you already summoned/set on this turn");
         //summon level 5 or 6 monsters
         else if(monster.getLevel()==5 || monster.getLevel()==6){
-            //checking if can tribute happened
-            if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
-            else {
-                UserInterface.printResponse("please select one card to tribute!");
-                tributeOneMonster();
-                //summon
-                summonedMonster();
-                //check monster put
-                turn.hasPutMonster = true;
-            }
+            summonLevel6Or5();
         }
         //summon level 7 , 8 monsters
         else if(monster.getLevel()==7 || monster.getLevel()==8){
-            //checking if can tribute happened
-            if(turn.field.monsterZone.size()<2) UserInterface.printResponse("there are not enough cards for tribute");
-            else {
-                UserInterface.printResponse("please select two card to tribute!");
-                UserInterface.printResponse("please select the first one");
-                tributeOneMonster();
-                UserInterface.printResponse("please select the next one");
-                tributeOneMonster();
-                //summon
-                summonedMonster();
-                //check that monster put
-                turn.hasPutMonster = true;
-            }
+            summonLevel8Or7();
         }
         //normal summon
         else if(monster.getLevel()<=4){
             summonedMonster();
             //check that monster put
+            turn.hasPutMonster = true;
+        }
+    }
+
+    private void summonLevel8Or7() {
+        //checking if can tribute happened
+        if(turn.field.monsterZone.size()<2) UserInterface.printResponse("there are not enough cards for tribute");
+        else {
+            UserInterface.printResponse("please select two card to tribute!");
+            UserInterface.printResponse("please select the first one");
+            tributeOneMonster();
+            UserInterface.printResponse("please select the next one");
+            tributeOneMonster();
+            //summon
+            summonedMonster();
+            //check that monster put
+            turn.hasPutMonster = true;
+        }
+    }
+
+    private void summonLevel6Or5() {
+        //checking if can tribute happened
+        if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
+        else {
+            UserInterface.printResponse("please select one card to tribute!");
+            tributeOneMonster();
+            //summon
+            summonedMonster();
+            //check monster put
             turn.hasPutMonster = true;
         }
     }
