@@ -60,6 +60,9 @@ public class ShopMenu {
                 ArrayList<String> temp = currUser.getCardsBought();
                 temp.add(cardsName);
                 currUser.setCardsBought(temp);
+                int money = currUser.getMoney();
+                money -= Card.allCards.get(cardsName).getPrice();
+                currUser.setMoney(money);
                 UserInterface.printResponse("card bought successfully");
             }
         }
