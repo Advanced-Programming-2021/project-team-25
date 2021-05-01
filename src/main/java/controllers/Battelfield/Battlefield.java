@@ -1,22 +1,17 @@
 package controllers.Battelfield;
 
-import controllers.Menu;
 import controllers.Regex;
 import controllers.ShowCard;
 import models.Card;
 import models.CardStufs.FaceUp;
-import models.Deck;
 import models.Duelist;
-import models.User;
 import view.Responses;
 import view.UserInterface;
 
 import java.util.Collections;
-import java.util.Objects;
 import java.util.Random;
 import java.util.regex.Matcher;
 
-import static controllers.ProgramController.currentMenu;
 import static controllers.ShowCard.showCard;
 
 public class Battlefield {
@@ -26,8 +21,6 @@ public class Battlefield {
     private Duelist winner;
     private Card selectedCard;
     private Phase phase;
-    private Deck opponentDeckInGame;
-    private Deck turnDeckInGame;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -78,20 +71,23 @@ public class Battlefield {
             //shuffling the cards
             Collections.shuffle(opponent.field.deck);
             Collections.shuffle(turn.field.deck);
-            //draw 6 cards
+            //draw 6 cards for opponent and turn
             for(int i=0;i<6;i++){
 
-                opponent.field.hand.add(opponent.field.deck.get(i));
-                opponent.field.deck.remove(opponent.field.deck.get(i));
+                addCardToPlayersDeck(opponent);
 
-                turn.field.hand.add(turn.field.deck.get(i));
-                turn.field.deck.remove(turn.field.deck.get(i));
+                addCardToPlayersDeck(turn);
             }
         }
         //lp = 8000
         //cleanTurn();
 
 
+    }
+
+    private void addCardToPlayersDeck(Duelist turn) {
+        turn.field.hand.add(turn.field.deck.get(0));
+        turn.field.deck.remove(0);
     }
 
     public void showBattleField(){
@@ -165,9 +161,14 @@ public class Battlefield {
         else if( phase == Phase.BATTLE_PHASE ) phase = Phase.MAIN2_PHASE;
         //check needed for the END PHASE
         else if( phase == Phase.MAIN2_PHASE ){
+
             changeTurn();
+
             cleanTurn();
             phase = Phase.DRAW_PHASE;
+            //drawing card for Turn.
+            drawCard();
+
             UserInterface.printResponse("its " + turn.getName() + "’s turn");
         }
         UserInterface.printResponse("phase: " + phase);
@@ -223,6 +224,15 @@ public class Battlefield {
 
     public void drawCard(){
 
+        if(turn.field.deck.size()>0){
+            if(turn.field.hand.size()<6){
+                addCardToPlayersDeck(turn);
+            }
+        }
+        else {
+            winner = opponent;
+            // calling the function that must be told to done when someone wins.
+        }
     }
 
 }
