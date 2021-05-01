@@ -30,7 +30,7 @@ public class Regex {
     public static String shopShowAll = "^shop show --all$";
     public static String duelNew = "^duel --new --second-player (.+) --rounds (.+)$";
     public static String duelNewAi = "^duel --new --ai --rounds (.+)$";
-    public static String select = "^select (.+)$";
+    public static String select = "^select ([12345])$";
     public static String selectOpponent = "^select (.+) --opponent$";
     public static String deselect = "^select -d$";
     public static String nextPhase = "^next phase$";
