@@ -4,6 +4,7 @@ import controllers.Regex;
 import controllers.ShowCard;
 import models.Card;
 import models.CardStufs.FaceUp;
+import models.CardStufs.Location;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
@@ -384,7 +385,54 @@ public class Battlefield {
     }
 
     public void set(){
-
+        if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
+        else if (!turn.field.hand.contains(selectedCard))
+            UserInterface.printResponse("you can't set this card");
+        else if( !(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
+            UserInterface.printResponse("you can't do this action in this phase");
+        else if (selectedCard.getCardsType() == Type.MONSTER){
+            int counter = 0;
+            for (int i = 0; i<5; ++i)
+                if (turn.field.monsterZone.get(i) != null) counter += 1;
+            if (counter == 5)
+                UserInterface.printResponse("monster card zone is full");
+            else if (turn.hasPutMonster)
+                UserInterface.printResponse("you already summoned/set on this turn");
+            else{
+                UserInterface.printResponse("set successfully");
+                for (int i = 0; i<5; ++i){
+                    if (turn.field.monsterZone.get(i) == null){
+                        turn.field.monsterZone.set(i, selectedCard);
+                        selectedCard.setIsSetThisTurn(true);
+                        selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                        selectedCard.setCardsLocation(Location.MONSTER_AREA);
+                        selectedCard = null;
+                        break;
+                    }
+                }
+                turn.hasPutMonster = true;
+            }
+        }
+        else if (selectedCard.getCardsType() == Type.SPELL || selectedCard.getCardsType() == Type.TRAP){
+            int counter = 0;
+            for (int i = 0; i<5; ++i)
+                if (turn.field.spellTrapZone.get(i) != null) counter += 1;
+            if (counter == 5)
+                UserInterface.printResponse("spell card zone is full");
+            else{
+                UserInterface.printResponse("set successfully");
+                for (int i = 0; i<5; ++i){
+                    if (turn.field.spellTrapZone.get(i) == null){
+                        turn.field.spellTrapZone.set(i, selectedCard);
+                        selectedCard.setIsSetThisTurn(true);
+                        selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                        selectedCard.setCardsLocation(Location.SPELL_AREA);
+                        selectedCard = null;
+                        break;
+                    }
+                }
+            }
+        }
     }
 
     public void setPosition(Matcher matcher){
@@ -507,10 +555,12 @@ public class Battlefield {
             if (turn.field.monsterZone.get(i) != null){
                 turn.field.monsterZone.get(i).setSetChanged(false);
                 turn.field.monsterZone.get(i).setIsSetThisTurn(false);
+                turn.field.monsterZone.get(i).setISAttackedThisTurn(false);
             }
             if (opponent.field.monsterZone.get(i) != null){
                 opponent.field.monsterZone.get(i).setSetChanged(false);
                 opponent.field.monsterZone.get(i).setIsSetThisTurn(false);
+                opponent.field.monsterZone.get(i).setISAttackedThisTurn(false);
             }
             if (turn.field.spellTrapZone.get(i) != null){
                 turn.field.spellTrapZone.get(i).setSetChanged(false);

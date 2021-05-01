@@ -13,8 +13,9 @@ public abstract class Card implements Serializable {
     private Type cardsType;
     private FaceUp cardsFace;
     private Location cardsLocation;
-    private boolean setChanged;
-    private boolean isSetThisTurn;
+    private boolean setChanged = false;
+    private boolean isSetThisTurn = false;
+    private boolean isAttackedThisTurn = false;
     private String description;
     private int price;
 
@@ -72,6 +73,14 @@ public abstract class Card implements Serializable {
 
     public int getPrice() {
         return price;
+    }
+
+    public boolean getIsAttackedThisTurn() {
+        return isAttackedThisTurn;
+    }
+
+    public void setISAttackedThisTurn (boolean trueOrFalse){
+        this.isAttackedThisTurn = trueOrFalse;
     }
 
     @Override
