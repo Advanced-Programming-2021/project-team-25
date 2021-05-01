@@ -84,9 +84,7 @@ public class User implements Serializable {
     }
 
     public void setActiveDeck(Deck activeDeck) {
-        users.remove(this);
         this.activeDeck = activeDeck;
-        users.add(this);
     }
 
     public void setCardsBought(ArrayList<String> cardsBought) {
