@@ -53,7 +53,12 @@ public class Battlefield {
             else if (Regex.getMatcher(command, Regex.surrender).matches()) surrender();
             //else if (Regex.getMatcher(command, Regex.cancel).matches())
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
+            if (winner != null){
+                endGame();
+                break;
+            }
             showBattleField();
+
         }
     }
 
@@ -347,11 +352,13 @@ public class Battlefield {
     }
 
     public void showSelectedCard(){
-        ShowCard.showCard(selectedCard.getName());
+        if(selectedCard==null) UserInterface.printResponse("no card is selected yet");
+        else if(selectedCard.getCardsFace() == FaceUp.DEFENSE_BACK) UserInterface.printResponse("card is not visible");
+        else ShowCard.showCard(selectedCard.getName());
     }
 
     public void surrender(){
-
+        winner = opponent;
     }
 
     public void changeTurn(){
@@ -359,6 +366,15 @@ public class Battlefield {
         temp = turn;
         turn = opponent;
         opponent = temp;
+    }
+
+    public void endGame(){
+        UserInterface.printResponse(winner.getName() + " won the game and the score is: " + "1" + "-" +"0");
+        UserInterface.printResponse(winner.getName() + " won the whole match with score: " + "1" + "-" + "2");
+        int pevScore = winner.getUser().getScore();
+        winner.getUser().setScore(pevScore + 1000);
+        int pevMoney = winner.getUser().getMoney();
+        winner.getUser().setMoney(pevMoney + winner.LP);
     }
 
     public void cleanTurn(){

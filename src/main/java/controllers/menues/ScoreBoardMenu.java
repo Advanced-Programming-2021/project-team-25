@@ -54,6 +54,5 @@ public class ScoreBoardMenu {
             UserInterface.printResponse(rank + "- " + users.get(i).getNickName() + ":" + users.get(i).getScore());
             if(i != users.size() - 1 && users.get(i).getScore() > users.get(i+1).getScore() ) rank++;
         }
-
     }
 }

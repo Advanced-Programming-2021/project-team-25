@@ -9,7 +9,7 @@ public class Duelist {
 
     public Duelist(User user) {
         this.user = user;
-        this.field.deck = user.activeDeck.mainDeck;
+        this.field.deck.addAll(user.activeDeck.mainDeck);
     }
 
     public User getUser() {
