@@ -178,8 +178,8 @@ public class Battlefield {
         else if( phase == Phase.STANDBY_PHASE ) phase = Phase.MAIN1_PHASE;
         else if( phase == Phase.MAIN1_PHASE ) phase = Phase.BATTLE_PHASE;
         else if( phase == Phase.BATTLE_PHASE ) phase = Phase.MAIN2_PHASE;
-        //check needed for the END PHASE
-        else if( phase == Phase.MAIN2_PHASE ){
+        else if( phase == Phase.MAIN2_PHASE ) phase = Phase.END_TURN;
+        else if( phase == Phase.END_TURN ){
 
             changeTurn();
 
@@ -259,7 +259,14 @@ public class Battlefield {
 
     }
     public void showGraveyard(){
-
+        if(turn.field.graveYard.isEmpty()) UserInterface.printResponse("graveyard empty");
+        else{
+            int i=1;
+            for (Card card: turn.field.graveYard) {
+                UserInterface.printResponse(i + ". " + card.getName() + " : " + card.getDescription());
+            }
+        }
+        UserInterface.getUserInput();
     }
 
     public void showSelectedCard(){
