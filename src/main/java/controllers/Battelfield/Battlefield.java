@@ -100,10 +100,18 @@ public class Battlefield {
         UserInterface.printResponse(opponent.field.deck.size() + "");
 
         System.out.print("\t");
-        for(int i = 5 ; i > 0 ; i--) showSpellAndTrapsZone(i , opponent);
+        showSpellAndTrapsZone(3 , opponent);
+        showSpellAndTrapsZone(1 , opponent);
+        showSpellAndTrapsZone(0 , opponent);
+        showSpellAndTrapsZone(2 , opponent);
+        showSpellAndTrapsZone(4 , opponent);
 
         System.out.print("\t");
-        for(int i = 5 ; i > 0 ; i--) showMonsterZone(i, opponent);
+        showMonsterZone(3 , opponent);
+        showMonsterZone(1 , opponent);
+        showMonsterZone(0 , opponent);
+        showMonsterZone(2 , opponent);
+        showMonsterZone(4 , opponent);
 
         System.out.print(opponent.field.graveYard.size() + "\t\t\t\t\t\t");
         if(opponent.field.fieldZone == null ) System.out.print("O\n");
@@ -116,10 +124,18 @@ public class Battlefield {
         System.out.print("\t\t\t\t\t\t" + turn.field.graveYard.size());
 
         System.out.print("\t");
-        for(int i = 0 ; i < 5 ; i++) showMonsterZone(i, turn);
+        showMonsterZone(4 , turn);
+        showMonsterZone(2 , turn);
+        showMonsterZone(0 , turn);
+        showMonsterZone(1 , turn);
+        showMonsterZone(3 , turn);
 
         System.out.print("\t");
-        for(int i = 0 ; i < 5 ; i++) showSpellAndTrapsZone(i , turn);
+        showSpellAndTrapsZone(4 , turn);
+        showSpellAndTrapsZone(2 , turn);
+        showSpellAndTrapsZone(0 , turn);
+        showSpellAndTrapsZone(1 , turn);
+        showSpellAndTrapsZone(3 , turn);
 
         UserInterface.printResponse( "\t\t\t\t\t\t" + turn.field.deck.size());
         for (Card card: turn.field.hand) System.out.print("c\t");
