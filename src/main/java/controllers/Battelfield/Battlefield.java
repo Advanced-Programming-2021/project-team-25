@@ -210,7 +210,7 @@ public class Battlefield {
         else if(turn.field.monsterZone.size()==5)
             UserInterface.printResponse("monster card zone is full");
         //checking if turn can summon
-        else if(turn.hasPutMonster == false)
+        else if(!turn.hasPutMonster)
             UserInterface.printResponse("you already summoned/set on this turn");
         //summon level 5 or 6 monsters
         else if(monster.getLevel()==5 || monster.getLevel()==6){
