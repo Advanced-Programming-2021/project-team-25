@@ -195,12 +195,38 @@ public class Battlefield {
 
         }
     }
+
     public void set(){
 
     }
-    public void setPosition(Matcher matcher){
 
+    public void setPosition(Matcher matcher){
+        if(matcher.group(1).equals("attack")){
+            if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
+            else if(!turn.field.monsterZone.contains(selectedCard)) UserInterface.printResponse("you can’t change this card position");
+            else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE)) UserInterface.printResponse("you can’t do this action in this phase");
+            else if(selectedCard.getCardsFace() == FaceUp.ATTACK) UserInterface.printResponse("this card is already in the wanted position");
+            else if(selectedCard.getSetChanged()) UserInterface.printResponse("you already changed this card position in this turn");
+            else{
+                selectedCard.setSetChanged(true);
+                selectedCard.setCardsFace(FaceUp.ATTACK);
+                UserInterface.printResponse("monster card position changed successfully");
+            }
+        }
+        else if(matcher.group(1).equals("defence")){
+            if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
+            else if(!turn.field.monsterZone.contains(selectedCard)) UserInterface.printResponse("you can’t change this card position");
+            else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE)) UserInterface.printResponse("you can’t do this action in this phase");
+            else if(selectedCard.getCardsFace() != FaceUp.ATTACK) UserInterface.printResponse("this card is already in the wanted position");
+            else if(selectedCard.getSetChanged()) UserInterface.printResponse("you already changed this card position in this turn");
+            else{
+                selectedCard.setSetChanged(true);
+                selectedCard.setCardsFace(FaceUp.DEFENSE_FRONT);
+                UserInterface.printResponse("monster card position changed successfully");
+            }
+        }
     }
+
     public void flipSummon(){
 
     }
