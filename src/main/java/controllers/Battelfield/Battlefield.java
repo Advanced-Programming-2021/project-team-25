@@ -183,20 +183,20 @@ public class Battlefield {
         if (breakedCommand[0].equals("--monster")){
             if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
                 UserInterface.printResponse("invalid selection");
-            else if (turn.field.monsterZone[Integer.parseInt(breakedCommand[1]) - 1] == null)
+            else if (turn.field.monsterZone.get(Integer.parseInt(breakedCommand[1]) - 1) == null)
                 UserInterface.printResponse("no card found in the given position");
             else {
-                selectedCard = turn.field.monsterZone[Integer.parseInt(breakedCommand[1]) - 1];
+                selectedCard = turn.field.monsterZone.get(Integer.parseInt(breakedCommand[1]) - 1);
                 UserInterface.printResponse("card selected");
             }
         }
         else if (breakedCommand[0].equals("--spell")){
             if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
                 UserInterface.printResponse("invalid selection");
-            else if (turn.field.spellTrapZone[Integer.parseInt(breakedCommand[1]) - 1] == null)
+            else if (turn.field.spellTrapZone.get(Integer.parseInt(breakedCommand[1]) - 1) == null)
                 UserInterface.printResponse("no card found in the given position");
             else {
-                selectedCard = turn.field.spellTrapZone[Integer.parseInt(breakedCommand[1]) - 1];
+                selectedCard = turn.field.spellTrapZone.get(Integer.parseInt(breakedCommand[1]) - 1);
                 UserInterface.printResponse("card selected");
             }
         }
@@ -206,10 +206,10 @@ public class Battlefield {
         else if (breakedCommand[0].equals("--hand")){
             if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 6)
                 UserInterface.printResponse("invalid selection");
-            else if (turn.field.hand[Integer.parseInt(breakedCommand[1]) - 1] == null)
+            else if (turn.field.hand.get(Integer.parseInt(breakedCommand[1]) - 1) == null)
                 UserInterface.printResponse("no card found in the given position");
             else {
-                selectedCard = turn.field.hand[Integer.parseInt(breakedCommand[1]) - 1];
+                selectedCard = turn.field.hand.get(Integer.parseInt(breakedCommand[1]) - 1);
                 UserInterface.printResponse("card selected");
             }
         }
@@ -232,20 +232,20 @@ public class Battlefield {
         if (breakedCommand[0].equals("--monster")){
             if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
                 UserInterface.printResponse("invalid selection");
-            else if (opponent.field.monsterZone[Integer.parseInt(breakedCommand[1]) - 1] == null)
+            else if (opponent.field.monsterZone.get(Integer.parseInt(breakedCommand[1]) - 1) == null)
                 UserInterface.printResponse("no card found in the given position");
             else {
-                selectedCard = opponent.field.monsterZone[Integer.parseInt(breakedCommand[1]) - 1];
+                selectedCard = opponent.field.monsterZone.get(Integer.parseInt(breakedCommand[1]) - 1);
                 UserInterface.printResponse("card selected");
             }
         }
         else if (breakedCommand[0].equals("--spell")){
             if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
                 UserInterface.printResponse("invalid selection");
-            else if (opponent.field.spellTrapZone[Integer.parseInt(breakedCommand[1]) - 1] == null)
+            else if (opponent.field.spellTrapZone.get(Integer.parseInt(breakedCommand[1]) - 1) == null)
                 UserInterface.printResponse("no card found in the given position");
             else {
-                selectedCard = opponent.field.spellTrapZone[Integer.parseInt(breakedCommand[1]) - 1];
+                selectedCard = opponent.field.spellTrapZone.get(Integer.parseInt(breakedCommand[1]) - 1);
                 UserInterface.printResponse("card selected");
             }
         }
