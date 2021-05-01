@@ -36,8 +36,8 @@ public class Battlefield {
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
-            if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
+            if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
+            else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
             else if (Regex.getMatcher(command, Regex.nextPhase).matches()) nextPhase();
             else if (Regex.getMatcher(command, Regex.summon).matches()) summon();
@@ -170,11 +170,91 @@ public class Battlefield {
     }
 
     public void selectCard(Matcher matcher){
-
+    	String restOfCommand = matcher.group(1);
+        String[] temp = restOfCommand.split(" ");
+        String[] breakedCommand = new String[2];
+        int counter = 0;
+        for (int i = 0; i<temp.length; ++i){
+            if (temp[i].length() > 0){
+                breakedCommand[counter] = temp[i];
+                counter += 1;
+            }
+        }
+        if (breakedCommand[0].equals("--monster")){
+            if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
+                UserInterface.printResponse("invalid selection");
+            else if (turn.field.monsterZone[Integer.parseInt(breakedCommand[1]) - 1] == null)
+                UserInterface.printResponse("no card found in the given position");
+            else {
+                selectedCard = turn.field.monsterZone[Integer.parseInt(breakedCommand[1]) - 1];
+                UserInterface.printResponse("card selected");
+            }
+        }
+        else if (breakedCommand[0].equals("--spell")){
+            if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
+                UserInterface.printResponse("invalid selection");
+            else if (turn.field.spellTrapZone[Integer.parseInt(breakedCommand[1]) - 1] == null)
+                UserInterface.printResponse("no card found in the given position");
+            else {
+                selectedCard = turn.field.spellTrapZone[Integer.parseInt(breakedCommand[1]) - 1];
+                UserInterface.printResponse("card selected");
+            }
+        }
+        else if (breakedCommand[0].equals("--field")){
+            selectedCard = turn.field.fieldZone;
+        }
+        else if (breakedCommand[0].equals("--hand")){
+            if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 6)
+                UserInterface.printResponse("invalid selection");
+            else if (turn.field.hand[Integer.parseInt(breakedCommand[1]) - 1] == null)
+                UserInterface.printResponse("no card found in the given position");
+            else {
+                selectedCard = turn.field.hand[Integer.parseInt(breakedCommand[1]) - 1];
+                UserInterface.printResponse("card selected");
+            }
+        }
+        else{
+            UserInterface.printResponse("invalid selection");
+        }
     }
 
     public void selectOpponentCard(Matcher matcher){
-
+    	String restOfCommand = matcher.group(1);
+        String[] temp = restOfCommand.split(" ");
+        String[] breakedCommand = new String[2];
+        int counter = 0;
+        for (int i = 0; i<temp.length; ++i){
+            if (temp[i].length() > 0){
+                breakedCommand[counter] = temp[i];
+                counter += 1;
+            }
+        }
+        if (breakedCommand[0].equals("--monster")){
+            if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
+                UserInterface.printResponse("invalid selection");
+            else if (opponent.field.monsterZone[Integer.parseInt(breakedCommand[1]) - 1] == null)
+                UserInterface.printResponse("no card found in the given position");
+            else {
+                selectedCard = opponent.field.monsterZone[Integer.parseInt(breakedCommand[1]) - 1];
+                UserInterface.printResponse("card selected");
+            }
+        }
+        else if (breakedCommand[0].equals("--spell")){
+            if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
+                UserInterface.printResponse("invalid selection");
+            else if (opponent.field.spellTrapZone[Integer.parseInt(breakedCommand[1]) - 1] == null)
+                UserInterface.printResponse("no card found in the given position");
+            else {
+                selectedCard = opponent.field.spellTrapZone[Integer.parseInt(breakedCommand[1]) - 1];
+                UserInterface.printResponse("card selected");
+            }
+        }
+        else if (breakedCommand[0].equals("--field")){
+            selectedCard = opponent.field.fieldZone;
+        }
+        else{
+            UserInterface.printResponse("invalid selection");
+        }
     }
 
     public void deselectCard(){
