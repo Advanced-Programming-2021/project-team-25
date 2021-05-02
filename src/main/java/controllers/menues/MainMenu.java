@@ -11,16 +11,18 @@ import view.UserInterface;
 import java.util.regex.Matcher;
 
 public class MainMenu {
+
     private User currUser;
     private boolean isUserLoggedOut = false;
+
     public MainMenu(User currUser) {
         this.currUser=currUser;
         String command = UserInterface.getUserInput();
         while(!command.equals("menu exit") && !isUserLoggedOut){
+
             if(command.startsWith("menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),currUser);
             else if(command.equals("user logout")) logoutUser();
-            else if(command.equals("scoreboard show")) ScoreBoardMenu.showScoreBoard();
-            else if(command.equals("menu show-current")) UserInterface.printResponse("Main Menu");
+            else if(command.equals("menu Show Current")) UserInterface.printResponse("Main Menu");
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
             if(!isUserLoggedOut) command = UserInterface.getUserInput();
