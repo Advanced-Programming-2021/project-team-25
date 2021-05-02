@@ -294,7 +294,7 @@ public class Battlefield {
         else if( !(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
             UserInterface.printResponse("action not allowed in this phase");
         //checking is the zone filled
-        else if(isMonsterZoneIsFull())
+        else if(getSizeOfMonsterZone()==5)
             UserInterface.printResponse("monster card zone is full");
         //checking if turn can summon
         else if(!turn.hasPutMonster)
@@ -317,16 +317,10 @@ public class Battlefield {
             selectedCard = null;
         }
     }
-    private boolean isMonsterZoneIsFull(){
 
-        for(Card monster : turn.field.monsterZone){
-            if(Objects.isNull(monster)) return false;
-        }
-        return true;
-    }
     private void summonLevel8Or7(Monster monster) {
         //checking if can tribute happened
-        if(turn.field.monsterZone.size()<2) UserInterface.printResponse("there are not enough cards for tribute");
+        if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
         else {
             Monster monsterForTribute1 , monsterForTribute2;
             UserInterface.printResponse("please select two card to tribute!");
@@ -375,7 +369,7 @@ public class Battlefield {
         selectedCard.setSetChanged(true);
         selectedCard.setCardsFace(FaceUp.ATTACK);
         //putting card in last monster zone
-        turn.field.monsterZone.set(turn.field.monsterZone.size()+1,selectedCard);
+        turn.field.monsterZone.set(getSizeOfMonsterZone()+1,selectedCard);
 
         UserInterface.printResponse("summoned successfully");
     }
@@ -398,9 +392,15 @@ public class Battlefield {
             UserInterface.printResponse(Responses.INVALID_CARD_SELECTION_ADDRESS);
             return null;
         }
-
     }
 
+    public int getSizeOfMonsterZone(){
+        int count=0;
+        for(Card monster : turn.field.monsterZone){
+            if(!Objects.isNull(monster)) count++;
+        }
+        return count;
+    }
     public void set(){
         if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
         else if (!turn.field.hand.contains(selectedCard))
