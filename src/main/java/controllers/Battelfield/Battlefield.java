@@ -56,13 +56,9 @@ public class Battlefield {
             else if (Regex.getMatcher(command, Regex.surrender).matches()) surrender();
             //else if (Regex.getMatcher(command, Regex.cancel).matches())
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
-            if (winner != null){
-                endGame();
-                break;
-            }
             showBattleField();
-
         }
+        endGame();
     }
 
     private void whoStart(Duelist duelist1, Duelist duelist2) {
@@ -96,10 +92,6 @@ public class Battlefield {
                 addCardToPlayersDeck(turn);
             }
         }
-        //lp = 8000
-        //cleanTurn();
-
-
     }
 
     private void addCardToPlayersDeck(Duelist turn) {
@@ -502,7 +494,47 @@ public class Battlefield {
         }
 
     }
+
     public void attack(Matcher matcher){
+        int monsterNum = Integer.parseInt(matcher.group(1));
+        if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
+        else if(!turn.field.monsterZone.contains(selectedCard)) UserInterface.printResponse("you can’t attack with this card");
+        else if(phase != Phase.BATTLE_PHASE) UserInterface.printResponse("you can’t do this action in this phase");
+        else if(selectedCard.getIsAttackedThisTurn()) UserInterface.printResponse("this card already attacked");
+        else if(getIndex(monsterNum) == -1) UserInterface.printResponse("invalid command");
+        else if(opponent.field.monsterZone.get(getIndex(monsterNum)) == null) UserInterface.printResponse("there is no card to attack here");
+        else{
+            Monster attackedMonster = (Monster) opponent.field.monsterZone.get(getIndex(monsterNum));
+            Monster attackingMonster = (Monster) selectedCard;
+            if(attackedMonster.getCardsFace() == FaceUp.ATTACK){
+
+                if(attackingMonster.getAttack() > attackedMonster.getAttack()){
+                    selectedCard.setISAttackedThisTurn(true);
+                    opponent.field.graveYard.add(opponent.field.monsterZone.get(getIndex(monsterNum)));
+                    opponent.field.monsterZone.add(getIndex(monsterNum) , null);
+                    int damage = attackingMonster.getAttack() - attackedMonster.getAttack();
+                    opponent.LP = opponent.LP - damage;
+                    UserInterface.printResponse("your opponent’s monster is destroyed and your opponent receives" + damage + "battle damage");
+                }
+
+                else if(attackingMonster.getAttack() == attackedMonster.getAttack()){
+                    opponent.field.graveYard.add(opponent.field.monsterZone.get(getIndex(monsterNum)));
+                    opponent.field.monsterZone.add(getIndex(monsterNum) , null);
+                    turn.field.graveYard.add(selectedCard);
+                    turn.field.monsterZone.add(getIndex(getIndexOfCard()) , null);
+                    UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
+                }
+
+                else{
+                    turn.field.graveYard.add(selectedCard);
+                    turn.field.monsterZone.add(getIndex(getIndexOfCard()) , null);
+                    int damage = attackedMonster.getAttack() - attackingMonster.getAttack();
+                    turn.LP = turn.LP - damage;
+                    UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
+                }
+            }
+
+        }
 
     }
     public void directAttack(){
@@ -511,6 +543,7 @@ public class Battlefield {
     public void activeSpell(){
 
     }
+
     public void ritualSummon(){
         String command;
         //getting the ritual monster in hand if exist
@@ -531,6 +564,7 @@ public class Battlefield {
             summonLevel8Or7(ritualMonster);
         }
     }
+
     private Monster getRitualMonsterInHand () {
         for (Card card : turn.field.hand) {
             if (card.getCardsType().equals(Type.MONSTER) && ((Monster) card).getCardTypeInExel().equals("Ritual")) {
@@ -547,6 +581,7 @@ public class Battlefield {
         }
         return sum;
     }
+
     public void showGraveyard(){
         if(turn.field.graveYard.isEmpty()) UserInterface.printResponse("graveyard empty");
         else{
@@ -634,6 +669,22 @@ public class Battlefield {
 
     public void removeElementFromArrayList(ArrayList<Card> cards,Card element){
         cards.set(cards.indexOf(element),null);
+    }
+
+    public int getIndex(int num){
+        if(num == 1) return 2;
+        else if(num == 2) return 1;
+        else if(num == 3) return 3;
+        else if(num == 4) return 0;
+        else if(num == 5) return 4;
+        else return -1;
+    }
+
+    public int getIndexOfCard(){
+        for (int i = 0 ; i < 5 ; i++ ) {
+            if(selectedCard == turn.field.monsterZone.get(i)) return i;
+        }
+        return -1;
     }
 
 }

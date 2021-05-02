@@ -4,7 +4,7 @@ public class Duelist {
 
     private final User user;
     public Field field = new Field();
-    public final int LP = 8000;
+    public int LP = 8000;
     public boolean hasPutMonster = false;
 
     public Duelist(User user) {
