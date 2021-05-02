@@ -396,9 +396,8 @@ public class Battlefield {
 
     public int getSizeOfMonsterZone(){
         int count=0;
-        for(Card monster : turn.field.monsterZone){
-            if(!Objects.isNull(monster)) count++;
-        }
+        for (int i = 0; i<5; ++i)
+            if (turn.field.monsterZone.get(i) != null) count += 1;
         return count;
     }
     public void set(){
@@ -408,9 +407,7 @@ public class Battlefield {
         else if( !(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
             UserInterface.printResponse("you can't do this action in this phase");
         else if (selectedCard.getCardsType() == Type.MONSTER){
-            int counter = 0;
-            for (int i = 0; i<5; ++i)
-                if (turn.field.monsterZone.get(i) != null) counter += 1;
+            int counter = getSizeOfMonsterZone();
             if (counter == 5)
                 UserInterface.printResponse("monster card zone is full");
             else if (turn.hasPutMonster)
