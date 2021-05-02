@@ -50,5 +50,7 @@ public class Regex {
         Pattern pattern = Pattern.compile(regex);
         return pattern.matcher(input);
     }
-
 }
+
+
+
