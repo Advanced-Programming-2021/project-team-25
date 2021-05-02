@@ -542,8 +542,19 @@ public class Battlefield {
     }
 
     public void directAttack(){
-
+        if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
+        else if(!turn.field.monsterZone.contains(selectedCard)) UserInterface.printResponse("you can’t attack with this card");
+        else if(phase != Phase.BATTLE_PHASE) UserInterface.printResponse("you can’t do this action in this phase");
+        else if(selectedCard.getIsAttackedThisTurn()) UserInterface.printResponse("this card already attacked");
+        else if(!isOpponentEmptyOfMonsters()) UserInterface.printResponse("you can’t attack the opponent directly");
+        else{
+            selectedCard.setISAttackedThisTurn(true);
+            Monster monster = (Monster) selectedCard;
+            opponent.LP = opponent.LP -  monster.getAttack();
+            System.out.println("your opponent receives " + monster.getAttack() + " battle damage");
+        }
     }
+
     public void activeSpell(){
 
     }
@@ -678,6 +689,13 @@ public class Battlefield {
             if(selectedCard == turn.field.monsterZone.get(i)) return i;
         }
         return -1;
+    }
+
+    public boolean isOpponentEmptyOfMonsters(){
+        for (Card card: opponent.field.monsterZone) {
+            if(card != null) return false;
+        }
+        return true;
     }
 
 }
