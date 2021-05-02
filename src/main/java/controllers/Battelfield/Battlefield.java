@@ -22,12 +22,14 @@ import static controllers.ShowCard.showCard;
 
 public class Battlefield {
 
+    public static ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
     private Duelist turn;
     private Duelist opponent;
     private Duelist winner;
     private Card selectedCard;
     private Phase phase;
     private boolean isRitualSummoned = false;
+
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -404,6 +406,13 @@ public class Battlefield {
             if (turn.field.monsterZone.get(i) != null) count += 1;
         return count;
     }
+    public int getSizeOfSpellAndTrapZone(){
+        int count=0;
+        for (int i = 0; i<5; ++i)
+            if (turn.field.spellTrapZone.get(i) != null) count += 1;
+        return count;
+    }
+
     public void set(){
         if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
         else if (!turn.field.hand.contains(selectedCard))
@@ -590,9 +599,23 @@ public class Battlefield {
             UserInterface.printResponse("you cant active an effect on this turn");
         else{
             spellAndTrap = (SpellAndTrap) selectedCard;
-            if(spellAndTrap.getStatus().equals("active"))
+            if(activeSpellAndTraps.contains(spellAndTrap))
                 UserInterface.printResponse("you have already activate this card");
+            else if(getSizeOfSpellAndTrapZone()==5)
+                UserInterface.printResponse("spell card zone is full");
+            else if(!canWeActiveSpell())
+                UserInterface.printResponse("preparation of this spell are not done yet");
+            else{
+                activeSpellAndTraps.add(spellAndTrap);
+                turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone()+1,selectedCard);
+
+            }
+
         }
+    }
+    //checking for that if that spell has a role that we can`t activate it
+    private boolean canWeActiveSpell(){
+        return true;
     }
 
     public void ritualSummon(){
@@ -718,9 +741,6 @@ public class Battlefield {
         }
     }
 
-    public void removeElementFromArrayList(ArrayList<Card> cards,Card element){
-        cards.set(cards.indexOf(element),null);
-    }
 
     public int getIndex(int num){
         if(num == 1) return 2;
