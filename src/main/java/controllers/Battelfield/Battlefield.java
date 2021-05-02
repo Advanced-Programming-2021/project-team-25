@@ -38,7 +38,7 @@ public class Battlefield {
         while (winner == null) {
             String command = UserInterface.getUserInput();
             Matcher matcher;
-            if(!isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
+            if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
             else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
@@ -294,7 +294,7 @@ public class Battlefield {
         else if( !(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
             UserInterface.printResponse("action not allowed in this phase");
         //checking is the zone filled
-        else if(turn.field.monsterZone.size()==5)
+        else if(getSizeOfMonsterZone()==5)
             UserInterface.printResponse("monster card zone is full");
         //checking if turn can summon
         else if(!turn.hasPutMonster)
@@ -302,33 +302,53 @@ public class Battlefield {
         //summon level 5 or 6 monsters
         else if(monster.getLevel()==5 || monster.getLevel()==6){
             summonLevel6Or5();
+            selectedCard = null;
         }
         //summon level 7 , 8 monsters
         else if(monster.getLevel()==7 || monster.getLevel()==8){
-            summonLevel8Or7();
+            summonLevel8Or7(monster);
+            selectedCard = null;
         }
         //normal summon
         else if(monster.getLevel()<=4){
             summonedMonster();
             //check that monster put
             turn.hasPutMonster = true;
+            selectedCard = null;
         }
     }
 
-    private void summonLevel8Or7() {
+    private void summonLevel8Or7(Monster monster) {
         //checking if can tribute happened
-        if(turn.field.monsterZone.size()<2) UserInterface.printResponse("there are not enough cards for tribute");
+        if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
         else {
+            Monster monsterForTribute1 , monsterForTribute2;
             UserInterface.printResponse("please select two card to tribute!");
             UserInterface.printResponse("please select the first one");
-            tributeOneMonster();
+            monsterForTribute1 = tributeOneMonster();
             UserInterface.printResponse("please select the next one");
-            tributeOneMonster();
-            //summon
-            summonedMonster();
-            //check that monster put
-            turn.hasPutMonster = true;
+            monsterForTribute2 = tributeOneMonster();
+            //checking is error happened or not
+            if(Objects.isNull(monsterForTribute1) || Objects.isNull(monsterForTribute2))
+                return;
+            //checking the levels is enough or not
+            assert false;
+            if(monsterForTribute1.getLevel()+monsterForTribute2.getLevel()<monster.getLevel())
+                UserInterface.printResponse("selected monster levels don`t match with ritual monster");
+            else{
+                moveMonsterToGraveYard(monsterForTribute1);
+                moveMonsterToGraveYard(monsterForTribute2);
+                //summon
+                summonedMonster();
+                //check that monster put
+                turn.hasPutMonster = true;
+            }
         }
+    }
+
+    private void moveMonsterToGraveYard(Monster monsterForTribute1) {
+        turn.field.monsterZone.remove(monsterForTribute1);
+        turn.field.graveYard.add(monsterForTribute1);
     }
 
     private void summonLevel6Or5() {
@@ -349,33 +369,37 @@ public class Battlefield {
         selectedCard.setSetChanged(true);
         selectedCard.setCardsFace(FaceUp.ATTACK);
         //putting card in last monster zone
-        turn.field.monsterZone.set(turn.field.monsterZone.size()+1,selectedCard);
+        turn.field.monsterZone.set(getSizeOfMonsterZone()+1,selectedCard);
 
         UserInterface.printResponse("summoned successfully");
     }
 
-    private void tributeOneMonster() {
+    private Monster tributeOneMonster() {
         //selecting card to tribute
         String command = UserInterface.getUserInput();
         //getting card address
         Matcher matcher = Regex.getMatcher(command, Regex.select);
 
-        if(matcher.find()){
+        if (matcher.find()) {
             //get monster
             Monster monsterForTribute = (Monster) turn.field.monsterZone.get(Integer.parseInt(matcher.group(1)));
             //checking not empty
-            if(Objects.isNull(monsterForTribute))
+            if (Objects.isNull(monsterForTribute))
                 UserInterface.printResponse("no card found in the given position");
-            //send tribute monster to graveyard
-            else{
-                turn.field.monsterZone.remove(monsterForTribute);
-                turn.field.graveYard.add(monsterForTribute);
-            }
-        }
-        else
+            //send tribute monster back
+            return monsterForTribute;
+        } else{
             UserInterface.printResponse(Responses.INVALID_CARD_SELECTION_ADDRESS);
+            return null;
+        }
     }
 
+    public int getSizeOfMonsterZone(){
+        int count=0;
+        for (int i = 0; i<5; ++i)
+            if (turn.field.monsterZone.get(i) != null) count += 1;
+        return count;
+    }
     public void set(){
         if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
         else if (!turn.field.hand.contains(selectedCard))
@@ -383,9 +407,7 @@ public class Battlefield {
         else if( !(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
             UserInterface.printResponse("you can't do this action in this phase");
         else if (selectedCard.getCardsType() == Type.MONSTER){
-            int counter = 0;
-            for (int i = 0; i<5; ++i)
-                if (turn.field.monsterZone.get(i) != null) counter += 1;
+            int counter = getSizeOfMonsterZone();
             if (counter == 5)
                 UserInterface.printResponse("monster card zone is full");
             else if (turn.hasPutMonster)
@@ -560,13 +582,24 @@ public class Battlefield {
     }
 
     public void ritualSummon(){
+        String command;
         //getting the ritual monster in hand if exist
         Monster ritualMonster = getRitualMonsterInHand();
         //getting the sum of levels in monster zone
         int sumOfLevels = getSumOfLevelsInZone();
         if (Objects.isNull(ritualMonster) || sumOfLevels < 7)
             UserInterface.printResponse("there is no way you could ritual summon a monster");
-        else if (ritualMonster != null) isRitualSummoned = true;
+        else{
+            //checking not input another command
+            isRitualSummoned = true;
+            //get input command
+            command = UserInterface.getUserInput();
+            //force user to say summon
+            while(!command.equals("summon"))
+                UserInterface.printResponse("you should ritual summon right now");
+
+            summonLevel8Or7(ritualMonster);
+        }
     }
 
     private Monster getRitualMonsterInHand () {
