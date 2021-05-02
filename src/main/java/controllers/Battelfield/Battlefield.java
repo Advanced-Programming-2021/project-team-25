@@ -8,6 +8,7 @@ import models.CardStufs.Location;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
+import models.SpellAndTrap.SpellAndTrap;
 import view.Responses;
 import view.UserInterface;
 
@@ -283,38 +284,41 @@ public class Battlefield {
 
     public void summon(){
 
-        //loading the monster from selected card
-        Monster monster = (Monster)selectedCard;
         //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         //checking that if we have monster
-        else if(!turn.field.hand.contains(selectedCard) || !(selectedCard.getCardsType() == Type.MONSTER) || !monster.getCardTypeInExel().equals("normal"))
+        else if(!turn.field.hand.contains(selectedCard) || !(selectedCard.getCardsType() == Type.MONSTER)
+                || !((Monster)selectedCard).getCardTypeInExel().equals("normal"))
             UserInterface.printResponse("you cant summon this card");
-        //checking the correct phase
-        else if( !(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
-            UserInterface.printResponse("action not allowed in this phase");
-        //checking is the zone filled
-        else if(getSizeOfMonsterZone()==5)
-            UserInterface.printResponse("monster card zone is full");
-        //checking if turn can summon
-        else if(!turn.hasPutMonster)
-            UserInterface.printResponse("you already summoned/set on this turn");
-        //summon level 5 or 6 monsters
-        else if(monster.getLevel()==5 || monster.getLevel()==6){
-            summonLevel6Or5();
-            selectedCard = null;
-        }
-        //summon level 7 , 8 monsters
-        else if(monster.getLevel()==7 || monster.getLevel()==8){
-            summonLevel8Or7(monster);
-            selectedCard = null;
-        }
-        //normal summon
-        else if(monster.getLevel()<=4){
-            summonedMonster();
-            //check that monster put
-            turn.hasPutMonster = true;
-            selectedCard = null;
+        else {
+            //loading the monster from selected card
+            Monster monster = (Monster)selectedCard;
+            //checking the correct phase
+            if( !(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
+                UserInterface.printResponse("action not allowed in this phase");
+                //checking is the zone filled
+            else if(getSizeOfMonsterZone()==5)
+                UserInterface.printResponse("monster card zone is full");
+                //checking if turn can summon
+            else if(!turn.hasPutMonster)
+                UserInterface.printResponse("you already summoned/set on this turn");
+                //summon level 5 or 6 monsters
+            else if(monster.getLevel()==5 || monster.getLevel()==6){
+                summonLevel6Or5();
+                selectedCard = null;
+            }
+            //summon level 7 , 8 monsters
+            else if(monster.getLevel()==7 || monster.getLevel()==8){
+                summonLevel8Or7(monster);
+                selectedCard = null;
+            }
+            //normal summon
+            else if(monster.getLevel()<=4){
+                summonedMonster();
+                //check that monster put
+                turn.hasPutMonster = true;
+                selectedCard = null;
+            }
         }
     }
 
@@ -538,7 +542,17 @@ public class Battlefield {
 
     }
     public void activeSpell(){
-
+        SpellAndTrap spellAndTrap;
+        if(Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
+        else if(!selectedCard.getCardsType().equals(Type.SPELL))
+            UserInterface.printResponse("active effect is only for spell cards.");
+        else if(!phase.equals(Phase.MAIN1_PHASE))
+            UserInterface.printResponse("you cant active an effect on this turn");
+        else{
+            spellAndTrap = (SpellAndTrap) selectedCard;
+            if(spellAndTrap.getStatus().equals("active"))
+                UserInterface.printResponse("you have already activate this card");
+        }
     }
 
     public void ritualSummon(){
