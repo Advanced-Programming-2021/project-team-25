@@ -63,6 +63,13 @@ public class Monster extends Card implements Serializable {
         return defence;
     }
 
+    public void setAttack(int attack) {
+        this.attack = attack;
+    }
+
+    public void setDefence(int defence) {
+        this.defence = defence;
+    }
     //    @Override
 //    public void action() {
 //
