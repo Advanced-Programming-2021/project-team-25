@@ -2,6 +2,7 @@ package models.Monster;
 
 import models.Card;
 import models.CardStufs.Type;
+import models.SpellAndTrap.SpellAndTrap;
 
 import java.io.Serializable;
 
@@ -13,6 +14,7 @@ public class Monster extends Card implements Serializable {
     private String cardType;
     private int attack;
     private int defence;
+    private SpellAndTrap activeSpell;
 
 
     public Monster(String name, Type cardType, String description, int price, int level, String attribute,
@@ -70,8 +72,13 @@ public class Monster extends Card implements Serializable {
     public void setDefence(int defence) {
         this.defence = defence;
     }
-    //    @Override
-//    public void action() {
-//
-//    }
+
+    public void setActiveSpell(SpellAndTrap activeSpell) {
+        this.activeSpell = activeSpell;
+    }
+
+    @Override
+    public void action() {
+
+    }
 }

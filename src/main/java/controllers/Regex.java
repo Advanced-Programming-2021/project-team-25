@@ -45,6 +45,7 @@ public class Regex {
     public static String showSelectedCard = "^card show --selected$";
     public static String surrender = "^surrender$";
     public static String cancel = "^cancel$";
+    public static String selectCardFromGraveyard = "select --(M|H) (\\d{0,50})";
 
     public static Matcher getMatcher(String input, String regex) {
         Pattern pattern = Pattern.compile(regex);

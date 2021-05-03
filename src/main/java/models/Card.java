@@ -97,8 +97,5 @@ public abstract class Card implements Serializable {
                 '}';
     }
 
-
-//    public abstract void action (/*check with other members*/){
-//
-//    }
+    public abstract void action (/*check with other members*/);
 }
