@@ -23,8 +23,8 @@ import static controllers.ShowCard.showCard;
 public class Battlefield {
 
     public static ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
-    private Duelist turn;
-    private Duelist opponent;
+    private static Duelist turn;
+    private static Duelist opponent;
     private Duelist winner;
     private Card selectedCard;
     private Phase phase;
@@ -35,6 +35,16 @@ public class Battlefield {
         whoStart(duelist1, duelist2);
         startGame();
         runBattleField();
+    }
+    //static methods
+    public static Duelist getTurn(){
+        return turn;
+    }
+    public static Duelist getOpponent(){
+        return opponent;
+    }
+    public static void specialSummon(Monster monster){
+
     }
 
     public void runBattleField(){
@@ -764,5 +774,4 @@ public class Battlefield {
         }
         return true;
     }
-
 }
