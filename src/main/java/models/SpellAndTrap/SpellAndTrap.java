@@ -34,8 +34,8 @@ public class SpellAndTrap extends Card implements Serializable {
     }
 
 
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void action() {
+
+    }
 }
