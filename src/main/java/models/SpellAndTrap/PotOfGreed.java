@@ -12,7 +12,6 @@ import java.util.Objects;
 
 public class PotOfGreed extends SpellAndTrap implements Serializable {
     private static Duelist turn;
-    private static Duelist opponent;
 
     public PotOfGreed (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
@@ -27,9 +26,8 @@ public class PotOfGreed extends SpellAndTrap implements Serializable {
     @Override
     public void action() {
         turn = Battlefield.getTurn();
-        opponent = Battlefield.getOpponent();
         //checking not null
-        if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
+        if(!Objects.isNull(turn)){
             if(getSizeOfHand()<=4){
                 //add two card
                 turn.field.hand.add(turn.field.deck.get(0));
