@@ -83,9 +83,12 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable {
 
     private void specialSummon(int number, Duelist duelist) {
         Monster monster = (Monster) duelist.field.graveYard.get(number);
-        duelist.field.graveYard.remove(number);
-        monster.setActiveSpell(this);
-        Battlefield.specialSummon(monster);
+        if(Objects.isNull(monster)) UserInterface.printResponse("No Monster Found");
+        else{
+            duelist.field.graveYard.remove(number);
+            monster.setActiveSpell(this);
+            Battlefield.specialSummon(monster);
+        }
     }
 
     private boolean showGraveYard(Duelist duelist) {
