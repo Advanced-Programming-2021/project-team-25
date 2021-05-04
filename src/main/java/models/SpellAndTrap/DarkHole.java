@@ -1,8 +1,13 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
+import models.Card;
 import models.CardStufs.Type;
+import models.Duelist;
+import view.UserInterface;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class DarkHole extends SpellAndTrap implements Serializable {
 
@@ -16,8 +21,22 @@ public class DarkHole extends SpellAndTrap implements Serializable {
                 ((DarkHole)object).getIcon(), ((DarkHole)object).getStatus());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void action() {
+        Duelist turn = Battlefield.getTurn();
+        Duelist opponent = Battlefield.getOpponent();
+        //checking not null
+        if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
+            //remove all monsters in rival zone
+            for(Card card : opponent.field.monsterZone){
+                opponent.field.graveYard.add(card);
+                opponent.field.monsterZone.set(opponent.field.monsterZone.indexOf(card) , null);
+            }
+            //remove all monsters in our zone
+            for(Card card : turn.field.monsterZone){
+                turn.field.graveYard.add(card);
+                turn.field.monsterZone.set(turn.field.monsterZone.indexOf(card) , null);
+            }
+        }
+    }
 }
