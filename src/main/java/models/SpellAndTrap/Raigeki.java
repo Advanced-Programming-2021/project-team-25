@@ -1,10 +1,17 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
+import models.Card;
 import models.CardStufs.Type;
+import models.Duelist;
+import models.Monster.Monster;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class Raigeki extends SpellAndTrap implements Serializable {
+
+    private static Duelist opponent;
 
     public Raigeki (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
@@ -16,8 +23,15 @@ public class Raigeki extends SpellAndTrap implements Serializable {
                 ((Raigeki)object).getIcon(), ((Raigeki)object).getStatus());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void action() {
+        opponent = Battlefield.getTurn();
+        //checking not null
+        if(!Objects.isNull(opponent)){
+            for(Card card : opponent.field.monsterZone){
+                opponent.field.graveYard.add(card);
+                opponent.field.monsterZone.set(opponent.field.monsterZone.indexOf(card) , null);
+            }
+        }
+    }
 }
