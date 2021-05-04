@@ -76,18 +76,18 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
                 if (opponent.field.spellTrapZone.get(i) != null)
                     UserInterface.printResponse(opponent.field.spellTrapZone.get(i).getName() + ":" +
                             opponent.field.spellTrapZone.get(i).getDescription());
-            String command = " ";
+            String cardsName2 = " ";
             while (true){
-                command = UserInterface.getUserInput();
+                String command2 = UserInterface.getUserInput();
                 for (int i = 0; i<5; ++i)
-                    if (opponent.field.spellTrapZone.get(i) != null && opponent.field.spellTrapZone.get(i).getName().equals(command)) {
-                        cardsName = command;
+                    if (opponent.field.spellTrapZone.get(i) != null && opponent.field.spellTrapZone.get(i).getName().equals(command2)) {
+                        cardsName2 = command2;
                         break;
                     }
-                if (command.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
+                if (cardsName2.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
                 else break;
             }
-            removeSpellOrTrap(command);
+            removeSpellOrTrap(cardsName2);
 
             if (counterForOpponentSpellZone < 4){
                 UserInterface.printResponse("You can destroy one more spell or trap of your opponent. do you want to " +
@@ -99,18 +99,18 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
                         if (opponent.field.spellTrapZone.get(i) != null)
                             UserInterface.printResponse(opponent.field.spellTrapZone.get(i).getName() + ":" +
                                     opponent.field.spellTrapZone.get(i).getDescription());
-                    String command2 = " ";
+                    String cardsName3 = " ";
                     while (true){
-                        command = UserInterface.getUserInput();
+                        String command3 = UserInterface.getUserInput();
                         for (int i = 0; i<5; ++i)
-                            if (opponent.field.spellTrapZone.get(i) != null && opponent.field.spellTrapZone.get(i).getName().equals(command)) {
-                                cardsName = command2;
+                            if (opponent.field.spellTrapZone.get(i) != null && opponent.field.spellTrapZone.get(i).getName().equals(command3)) {
+                                cardsName3 = command3;
                                 break;
                             }
-                        if (command2.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
+                        if (cardsName3.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
                         else break;
                     }
-                    removeSpellOrTrap(command2);
+                    removeSpellOrTrap(cardsName3);
                 }
             }
         }
