@@ -7,6 +7,7 @@ import models.Monster.Monster;
 import view.UserInterface;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class MysticalSpaceTyphoon extends SpellAndTrap implements Serializable {
     private static Duelist turn;
@@ -65,10 +66,12 @@ public class MysticalSpaceTyphoon extends SpellAndTrap implements Serializable {
                         temp.setAttack(((Monster)allCards.get(temp.getName())).getAttack());
                         temp.setDefence(((Monster)allCards.get(temp.getName())).getDefence());
                     }
+                    ((SpellAndTrap) opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
                     opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
                     opponent.field.spellTrapZone.set(i, null);
                 }
                 else{
+                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
                     opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
                     opponent.field.spellTrapZone.set(i, null);
                 }
