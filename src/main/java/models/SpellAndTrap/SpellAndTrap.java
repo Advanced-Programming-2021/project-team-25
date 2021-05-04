@@ -2,11 +2,13 @@ package models.SpellAndTrap;
 
 import models.Card;
 import models.CardStufs.Type;
+import models.Monster.Monster;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class SpellAndTrap extends Card implements Serializable {
-
+    public ArrayList<Monster>targetedMonsters = new ArrayList<>();
     private String icon;
     private String status;
 

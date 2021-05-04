@@ -363,7 +363,7 @@ public class Battlefield {
     }
 
     private void moveMonsterToGraveYard(Monster monsterForTribute1) {
-        turn.field.monsterZone.remove(monsterForTribute1);
+        turn.field.monsterZone.set(turn.field.monsterZone.indexOf(monsterForTribute1),null);
         turn.field.graveYard.add(monsterForTribute1);
     }
 
