@@ -11,8 +11,6 @@ import java.util.Objects;
 
 public class Raigeki extends SpellAndTrap implements Serializable {
 
-    private static Duelist opponent;
-
     public Raigeki (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
     }
@@ -25,7 +23,7 @@ public class Raigeki extends SpellAndTrap implements Serializable {
 
     @Override
     public void action() {
-        opponent = Battlefield.getTurn();
+        Duelist opponent = Battlefield.getTurn();
         //checking not null
         if(!Objects.isNull(opponent)){
             for(Card card : opponent.field.monsterZone){
@@ -35,3 +33,5 @@ public class Raigeki extends SpellAndTrap implements Serializable {
         }
     }
 }
+
+
