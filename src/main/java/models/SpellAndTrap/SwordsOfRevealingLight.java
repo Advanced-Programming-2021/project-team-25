@@ -36,6 +36,7 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
         if(this.getCardsFace().equals(FaceUp.ATTACK) || expireTime!=0)
             opponent.canAttack = false;
 
+
     }
 
     @Override
