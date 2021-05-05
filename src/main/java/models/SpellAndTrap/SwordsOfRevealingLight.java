@@ -5,6 +5,7 @@ import models.Card;
 import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
 import models.Duelist;
+import models.Monster.Monster;
 
 import java.io.Serializable;
 
@@ -34,13 +35,17 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
         }
         //if this card is face up opponent cant attack
         if(this.getCardsFace().equals(FaceUp.ATTACK) || expireTime!=0)
-            opponent.canAttack = false;
+            setMonsterCanAttackOrNot(false);
+    }
 
-
+    private void setMonsterCanAttackOrNot(boolean canAttack) {
+        for(Card card : opponent.field.monsterZone){
+            ((Monster)card).setCanAttack(canAttack);
+        }
     }
 
     @Override
     public void removeSpellOrTrap(String name) {
-        opponent.canAttack = true;
+        setMonsterCanAttackOrNot(true);
     }
 }
