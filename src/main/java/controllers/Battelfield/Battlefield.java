@@ -30,27 +30,31 @@ public class Battlefield {
     private Phase phase;
     private boolean isRitualSummoned = false;
 
-
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
         startGame();
         runBattleField();
     }
+
     //static methods
     public static Duelist getTurn(){
         return turn;
     }
+
     public static Duelist getOpponent(){
         return opponent;
     }
+
     public static void specialSummon(Monster monster){
 
     }
 
     public void runBattleField(){
         while (winner == null) {
+
             String command = UserInterface.getUserInput();
             Matcher matcher;
+
             if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
             else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
@@ -70,8 +74,8 @@ public class Battlefield {
             //else if (Regex.getMatcher(command, Regex.cancel).matches())
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
             showBattleField();
+
         }
-        endGame();
     }
 
     private void whoStart(Duelist duelist1, Duelist duelist2) {
@@ -416,6 +420,7 @@ public class Battlefield {
             if (turn.field.monsterZone.get(i) != null) count += 1;
         return count;
     }
+
     public int getSizeOfSpellAndTrapZone(){
         int count=0;
         for (int i = 0; i<5; ++i)
@@ -694,15 +699,6 @@ public class Battlefield {
         opponent = temp;
     }
 
-    public void endGame(){
-        UserInterface.printResponse(winner.getName() + " won the game and the score is: " + "1" + "-" +"0");
-        UserInterface.printResponse(winner.getName() + " won the whole match with score: " + "1" + "-" + "2");
-        int pevScore = winner.getUser().getScore();
-        winner.getUser().setScore(pevScore + 1000);
-        int pevMoney = winner.getUser().getMoney();
-        winner.getUser().setMoney(pevMoney + winner.LP);
-    }
-
     public void cleanTurn(){
         turn.hasPutMonster = false;
         opponent.hasPutMonster = false;
@@ -746,11 +742,10 @@ public class Battlefield {
         }
         else {
             winner = opponent;
-            endGame();
+            //endGame();
             // calling the function that must be told to done when someone wins.
         }
     }
-
 
     public int getIndex(int num){
         if(num == 1) return 2;
@@ -773,5 +768,9 @@ public class Battlefield {
             if(card != null) return false;
         }
         return true;
+    }
+
+    public Duelist getWinner() {
+        return winner;
     }
 }

@@ -10,7 +10,7 @@ public class Regex {
     public static String menuShowCurrent = "^menu Show Current$";
     public static String userCreate = "user create --username (?<username>\\S+) --nickname (?<nickname>\\S+) --password (?<password>\\S+)";
     public static String userLogin = "user login (?<group1>(--password|-p) (?<password>\\S+) (--username|-u) (?<username>\\S+))|(?<group2>(--username|-u) (?<username2>\\S+) (--password|-p) (?<password2>\\S+))";
-    public static String userLogout = "^register (\\S+) (\\S+)$";
+    public static String userLogout = "^user logout$";
     public static String scoreBoardShow = "^scoreboard show$";
     public static String changeNickname = "^profile change --nickname (\\S+)$";
     public static String changePassword = "^profile change --password --current (\\S+) --new (\\S+)$";
