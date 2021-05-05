@@ -23,7 +23,7 @@ public class Raigeki extends SpellAndTrap implements Serializable {
 
     @Override
     public void action() {
-        Duelist opponent = Battlefield.getTurn();
+        Duelist opponent = Battlefield.getOpponent();
         //checking not null
         if(!Objects.isNull(opponent)){
             for(Card card : opponent.field.monsterZone){

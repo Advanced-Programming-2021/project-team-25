@@ -23,7 +23,7 @@ public class HarpiesFeatherDuster extends SpellAndTrap implements Serializable {
 
     @Override
     public void action() {
-        opponent = Battlefield.getTurn();
+        opponent = Battlefield.getOpponent();
         //checking not null
         if(!Objects.isNull(opponent)){
             for(Card card : opponent.field.spellTrapZone){
