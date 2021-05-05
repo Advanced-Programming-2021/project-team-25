@@ -18,7 +18,8 @@ public enum Responses {
     NOT_SUPPORTED_ROUNDS("number of rounds is not supported"),
     INVALID_CARD_SELECTION_ADDRESS("invalid selection"),
     NO_CARD_SELECTED_ERROR("no card is selected yet"),
-    NOT_ENOUGH_SPACE_IN_HAND("no enough space in hand");
+    NOT_ENOUGH_SPACE_IN_HAND("no enough space in hand"),
+    NOT_ENOUGH_SPACE_IN_MONSTER_ZONE("no enough space in monster zone");
     private final String message;
 
     Responses(String errorMessage) {

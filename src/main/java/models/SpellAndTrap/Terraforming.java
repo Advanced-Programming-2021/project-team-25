@@ -47,11 +47,11 @@ public class Terraforming extends SpellAndTrap implements Serializable {
                     "select [id]"
                      or type exit""");
 
-            AddFieldCardToHand(fieldCards);
+            addFieldCardToHand(fieldCards);
         }
     }
 
-    private void AddFieldCardToHand(ArrayList<Card> fieldCards) {
+    private void addFieldCardToHand(ArrayList<Card> fieldCards) {
         boolean isChoiceEnded = false;
         Matcher matcher;
         String command;
