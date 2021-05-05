@@ -156,7 +156,7 @@ public class DeckMenu {
         else if (name.equals("Time Seal")) temp = new TimeSeal(Card.allCards.get(name));
         else if (name.equals("Negate Attack")) temp = new NegateAttack(Card.allCards.get(name));
         else if (name.equals("Solemn Warning")) temp = new SolemnWarning(Card.allCards.get(name));
-        else if (name.equals("Magic Jamamer")) temp = new MagicJamamer(Card.allCards.get(name));
+        else if (name.equals("Magic Jammer")) temp = new MagicJammer(Card.allCards.get(name));
         else if (name.equals("Call of The Haunted")) temp = new CallOfTheHaunted(Card.allCards.get(name));
         else if (name.equals("Vanity's Emptiness")) temp = new VanitysEmptiness(Card.allCards.get(name));
         else if (name.equals("Wall of Revealing Light")) temp = new WallOfRevealingLight(Card.allCards.get(name));

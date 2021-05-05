@@ -334,9 +334,9 @@ public class DataBase {
                             Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
                     ));
         }
-        else if (matcher.group(1).equals("Magic Jamamer")){
+        else if (matcher.group(1).equals("Magic Jammer")){
             temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
-                    new MagicJamamer(
+                    new MagicJammer(
                             matcher.group(1).replace("%", ",").replace("\"", ""),
                             Type.TRAP, matcher.group(4).replace("%", ",").replace("\"", ""),
                             Integer.parseInt(matcher.group(6)), matcher.group(3), matcher.group(5)
