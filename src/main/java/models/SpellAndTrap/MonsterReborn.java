@@ -2,6 +2,7 @@ package models.SpellAndTrap;
 
 import controllers.Battelfield.Battlefield;
 import controllers.Regex;
+import controllers.ShowCard;
 import models.Card;
 import models.CardStufs.Type;
 import models.Duelist;
@@ -100,7 +101,7 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable {
         int i = 1;
         for (Card card : duelist.field.graveYard) {
             if(card.getCardsType().equals(Type.MONSTER)){
-                UserInterface.printResponse(i + ". " + card.getName() + " : " + card.getDescription());
+                ShowCard.showCard(card.getName());
                 isFoundMonster = true;
             }
         }
