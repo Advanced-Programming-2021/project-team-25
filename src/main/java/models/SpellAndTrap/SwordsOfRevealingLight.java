@@ -10,18 +10,19 @@ import models.Monster.Monster;
 import java.io.Serializable;
 
 public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable {
-    int expireTime = 3;
     //get opponent
     Duelist opponent = Battlefield.getOpponent();
 
     public SwordsOfRevealingLight (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
+        expireTime = 3;
     }
 
     public SwordsOfRevealingLight (Object object){
         super(((SwordsOfRevealingLight)object).getName(), ((SwordsOfRevealingLight)object).getCardsType(),
                 ((SwordsOfRevealingLight)object).getDescription(), ((SwordsOfRevealingLight)object).getPrice(),
                 ((SwordsOfRevealingLight)object).getIcon(), ((SwordsOfRevealingLight)object).getStatus());
+        expireTime = 3;
     }
 
     @Override
