@@ -1,6 +1,8 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
 import models.CardStufs.Type;
+import models.Duelist;
 
 import java.io.Serializable;
 
@@ -16,8 +18,9 @@ public class SpellAbsorption extends SpellAndTrap implements Serializable {
                 ((SpellAbsorption)object).getIcon(), ((SpellAbsorption)object).getStatus());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void action() {
+        Duelist turn = Battlefield.getTurn();
+        turn.LP+=500;
+    }
 }
