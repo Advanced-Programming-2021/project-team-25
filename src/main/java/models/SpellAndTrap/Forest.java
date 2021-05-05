@@ -43,6 +43,7 @@ public class Forest extends SpellAndTrap implements Serializable {
     }
 
     public void commonAction (Monster monster){
+        targetedMonsters.add(monster);
         if (monster.getMonsterType().equals("Beast-Warrior") || monster.getMonsterType().equals("Beast") ||
                 monster.getMonsterType().equals("Insect")){
             monster.setAttack(monster.getAttack() + 200);

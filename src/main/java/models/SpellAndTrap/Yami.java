@@ -43,6 +43,7 @@ public class Yami extends SpellAndTrap implements Serializable {
     }
 
     public void commonAction (Monster monster){
+        targetedMonsters.add(monster);
         if (monster.getMonsterType().equals("Fiend") || monster.getMonsterType().equals("Spellcaster")){
             monster.setAttack(monster.getAttack() + 200);
             monster.setDefence(monster.getDefence() + 200);

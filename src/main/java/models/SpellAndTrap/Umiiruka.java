@@ -44,6 +44,7 @@ public class Umiiruka extends SpellAndTrap implements Serializable {
     }
 
     public void commonAction (Monster monster){
+        targetedMonsters.add(monster);
         if (monster.getMonsterType().equals("Aqua")){
             monster.setAttack(monster.getAttack() + 500);
             monster.setDefence(monster.getDefence() - 400);

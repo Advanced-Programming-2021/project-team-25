@@ -39,6 +39,7 @@ public class ClosedForest extends SpellAndTrap  implements Serializable {
     }
 
     public void commonAction (Monster monster, int numberToAdd){
+        targetedMonsters.add(monster);
         if (monster.getMonsterType().equals("Beast")){
             monster.setAttack(monster.getAttack() + numberToAdd);
             monster.setDefence(monster.getDefence() + numberToAdd);
