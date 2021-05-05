@@ -25,9 +25,9 @@ public class Battlefield {
     public static ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
     private static Duelist turn;
     private static Duelist opponent;
+    private static Phase phase;
     private Duelist winner;
     private Card selectedCard;
-    private Phase phase;
     private boolean isRitualSummoned = false;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
@@ -43,6 +43,10 @@ public class Battlefield {
 
     public static Duelist getOpponent(){
         return opponent;
+    }
+
+    public static Phase getPhase() {
+        return phase;
     }
 
     public static void specialSummon(Monster monster){
