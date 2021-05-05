@@ -39,6 +39,7 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
     }
 
     private void setMonsterCanAttackOrNot(boolean canAttack) {
+
         for(Card card : opponent.field.monsterZone){
             ((Monster)card).setCanAttack(canAttack);
         }
