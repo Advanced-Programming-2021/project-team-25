@@ -35,7 +35,7 @@ public class SpellAndTrap extends Card implements Serializable {
         return status;
     }
 
-
+    //must be abstract
     @Override
     public void action() {
 
