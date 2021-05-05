@@ -14,6 +14,7 @@ public class Monster extends Card implements Serializable {
     private String cardType;
     private int attack;
     private int defence;
+    private boolean canAttack = true;
     private SpellAndTrap activeSpell;
 
 
@@ -65,6 +66,10 @@ public class Monster extends Card implements Serializable {
         return defence;
     }
 
+    public boolean CanAttack() {
+        return canAttack;
+    }
+
     public void setAttack(int attack) {
         this.attack = attack;
     }
@@ -75,6 +80,10 @@ public class Monster extends Card implements Serializable {
 
     public void setActiveSpell(SpellAndTrap activeSpell) {
         this.activeSpell = activeSpell;
+    }
+
+    public void setCanAttack(boolean canAttack) {
+        this.canAttack = canAttack;
     }
 
     @Override
