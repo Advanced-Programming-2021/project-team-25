@@ -16,8 +16,14 @@ public class SwordOfDarkDestruction extends SpellAndTrap implements Serializable
                 ((SwordOfDarkDestruction)object).getIcon(), ((SwordOfDarkDestruction)object).getStatus());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void action() {
+
+    }
+
+    @Override
+    public void removeSpellOrTrap(String name) {
+
+    }
+
 }
