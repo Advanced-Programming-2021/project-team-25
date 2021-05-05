@@ -6,6 +6,7 @@ import models.Card;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
+import view.Responses;
 import view.UserInterface;
 
 import java.io.Serializable;
@@ -77,7 +78,10 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable {
                 isChoiceEnded = true;
             }
             else if(command.equals("exit")) return;
-            else UserInterface.printResponse("Please Entry Valid Command");
+            else{
+                UserInterface.printResponse(Responses.INVALID_COMMAND);
+                command = UserInterface.getUserInput();
+            }
         }
     }
 
