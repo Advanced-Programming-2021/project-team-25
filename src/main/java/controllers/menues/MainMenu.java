@@ -38,7 +38,7 @@ public class MainMenu {
                     break;
                 case "Shop" :
                     ProgramController.currentMenu = Menu.SHOP_MENU;
-                    ShopMenu.getInstance(currUser).runShopMenu();
+                    ShopMenu.getInstance(currUser).runShopMenu(currUser);
                     break;
                 case "Deck" :
                     ProgramController.currentMenu = Menu.DECK_MENU;

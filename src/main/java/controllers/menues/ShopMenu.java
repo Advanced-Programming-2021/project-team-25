@@ -23,7 +23,7 @@ import static controllers.ShowCard.showCard;
 
 
 public class ShopMenu {
-    private final User currUser;
+    private User currUser;
     private static ShopMenu singleToneClass = null;
 
     private ShopMenu (User currUser){
@@ -35,8 +35,9 @@ public class ShopMenu {
         return singleToneClass;
     }
 
-    public void runShopMenu(){
+    public void runShopMenu(User currUser){
         Matcher matcher;
+        this.currUser = currUser;
 
         while (currentMenu == Menu.SHOP_MENU) {
             String command = UserInterface.getUserInput();
