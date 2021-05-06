@@ -13,7 +13,7 @@ public class ProfileMenu {
     private static User currUser;
 
     public static void runProfileMenu(User user){
-    currUser=user;
+    currUser = user;
     String command = UserInterface.getUserInput();
         while(true){
             if(command.startsWith("Menu enter")) MainMenu.changeMenu(Regex.getMatcher(command, Regex.menuEnter),currUser);

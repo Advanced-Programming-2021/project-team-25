@@ -12,10 +12,11 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginMenu {
+    private static User currUser = null;
 
     public static void runLoginMenu(String command){
 
-        while(true)
+        while(Objects.isNull(currUser))
         {
             if (command.startsWith("user login")) loginUser(command);
             else if (command.startsWith("user create"))
@@ -29,7 +30,7 @@ public class LoginMenu {
                 break;
             }
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
-            command = UserInterface.getUserInput();
+            if(Objects.isNull(currUser)) command = UserInterface.getUserInput();
         }
 
     }
@@ -51,6 +52,8 @@ public class LoginMenu {
                 User newUser = new User(username,password,nickname);
                 // by default user be logged in
                 ProgramController.setLoggedInUsers(newUser);
+                //update curr user
+                currUser = newUser;
                 //change menu to main menu
                 new MainMenu(newUser);
             }
@@ -75,17 +78,19 @@ public class LoginMenu {
               username = matcher.group("username2");
             }
             //checking user exist
-            User currUser = User.getUserByUsername(username);
+            User user = User.getUserByUsername(username);
             //checking correct password
-            if(Objects.isNull(currUser) || !currUser.getPassword().equals(password))
+            if(Objects.isNull(user) || !user.getPassword().equals(password))
                 UserInterface.printResponse(Responses.USER_PASS_NOT_MATCHED_ERROR);
             else {
                 UserInterface.printResponse(Responses.LOGIN_SUCCESS);
                 //set the user logged in
-                currUser.setIsLoggedIn(true);
+                user.setIsLoggedIn(true);
                 ProgramController.currentMenu = Menu.MAIN_MENU;
+                //update curr user
+                currUser = user;
                 //change menu to main menu
-                new MainMenu(currUser);
+                new MainMenu(user);
             }
         }
         else

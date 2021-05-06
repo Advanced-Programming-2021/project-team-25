@@ -45,7 +45,7 @@ public class ShopMenu {
             else if (Regex.getMatcher(command, Regex.shopShowAll).matches()) showAllCards();
             else if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
             else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
-            else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
+            else if (Regex.getMatcher(command, Regex.menuExit).matches()) return;
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
         }
     }

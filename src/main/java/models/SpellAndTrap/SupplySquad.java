@@ -55,7 +55,6 @@ public class SupplySquad extends SpellAndTrap implements Serializable {
                 }
                 else
                     UserInterface.printResponse(Responses.NOT_ENOUGH_SPACE_IN_HAND);
-
             }
         }
     }

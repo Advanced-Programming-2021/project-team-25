@@ -114,4 +114,5 @@ public class User implements Serializable {
     public void setIsLoggedIn(boolean isLoggedIn) {
         this.isLoggedIn= isLoggedIn;
     }
+
 }
