@@ -8,7 +8,6 @@ import models.CardStufs.Location;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
-import models.SpellAndTrap.MagicCylinder;
 import models.SpellAndTrap.SpellAndTrap;
 import view.Responses;
 import view.UserInterface;
@@ -52,6 +51,10 @@ public class Battlefield {
 
     public static Card getSelectedCard() {
         return selectedCard;
+    }
+
+    public Duelist getWinner() {
+        return winner;
     }
 
     public static void specialSummon(Monster monster){
@@ -599,13 +602,13 @@ public class Battlefield {
                 opponent.field.graveYard.add(opponent.field.monsterZone.get(getIndex(monsterNum)));
                 opponent.field.monsterZone.set(getIndex(monsterNum) , null);
                 turn.field.graveYard.add(selectedCard);
-                turn.field.monsterZone.set(getIndex(getIndexOfCard()) , null);
+                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
                 UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
             }
 
             else{
                 turn.field.graveYard.add(selectedCard);
-                turn.field.monsterZone.set(getIndex(getIndexOfCard()) , null);
+                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
                 int damage = attackedMonster.getAttack() - attackingMonster.getAttack();
                 turn.LP = turn.LP - damage;
                 UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
@@ -633,7 +636,7 @@ public class Battlefield {
 
             else{
                 turn.field.graveYard.add(selectedCard);
-                turn.field.monsterZone.set(getIndex(getIndexOfCard()) , null);
+                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
                 int damage = attackedMonster.getDefence() - attackingMonster.getAttack();
                 turn.LP = turn.LP - damage;
                 UserInterface.printResponse("no card is destroyed and you received " + damage + " battle damage");
@@ -726,16 +729,17 @@ public class Battlefield {
         if(turn.field.graveYard.isEmpty()) UserInterface.printResponse("graveyard empty");
         else{
             int i=1;
-            for (Card card: turn.field.graveYard) {
+            for (Card card: turn.field.graveYard)
                 UserInterface.printResponse(i + ". " + card.getName() + " : " + card.getDescription());
-            }
         }
         UserInterface.getUserInput();
     }
 
     public void showSelectedCard(){
         if(selectedCard==null) UserInterface.printResponse("no card is selected yet");
-        else if(selectedCard.getCardsFace() == FaceUp.DEFENSE_BACK) UserInterface.printResponse("card is not visible");
+        else if(selectedCard.getCardsFace() == FaceUp.DEFENSE_BACK &&
+                (opponent.field.monsterZone.contains(selectedCard) ||
+                 opponent.field.spellTrapZone.contains(selectedCard))) UserInterface.printResponse("card is not visible");
         else ShowCard.showCard(selectedCard.getName());
     }
 
@@ -807,21 +811,16 @@ public class Battlefield {
         else return -1;
     }
 
-    public int getIndexOfCard(){
-        for (int i = 0 ; i < 5 ; i++ ) {
+    public int getIndexOfSelectedCardInMonsterZone(){
+        for (int i = 0 ; i < 5 ; i++ )
             if(selectedCard == turn.field.monsterZone.get(i)) return i;
-        }
         return -1;
     }
 
     public boolean isOpponentEmptyOfMonsters(){
-        for (Card card: opponent.field.monsterZone) {
+        for (Card card: opponent.field.monsterZone)
             if(card != null) return false;
-        }
         return true;
     }
 
-    public Duelist getWinner() {
-        return winner;
-    }
 }
