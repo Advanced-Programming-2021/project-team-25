@@ -1,6 +1,10 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
+import models.Card;
+import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
+import models.Monster.Monster;
 
 import java.io.Serializable;
 
@@ -16,8 +20,15 @@ public class MirrorForce extends SpellAndTrap implements Serializable {
                 ((MirrorForce)object).getIcon(), ((MirrorForce)object).getStatus());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void action() {
+        for (int i = 0; i < 5; i++) {
+            if(Battlefield.getOpponent().field.monsterZone.get(i) != null){
+                if(Battlefield.getOpponent().field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK){
+                    Battlefield.getOpponent().field.graveYard.add(Battlefield.getOpponent().field.monsterZone.get(i));
+                    Battlefield.getOpponent().field.monsterZone.set(i,null);
+                }
+            }
+        }
+    }
 }
