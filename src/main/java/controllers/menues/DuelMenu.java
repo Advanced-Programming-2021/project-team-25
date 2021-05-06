@@ -17,7 +17,7 @@ import static controllers.ProgramController.currentMenu;
 public class DuelMenu {
 
     private static DuelMenu singleToneClass = null;
-    private final User currUser;
+    private User currUser;
 
     public static DuelMenu getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new DuelMenu(currUser);

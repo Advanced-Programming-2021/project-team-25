@@ -16,7 +16,7 @@ import static controllers.ProgramController.currentMenu;
 public class ScoreBoardMenu {
 
     private static ScoreBoardMenu singleToneClass = null;
-    private final User currUser;
+    private User currUser;
 
     public static ScoreBoardMenu getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new ScoreBoardMenu(currUser);
