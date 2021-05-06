@@ -115,4 +115,5 @@ public class User implements Serializable {
         this.isLoggedIn= isLoggedIn;
     }
 
+
 }

@@ -1,5 +1,6 @@
 package controllers.menues;
 
+import controllers.Database.DataBase;
 import controllers.Menu;
 import controllers.ProgramController;
 import controllers.Regex;
@@ -11,13 +12,15 @@ import java.util.Objects;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+
 public class LoginMenu {
     private static User currUser = null;
 
-    public static void runLoginMenu(String command){
-
-        while(Objects.isNull(currUser))
+    public static void runLoginMenu(){
+        String command;
+        while(true)
         {
+            command = UserInterface.getUserInput();
             if (command.startsWith("user login")) loginUser(command);
             else if (command.startsWith("user create"))
                 createNewUser(Regex.getMatcher(command,Regex.userCreate));
@@ -25,12 +28,14 @@ public class LoginMenu {
                 UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
             else if(command.equals("menu show-current"))
                 UserInterface.printResponse("Login Menu");
-            else if (command.equals("menu exit")){
-                ProgramController.currentMenu = Menu.MAIN_MENU;
-                break;
+            else if (command.equals("menu exit"))
+                return;
+            else if(!Objects.isNull(currUser)){
+                //restore all data
+                DataBase.saveTheUserList(User.getUsers());
+                User.setUsers(DataBase.loadTheList());
             }
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
-            if(Objects.isNull(currUser)) command = UserInterface.getUserInput();
         }
 
     }

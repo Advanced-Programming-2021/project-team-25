@@ -14,7 +14,7 @@ public class ProgramController {
         //load data from dataBase
         Initialize.init();
         //start from login menu
-        LoginMenu.runLoginMenu(UserInterface.getUserInput());
+        LoginMenu.runLoginMenu();
     }
 
     private static void exitMenu(){
