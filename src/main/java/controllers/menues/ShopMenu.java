@@ -32,6 +32,7 @@ public class ShopMenu {
 
     public static ShopMenu getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new ShopMenu(currUser);
+        singleToneClass.currUser = currUser;
         return singleToneClass;
     }
 

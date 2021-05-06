@@ -24,7 +24,7 @@ import static models.Deck.allDecks;
 
 public class DeckMenu {
 
-    private static User currUser;
+    private User currUser;
     private static DeckMenu singleToneClass = null;
 
     private DeckMenu(User currUser){
@@ -33,6 +33,7 @@ public class DeckMenu {
 
     public static DeckMenu getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new DeckMenu(currUser);
+        singleToneClass.currUser = currUser;
         return singleToneClass;
     }
 
