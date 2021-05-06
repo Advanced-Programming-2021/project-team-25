@@ -26,9 +26,9 @@ public class Battlefield {
     private static Duelist turn;
     private static Duelist opponent;
     private static Phase phase;
+    private static boolean isRitualSummoned = false;
     private Duelist winner;
     private static Card selectedCard;
-    private boolean isRitualSummoned = false;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -354,7 +354,7 @@ public class Battlefield {
         }
     }
 
-    private void summonLevel8Or7(Monster monster) {
+    private static void summonLevel8Or7(Monster monster) {
         //checking if can tribute happened
         if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
         else {
@@ -382,7 +382,7 @@ public class Battlefield {
         }
     }
 
-    private void moveMonsterToGraveYard(Monster monsterForTribute1) {
+    private static void moveMonsterToGraveYard(Monster monsterForTribute1) {
         turn.field.monsterZone.set(turn.field.monsterZone.indexOf(monsterForTribute1),null);
         turn.field.graveYard.add(monsterForTribute1);
     }
@@ -400,7 +400,7 @@ public class Battlefield {
         }
     }
 
-    private void summonedMonster() {
+    private static void summonedMonster() {
         turn.hasPutMonster = true;
         selectedCard.setSetChanged(true);
         selectedCard.setCardsFace(FaceUp.ATTACK);
@@ -410,7 +410,7 @@ public class Battlefield {
         UserInterface.printResponse("summoned successfully");
     }
 
-    private Monster tributeOneMonster() {
+    private static Monster tributeOneMonster() {
         //selecting card to tribute
         String command = UserInterface.getUserInput();
         //getting card address
@@ -430,7 +430,7 @@ public class Battlefield {
         }
     }
 
-    public int getSizeOfMonsterZone(){
+    public static int getSizeOfMonsterZone(){
         int count=0;
         for (int i = 0; i<5; ++i)
             if (turn.field.monsterZone.get(i) != null) count += 1;
@@ -691,7 +691,7 @@ public class Battlefield {
         return true;
     }
 
-    public void ritualSummon(){
+    public static void ritualSummon(){
         String command;
         //getting the ritual monster in hand if exist
         Monster ritualMonster = getRitualMonsterInHand();
@@ -712,7 +712,7 @@ public class Battlefield {
         }
     }
 
-    private Monster getRitualMonsterInHand () {
+    private static Monster getRitualMonsterInHand() {
         for (Card card : turn.field.hand) {
             if (card.getCardsType().equals(Type.MONSTER) && ((Monster) card).getCardTypeInExel().equals("Ritual")) {
                 return (Monster) card;
@@ -721,7 +721,7 @@ public class Battlefield {
         return null;
     }
 
-    private int getSumOfLevelsInZone () {
+    private static int getSumOfLevelsInZone() {
         int sum = 0;
         for (Card card : turn.field.monsterZone) {
             sum += ((Monster) card).getLevel();

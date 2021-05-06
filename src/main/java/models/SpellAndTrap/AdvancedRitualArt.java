@@ -1,5 +1,6 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
 import models.CardStufs.Type;
 
 import java.io.Serializable;
@@ -16,8 +17,9 @@ public class AdvancedRitualArt extends SpellAndTrap implements Serializable {
                 ((AdvancedRitualArt)object).getIcon(), ((AdvancedRitualArt)object).getStatus());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    public void action(){
+        Battlefield.ritualSummon();
+    };
+
+    public void removeSpellOrTrap (String name){};
 }
