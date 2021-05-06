@@ -31,8 +31,6 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
         for(Card card : opponent.field.monsterZone){
             if(card.getCardsFace().equals(FaceUp.DEFENSE_BACK))
                 card.setCardsFace(FaceUp.DEFENSE_FRONT);
-            else if(card.getCardsFace().equals(FaceUp.ATTACK_BACK))
-                card.setCardsFace(FaceUp.ATTACK);
         }
         //if this card is face up opponent cant attack
         if(this.getCardsFace().equals(FaceUp.ATTACK) || expireTime!=0)
