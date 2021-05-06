@@ -8,6 +8,7 @@ import models.CardStufs.Location;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
+import models.SpellAndTrap.MagicCylinder;
 import models.SpellAndTrap.SpellAndTrap;
 import view.Responses;
 import view.UserInterface;
@@ -27,7 +28,7 @@ public class Battlefield {
     private static Duelist opponent;
     private static Phase phase;
     private Duelist winner;
-    private Card selectedCard;
+    private static Card selectedCard;
     private boolean isRitualSummoned = false;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
@@ -47,6 +48,10 @@ public class Battlefield {
 
     public static Phase getPhase() {
         return phase;
+    }
+
+    public static Card getSelectedCard() {
+        return selectedCard;
     }
 
     public static void specialSummon(Monster monster){
@@ -527,12 +532,52 @@ public class Battlefield {
     public void attack(Matcher matcher){
         int monsterNum = Integer.parseInt(matcher.group(1));
         if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
-        else if(!turn.field.monsterZone.contains(selectedCard)) UserInterface.printResponse("you can’t attack with this card");
+        else if(!turn.field.monsterZone.contains(selectedCard) || selectedCard.getCardsFace() != FaceUp.ATTACK ) UserInterface.printResponse("you can’t attack with this card");
         else if(phase != Phase.BATTLE_PHASE) UserInterface.printResponse("you can’t do this action in this phase");
         else if(selectedCard.getIsAttackedThisTurn()) UserInterface.printResponse("this card already attacked");
         else if(getIndex(monsterNum) == -1) UserInterface.printResponse("invalid command");
         else if(opponent.field.monsterZone.get(getIndex(monsterNum)) == null) UserInterface.printResponse("there is no card to attack here");
-        else confirmAttack(monsterNum);
+        else if(antiAttackTraps().equals("no")) confirmAttack(monsterNum);
+    }
+
+    private String antiAttackTraps(){
+        UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
+        changeTurn();
+        showBattleField();
+        UserInterface.printResponse("do you want to activate your trap and spell?");
+        String yesOrNo = UserInterface.getUserInput();
+        if(yesOrNo.equals("no")){
+            UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
+            changeTurn();
+            showBattleField();
+            return "no";
+        }
+        else{
+            UserInterface.printResponse("enter number of Trap house : ");
+            while(true){
+
+                String input = UserInterface.getUserInput();
+                if(input.equals("cancel")) break;
+                int num = Integer.parseInt(input);
+
+                if(getIndex(num) == -1 || turn.field.spellTrapZone.get(getIndex(num)) == null){
+                    UserInterface.printResponse("try again");
+                    continue;
+                }
+
+                String trapName = turn.field.spellTrapZone.get(getIndex(num)).getName();
+
+                if(trapName.equals("Magic Cylinder") || trapName.equals("Mirror Force") || trapName.equals("Torrential Tribute")){
+                    turn.field.spellTrapZone.get(getIndex(num)).action();
+                    turn.field.graveYard.add(turn.field.spellTrapZone.get(num));
+                    turn.field.spellTrapZone.set(getIndex(num) , null);
+                    UserInterface.printResponse("Trap activated");
+                }
+                else UserInterface.printResponse("it’s not your turn to play this kind of moves\n try again!");
+
+            }
+            return "yes";
+        }
     }
 
     private void confirmAttack(int monsterNum) {

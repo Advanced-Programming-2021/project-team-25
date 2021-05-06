@@ -1,5 +1,6 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
 import models.CardStufs.Type;
 
 import java.io.Serializable;
@@ -16,8 +17,16 @@ public class MagicCylinder extends SpellAndTrap implements Serializable {
                 ((MagicCylinder)object).getIcon(), ((MagicCylinder)object).getStatus());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void action() {
+        Battlefield.getOpponent().field.graveYard.add(Battlefield.getSelectedCard());
+        Battlefield.getOpponent().field.monsterZone.set(getIndexOfCard(),null);
+    }
+
+    public int getIndexOfCard(){
+        for (int i = 0 ; i < 5 ; i++ ) {
+            if(Battlefield.getSelectedCard() == Battlefield.getTurn().field.monsterZone.get(i)) return i;
+        }
+        return -1;
+    }
 }
