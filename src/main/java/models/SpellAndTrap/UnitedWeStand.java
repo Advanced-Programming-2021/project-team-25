@@ -51,7 +51,7 @@ public class UnitedWeStand extends SpellAndTrap implements Serializable {
         if (targetedMonsters.size() > 0)
             UserInterface.printResponse("This spell has already equiped a monster.");
         else if (counter == 0)
-            UserInterface.printResponse("You don't have monster with type of Fiend or Spellcaster.");
+            UserInterface.printResponse("You don't have any monster in your monster zone");
         else{
             UserInterface.printResponse("Now select one of these monsters to equip it");
             for (Monster trueMonster : trueMonsters) {
