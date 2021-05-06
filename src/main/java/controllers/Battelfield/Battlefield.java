@@ -25,7 +25,7 @@ public class Battlefield {
     public static ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
     private static Duelist turn;
     private static Duelist opponent;
-    private static Phase phase;
+    private static Phase phase = Phase.DRAW_PHASE;
     private static boolean isRitualSummoned = false;
     private Duelist winner;
     private static Card selectedCard;
@@ -146,6 +146,7 @@ public class Battlefield {
         showSpellAndTrapsZone(2 , opponent);
         showSpellAndTrapsZone(4 , opponent);
 
+        System.out.println("");
         System.out.print("\t");
         showMonsterZone(3 , opponent);
         showMonsterZone(1 , opponent);
@@ -153,22 +154,26 @@ public class Battlefield {
         showMonsterZone(2 , opponent);
         showMonsterZone(4 , opponent);
 
+        System.out.println("");
+
         System.out.print(opponent.field.graveYard.size() + "\t\t\t\t\t\t");
         if(opponent.field.fieldZone == null ) System.out.print("O\n");
         else System.out.print("E\n");
 
         UserInterface.printResponse("____________________________________________");
 
-        if(turn.field.fieldZone == null ) System.out.print("O\n");
-        else System.out.print("E\n");
+        if(turn.field.fieldZone == null ) System.out.print("O");
+        else System.out.print("E");
         System.out.print("\t\t\t\t\t\t" + turn.field.graveYard.size());
 
+        System.out.println("");
         System.out.print("\t");
         showMonsterZone(4 , turn);
         showMonsterZone(2 , turn);
         showMonsterZone(0 , turn);
         showMonsterZone(1 , turn);
         showMonsterZone(3 , turn);
+        System.out.println("");
 
         System.out.print("\t");
         showSpellAndTrapsZone(4 , turn);
@@ -176,6 +181,7 @@ public class Battlefield {
         showSpellAndTrapsZone(0 , turn);
         showSpellAndTrapsZone(1 , turn);
         showSpellAndTrapsZone(3 , turn);
+        System.out.println("");
 
         UserInterface.printResponse( "\t\t\t\t\t\t" + turn.field.deck.size());
         for (Card card: turn.field.hand) System.out.print("c\t");
