@@ -1,5 +1,7 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
+import controllers.Battelfield.Phase;
 import models.CardStufs.Type;
 
 import java.io.Serializable;
@@ -16,8 +18,17 @@ public class NegateAttack extends SpellAndTrap implements Serializable {
                 ((NegateAttack)object).getIcon(), ((NegateAttack)object).getStatus());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void action() {
+        Battlefield.getOpponent().field.graveYard.add(Battlefield.getSelectedCard());
+        Battlefield.getOpponent().field.monsterZone.set(getIndexOfCard(),null);
+        Battlefield.setPhase(Phase.MAIN2_PHASE);
+    }
+
+    public int getIndexOfCard(){
+        for (int i = 0 ; i < 5 ; i++ ) {
+            if(Battlefield.getSelectedCard() == Battlefield.getTurn().field.monsterZone.get(i)) return i;
+        }
+        return -1;
+    }
 }

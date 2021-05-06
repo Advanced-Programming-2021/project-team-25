@@ -57,6 +57,10 @@ public class Battlefield {
         return winner;
     }
 
+    public static void setPhase(Phase phase) {
+        Battlefield.phase = phase;
+    }
+
     public static void specialSummon(Monster monster){
 
     }
