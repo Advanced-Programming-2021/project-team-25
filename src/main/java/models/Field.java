@@ -16,8 +16,5 @@ public class Field {
             monsterZone.add(null);
             spellTrapZone.add(null);
         }
-        for (int i = 0; i < 6; ++i){
-            hand.add(null);
-        }
     }
 }
