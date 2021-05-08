@@ -73,19 +73,19 @@ public class Battlefield {
 
             if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
             else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
+            else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
             else if (Regex.getMatcher(command, Regex.nextPhase).matches()) nextPhase();
             else if (Regex.getMatcher(command, Regex.summon).matches()) summon();
             else if (Regex.getMatcher(command, Regex.set).matches()) set();
             else if ((matcher = Regex.getMatcher(command, Regex.setPosition)).matches()) setPosition(matcher);
             else if (Regex.getMatcher(command, Regex.flipSummon).matches()) flipSummon();
-            else if ((matcher = Regex.getMatcher(command, Regex.attack)).matches()) attack(matcher);
             else if (Regex.getMatcher(command, Regex.attackDirect).matches()) directAttack();
+            else if ((matcher = Regex.getMatcher(command, Regex.attack)).matches()) attack(matcher);
             else if (Regex.getMatcher(command, Regex.activateEffect).matches()) activeSpell();
             else if (Regex.getMatcher(command, Regex.showGraveyard).matches()) showGraveyard();
-            else if ((matcher=Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
             else if (Regex.getMatcher(command, Regex.showSelectedCard).matches()) showSelectedCard();
+            else if ((matcher=Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
             else if (Regex.getMatcher(command, Regex.surrender).matches()) surrender();
             //else if (Regex.getMatcher(command, Regex.cancel).matches())
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
@@ -120,14 +120,14 @@ public class Battlefield {
             //draw 6 cards for opponent and turn
             for(int i=0;i<6;i++){
 
-                addCardToPlayersDeck(opponent);
+                addCardToPlayersHands(opponent);
 
-                addCardToPlayersDeck(turn);
+                addCardToPlayersHands(turn);
             }
         }
     }
 
-    private void addCardToPlayersDeck(Duelist turn) {
+    private void addCardToPlayersHands(Duelist turn) {
         turn.field.hand.add(turn.field.deck.get(0));
         UserInterface.printResponse("new card added to the hand: "+turn.field.deck.get(0).getName());
         turn.field.deck.remove(0);
@@ -411,7 +411,7 @@ public class Battlefield {
         selectedCard.setSetChanged(true);
         selectedCard.setCardsFace(FaceUp.ATTACK);
         //putting card in last monster zone
-        turn.field.monsterZone.set(getSizeOfMonsterZone()+1,selectedCard);
+        turn.field.monsterZone.set(getSizeOfMonsterZone(),selectedCard);
 
         UserInterface.printResponse("summoned successfully");
     }
@@ -801,7 +801,7 @@ public class Battlefield {
 
         if(turn.field.deck.size()>0){
             if(turn.field.hand.size()<6){
-                addCardToPlayersDeck(turn);
+                addCardToPlayersHands(turn);
 
             }
         }
