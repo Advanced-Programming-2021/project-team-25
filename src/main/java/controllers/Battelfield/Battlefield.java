@@ -53,16 +53,16 @@ public class Battlefield {
         return selectedCard;
     }
 
-    public Duelist getWinner() {
-        return winner;
-    }
-
     public static void setPhase(Phase phase) {
         Battlefield.phase = phase;
     }
 
     public static void specialSummon(Monster monster){
 
+    }
+
+    public Duelist getWinner() {
+        return winner;
     }
 
     public void runBattleField(){
@@ -129,15 +129,14 @@ public class Battlefield {
 
     private void addCardToPlayersHands(Duelist turn) {
         turn.field.hand.add(turn.field.deck.get(0));
-        UserInterface.printResponse("new card added to the hand: "+turn.field.deck.get(0).getName());
+        UserInterface.printResponse("new card added to the hand: " + turn.field.deck.get(0).getName());
         turn.field.deck.remove(0);
     }
 
     public void showBattleField(){
         UserInterface.printResponse(opponent.getName() + " : " + opponent.LP);
         for (Card card: opponent.field.hand) System.out.print("c\t");
-        System.out.println("");
-        UserInterface.printResponse(opponent.field.deck.size() + "");
+        UserInterface.printResponse("\n" + opponent.field.deck.size() + "");
 
         System.out.print("\t");
         showSpellAndTrapsZone(3 , opponent);
@@ -146,48 +145,41 @@ public class Battlefield {
         showSpellAndTrapsZone(2 , opponent);
         showSpellAndTrapsZone(4 , opponent);
 
-        System.out.println("");
-        System.out.print("\t");
+        System.out.print("\n\t");
         showMonsterZone(3 , opponent);
         showMonsterZone(1 , opponent);
         showMonsterZone(0 , opponent);
         showMonsterZone(2 , opponent);
         showMonsterZone(4 , opponent);
 
-        System.out.println("");
-
-        System.out.print(opponent.field.graveYard.size() + "\t\t\t\t\t\t");
+        System.out.print("\n" + opponent.field.graveYard.size() + "\t\t\t\t\t\t");
         if(opponent.field.fieldZone == null ) System.out.print("O\n");
         else System.out.print("E\n");
 
-        UserInterface.printResponse("____________________________________________");
+        UserInterface.printResponse("___________________________");
 
         if(turn.field.fieldZone == null ) System.out.print("O");
         else System.out.print("E");
         System.out.print("\t\t\t\t\t\t" + turn.field.graveYard.size());
 
-        System.out.println("");
-        System.out.print("\t");
+        System.out.print("\n\t");
         showMonsterZone(4 , turn);
         showMonsterZone(2 , turn);
         showMonsterZone(0 , turn);
         showMonsterZone(1 , turn);
         showMonsterZone(3 , turn);
-        System.out.println("");
 
-        System.out.print("\t");
+        System.out.print("\n\t");
         showSpellAndTrapsZone(4 , turn);
         showSpellAndTrapsZone(2 , turn);
         showSpellAndTrapsZone(0 , turn);
         showSpellAndTrapsZone(1 , turn);
         showSpellAndTrapsZone(3 , turn);
-        System.out.println("");
 
-        UserInterface.printResponse( "\t\t\t\t\t\t" + turn.field.deck.size());
+        UserInterface.printResponse( "\n\t\t\t\t\t\t" + turn.field.deck.size());
         for (Card card: turn.field.hand) System.out.print("c\t");
-        System.out.println("");
 
-        UserInterface.printResponse(turn.getName() + " : " + turn.LP);
+        UserInterface.printResponse("\n" + turn.getName() + " : " + turn.LP);
     }
 
     private void showSpellAndTrapsZone(int i , Duelist duelist) {
@@ -311,8 +303,7 @@ public class Battlefield {
 
             cleanTurn();
             phase = Phase.DRAW_PHASE;
-            //drawing card for Turn.
-            drawCard();
+
 
             UserInterface.printResponse("its " + turn.getName() + "’s turn");
         }

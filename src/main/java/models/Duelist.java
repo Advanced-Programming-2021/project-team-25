@@ -11,6 +11,7 @@ public class Duelist {
         this.user = user;
         this.field.deck.addAll(user.activeDeck.mainDeck);
     }
+
     public User getUser() {
         return user;
     }
