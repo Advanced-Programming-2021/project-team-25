@@ -9,6 +9,7 @@ import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
 import models.SpellAndTrap.SpellAndTrap;
+import models.User;
 import view.Responses;
 import view.UserInterface;
 
@@ -227,7 +228,10 @@ public class Battlefield {
             }
         }
         else if (brokenCommand[0].equals("--field")){
-            selectedCard = turn.field.fieldZone;
+            if (turn.field.fieldZone == null)
+                UserInterface.printResponse("no card found in the given position");
+            else
+                selectedCard = turn.field.fieldZone;
         }
         else if (brokenCommand[0].equals("--hand")){
             if (Integer.parseInt(brokenCommand[1]) < 1 || Integer.parseInt(brokenCommand[1]) > 6)
@@ -276,7 +280,10 @@ public class Battlefield {
             }
         }
         else if (breakedCommand[0].equals("--field")){
-            selectedCard = opponent.field.fieldZone;
+            if (opponent.field.fieldZone == null)
+                UserInterface.printResponse("no card found in the given position");
+            else
+                selectedCard = opponent.field.fieldZone;
         }
         else{
             UserInterface.printResponse("invalid selection");
