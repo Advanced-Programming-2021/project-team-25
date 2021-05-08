@@ -475,6 +475,7 @@ public class Battlefield {
                         selectedCard.setIsSetThisTurn(true);
                         selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
                         selectedCard.setCardsLocation(Location.MONSTER_AREA);
+                        turn.field.hand.remove(selectedCard);
                         selectedCard = null;
                         break;
                     }
@@ -496,6 +497,7 @@ public class Battlefield {
                         selectedCard.setIsSetThisTurn(true);
                         selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
                         selectedCard.setCardsLocation(Location.SPELL_AREA);
+                        turn.field.hand.remove(selectedCard);
                         selectedCard = null;
                         break;
                     }
