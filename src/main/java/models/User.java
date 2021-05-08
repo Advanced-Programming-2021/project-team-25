@@ -35,7 +35,7 @@ public class User implements Serializable {
 
     public static User getUserByNickName(String nickName) {
         for(User user : users)
-            if(user.getUsername().equals(nickName)) return user;
+            if(user.getNickName().equals(nickName)) return user;
 
         return null;
     }
