@@ -422,7 +422,7 @@ public class Battlefield {
 
         if (matcher.find()) {
             //get monster
-            Monster monsterForTribute = (Monster) turn.field.monsterZone.get(Integer.parseInt(matcher.group(1)));
+            Monster monsterForTribute = (Monster) turn.field.monsterZone.get(getIndex(Integer.parseInt(matcher.group(1))));
             //checking not empty
             if (Objects.isNull(monsterForTribute))
                 UserInterface.printResponse("no card found in the given position");
@@ -810,7 +810,7 @@ public class Battlefield {
         }
     }
 
-    public int getIndex(int num){
+    public static int getIndex(int num){
         if(num == 1) return 2;
         else if(num == 2) return 1;
         else if(num == 3) return 3;
