@@ -17,8 +17,8 @@ public class ShowCard {
                 UserInterface.printResponse("Level: " + monster.getLevel());
                 UserInterface.printResponse("Type: " + monster.getCardTypeInExel());
                 UserInterface.printResponse("ATK: " + monster.getAttack());
-                UserInterface.printResponse("DEF" + monster.getDefence());
-                UserInterface.printResponse("Description" + monster.getDescription());
+                UserInterface.printResponse("DEF: " + monster.getDefence());
+                UserInterface.printResponse("Description: " + monster.getDescription());
             }
             else{
                 SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(cardsName);
