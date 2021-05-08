@@ -50,6 +50,9 @@ public class MysticalSpaceTyphoon extends SpellAndTrap implements Serializable {
                         cardsName2 = command2;
                         break;
                     }
+                if (command2.equals("cancel")){
+                    return;
+                }
                 if (cardsName2.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
                 else break;
             }

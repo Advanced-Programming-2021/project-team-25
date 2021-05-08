@@ -57,6 +57,8 @@ public class SwordOfDarkDestruction extends SpellAndTrap implements Serializable
                         break;
                     }
                 }
+                if (name.equals("cancel"))
+                    return;
                 if (name.equals(" "))
                     UserInterface.printResponse("Insert a valid name please.");
                 else

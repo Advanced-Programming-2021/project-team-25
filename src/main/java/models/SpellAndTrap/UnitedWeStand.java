@@ -67,6 +67,8 @@ public class UnitedWeStand extends SpellAndTrap implements Serializable {
                         break;
                     }
                 }
+                if (name.equalsIgnoreCase("cancel"))
+                    return;
                 if (name.equals(" "))
                     UserInterface.printResponse("Insert a valid name please.");
                 else
