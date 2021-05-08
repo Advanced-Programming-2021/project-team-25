@@ -343,11 +343,13 @@ public class Battlefield {
                 //summon level 5 or 6 monsters
             else if(monster.getLevel()==5 || monster.getLevel()==6){
                 summonLevel6Or5();
+                turn.field.hand.remove(selectedCard);
                 selectedCard = null;
             }
             //summon level 7 , 8 monsters
             else if(monster.getLevel()==7 || monster.getLevel()==8){
                 summonLevel8Or7(monster);
+                turn.field.hand.remove(selectedCard);
                 selectedCard = null;
             }
             //normal summon
@@ -355,6 +357,7 @@ public class Battlefield {
                 summonedMonster();
                 //check that monster put
                 turn.hasPutMonster = true;
+                turn.field.hand.remove(selectedCard);
                 selectedCard = null;
             }
         }
@@ -394,11 +397,15 @@ public class Battlefield {
     }
 
     private void summonLevel6Or5() {
+        //get tribute Monster
+        Monster monsterForTribute = null;
         //checking if can tribute happened
         if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
         else {
-            UserInterface.printResponse("please select one card to tribute!");
-            tributeOneMonster();
+            while (Objects.isNull(monsterForTribute)){
+                UserInterface.printResponse("please select one card to tribute!");
+                monsterForTribute = tributeOneMonster();
+            }
             //summon
             summonedMonster();
             //check monster put
