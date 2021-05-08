@@ -334,13 +334,11 @@ public class Battlefield {
                 //summon level 5 or 6 monsters
             else if(monster.getLevel()==5 || monster.getLevel()==6){
                 summonLevel6Or5();
-                turn.field.hand.remove(selectedCard);
                 selectedCard = null;
             }
             //summon level 7 , 8 monsters
             else if(monster.getLevel()==7 || monster.getLevel()==8){
                 summonLevel8Or7(monster);
-                turn.field.hand.remove(selectedCard);
                 selectedCard = null;
             }
             //normal summon
@@ -348,7 +346,6 @@ public class Battlefield {
                 summonedMonster();
                 //check that monster put
                 turn.hasPutMonster = true;
-                turn.field.hand.remove(selectedCard);
                 selectedCard = null;
             }
         }
@@ -405,12 +402,15 @@ public class Battlefield {
     }
 
     private static void summonedMonster() {
+        //set turn put the monster
         turn.hasPutMonster = true;
+        //change FaceUp
         selectedCard.setSetChanged(true);
         selectedCard.setCardsFace(FaceUp.ATTACK);
         //putting card in last monster zone
         turn.field.monsterZone.set(getSizeOfMonsterZone(),selectedCard);
-
+        //delete monster from hand
+        turn.field.hand.remove(selectedCard);
         UserInterface.printResponse("summoned successfully");
     }
 
