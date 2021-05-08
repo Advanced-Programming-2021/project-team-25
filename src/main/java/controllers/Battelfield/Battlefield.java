@@ -325,8 +325,8 @@ public class Battlefield {
         //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         //checking that if we have monster
-        else if(!turn.field.hand.contains(selectedCard) || !(selectedCard.getCardsType() == Type.MONSTER)
-                || !((Monster)selectedCard).getCardTypeInExel().equals("normal"))
+        else if(!turn.field.hand.contains(selectedCard)
+                || !(selectedCard.getCardsType() == Type.MONSTER))
             UserInterface.printResponse("you cant summon this card");
         else {
             //loading the monster from selected card
@@ -338,7 +338,7 @@ public class Battlefield {
             else if(getSizeOfMonsterZone()==5)
                 UserInterface.printResponse("monster card zone is full");
                 //checking if turn can summon
-            else if(!turn.hasPutMonster)
+            else if(turn.hasPutMonster)
                 UserInterface.printResponse("you already summoned/set on this turn");
                 //summon level 5 or 6 monsters
             else if(monster.getLevel()==5 || monster.getLevel()==6){
