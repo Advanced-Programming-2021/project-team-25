@@ -59,6 +59,8 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
                         cardsName = command;
                         break;
                     }
+                if (command.equals("cancel"))
+                    return;
                 if (cardsName.equals(" "))
                     UserInterface.printResponse("You don't have this card in your hand. please write a valid name.");
                 else
@@ -67,7 +69,7 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
             for (int i = 0; i<6; ++i)
                 if (turn.field.hand.get(i) != null && turn.field.hand.get(i).getName().equals(cardsName)){
                     turn.field.graveYard.add(turn.field.hand.get(i));
-                    turn.field.hand.set(i, null);
+                    turn.field.hand.remove(i);
                     break;
                 }
 
@@ -85,6 +87,8 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
                         cardsName2 = command2;
                         break;
                     }
+                if (command2.equals("cancel"))
+                    return;
                 if (cardsName2.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
                 else break;
             }
@@ -108,6 +112,8 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
                                 cardsName3 = command3;
                                 break;
                             }
+                        if (command3.equals("cancel"))
+                            return;
                         if (cardsName3.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
                         else break;
                     }

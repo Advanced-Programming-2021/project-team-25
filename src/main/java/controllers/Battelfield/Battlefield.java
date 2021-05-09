@@ -9,6 +9,7 @@ import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
 import models.SpellAndTrap.SpellAndTrap;
+import models.User;
 import view.Responses;
 import view.UserInterface;
 
@@ -227,7 +228,10 @@ public class Battlefield {
             }
         }
         else if (brokenCommand[0].equals("--field")){
-            selectedCard = turn.field.fieldZone;
+            if (turn.field.fieldZone == null)
+                UserInterface.printResponse("no card found in the given position");
+            else
+                selectedCard = turn.field.fieldZone;
         }
         else if (brokenCommand[0].equals("--hand")){
             if (Integer.parseInt(brokenCommand[1]) < 1 || Integer.parseInt(brokenCommand[1]) > 6)
@@ -276,7 +280,10 @@ public class Battlefield {
             }
         }
         else if (breakedCommand[0].equals("--field")){
-            selectedCard = opponent.field.fieldZone;
+            if (opponent.field.fieldZone == null)
+                UserInterface.printResponse("no card found in the given position");
+            else
+                selectedCard = opponent.field.fieldZone;
         }
         else{
             UserInterface.printResponse("invalid selection");
@@ -385,11 +392,15 @@ public class Battlefield {
     }
 
     private void summonLevel6Or5() {
+        //get tribute Monster
+        Monster monsterForTribute = null;
         //checking if can tribute happened
         if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
         else {
-            UserInterface.printResponse("please select one card to tribute!");
-            tributeOneMonster();
+            while (Objects.isNull(monsterForTribute)){
+                UserInterface.printResponse("please select one card to tribute!");
+                monsterForTribute = tributeOneMonster();
+            }
             //summon
             summonedMonster();
             //check monster put
@@ -398,12 +409,15 @@ public class Battlefield {
     }
 
     private static void summonedMonster() {
+        //set turn put the monster
         turn.hasPutMonster = true;
+        //change FaceUp
         selectedCard.setSetChanged(true);
         selectedCard.setCardsFace(FaceUp.ATTACK);
         //putting card in last monster zone
         turn.field.monsterZone.set(getSizeOfMonsterZone(),selectedCard);
-
+        //delete monster from hand
+        turn.field.hand.remove(selectedCard);
         UserInterface.printResponse("summoned successfully");
     }
 
@@ -415,7 +429,7 @@ public class Battlefield {
 
         if (matcher.find()) {
             //get monster
-            Monster monsterForTribute = (Monster) turn.field.monsterZone.get(Integer.parseInt(matcher.group(1)));
+            Monster monsterForTribute = (Monster) turn.field.monsterZone.get(getIndex(Integer.parseInt(matcher.group(1))));
             //checking not empty
             if (Objects.isNull(monsterForTribute))
                 UserInterface.printResponse("no card found in the given position");
@@ -461,6 +475,7 @@ public class Battlefield {
                         selectedCard.setIsSetThisTurn(true);
                         selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
                         selectedCard.setCardsLocation(Location.MONSTER_AREA);
+                        turn.field.hand.remove(selectedCard);
                         selectedCard = null;
                         break;
                     }
@@ -482,6 +497,7 @@ public class Battlefield {
                         selectedCard.setIsSetThisTurn(true);
                         selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
                         selectedCard.setCardsLocation(Location.SPELL_AREA);
+                        turn.field.hand.remove(selectedCard);
                         selectedCard = null;
                         break;
                     }
@@ -807,7 +823,7 @@ public class Battlefield {
         }
     }
 
-    public int getIndex(int num){
+    public static int getIndex(int num){
         if(num == 1) return 2;
         else if(num == 2) return 1;
         else if(num == 3) return 3;
