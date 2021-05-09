@@ -292,6 +292,7 @@ public class Battlefield {
     }
 
     public void nextPhase(){
+        selectedCard = null;
         if( phase == Phase.DRAW_PHASE ) phase = Phase.STANDBY_PHASE;
         else if( phase == Phase.STANDBY_PHASE ) phase = Phase.MAIN1_PHASE;
         else if( phase == Phase.MAIN1_PHASE ) phase = Phase.BATTLE_PHASE;
@@ -303,7 +304,6 @@ public class Battlefield {
 
             cleanTurn();
             phase = Phase.DRAW_PHASE;
-
 
             UserInterface.printResponse("its " + turn.getName() + "’s turn");
         }
@@ -501,6 +501,7 @@ public class Battlefield {
                 selectedCard.setSetChanged(true);
                 selectedCard.setCardsFace(FaceUp.ATTACK);
                 UserInterface.printResponse("monster card position changed successfully");
+                selectedCard = null;
             }
         }
         else if(matcher.group(1).equals("defence")){
@@ -513,6 +514,7 @@ public class Battlefield {
                 selectedCard.setSetChanged(true);
                 selectedCard.setCardsFace(FaceUp.DEFENSE_FRONT);
                 UserInterface.printResponse("monster card position changed successfully");
+                selectedCard = null;
             }
         }
     }
@@ -644,6 +646,7 @@ public class Battlefield {
             }
 
         }
+        selectedCard = null;
     }
 
     public void directAttack(){
@@ -657,6 +660,7 @@ public class Battlefield {
             Monster monster = (Monster) selectedCard;
             opponent.LP = opponent.LP -  monster.getAttack();
             System.out.println("your opponent receives " + monster.getAttack() + " battle damage");
+            selectedCard = null;
         }
     }
 

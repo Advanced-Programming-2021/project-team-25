@@ -50,7 +50,7 @@ public class MainMenu {
                     break;
                 case "Scoreboard" :
                     ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
-                    ScoreBoardMenu.getInstance(currUser).runScoreBoardMenu();
+                    ScoreBoardMenu.getInstance().runScoreBoardMenu();
                     break;
             }
         }

@@ -1,6 +1,7 @@
 package controllers.menues;
 
 import controllers.Battelfield.Battlefield;
+import controllers.Database.DataBase;
 import controllers.Menu;
 import controllers.Regex;
 import models.Deck;
@@ -128,6 +129,7 @@ public class DuelMenu {
             duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 3000 + 3 * round3Duelist2Lp);
             duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 300 );
         }
+        DataBase.saveTheUserList(User.getUsers());
     }
 
     private void oneRoundDuel(String duelistName) {
@@ -155,6 +157,7 @@ public class DuelMenu {
             duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 1000 + duelist2.LP);
             duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 100 );
         }
+        DataBase.saveTheUserList(User.getUsers());
     }
 
     private void finish2Round(int duelist1Wins, int duelist2Wins, Duelist duelist1, Duelist duelist2, int round2Duelist2Lp) {
@@ -162,5 +165,6 @@ public class DuelMenu {
         duelist2.getUser().setScore(duelist2.getUser().getScore() + 3000);
         duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 3000 + 3 * round2Duelist2Lp);
         duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 300);
+        DataBase.saveTheUserList(User.getUsers());
     }
 }

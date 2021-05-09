@@ -26,6 +26,12 @@ public class User implements Serializable {
         DataBase.saveTheUserList(users);
     }
 
+    public User(String username , String nickName , int score){
+        this.username = username;
+        this.nickName = nickName;
+        this.score = score;
+    }
+
     public static User getUserByUsername(String username) {
         for(User user : users)
             if(user.getUsername().equals(username)) return user;
