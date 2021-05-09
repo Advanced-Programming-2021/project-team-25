@@ -22,6 +22,7 @@ public class DuelMenu {
 
     public static DuelMenu getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new DuelMenu(currUser);
+        singleToneClass.currUser = currUser;
         return singleToneClass;
     }
 

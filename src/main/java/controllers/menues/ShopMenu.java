@@ -1,26 +1,19 @@
 package controllers.menues;
 
+import controllers.Database.DataBase;
 import controllers.Menu;
-import controllers.ProgramController;
 import controllers.Regex;
-
 import models.Card;
-import models.CardStufs.Type;
-import models.Monster.Monster;
-import models.SpellAndTrap.SpellAndTrap;
 import models.User;
 import view.Responses;
 import view.UserInterface;
-
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Comparator;
 import java.util.Map;
 import java.util.regex.Matcher;
 
 import static controllers.ProgramController.currentMenu;
 import static controllers.ShowCard.showCard;
-
 
 public class ShopMenu {
     private User currUser;
@@ -44,10 +37,11 @@ public class ShopMenu {
             String command = UserInterface.getUserInput();
             if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
             else if ((matcher = Regex.getMatcher(command, Regex.shopBuy)).matches()) buyCard(matcher);
+            else if ((matcher = Regex.getMatcher(command, Regex.increaseMoney)).matches()) increaseMoney(matcher);
             else if (Regex.getMatcher(command, Regex.shopShowAll).matches()) showAllCards();
             else if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
             else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
-            else if (Regex.getMatcher(command, Regex.menuExit).matches()) return;
+            else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
         }
     }
@@ -83,6 +77,12 @@ public class ShopMenu {
         for (String allCard : allCards) {
             UserInterface.printResponse(allCard + ":" + Card.allCards.get(allCard).getPrice());
         }
+    }
+
+    private void increaseMoney(Matcher matcher){
+        int amount = Integer.parseInt(matcher.group(1));
+        currUser.money += amount;
+        DataBase.saveTheUserList(User.getUsers());
     }
 
 }
