@@ -9,7 +9,6 @@ import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
 import models.SpellAndTrap.SpellAndTrap;
-import models.User;
 import view.Responses;
 import view.UserInterface;
 
@@ -41,29 +40,24 @@ public class Battlefield {
     public static Duelist getTurn(){
         return turn;
     }
-
     public static Duelist getOpponent(){
         return opponent;
     }
-
     public static Phase getPhase() {
         return phase;
     }
-
     public static Card getSelectedCard() {
         return selectedCard;
     }
 
-    public static void setPhase(Phase phase) {
-        Battlefield.phase = phase;
-    }
-
-    public static void specialSummon(Monster monster){
-
-    }
-
+    //getter methods
     public Duelist getWinner() {
         return winner;
+    }
+
+    //setter methods
+    public static void setPhase(Phase phase) {
+        Battlefield.phase = phase;
     }
 
     public void runBattleField(){
@@ -87,20 +81,19 @@ public class Battlefield {
             else if (Regex.getMatcher(command, Regex.showGraveyard).matches()) showGraveyard();
             else if (Regex.getMatcher(command, Regex.showSelectedCard).matches()) showSelectedCard();
             else if ((matcher=Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
-            else if (Regex.getMatcher(command, Regex.surrender).matches()) surrender();
-            //else if (Regex.getMatcher(command, Regex.cancel).matches())
+            else if (Regex.getMatcher(command, Regex.surrender).matches()) winner = opponent;
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
             showBattleField();
 
         }
     }
 
+    //start and clean
     private void whoStart(Duelist duelist1, Duelist duelist2) {
         Random ran = new Random();
         if(ran.nextInt(2) == 0) chooseStarter(duelist2, duelist1);
         else chooseStarter(duelist1, duelist2);
     }
-
     private void chooseStarter(Duelist duelist1, Duelist duelist2) {
         UserInterface.printResponse("I flipped a coin and " + duelist2.getName() + " can decide who start’s\n1." + duelist2.getName() + "\n2." + duelist1.getName());
         String num = UserInterface.getUserInput();
@@ -112,28 +105,61 @@ public class Battlefield {
             opponent = duelist2;
         }
     }
-
     public void startGame(){
-        if(opponent.field.hand.isEmpty() || turn.field.hand.isEmpty()){
-            //shuffling the cards
-            Collections.shuffle(opponent.field.deck);
-            Collections.shuffle(turn.field.deck);
-            //draw 6 cards for opponent and turn
-            for(int i=0;i<6;i++){
-
-                addCardToPlayersHands(opponent);
-
-                addCardToPlayersHands(turn);
+        //shuffling the cards
+        Collections.shuffle(opponent.field.deck);
+        Collections.shuffle(turn.field.deck);
+        //draw 6 cards for opponent and turn
+        for(int i=0;i<6;i++){
+            addCardToPlayersHands(opponent);
+            addCardToPlayersHands(turn);
+        }
+    }
+    public void cleanTurn(){
+        turn.hasPutMonster = false;
+        opponent.hasPutMonster = false;
+        for (int i = 0; i<5; ++i){
+            if (turn.field.monsterZone.get(i) != null){
+                turn.field.monsterZone.get(i).setSetChanged(false);
+                turn.field.monsterZone.get(i).setIsSetThisTurn(false);
+                turn.field.monsterZone.get(i).setISAttackedThisTurn(false);
             }
+            if (opponent.field.monsterZone.get(i) != null){
+                opponent.field.monsterZone.get(i).setSetChanged(false);
+                opponent.field.monsterZone.get(i).setIsSetThisTurn(false);
+                opponent.field.monsterZone.get(i).setISAttackedThisTurn(false);
+            }
+            if (turn.field.spellTrapZone.get(i) != null){
+                turn.field.spellTrapZone.get(i).setSetChanged(false);
+                turn.field.spellTrapZone.get(i).setIsSetThisTurn(false);
+            }
+            if (opponent.field.spellTrapZone.get(i) != null){
+                opponent.field.spellTrapZone.get(i).setSetChanged(false);
+                opponent.field.spellTrapZone.get(i).setIsSetThisTurn(false);
+            }
+        }
+        if (turn.field.fieldZone != null) {
+            turn.field.fieldZone.setSetChanged(false);
+            turn.field.fieldZone.setIsSetThisTurn(false);
+        }
+        if (opponent.field.fieldZone != null) {
+            opponent.field.fieldZone.setSetChanged(false);
+            opponent.field.fieldZone.setIsSetThisTurn(false);
         }
     }
 
+    //draw
     private void addCardToPlayersHands(Duelist turn) {
         turn.field.hand.add(turn.field.deck.get(0));
         UserInterface.printResponse("new card added to the hand: " + turn.field.deck.get(0).getName());
         turn.field.deck.remove(0);
     }
+    public void drawCard(){
+        if(turn.field.deck.size() > 0 && turn.field.hand.size() < 6) addCardToPlayersHands(turn);
+        else winner = opponent;
+    }
 
+    //showBattleField
     public void showBattleField(){
         UserInterface.printResponse(opponent.getName() + " : " + opponent.LP);
         for (Card card: opponent.field.hand) System.out.print("c\t");
@@ -182,20 +208,35 @@ public class Battlefield {
 
         UserInterface.printResponse("\n" + turn.getName() + " : " + turn.LP);
     }
-
     private void showSpellAndTrapsZone(int i , Duelist duelist) {
         if (duelist.field.spellTrapZone.get(i) == null) System.out.print("E\t");
         else if (duelist.field.spellTrapZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) System.out.print("H\t");
         else if (duelist.field.spellTrapZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) System.out.print("O\t");
     }
-
     private void showMonsterZone(int i, Duelist duelist) {
         if (duelist.field.monsterZone.get(i) == null) System.out.print("E\t");
         else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) System.out.print("DH\t");
         else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) System.out.print("DO\t");
         else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK) System.out.print("OO\t");
     }
+    public void showGraveyard(){
+        if(turn.field.graveYard.isEmpty()) UserInterface.printResponse("graveyard empty");
+        else{
+            int i=1;
+            for (Card card: turn.field.graveYard)
+                UserInterface.printResponse(i + ". " + card.getName() + " : " + card.getDescription());
+        }
+        UserInterface.getUserInput();
+    }
+    public void showSelectedCard(){
+        if(selectedCard==null) UserInterface.printResponse("no card is selected yet");
+        else if(selectedCard.getCardsFace() == FaceUp.DEFENSE_BACK &&
+                (opponent.field.monsterZone.contains(selectedCard) ||
+                        opponent.field.spellTrapZone.contains(selectedCard))) UserInterface.printResponse("card is not visible");
+        else ShowCard.showCard(selectedCard.getName());
+    }
 
+    //select & deselect
     public void selectCard(Matcher matcher){
     	String restOfCommand = matcher.group(1);
         String[] temp = restOfCommand.split(" ");
@@ -247,7 +288,6 @@ public class Battlefield {
             UserInterface.printResponse("invalid selection");
         }
     }
-
     public void selectOpponentCard(Matcher matcher){
     	String restOfCommand = matcher.group(1);
         String[] temp = restOfCommand.split(" ");
@@ -289,7 +329,6 @@ public class Battlefield {
             UserInterface.printResponse("invalid selection");
         }
     }
-
     public void deselectCard(){
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         else{
@@ -298,6 +337,7 @@ public class Battlefield {
         }
     }
 
+    //end phase & turn
     public void nextPhase(){
         selectedCard = null;
         if( phase == Phase.DRAW_PHASE ) phase = Phase.STANDBY_PHASE;
@@ -317,7 +357,14 @@ public class Battlefield {
         UserInterface.printResponse("phase: " + phase);
         if (phase == Phase.DRAW_PHASE ) drawCard();
     }
+    public void changeTurn(){
+        Duelist temp;
+        temp = turn;
+        turn = opponent;
+        opponent = temp;
+    }
 
+    //summon
     public void summon(){
 
         //checking is a card selected or not
@@ -357,7 +404,6 @@ public class Battlefield {
             }
         }
     }
-
     private static void summonLevel8Or7(Monster monster) {
         //checking if can tribute happened
         if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
@@ -385,12 +431,10 @@ public class Battlefield {
             }
         }
     }
-
     private static void moveMonsterToGraveYard(Monster monsterForTribute1) {
         turn.field.monsterZone.set(turn.field.monsterZone.indexOf(monsterForTribute1),null);
         turn.field.graveYard.add(monsterForTribute1);
     }
-
     private void summonLevel6Or5() {
         //get tribute Monster
         Monster monsterForTribute = null;
@@ -407,7 +451,6 @@ public class Battlefield {
             turn.hasPutMonster = true;
         }
     }
-
     private static void summonedMonster() {
         //set turn put the monster
         turn.hasPutMonster = true;
@@ -420,7 +463,6 @@ public class Battlefield {
         turn.field.hand.remove(selectedCard);
         UserInterface.printResponse("summoned successfully");
     }
-
     private static Monster tributeOneMonster() {
         //selecting card to tribute
         String command = UserInterface.getUserInput();
@@ -440,19 +482,70 @@ public class Battlefield {
             return null;
         }
     }
-
     public static int getSizeOfMonsterZone(){
         int count=0;
         for (int i = 0; i<5; ++i)
             if (turn.field.monsterZone.get(i) != null) count += 1;
         return count;
     }
-
     public int getSizeOfSpellAndTrapZone(){
         int count=0;
         for (int i = 0; i<5; ++i)
             if (turn.field.spellTrapZone.get(i) != null) count += 1;
         return count;
+    }
+    public static void specialSummon(Monster monster){
+
+    }
+    public void flipSummon(){
+        Monster monster = (Monster) selectedCard;
+        if(Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
+        else if(!turn.field.monsterZone.contains(monster))
+            UserInterface.printResponse("you can`t change this card position");
+        else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
+            UserInterface.printResponse("you can’t do this action in this phase");
+        else if(monster.getSetChanged() || selectedCard.getCardsFace() != FaceUp.DEFENSE_BACK)
+            UserInterface.printResponse("you can’t flip summon this card");
+        else{
+            selectedCard.setCardsFace(FaceUp.ATTACK);
+            UserInterface.printResponse("flip summoned successfully");
+        }
+
+    }
+    public static void ritualSummon(){
+        String command;
+        //getting the ritual monster in hand if exist
+        Monster ritualMonster = getRitualMonsterInHand();
+        //getting the sum of levels in monster zone
+        int sumOfLevels = getSumOfLevelsInZone();
+        if (Objects.isNull(ritualMonster) || sumOfLevels < 7)
+            UserInterface.printResponse("there is no way you could ritual summon a monster");
+        else{
+            //checking not input another command
+            isRitualSummoned = true;
+            //get input command
+            command = UserInterface.getUserInput();
+            //force user to say summon
+            while(!command.equals("summon"))
+                UserInterface.printResponse("you should ritual summon right now");
+
+            summonLevel8Or7(ritualMonster);
+        }
+    }
+    private static Monster getRitualMonsterInHand() {
+        for (Card card : turn.field.hand) {
+            if (card.getCardsType().equals(Type.MONSTER) && ((Monster) card).getCardTypeInExel().equals("Ritual")) {
+                return (Monster) card;
+            }
+        }
+        return null;
+    }
+    private static int getSumOfLevelsInZone() {
+        int sum = 0;
+        for (Card card : turn.field.monsterZone) {
+            sum += ((Monster) card).getLevel();
+        }
+        return sum;
     }
 
     public void set(){
@@ -535,22 +628,7 @@ public class Battlefield {
         }
     }
 
-    public void flipSummon(){
-        Monster monster = (Monster) selectedCard;
-        if(Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
-        else if(!turn.field.monsterZone.contains(monster))
-            UserInterface.printResponse("you can`t change this card position");
-        else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
-            UserInterface.printResponse("you can’t do this action in this phase");
-        else if(monster.getSetChanged() || selectedCard.getCardsFace() != FaceUp.DEFENSE_BACK)
-            UserInterface.printResponse("you can’t flip summon this card");
-        else{
-            selectedCard.setCardsFace(FaceUp.ATTACK);
-            UserInterface.printResponse("flip summoned successfully");
-        }
-
-    }
-
+    //attack
     public void attack(Matcher matcher){
         int monsterNum = Integer.parseInt(matcher.group(1));
         if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
@@ -561,7 +639,6 @@ public class Battlefield {
         else if(opponent.field.monsterZone.get(getIndex(monsterNum)) == null) UserInterface.printResponse("there is no card to attack here");
         else if(antiAttackTraps().equals("no")) confirmAttack(monsterNum);
     }
-
     private String antiAttackTraps(){
         UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
         changeTurn();
@@ -601,7 +678,6 @@ public class Battlefield {
             return "yes";
         }
     }
-
     private void confirmAttack(int monsterNum) {
         Monster attackedMonster = (Monster) opponent.field.monsterZone.get(getIndex(monsterNum));
         Monster attackingMonster = (Monster) selectedCard;
@@ -664,7 +740,6 @@ public class Battlefield {
         }
         selectedCard = null;
     }
-
     public void directAttack(){
         if(selectedCard == null) UserInterface.printResponse("no card is selected yet");
         else if(!turn.field.monsterZone.contains(selectedCard)) UserInterface.printResponse("you can’t attack with this card");
@@ -679,7 +754,26 @@ public class Battlefield {
             selectedCard = null;
         }
     }
+    public static int getIndex(int num){
+        if(num == 1) return 2;
+        else if(num == 2) return 1;
+        else if(num == 3) return 3;
+        else if(num == 4) return 0;
+        else if(num == 5) return 4;
+        else return -1;
+    }
+    public int getIndexOfSelectedCardInMonsterZone(){
+        for (int i = 0 ; i < 5 ; i++ )
+            if(selectedCard == turn.field.monsterZone.get(i)) return i;
+        return -1;
+    }
+    public boolean isOpponentEmptyOfMonsters(){
+        for (Card card: opponent.field.monsterZone)
+            if(card != null) return false;
+        return true;
+    }
 
+    //activeSpell
     public void activeSpell(){
         SpellAndTrap spellAndTrap;
         if(Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
@@ -707,141 +801,4 @@ public class Battlefield {
     private boolean canWeActiveSpell(){
         return true;
     }
-
-    public static void ritualSummon(){
-        String command;
-        //getting the ritual monster in hand if exist
-        Monster ritualMonster = getRitualMonsterInHand();
-        //getting the sum of levels in monster zone
-        int sumOfLevels = getSumOfLevelsInZone();
-        if (Objects.isNull(ritualMonster) || sumOfLevels < 7)
-            UserInterface.printResponse("there is no way you could ritual summon a monster");
-        else{
-            //checking not input another command
-            isRitualSummoned = true;
-            //get input command
-            command = UserInterface.getUserInput();
-            //force user to say summon
-            while(!command.equals("summon"))
-                UserInterface.printResponse("you should ritual summon right now");
-
-            summonLevel8Or7(ritualMonster);
-        }
-    }
-
-    private static Monster getRitualMonsterInHand() {
-        for (Card card : turn.field.hand) {
-            if (card.getCardsType().equals(Type.MONSTER) && ((Monster) card).getCardTypeInExel().equals("Ritual")) {
-                return (Monster) card;
-            }
-        }
-        return null;
-    }
-
-    private static int getSumOfLevelsInZone() {
-        int sum = 0;
-        for (Card card : turn.field.monsterZone) {
-            sum += ((Monster) card).getLevel();
-        }
-        return sum;
-    }
-
-    public void showGraveyard(){
-        if(turn.field.graveYard.isEmpty()) UserInterface.printResponse("graveyard empty");
-        else{
-            int i=1;
-            for (Card card: turn.field.graveYard)
-                UserInterface.printResponse(i + ". " + card.getName() + " : " + card.getDescription());
-        }
-        UserInterface.getUserInput();
-    }
-
-    public void showSelectedCard(){
-        if(selectedCard==null) UserInterface.printResponse("no card is selected yet");
-        else if(selectedCard.getCardsFace() == FaceUp.DEFENSE_BACK &&
-                (opponent.field.monsterZone.contains(selectedCard) ||
-                 opponent.field.spellTrapZone.contains(selectedCard))) UserInterface.printResponse("card is not visible");
-        else ShowCard.showCard(selectedCard.getName());
-    }
-
-    public void surrender(){
-        winner = opponent;
-    }
-
-    public void changeTurn(){
-        Duelist temp;
-        temp = turn;
-        turn = opponent;
-        opponent = temp;
-    }
-
-    public void cleanTurn(){
-        turn.hasPutMonster = false;
-        opponent.hasPutMonster = false;
-        for (int i = 0; i<5; ++i){
-            if (turn.field.monsterZone.get(i) != null){
-                turn.field.monsterZone.get(i).setSetChanged(false);
-                turn.field.monsterZone.get(i).setIsSetThisTurn(false);
-                turn.field.monsterZone.get(i).setISAttackedThisTurn(false);
-            }
-            if (opponent.field.monsterZone.get(i) != null){
-                opponent.field.monsterZone.get(i).setSetChanged(false);
-                opponent.field.monsterZone.get(i).setIsSetThisTurn(false);
-                opponent.field.monsterZone.get(i).setISAttackedThisTurn(false);
-            }
-            if (turn.field.spellTrapZone.get(i) != null){
-                turn.field.spellTrapZone.get(i).setSetChanged(false);
-                turn.field.spellTrapZone.get(i).setIsSetThisTurn(false);
-            }
-            if (opponent.field.spellTrapZone.get(i) != null){
-                opponent.field.spellTrapZone.get(i).setSetChanged(false);
-                opponent.field.spellTrapZone.get(i).setIsSetThisTurn(false);
-            }
-        }
-        if (turn.field.fieldZone != null) {
-            turn.field.fieldZone.setSetChanged(false);
-            turn.field.fieldZone.setIsSetThisTurn(false);
-        }
-        if (opponent.field.fieldZone != null) {
-            opponent.field.fieldZone.setSetChanged(false);
-            opponent.field.fieldZone.setIsSetThisTurn(false);
-        }
-    }
-
-    public void drawCard(){
-
-        if(turn.field.deck.size()>0){
-            if(turn.field.hand.size()<6){
-                addCardToPlayersHands(turn);
-
-            }
-        }
-        else {
-            winner = opponent;
-            //endGame();
-            // calling the function that must be told to done when someone wins.
-        }
-    }
-
-    public static int getIndex(int num){
-        if(num == 1) return 2;
-        else if(num == 2) return 1;
-        else if(num == 3) return 3;
-        else if(num == 4) return 0;
-        else if(num == 5) return 4;
-        else return -1;
-    }
-
-    public int getIndexOfSelectedCardInMonsterZone(){
-        for (int i = 0 ; i < 5 ; i++ )
-            if(selectedCard == turn.field.monsterZone.get(i)) return i;
-        return -1;
-    }
-
-    public boolean isOpponentEmptyOfMonsters(){
-        for (Card card: opponent.field.monsterZone)
-            if(card != null) return false;
-        return true;
-    }
-
 }
