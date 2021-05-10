@@ -274,7 +274,7 @@ public class Battlefield {
                 selectedCard = turn.field.fieldZone;
         }
         else if (brokenCommand[0].equals("--hand")){
-            if (Integer.parseInt(brokenCommand[1]) < 1 || Integer.parseInt(brokenCommand[1]) > 6)
+            if (Integer.parseInt(brokenCommand[1]) < 1 || Integer.parseInt(brokenCommand[1]) > turn.field.hand.size())
                 UserInterface.printResponse("invalid selection");
             else if (turn.field.hand.get(Integer.parseInt(brokenCommand[1]) - 1) == null)
                 UserInterface.printResponse("no card found in the given position");
