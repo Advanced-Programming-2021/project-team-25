@@ -29,7 +29,7 @@ public class Battlefield {
     private static boolean isRitualSummoned = false;
     private Duelist winner;
     private static Card selectedCard;
-
+    private boolean isFirstTimeChanged = true;
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
         startGame();
@@ -67,7 +67,8 @@ public class Battlefield {
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
-            if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
+            if(isFirstTimeChanged) startGame();
+            else if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
             else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
             else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
@@ -108,13 +109,12 @@ public class Battlefield {
     }
     public void startGame(){
         //shuffling the cards
-        Collections.shuffle(opponent.field.deck);
         Collections.shuffle(turn.field.deck);
         //draw 6 cards for opponent and turn
         for(int i=0;i<6;i++){
-            addCardToPlayersHands(opponent);
             addCardToPlayersHands(turn);
         }
+        if(isFirstTimeChanged) isFirstTimeChanged = false;
     }
     public void cleanTurn(){
         turn.hasPutMonster = false;
