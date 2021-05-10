@@ -17,8 +17,8 @@ public class AdvancedRitualArt extends SpellAndTrap implements Serializable {
                 ((AdvancedRitualArt)object).getIcon(), ((AdvancedRitualArt)object).getStatus());
     }
 
-    public void action(){
-        Battlefield.ritualSummon();
+    public void action(Battlefield battlefield){
+        battlefield.ritualSummon();
     };
 
     public void removeSpellOrTrap (String name){};
