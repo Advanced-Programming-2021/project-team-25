@@ -1,7 +1,9 @@
 package models.Monster;
 
+import controllers.Battelfield.Battlefield;
 import models.CardStufs.Type;
 
+import javax.management.BadAttributeValueExpException;
 import java.io.Serializable;
 
 public class Marshmallon extends Monster implements Serializable {
@@ -19,8 +21,7 @@ public class Marshmallon extends Monster implements Serializable {
                 ((Marshmallon)object).getAttack(), ((Marshmallon)object).getDefence());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
+    public void action(Battlefield battlefield) {
+
+    }
 }
