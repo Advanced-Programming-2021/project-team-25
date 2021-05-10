@@ -1,5 +1,6 @@
 package models.Monster;
 
+import controllers.Battelfield.Battlefield;
 import models.Card;
 import models.CardStufs.Type;
 import models.SpellAndTrap.SpellAndTrap;
@@ -90,4 +91,7 @@ public class Monster extends Card implements Serializable {
     public void action() {
 
     }
+    public void removeMonster(Battlefield battlefield){
+        battlefield.getOpponent().field.graveYard.add(this);
+    };
 }

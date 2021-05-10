@@ -687,7 +687,7 @@ public class Battlefield {
 
             if(attackingMonster.getAttack() > attackedMonster.getAttack()){
                 selectedCard.setISAttackedThisTurn(true);
-                opponent.field.graveYard.add(opponent.field.monsterZone.get(getIndex(monsterNum)));
+                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
                 opponent.field.monsterZone.set(getIndex(monsterNum) , null);
                 int damage = attackingMonster.getAttack() - attackedMonster.getAttack();
                 opponent.LP = opponent.LP - damage;
@@ -695,7 +695,7 @@ public class Battlefield {
             }
 
             else if(attackingMonster.getAttack() == attackedMonster.getAttack()){
-                opponent.field.graveYard.add(opponent.field.monsterZone.get(getIndex(monsterNum)));
+                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
                 opponent.field.monsterZone.set(getIndex(monsterNum) , null);
                 turn.field.graveYard.add(selectedCard);
                 turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
@@ -703,7 +703,7 @@ public class Battlefield {
             }
 
             else{
-                turn.field.graveYard.add(selectedCard);
+                ((Monster) selectedCard).removeMonster(this);
                 turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
                 int damage = attackedMonster.getAttack() - attackingMonster.getAttack();
                 turn.LP = turn.LP - damage;
@@ -716,7 +716,7 @@ public class Battlefield {
 
             if(attackingMonster.getAttack() > attackedMonster.getDefence()){
                 selectedCard.setISAttackedThisTurn(true);
-                opponent.field.graveYard.add(opponent.field.monsterZone.get(getIndex(monsterNum)));
+                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
                 opponent.field.monsterZone.set(getIndex(monsterNum) , null);
                 UserInterface.printResponse("the defense position monster is destroyed");
             }
@@ -731,7 +731,7 @@ public class Battlefield {
             }
 
             else{
-                turn.field.graveYard.add(selectedCard);
+                ((Monster) selectedCard).removeMonster(this);
                 turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
                 int damage = attackedMonster.getDefence() - attackingMonster.getAttack();
                 turn.LP = turn.LP - damage;
