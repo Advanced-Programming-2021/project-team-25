@@ -18,39 +18,48 @@ import java.util.regex.Matcher;
 public class ChangeOfHeart extends SpellAndTrap implements Serializable {
     private static Duelist turn;
     private static Duelist opponent;
-
+    private int positionOfMonster;
     public ChangeOfHeart (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
+        expireTime = 1;
     }
 
     public ChangeOfHeart (Object object){
         super(((ChangeOfHeart)object).getName(), ((ChangeOfHeart)object).getCardsType(),
                 ((ChangeOfHeart)object).getDescription(), ((ChangeOfHeart)object).getPrice(),
                 ((ChangeOfHeart)object).getIcon(), ((ChangeOfHeart)object).getStatus());
+        expireTime = 1;
     }
 
     @Override
     public void action() {
-        ArrayList<Card> monsterZoneCards = new ArrayList<>();
-        //getting the gam field
-        turn = Battlefield.getTurn();
-        opponent = Battlefield.getOpponent();
-        //checking not null
-        if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
-            //for checking rival monsterZone not empty
-            if(opponent.field.monsterZone.isEmpty()) UserInterface.printResponse("your rival Monster zone is empty");
-            //show monster zone
-            else{
-                showMonstersOfOpponentToUser(monsterZoneCards);
+        if(expireTime == 0)
+            removeSpellOrTrap();
+        else {
+            //because just for one time that`s work perfectly
+            expireTime--;
 
-                UserInterface.printResponse("""
+            ArrayList<Card> monsterZoneCards = new ArrayList<>();
+            //getting the gam field
+            turn = Battlefield.getTurn();
+            opponent = Battlefield.getOpponent();
+            //checking not null
+            if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
+                //for checking rival monsterZone not empty
+                if(opponent.field.monsterZone.isEmpty()) UserInterface.printResponse("your rival Monster zone is empty");
+                    //show monster zone
+                else{
+                    showMonstersOfOpponentToUser(monsterZoneCards);
+
+                    UserInterface.printResponse("""
                     please enter the card id you want by entering the id in command
                     "select [id]"
                      or type exit""");
 
-                addMonsterCardToHand(monsterZoneCards);
-            }
+                    addMonsterCardToHand(monsterZoneCards);
+                }
 
+            }
         }
     }
 
@@ -66,8 +75,9 @@ public class ChangeOfHeart extends SpellAndTrap implements Serializable {
         while(!isChoiceEnded){
             if(matcher.find()){
                 //get User input
-                int number = Integer.parseInt(matcher.group(1));
-                monster = (Monster)monsterZoneCards.get(number);
+                positionOfMonster = Integer.parseInt(matcher.group(1));
+                monster = (Monster)monsterZoneCards.get(positionOfMonster);
+                targetedMonsters.add(monster);
                 if(getSizeOfMonsterZone()<5){
                     turn.field.monsterZone.set(getSizeOfMonsterZone()+1,monster);
                     opponent.field.monsterZone.set(opponent.field.monsterZone.indexOf(monster),null);
@@ -103,4 +113,8 @@ public class ChangeOfHeart extends SpellAndTrap implements Serializable {
             if (turn.field.monsterZone.get(i) != null) count += 1;
         return count;
     }
+    public void removeSpellOrTrap (){
+        turn.field.monsterZone.set(positionOfMonster,null);
+        opponent.field.monsterZone.set(positionOfMonster, targetedMonsters.get(0));
+    };
 }
