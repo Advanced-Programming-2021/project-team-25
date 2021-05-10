@@ -33,6 +33,7 @@ public class Battlefield {
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
         startGame();
+        showBattleField();
         runBattleField();
     }
 
@@ -88,7 +89,7 @@ public class Battlefield {
         }
     }
 
-    //start and clean
+    //start & clean
     private void whoStart(Duelist duelist1, Duelist duelist2) {
         Random ran = new Random();
         if(ran.nextInt(2) == 0) chooseStarter(duelist2, duelist1);

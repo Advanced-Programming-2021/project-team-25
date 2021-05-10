@@ -16,6 +16,7 @@ import static controllers.ProgramController.currentMenu;
 import static controllers.ShowCard.showCard;
 
 public class ShopMenu {
+
     private User currUser;
     private static ShopMenu singleToneClass = null;
 

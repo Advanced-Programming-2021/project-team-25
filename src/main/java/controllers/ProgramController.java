@@ -3,7 +3,6 @@ package controllers;
 import controllers.Constants.Initialize;
 import controllers.menues.*;
 import models.User;
-import view.UserInterface;
 
 public class ProgramController {
 

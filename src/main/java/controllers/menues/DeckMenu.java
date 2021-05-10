@@ -42,7 +42,6 @@ public class DeckMenu {
         while (currentMenu == Menu.DECK_MENU) {
 
             String command = UserInterface.getUserInput();
-
             Matcher matcher;
 
             if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);

@@ -32,6 +32,7 @@ public class DuelMenu {
 
     public void runDuelMenu(){
         while (currentMenu == Menu.DUEL_MENU) {
+
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
