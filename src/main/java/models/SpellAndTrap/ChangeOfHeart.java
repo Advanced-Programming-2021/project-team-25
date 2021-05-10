@@ -32,7 +32,7 @@ public class ChangeOfHeart extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
+    public void action(Battlefield battlefield) {
         if(expireTime == 0)
             removeSpellOrTrap();
         else {
@@ -41,8 +41,8 @@ public class ChangeOfHeart extends SpellAndTrap implements Serializable {
 
             ArrayList<Card> monsterZoneCards = new ArrayList<>();
             //getting the gam field
-            turn = Battlefield.getTurn();
-            opponent = Battlefield.getOpponent();
+            turn = battlefield.getTurn();
+            opponent = battlefield.getOpponent();
             //checking not null
             if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
                 //for checking rival monsterZone not empty

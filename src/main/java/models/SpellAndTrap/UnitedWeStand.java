@@ -23,8 +23,8 @@ public class UnitedWeStand extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
-        Duelist turn = Battlefield.getTurn();
+    public void action(Battlefield battlefield) {
+        Duelist turn = battlefield.getTurn();
 
         int numberToIncrease = 0;
         for (int i = 0; i<5; ++i){

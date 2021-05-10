@@ -22,8 +22,8 @@ public class SupplySquad extends SpellAndTrap implements Serializable {
                 ((SupplySquad)object).getIcon(), ((SupplySquad)object).getStatus());
     }
 
-    public void action(){
-        Duelist turn = Battlefield.getTurn();
+    public void action(Battlefield battlefield){
+        Duelist turn = battlefield.getTurn();
 
         //if the size of turn`s graveYard changed
         //we know that at least one card dead

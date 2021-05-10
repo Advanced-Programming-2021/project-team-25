@@ -1,5 +1,6 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
 import models.Card;
 import models.CardStufs.Type;
 import models.Monster.Monster;
@@ -36,9 +37,13 @@ public class SpellAndTrap extends Card implements Serializable {
         return status;
     }
 
-    @Override
-    //remember for abstract
-    public void action(){};
 
-    public void removeSpellOrTrap (String name){};
+    public void removeSpellOrTrap (String name){
+
+    }
+
+    @Override
+    public void action(Battlefield battlefield) {
+
+    }
 }

@@ -22,9 +22,9 @@ public class DarkHole extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
-        Duelist turn = Battlefield.getTurn();
-        Duelist opponent = Battlefield.getOpponent();
+    public void action(Battlefield battlefield) {
+        Duelist turn = battlefield.getTurn();
+        Duelist opponent = battlefield.getOpponent();
         //checking not null
         if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
             //remove all monsters in rival zone

@@ -1,5 +1,6 @@
 package models;
 
+import controllers.Battelfield.Battlefield;
 import models.CardStufs.FaceUp;
 import models.CardStufs.Location;
 import models.CardStufs.Type;
@@ -97,5 +98,5 @@ public abstract class Card implements Serializable {
                 '}';
     }
 
-    public abstract void action (/*check with other members*/);
+    public abstract void action (Battlefield battlefield);
 }

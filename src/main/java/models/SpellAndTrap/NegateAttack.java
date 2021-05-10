@@ -7,7 +7,7 @@ import models.CardStufs.Type;
 import java.io.Serializable;
 
 public class NegateAttack extends SpellAndTrap implements Serializable {
-
+    Battlefield battlefield;
     public NegateAttack (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
     }
@@ -19,15 +19,16 @@ public class NegateAttack extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
-        Battlefield.getOpponent().field.graveYard.add(Battlefield.getSelectedCard());
-        Battlefield.getOpponent().field.monsterZone.set(getIndexOfCard(),null);
-        Battlefield.setPhase(Phase.MAIN2_PHASE);
+    public void action(Battlefield battlefield) {
+        this.battlefield = battlefield;
+        battlefield.getOpponent().field.graveYard.add(battlefield.getSelectedCard());
+        battlefield.getOpponent().field.monsterZone.set(getIndexOfCard(),null);
+        battlefield.setPhase(Phase.MAIN2_PHASE);
     }
 
     public int getIndexOfCard(){
         for (int i = 0 ; i < 5 ; i++ ) {
-            if(Battlefield.getSelectedCard() == Battlefield.getTurn().field.monsterZone.get(i)) return i;
+            if(battlefield.getSelectedCard() == battlefield.getTurn().field.monsterZone.get(i)) return i;
         }
         return -1;
     }

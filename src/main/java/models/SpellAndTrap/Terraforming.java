@@ -27,9 +27,9 @@ public class Terraforming extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
+    public void action(Battlefield battlefield) {
 
-        turn = Battlefield.getTurn();
+        turn = battlefield.getTurn();
         ArrayList<Card> fieldCards = new ArrayList<>();
 
         //checking not null

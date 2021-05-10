@@ -19,8 +19,8 @@ public class SpellAbsorption extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
-        Duelist turn = Battlefield.getTurn();
+    public void action(Battlefield battlefield) {
+        Duelist turn = battlefield.getTurn();
         turn.LP+=500;
     }
 }

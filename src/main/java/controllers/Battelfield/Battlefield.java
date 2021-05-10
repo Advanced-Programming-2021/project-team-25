@@ -22,13 +22,13 @@ import static controllers.ShowCard.showCard;
 
 public class Battlefield {
 
-    public static ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
-    private static Duelist turn;
-    private static Duelist opponent;
-    private static Phase phase = Phase.DRAW_PHASE;
-    private static boolean isRitualSummoned = false;
+    public ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
+    private Duelist turn;
+    private Duelist opponent;
+    private Phase phase = Phase.DRAW_PHASE;
+    private boolean isRitualSummoned = false;
     private Duelist winner;
-    private static Card selectedCard;
+    private Card selectedCard;
     private boolean isFirstTimeChanged = true;
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -37,17 +37,16 @@ public class Battlefield {
         runBattleField();
     }
 
-    //static methods
-    public static Duelist getTurn(){
+    public Duelist getTurn(){
         return turn;
     }
-    public static Duelist getOpponent(){
+    public Duelist getOpponent(){
         return opponent;
     }
-    public static Phase getPhase() {
+    public Phase getPhase() {
         return phase;
     }
-    public static Card getSelectedCard() {
+    public Card getSelectedCard() {
         return selectedCard;
     }
 
@@ -55,10 +54,9 @@ public class Battlefield {
     public Duelist getWinner() {
         return winner;
     }
-
     //setter methods
-    public static void setPhase(Phase phase) {
-        Battlefield.phase = phase;
+    public void setPhase(Phase phase) {
+        this.phase = phase;
     }
 
     public void runBattleField(){
@@ -405,7 +403,7 @@ public class Battlefield {
             }
         }
     }
-    private static void summonLevel8Or7(Monster monster) {
+    private void summonLevel8Or7(Monster monster) {
         //checking if can tribute happened
         if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
         else {
@@ -432,7 +430,7 @@ public class Battlefield {
             }
         }
     }
-    private static void moveMonsterToGraveYard(Monster monsterForTribute1) {
+    private void moveMonsterToGraveYard(Monster monsterForTribute1) {
         turn.field.monsterZone.set(turn.field.monsterZone.indexOf(monsterForTribute1),null);
         turn.field.graveYard.add(monsterForTribute1);
     }
@@ -452,7 +450,7 @@ public class Battlefield {
             turn.hasPutMonster = true;
         }
     }
-    private static void summonedMonster() {
+    private void summonedMonster() {
         //set turn put the monster
         turn.hasPutMonster = true;
         //change FaceUp
@@ -464,7 +462,7 @@ public class Battlefield {
         turn.field.hand.remove(selectedCard);
         UserInterface.printResponse("summoned successfully");
     }
-    private static Monster tributeOneMonster() {
+    private Monster tributeOneMonster() {
         //selecting card to tribute
         String command = UserInterface.getUserInput();
         //getting card address
@@ -483,7 +481,7 @@ public class Battlefield {
             return null;
         }
     }
-    public static int getSizeOfMonsterZone(){
+    public int getSizeOfMonsterZone(){
         int count=0;
         for (int i = 0; i<5; ++i)
             if (turn.field.monsterZone.get(i) != null) count += 1;
@@ -495,7 +493,7 @@ public class Battlefield {
             if (turn.field.spellTrapZone.get(i) != null) count += 1;
         return count;
     }
-    public static void specialSummon(Monster monster){
+    public void specialSummon(Monster monster){
 
     }
     public void flipSummon(){
@@ -513,7 +511,7 @@ public class Battlefield {
         }
 
     }
-    public static void ritualSummon(){
+    public void ritualSummon(){
         String command;
         //getting the ritual monster in hand if exist
         Monster ritualMonster = getRitualMonsterInHand();
@@ -533,7 +531,7 @@ public class Battlefield {
             summonLevel8Or7(ritualMonster);
         }
     }
-    private static Monster getRitualMonsterInHand() {
+    private Monster getRitualMonsterInHand() {
         for (Card card : turn.field.hand) {
             if (card.getCardsType().equals(Type.MONSTER) && ((Monster) card).getCardTypeInExel().equals("Ritual")) {
                 return (Monster) card;
@@ -541,7 +539,7 @@ public class Battlefield {
         }
         return null;
     }
-    private static int getSumOfLevelsInZone() {
+    private int getSumOfLevelsInZone() {
         int sum = 0;
         for (Card card : turn.field.monsterZone) {
             sum += ((Monster) card).getLevel();
@@ -668,7 +666,7 @@ public class Battlefield {
                 String trapName = turn.field.spellTrapZone.get(getIndex(num)).getName();
 
                 if(trapName.equals("Magic Cylinder") || trapName.equals("Mirror Force") || trapName.equals("Torrential Tribute")){
-                    turn.field.spellTrapZone.get(getIndex(num)).action();
+                    turn.field.spellTrapZone.get(getIndex(num)).action(this);
                     turn.field.graveYard.add(turn.field.spellTrapZone.get(num));
                     turn.field.spellTrapZone.set(getIndex(num) , null);
                     UserInterface.printResponse("Trap activated");
@@ -755,7 +753,7 @@ public class Battlefield {
             selectedCard = null;
         }
     }
-    public static int getIndex(int num){
+    public int getIndex(int num){
         if(num == 1) return 2;
         else if(num == 2) return 1;
         else if(num == 3) return 3;

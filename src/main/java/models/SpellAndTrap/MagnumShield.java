@@ -23,8 +23,8 @@ public class MagnumShield extends SpellAndTrap  implements Serializable {
     }
 
     @Override
-    public void action() {
-        Duelist turn = Battlefield.getTurn();
+    public void action(Battlefield battlefield) {
+        Duelist turn = battlefield.getTurn();
 
         int counter = 0;
         ArrayList<Monster> trueMonsters = new ArrayList<>();

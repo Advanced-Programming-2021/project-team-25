@@ -21,12 +21,12 @@ public class MirrorForce extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
+    public void action(Battlefield battlefield) {
         for (int i = 0; i < 5; i++) {
-            if(Battlefield.getOpponent().field.monsterZone.get(i) != null){
-                if(Battlefield.getOpponent().field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK){
-                    Battlefield.getOpponent().field.graveYard.add(Battlefield.getOpponent().field.monsterZone.get(i));
-                    Battlefield.getOpponent().field.monsterZone.set(i,null);
+            if(battlefield.getOpponent().field.monsterZone.get(i) != null){
+                if(battlefield.getOpponent().field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK){
+                    battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.monsterZone.get(i));
+                    battlefield.getOpponent().field.monsterZone.set(i,null);
                 }
             }
         }

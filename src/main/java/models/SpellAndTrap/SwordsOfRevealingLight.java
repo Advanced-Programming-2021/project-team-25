@@ -11,7 +11,7 @@ import java.io.Serializable;
 
 public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable {
     //get opponent
-    Duelist opponent = Battlefield.getOpponent();
+    Duelist opponent;
 
     public SwordsOfRevealingLight (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
@@ -26,7 +26,8 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
     }
 
     @Override
-    public void action() {
+    public void action(Battlefield battlefield) {
+        opponent = battlefield.getOpponent();
         //face up all cards
         for(Card card : opponent.field.monsterZone){
             if(card.getCardsFace().equals(FaceUp.DEFENSE_BACK))

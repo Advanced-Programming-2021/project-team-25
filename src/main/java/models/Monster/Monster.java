@@ -3,7 +3,9 @@ package models.Monster;
 import controllers.Battelfield.Battlefield;
 import models.Card;
 import models.CardStufs.Type;
+import models.Duelist;
 import models.SpellAndTrap.SpellAndTrap;
+import view.UserInterface;
 
 import java.io.Serializable;
 
@@ -88,13 +90,45 @@ public class Monster extends Card implements Serializable {
     }
 
     @Override
-    public void action() {
+    public void action(Battlefield battlefield) {
 
     }
     public void removeMonster(Battlefield battlefield){
         battlefield.getOpponent().field.graveYard.add(this);
     }
-    public void defence(){
+    public void defence(Battlefield battlefield){
 
+    }
+    public void attack(Battlefield battlefield, int monsterNum){
+        Duelist opponent = battlefield.getOpponent();
+        Duelist turn = battlefield.getTurn();
+        Card selectedCard = battlefield.getSelectedCard();
+        Monster attackedMonster = (Monster) battlefield.getOpponent().field.monsterZone.get(battlefield.getIndex(monsterNum));
+        Monster attackingMonster = (Monster) battlefield.getSelectedCard();
+
+        if(attackingMonster.getAttack() > attackedMonster.getAttack()){
+            selectedCard.setISAttackedThisTurn(true);
+            ((Monster) opponent.field.monsterZone.get(battlefield.getIndex(monsterNum))).removeMonster(battlefield);
+            opponent.field.monsterZone.set(battlefield.getIndex(monsterNum) , null);
+            int damage = attackingMonster.getAttack() - attackedMonster.getAttack();
+            opponent.LP = opponent.LP - damage;
+            UserInterface.printResponse("your opponent’s monster is destroyed and your opponent receives" + damage + "battle damage");
+        }
+
+        else if(attackingMonster.getAttack() == attackedMonster.getAttack()){
+            ((Monster) opponent.field.monsterZone.get(battlefield.getIndex(monsterNum))).removeMonster(battlefield);
+            opponent.field.monsterZone.set(battlefield.getIndex(monsterNum) , null);
+            turn.field.graveYard.add(selectedCard);
+            turn.field.monsterZone.set(battlefield.getIndex(battlefield.getIndexOfSelectedCardInMonsterZone()) , null);
+            UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
+        }
+
+        else{
+            ((Monster) selectedCard).removeMonster(battlefield);
+            turn.field.monsterZone.set(battlefield.getIndex(battlefield.getIndexOfSelectedCardInMonsterZone()) , null);
+            int damage = attackedMonster.getAttack() - attackingMonster.getAttack();
+            turn.LP = turn.LP - damage;
+            UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
+        }
     }
 }

@@ -22,9 +22,9 @@ public class ClosedForest extends SpellAndTrap  implements Serializable {
     }
 
     @Override
-    public void action() {
-        turn = Battlefield.getTurn();
-        opponent = Battlefield.getOpponent();
+    public void action(Battlefield battlefield) {
+        turn = battlefield.getTurn();
+        opponent = battlefield.getOpponent();
 
         int numberOfAttackToAdd = 100 * turn.field.graveYard.size();
 

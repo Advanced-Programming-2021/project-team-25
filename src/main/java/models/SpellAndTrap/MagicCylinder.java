@@ -18,14 +18,14 @@ public class MagicCylinder extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
-        Battlefield.getOpponent().field.graveYard.add(Battlefield.getSelectedCard());
-        Battlefield.getOpponent().field.monsterZone.set(getIndexOfCard(),null);
+    public void action(Battlefield battlefield) {
+        battlefield.getOpponent().field.graveYard.add(battlefield.getSelectedCard());
+        battlefield.getOpponent().field.monsterZone.set(getIndexOfCard(battlefield),null);
     }
 
-    public int getIndexOfCard(){
+    public int getIndexOfCard(Battlefield battlefield){
         for (int i = 0 ; i < 5 ; i++ ) {
-            if(Battlefield.getSelectedCard() == Battlefield.getTurn().field.monsterZone.get(i)) return i;
+            if(battlefield.getSelectedCard() == battlefield.getTurn().field.monsterZone.get(i)) return i;
         }
         return -1;
     }

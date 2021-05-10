@@ -24,8 +24,8 @@ public class PotOfGreed extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
-        turn = Battlefield.getTurn();
+    public void action(Battlefield battlefield) {
+        turn = battlefield.getTurn();
         //checking not null
         if(!Objects.isNull(turn)){
             if(getSizeOfHand()<=4){

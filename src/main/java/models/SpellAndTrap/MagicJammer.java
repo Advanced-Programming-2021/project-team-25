@@ -1,5 +1,6 @@
 package models.SpellAndTrap;
 
+import controllers.Battelfield.Battlefield;
 import models.CardStufs.Type;
 
 import java.io.Serializable;
@@ -17,7 +18,7 @@ public class MagicJammer extends SpellAndTrap  implements Serializable {
     }
 
     @Override
-    public void action() {
+    public void action(Battlefield battlefield) {
 
     }
 }

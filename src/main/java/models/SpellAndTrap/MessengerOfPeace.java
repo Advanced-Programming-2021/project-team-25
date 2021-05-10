@@ -12,8 +12,8 @@ import java.util.ArrayList;
 
 public class MessengerOfPeace extends SpellAndTrap implements Serializable {
     //get turn and opponent
-    Duelist opponent = Battlefield.getOpponent();
-    Duelist turn = Battlefield.getTurn();
+    Duelist opponent;
+    Duelist turn;
 
     public MessengerOfPeace (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
@@ -26,9 +26,11 @@ public class MessengerOfPeace extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void action() {
+    public void action(Battlefield battlefield) {
+        opponent = battlefield.getOpponent();
+        turn = battlefield.getTurn();
         //get phase
-        Phase phase = Battlefield.getPhase();
+        Phase phase = battlefield.getPhase();
         if(phase.equals(Phase.STANDBY_PHASE))
             turn.LP-=100;
         //monster wit attack >= 1500 cant attack

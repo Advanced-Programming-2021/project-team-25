@@ -1,7 +1,9 @@
 package models.Monster;
 
 import controllers.Battelfield.Battlefield;
+import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
+import view.UserInterface;
 
 import javax.management.BadAttributeValueExpException;
 import java.io.Serializable;
@@ -23,5 +25,16 @@ public class Marshmallon extends Monster implements Serializable {
 
     public void action(Battlefield battlefield) {
 
+        if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
+            defence(battlefield);
+
+    }
+    @Override
+    public void removeMonster(Battlefield battlefield){
+        UserInterface.printResponse("Marshmallon can not die in normal fight!");
+    }
+    @Override
+    public void defence(Battlefield battlefield){
+        battlefield.getOpponent().LP -= 1000;
     }
 }

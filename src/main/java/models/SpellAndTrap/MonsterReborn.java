@@ -29,13 +29,13 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable {
     }
 
     @Override
-    public void action() {
+    public void action(Battlefield battlefield) {
         //User Input
         boolean isFoundMonsterInTurnGraveyard = false;
         boolean isFoundMonsterInOpponentGraveyard = false;
         //getting the gam field
-        turn = Battlefield.getTurn();
-        opponent = Battlefield.getOpponent();
+        turn = battlefield.getTurn();
+        opponent = battlefield.getOpponent();
         //checking not null
         if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
             //show graveyards
