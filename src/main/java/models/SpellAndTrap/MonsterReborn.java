@@ -17,7 +17,7 @@ import java.util.regex.Matcher;
 public class MonsterReborn extends SpellAndTrap  implements Serializable {
     private static Duelist turn;
     private static Duelist opponent;
-
+    Battlefield battlefield;
     public MonsterReborn (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
     }
@@ -30,6 +30,7 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable {
 
     @Override
     public void action(Battlefield battlefield) {
+        this.battlefield = battlefield;
         //User Input
         boolean isFoundMonsterInTurnGraveyard = false;
         boolean isFoundMonsterInOpponentGraveyard = false;
@@ -92,7 +93,7 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable {
         else{
             duelist.field.graveYard.remove(number);
             monster.setActiveSpell(this);
-            Battlefield.specialSummon(monster);
+            battlefield.specialSummon(monster);
         }
     }
 
