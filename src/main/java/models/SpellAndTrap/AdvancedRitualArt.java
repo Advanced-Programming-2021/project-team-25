@@ -19,7 +19,7 @@ public class AdvancedRitualArt extends SpellAndTrap implements Serializable {
 
     public void action(Battlefield battlefield){
         battlefield.ritualSummon();
-    };
+    }
 
-    public void removeSpellOrTrap (String name){};
+    public void removeSpellOrTrap (String name){}
 }
