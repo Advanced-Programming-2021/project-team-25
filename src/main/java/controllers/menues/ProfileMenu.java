@@ -10,16 +10,27 @@ import view.UserInterface;
 import java.util.regex.Matcher;
 
 public class ProfileMenu {
-    private static User currUser;
+    private User currUser;
+    private static ProfileMenu singleToneClass = null;
 
-    public static void runProfileMenu(User user){
+    public static ProfileMenu getInstance (User currUser){
+        if (singleToneClass == null) singleToneClass = new ProfileMenu(currUser);
+        singleToneClass.currUser = currUser;
+        return singleToneClass;
+    }
+    private ProfileMenu(User currUser){
+        this.currUser=currUser;
+    }
+
+    public void runProfileMenu(User user){
     currUser = user;
-    String command = UserInterface.getUserInput();
+    String command;
         while(true){
-            if(command.startsWith("Menu enter")) MainMenu.changeMenu(Regex.getMatcher(command, Regex.menuEnter),currUser);
+            command = UserInterface.getUserInput();
+            if(command.startsWith("Menu enter")) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
             else if(command.startsWith("profile change --nickname")) changeNickname(Regex.getMatcher(command,Regex.changeNickname));
-            else if(command.equals("profile change --password")) changPass(Regex.getMatcher(command,Regex.changePassword));
-            else if(command.equals("menu show-current")) UserInterface.printResponse("Main Menu");
+            else if(command.startsWith("profile change --password")) changPass(Regex.getMatcher(command,Regex.changePassword));
+            else if(command.equals("menu show-current")) UserInterface.printResponse("Profile Menu");
             else if (command.equals("menu exit")){
                 ProgramController.currentMenu = Menu.MAIN_MENU;
                 break;
@@ -28,14 +39,14 @@ public class ProfileMenu {
         }
 
     }
-    public static void changeNickname(Matcher matcher){
+    public void changeNickname(Matcher matcher){
         if(matcher.find()){
             String newNickname = matcher.group(1);
             currUser.setNickName(newNickname);
         }
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
-    public static void changPass(Matcher matcher){
+    public void changPass(Matcher matcher){
         if(matcher.find()){
             String currentPass = matcher.group(1);
             String newPass = matcher.group(2);
