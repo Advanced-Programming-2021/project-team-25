@@ -83,6 +83,7 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable , Commo
             else{
                 UserInterface.printResponse(Responses.INVALID_COMMAND);
                 command = UserInterface.getUserInput();
+                matcher = Regex.getMatcher(command,Regex.selectCardFromGraveyard);
             }
         }
     }
