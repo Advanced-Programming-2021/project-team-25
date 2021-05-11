@@ -29,7 +29,7 @@ public class Battlefield {
     private boolean isRitualSummoned = false;
     private Duelist winner;
     public Card selectedCard;
-    private int changedTurnTime = 0;
+    public int changedTurnTime = 0;
     public Monster attackingMonster;
     public Monster attackedMonster;
     public int monsterChangedWithScanner;

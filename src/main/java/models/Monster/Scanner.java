@@ -74,6 +74,7 @@ public class Scanner extends Monster implements Serializable , CommonFunctions {
             else{
                 UserInterface.printResponse(Responses.INVALID_COMMAND);
                 command = UserInterface.getUserInput();
+                matcher = Regex.getMatcher(command,Regex.selectFieldCard);
             }
         }
 

@@ -47,6 +47,7 @@ public class Regex {
     public static String surrender = "^surrender$";
     public static String cancel = "^cancel$";
     public static String selectCardFromGraveyard = "^select --(M|H) (\\d{0,50})$";
+    public static String selectCardInAllFields = "^select --(G|D|H) (\\d{0,50})$";
     public static String selectFieldCard = "^select (\\d+)$";
 
     public static Matcher getMatcher(String input, String regex) {
