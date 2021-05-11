@@ -554,20 +554,68 @@ public class Battlefield {
 
     }
     public void flipSummon(){
-        Monster monster = (Monster) selectedCard;
         if(Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
-        else if(!turn.field.monsterZone.contains(monster))
+        else if(!turn.field.monsterZone.contains(selectedCard))
             UserInterface.printResponse("you can`t change this card position");
         else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
             UserInterface.printResponse("you can’t do this action in this phase");
-        else if(monster.getSetChanged() || selectedCard.getCardsFace() != FaceUp.DEFENSE_BACK)
+        else if(selectedCard.getSetChanged() || selectedCard.getCardsFace() != FaceUp.DEFENSE_BACK)
             UserInterface.printResponse("you can’t flip summon this card");
         else{
-            selectedCard.setCardsFace(FaceUp.ATTACK);
-            UserInterface.printResponse("flip summoned successfully");
+            if (selectedCard.getName().equals("Man-Eater Bug")){
+                flipSummonForManEaterBug();
+            }
+            else {
+                selectedCard.setCardsFace(FaceUp.ATTACK);
+                UserInterface.printResponse("flip summoned successfully");
+            }
         }
 
     }
+
+    public void flipSummonForManEaterBug (){
+        int counter = 0;
+        for (int i = 0; i<5; ++i)
+            if (opponent.field.monsterZone.get(i) == null)
+                counter += 1;
+
+        if (counter == 5)
+            UserInterface.printResponse("Your opponent does not have any monster to destroy it.");
+        else{
+            UserInterface.printResponse("Please select one of these cards to destroy it.");
+            for (int i = 0; i<5; ++i)
+                if (opponent.field.monsterZone.get(i) != null)
+                    UserInterface.printResponse(opponent.field.monsterZone.get(i).getName() + ":" +
+                            opponent.field.monsterZone.get(i).getDescription());
+
+            String name = " ";
+            int index = 0;
+            while (true){
+                String command = UserInterface.getUserInput();
+                for (int i = 0; i<5; ++i) {
+                    if (opponent.field.monsterZone.get(i).getName().equals(command)) {
+                        name = command;
+                        index = i;
+                        break;
+                    }
+                }
+                if (name.equals(" "))
+                    UserInterface.printResponse("Insert a valid name please.");
+                else
+                    break;
+            }
+
+            opponent.field.graveYard.add(opponent.field.monsterZone.get(index));
+            opponent.field.monsterZone.set(index, null);
+            UserInterface.printResponse("Opponents card destroyed successfully.");
+            selectedCard.setCardsFace(FaceUp.ATTACK);
+            UserInterface.printResponse("Flipped summon successfully.");
+            selectedCard = null;
+        }
+    }
+
+
+
     public void ritualSummon(){
         String command;
         //getting the ritual monster in hand if exist
