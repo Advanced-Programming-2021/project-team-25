@@ -28,8 +28,11 @@ public class Battlefield {
     private Phase phase = Phase.DRAW_PHASE;
     private boolean isRitualSummoned = false;
     private Duelist winner;
-    private Card selectedCard;
+    public Card selectedCard;
     private int changedTurnTime = 0;
+    public Monster attackingMonster;
+    public Monster attackedMonster;
+    public int attackedMonsterNum;
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
         showBattleField();
@@ -387,24 +390,24 @@ public class Battlefield {
                 UserInterface.printResponse("you already summoned/set on this turn");
                 //summon level 5 or 6 monsters
             else if(monster.getLevel()==5 || monster.getLevel()==6){
-                summonLevel6Or5("there are not enough cards for tribute");
+                summonLevel6Or5("summoned successfully");
                 selectedCard = null;
             }
             //summon level 7 , 8 monsters
             else if(monster.getLevel()==7 || monster.getLevel()==8){
-                summonLevel8Or7(monster);
+                summonLevel8Or7(monster,"summoned successfully");
                 selectedCard = null;
             }
             //normal summon
             else if(monster.getLevel()<=4){
-                summonedMonster();
+                summonedMonster("summoned successfully");
                 //check that monster put
                 turn.hasPutMonster = true;
                 selectedCard = null;
             }
         }
     }
-    private void summonLevel8Or7(Monster monster) {
+    private void summonLevel8Or7(Monster monster,String message) {
         //checking if can tribute happened
         if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
         else {
@@ -425,7 +428,7 @@ public class Battlefield {
                 moveMonsterToGraveYard(monsterForTribute1);
                 moveMonsterToGraveYard(monsterForTribute2);
                 //summon
-                summonedMonster();
+                summonedMonster(message);
                 //check that monster put
                 turn.hasPutMonster = true;
             }
@@ -439,19 +442,19 @@ public class Battlefield {
         //get tribute Monster
         Monster monsterForTribute = null;
         //checking if can tribute happened
-        if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse(message);
+        if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
         else {
             while (Objects.isNull(monsterForTribute)){
                 UserInterface.printResponse("please select one card to tribute!");
                 monsterForTribute = tributeOneMonster();
             }
             //summon
-            summonedMonster();
+            summonedMonster(message);
             //check monster put
             turn.hasPutMonster = true;
         }
     }
-    private void summonedMonster() {
+    private void summonedMonster(String message) {
         //set turn put the monster
         turn.hasPutMonster = true;
         //change FaceUp
@@ -461,7 +464,7 @@ public class Battlefield {
         turn.field.monsterZone.set(getSizeOfMonsterZone(),selectedCard);
         //delete monster from hand
         turn.field.hand.remove(selectedCard);
-        UserInterface.printResponse("summoned successfully");
+        UserInterface.printResponse(message);
     }
     private Monster tributeOneMonster() {
         //selecting card to tribute
@@ -529,7 +532,7 @@ public class Battlefield {
             while(!command.equals("summon"))
                 UserInterface.printResponse("you should ritual summon right now");
 
-            summonLevel8Or7(ritualMonster);
+            summonLevel8Or7(ritualMonster,"summoned successfully");
         }
     }
     private Monster getRitualMonsterInHand() {
@@ -679,9 +682,9 @@ public class Battlefield {
         }
     }
     private void confirmAttack(int monsterNum) {
-        Monster attackedMonster = (Monster) opponent.field.monsterZone.get(getIndex(monsterNum));
-        Monster attackingMonster = (Monster) selectedCard;
-
+        attackedMonster = (Monster) opponent.field.monsterZone.get(getIndex(monsterNum));
+        attackingMonster = (Monster) selectedCard;
+        attackedMonsterNum = monsterNum;
         if(attackedMonster.getCardsFace() == FaceUp.ATTACK){
 
             if(attackingMonster.getAttack() > attackedMonster.getAttack()){

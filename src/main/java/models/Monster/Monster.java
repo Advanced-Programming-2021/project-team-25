@@ -2,6 +2,7 @@ package models.Monster;
 
 import controllers.Battelfield.Battlefield;
 import models.Card;
+import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.SpellAndTrap.SpellAndTrap;
@@ -96,7 +97,68 @@ public class Monster extends Card implements Serializable {
     public void removeMonster(Battlefield battlefield){
         battlefield.getOpponent().field.graveYard.add(this);
     }
-    public void defence(Battlefield battlefield){
+    public void attack(Battlefield battlefield){
+        Monster attackedMonster = battlefield.attackedMonster;
+        Duelist opponent = battlefield.getOpponent();
+        Duelist turn = battlefield.getTurn();
 
+        //if attacking defeated remove our monster
+        // -1 means defeated
+        // 1 means attacked
+        // 0 means equal
+        // 2 means nothing happened
+        int condition = attackedMonster.defenceFunc(battlefield);
+        if(condition == 1){
+            attackedMonster.removeMonster(battlefield);
+            opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
+            int damage = this.getAttack() - attackedMonster.getAttack();
+            opponent.LP = opponent.LP - damage;
+
+            if(attackedMonster.getCardsFace().equals(FaceUp.ATTACK))
+                UserInterface.printResponse("your opponent’s monster is destroyed and your opponent receives" + damage + "battle damage");
+            else
+                UserInterface.printResponse("the defense position monster is destroyed");
+        }
+        else if(condition == -1){
+            battlefield.selectedCard.setISAttackedThisTurn(true);
+            this.removeMonster(battlefield);
+            turn.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
+            int damage = attackedMonster.getAttack() - this.getAttack();
+            turn.LP = turn.LP - damage;
+            UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
+        }
+        else if(condition == 0){
+            this.removeMonster(battlefield);
+            opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
+            attackedMonster.removeMonster(battlefield);
+            turn.field.monsterZone.set(battlefield.getIndex(battlefield.getIndexOfSelectedCardInMonsterZone()) , null);
+            UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
+        }
+        else if(condition == 2) {
+            battlefield.selectedCard.setISAttackedThisTurn(true);
+            UserInterface.printResponse("opponent’s monster card was " + attackedMonster.getName() + " and no card is destroyed");
+            opponent.field.monsterZone.get(battlefield.getIndex(battlefield.attackedMonsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
+
+            UserInterface.printResponse("no card is destroyed");
+        }
+
+        battlefield.selectedCard = null;
+    }
+    public int defenceFunc(Battlefield battlefield){
+        Monster attackingMonster = battlefield.attackingMonster;
+
+        int attackMonsterHero = attackingMonster.getAttack();
+        int defenseMonsterHero;
+        if(this.getCardsFace() == FaceUp.ATTACK) defenseMonsterHero = this.attack;
+        else defenseMonsterHero = this.defence;
+        if(attackMonsterHero > defenseMonsterHero) return 1;
+        else if(attackMonsterHero<defenseMonsterHero) {
+            if(this.getCardsFace() == FaceUp.DEFENSE_BACK)
+              return 2;
+            else
+              return -1;
+        }
+        else
+            return 0;
     }
 }

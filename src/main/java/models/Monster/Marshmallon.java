@@ -26,9 +26,9 @@ public class Marshmallon extends Monster implements Serializable {
     public void action(Battlefield battlefield) {
 
         if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
-            defence(battlefield);
-//        else if(this.getCardsFace().equals(FaceUp.ATTACK))
-//            battlefield.attack();
+            defenceFunc(battlefield);
+        else if(this.getCardsFace().equals(FaceUp.ATTACK))
+            attack(battlefield);
 
     }
     @Override
@@ -36,7 +36,8 @@ public class Marshmallon extends Monster implements Serializable {
         UserInterface.printResponse("Marshmallon can not die in normal fight!");
     }
     @Override
-    public void defence(Battlefield battlefield){
+    public int defenceFunc(Battlefield battlefield){
         battlefield.getOpponent().LP -= 1000;
+        return 0;
     }
 }
