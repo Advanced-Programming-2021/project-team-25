@@ -25,9 +25,7 @@ public class Marshmallon extends Monster implements Serializable {
 
     public void action(Battlefield battlefield) {
 
-        if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
-            defenceFunc(battlefield);
-        else if(this.getCardsFace().equals(FaceUp.ATTACK))
+        if(this.getCardsFace().equals(FaceUp.ATTACK))
             attack(battlefield);
 
     }
