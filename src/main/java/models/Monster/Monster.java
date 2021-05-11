@@ -20,6 +20,7 @@ public class Monster extends Card implements Serializable {
     private int defence;
     private boolean canAttack = true;
     private SpellAndTrap activeSpell;
+    int expireTime;
 
 
     public Monster(String name, Type cardType, String description, int price, int level, String attribute,

@@ -12,7 +12,6 @@ public class SpellAndTrap extends Card implements Serializable {
     public ArrayList<Monster>targetedMonsters = new ArrayList<>();
     private String icon;
     private String status;
-    int expireTime;
 
     public SpellAndTrap(String name, Type cardType, String description, int price, String icon, String status) {
         super(name, cardType, description, price);

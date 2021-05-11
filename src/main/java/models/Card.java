@@ -19,12 +19,15 @@ public abstract class Card implements Serializable {
     private boolean isAttackedThisTurn = false;
     private String description;
     private int price;
+    private boolean isExpired;
+    int expireTime;
 
     public Card(String name, Type cardsType, String description, int price) {
         this.name = name;
         this.cardsType = cardsType;
         this.description = description;
         this.price = price;
+        isExpired = false;
         if (!allCards.containsKey(name)) allCards.put(name, this);
     }
 
@@ -82,6 +85,14 @@ public abstract class Card implements Serializable {
 
     public void setISAttackedThisTurn (boolean trueOrFalse){
         this.isAttackedThisTurn = trueOrFalse;
+    }
+
+    public boolean isExpired() {
+        return isExpired;
+    }
+
+    public void setExpired(boolean expired) {
+        isExpired = expired;
     }
 
     @Override
