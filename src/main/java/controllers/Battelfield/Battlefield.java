@@ -32,6 +32,7 @@ public class Battlefield {
     private int changedTurnTime = 0;
     public Monster attackingMonster;
     public Monster attackedMonster;
+    public int monsterChangedWithScanner;
     public int attackedMonsterNum;
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
