@@ -99,7 +99,7 @@ public class Monster extends Card implements Serializable {
 
     }
     public void removeMonster(Battlefield battlefield){
-        battlefield.getOpponent().field.graveYard.add(this);
+        battlefield.getTurn().field.graveYard.add(this);
     }
     public void attack(Battlefield battlefield){
         Monster attackedMonster = battlefield.attackedMonster;
