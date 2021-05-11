@@ -76,7 +76,7 @@ public class Texchanger extends Monster implements Serializable, CommonFunctions
                     case "H" -> monster = (Monster) turn.field.hand.get(number);
                 }
                 //end choice if monster not null
-                if(!Objects.isNull(monster)){
+                if(!Objects.isNull(monster) && monster.getCardTypeInExel().equals("Cyberse")){
                     //special summon
                     battlefield.specialSummon(monster);
                     UserInterface.printResponse("special summoned successfully");
