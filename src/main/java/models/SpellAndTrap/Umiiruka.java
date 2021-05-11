@@ -6,6 +6,7 @@ import models.Duelist;
 import models.Monster.Monster;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Umiiruka extends SpellAndTrap implements Serializable {
     private static Duelist turn;
@@ -49,5 +50,16 @@ public class Umiiruka extends SpellAndTrap implements Serializable {
             monster.setAttack(monster.getAttack() + 500);
             monster.setDefence(monster.getDefence() - 400);
         }
+    }
+
+    @Override
+    public void removeSpellOrTrap(String name) {
+        for (Monster targetedMonster : targetedMonsters) {
+            targetedMonster.setAttack(targetedMonster.getAttack() - 500);
+            targetedMonster.setDefence(targetedMonster.getDefence() + 400);
+        }
+        targetedMonsters = new ArrayList<>();
+        turn.field.graveYard.add(this);
+        turn.field.fieldZone = null;
     }
 }

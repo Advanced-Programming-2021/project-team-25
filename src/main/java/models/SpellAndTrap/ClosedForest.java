@@ -6,10 +6,12 @@ import models.Duelist;
 import models.Monster.Monster;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class ClosedForest extends SpellAndTrap  implements Serializable {
     private static Duelist turn;
     private static Duelist opponent;
+    private static int numberOfAttackToAdd = 0;
 
     public ClosedForest (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
@@ -26,7 +28,8 @@ public class ClosedForest extends SpellAndTrap  implements Serializable {
         turn = battlefield.getTurn();
         opponent = battlefield.getOpponent();
 
-        int numberOfAttackToAdd = 100 * turn.field.graveYard.size();
+
+        numberOfAttackToAdd = 100 * turn.field.graveYard.size();
 
         for (int i = 0; i<5; ++i){
             if (turn.field.monsterZone.get(i) != null){
@@ -45,4 +48,17 @@ public class ClosedForest extends SpellAndTrap  implements Serializable {
             monster.setDefence(monster.getDefence() + numberToAdd);
         }
     }
+
+    @Override
+    public void removeSpellOrTrap(String name) {
+        for (Monster targetedMonster : targetedMonsters) {
+            targetedMonster.setAttack(targetedMonster.getAttack() - numberOfAttackToAdd);
+            targetedMonster.setDefence(targetedMonster.getDefence() - numberOfAttackToAdd);
+        }
+        targetedMonsters = new ArrayList<>();
+        turn.field.graveYard.add(this);
+        turn.field.fieldZone = null;
+    }
+
+
 }

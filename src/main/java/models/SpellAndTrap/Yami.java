@@ -6,6 +6,7 @@ import models.Duelist;
 import models.Monster.Monster;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class Yami extends SpellAndTrap implements Serializable {
     private static Duelist turn;
@@ -54,5 +55,19 @@ public class Yami extends SpellAndTrap implements Serializable {
         }
     }
 
-
+    @Override
+    public void removeSpellOrTrap(String name) {
+        for (Monster monster : targetedMonsters) {
+            if (monster.getMonsterType().equals("Fiend") || monster.getMonsterType().equals("Spellcaster")) {
+                monster.setAttack(monster.getAttack() - 200);
+                monster.setDefence(monster.getDefence() - 200);
+            } else if (monster.getMonsterType().equals("Fairy")) {
+                monster.setAttack(monster.getAttack() + 200);
+                monster.setDefence(monster.getDefence() + 200);
+            }
+        }
+        targetedMonsters = new ArrayList<>();
+        turn.field.graveYard.add(this);
+        turn.field.fieldZone = null;
+    }
 }

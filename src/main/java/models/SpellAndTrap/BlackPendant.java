@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class BlackPendant extends SpellAndTrap  implements Serializable {
+    private static Duelist turn;
 
     public BlackPendant (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
@@ -23,7 +24,7 @@ public class BlackPendant extends SpellAndTrap  implements Serializable {
 
     @Override
     public void action(Battlefield battlefield) {
-        Duelist turn = battlefield.getTurn();
+        turn = battlefield.getTurn();
 
         int counter = 0;
         ArrayList<Monster> trueMonsters = new ArrayList<>();
@@ -70,5 +71,20 @@ public class BlackPendant extends SpellAndTrap  implements Serializable {
     public void equipMonster (Monster monster){
         targetedMonsters.add(monster);
         monster.setAttack(monster.getAttack() + 500);
+    }
+
+    @Override
+    public void removeSpellOrTrap(String name) {
+        if (targetedMonsters.get(0) != null) {
+            targetedMonsters.get(0).setAttack(targetedMonsters.get(0).getAttack() - 500);
+        }
+        targetedMonsters = new ArrayList<>();
+        turn.field.graveYard.add(this);
+        for (int i = 0; i<5; ++i){
+            if (turn.field.spellTrapZone.get(i) == this){
+                turn.field.spellTrapZone.set(i, null);
+                break;
+            }
+        }
     }
 }

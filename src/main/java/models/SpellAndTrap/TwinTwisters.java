@@ -92,7 +92,7 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
                 if (cardsName2.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
                 else break;
             }
-            removeSpellOrTrap(cardsName2);
+            removeSpellOrTrapInThisCard(cardsName2);
 
             if (counterForOpponentSpellZone < 4){
                 UserInterface.printResponse("You can destroy one more spell or trap of your opponent. do you want to " +
@@ -117,7 +117,7 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
                         if (cardsName3.equals(" ")) UserInterface.printResponse("Your opponent does not have this spell.");
                         else break;
                     }
-                    removeSpellOrTrap(cardsName3);
+                    removeSpellOrTrapInThisCard(cardsName3);
                 }
             }
         }
@@ -125,24 +125,38 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
 
     }
 
-    public void removeSpellOrTrap (String name){
+    public void removeSpellOrTrapInThisCard (String name){
         for (int i = 0; i<5; ++i){
             if (opponent.field.spellTrapZone.get(i) != null && opponent.field.spellTrapZone.get(i).getName().equals(name)){
                 if (opponent.field.spellTrapZone.get(i).getCardsType() == Type.SPELL){
-                    for (int j = 0; j<((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters.size(); ++j){
-                        Monster temp = ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters.get(j);
-                        temp.setAttack(((Monster)allCards.get(temp.getName())).getAttack());
-                        temp.setDefence(((Monster)allCards.get(temp.getName())).getDefence());
-                    }
-                    ((SpellAndTrap) opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
-                    opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
-                    opponent.field.spellTrapZone.set(i, null);
+//                    for (int j = 0; j<((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters.size(); ++j){
+//                        Monster temp = ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters.get(j);
+//                        temp.setAttack(((Monster)allCards.get(temp.getName())).getAttack());
+//                        temp.setDefence(((Monster)allCards.get(temp.getName())).getDefence());
+//                    }
+                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap("nothing");
+//                    ((SpellAndTrap) opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
+//                    opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
+//                    opponent.field.spellTrapZone.set(i, null);
                 }
                 else{
-                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
-                    opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
-                    opponent.field.spellTrapZone.set(i, null);
+                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap("nothing");
+//                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
+//                    opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
+//                    opponent.field.spellTrapZone.set(i, null);
                 }
+            }
+        }
+    }
+
+    @Override
+    public void removeSpellOrTrap(String name) {
+        targetedMonsters = new ArrayList<>();
+        turn.field.graveYard.add(this);
+        for (int i = 0; i<5; ++i){
+            if (turn.field.spellTrapZone.get(i) == this){
+                turn.field.spellTrapZone.set(i, null);
+                break;
             }
         }
     }

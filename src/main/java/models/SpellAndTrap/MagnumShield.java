@@ -11,6 +11,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class MagnumShield extends SpellAndTrap  implements Serializable {
+    private static Duelist turn;
 
     public MagnumShield (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
@@ -24,7 +25,7 @@ public class MagnumShield extends SpellAndTrap  implements Serializable {
 
     @Override
     public void action(Battlefield battlefield) {
-        Duelist turn = battlefield.getTurn();
+        turn = battlefield.getTurn();
 
         int counter = 0;
         ArrayList<Monster> trueMonsters = new ArrayList<>();
@@ -75,4 +76,26 @@ public class MagnumShield extends SpellAndTrap  implements Serializable {
         else
             monster.setDefence(monster.getDefence() + monster.getAttack());
     }
+
+    @Override
+    public void removeSpellOrTrap(String name) {
+        if (targetedMonsters.get(0) != null){
+            if (targetedMonsters.get(0).getCardsFace() == FaceUp.ATTACK){
+                targetedMonsters.get(0).setAttack(targetedMonsters.get(0).getAttack() - targetedMonsters.get(0).getDefence());
+            }
+            else{
+                targetedMonsters.get(0).setDefence(targetedMonsters.get(0).getDefence() - targetedMonsters.get(0).getAttack());
+            }
+        }
+        targetedMonsters = new ArrayList<>();
+        turn.field.graveYard.add(this);
+        for (int i = 0; i<5; ++i){
+            if (turn.field.spellTrapZone.get(i) == this){
+                turn.field.spellTrapZone.set(i, null);
+                break;
+            }
+        }
+    }
+
+
 }

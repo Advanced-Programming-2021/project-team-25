@@ -10,6 +10,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 public class SwordOfDarkDestruction extends SpellAndTrap implements Serializable {
+    private static Duelist turn;
 
     public SwordOfDarkDestruction (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
@@ -23,7 +24,7 @@ public class SwordOfDarkDestruction extends SpellAndTrap implements Serializable
 
     @Override
     public void action(Battlefield battlefield) {
-        Duelist turn = battlefield.getTurn();
+        turn = battlefield.getTurn();
 
         int counter = 0;
         ArrayList<Monster> trueMonsters = new ArrayList<>();
@@ -39,7 +40,7 @@ public class SwordOfDarkDestruction extends SpellAndTrap implements Serializable
         }
 
         if (targetedMonsters.size() > 0)
-            UserInterface.printResponse("This spell has already equiped a monster.");
+            UserInterface.printResponse("This spell has already equipped a monster.");
         else if (counter == 0)
             UserInterface.printResponse("You don't have monster with type of Fiend or Spellcaster.");
         else{
@@ -77,7 +78,18 @@ public class SwordOfDarkDestruction extends SpellAndTrap implements Serializable
 
     @Override
     public void removeSpellOrTrap(String name) {
-
+        if (targetedMonsters.get(0) != null) {
+            targetedMonsters.get(0).setAttack(targetedMonsters.get(0).getAttack() - 400);
+            targetedMonsters.get(0).setDefence(targetedMonsters.get(0).getDefence() + 200);
+        }
+        targetedMonsters = new ArrayList<>();
+        turn.field.graveYard.add(this);
+        for (int i = 0; i<5; ++i){
+            if (turn.field.spellTrapZone.get(i) == this){
+                turn.field.spellTrapZone.set(i, null);
+                break;
+            }
+        }
     }
 
 }
