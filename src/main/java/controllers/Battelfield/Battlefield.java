@@ -732,62 +732,64 @@ public class Battlefield {
         attackedMonster = (Monster) opponent.field.monsterZone.get(getIndex(monsterNum));
         attackingMonster = (Monster) selectedCard;
         attackedMonsterNum = monsterNum;
-        if(attackedMonster.getCardsFace() == FaceUp.ATTACK){
 
-            if(attackingMonster.getAttack() > attackedMonster.getAttack()){
-                selectedCard.setISAttackedThisTurn(true);
-                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
-                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
-                int damage = attackingMonster.getAttack() - attackedMonster.getAttack();
-                opponent.LP = opponent.LP - damage;
-                UserInterface.printResponse("your opponent’s monster is destroyed and your opponent receives" + damage + "battle damage");
-            }
-
-            else if(attackingMonster.getAttack() == attackedMonster.getAttack()){
-                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
-                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
-                turn.field.graveYard.add(selectedCard);
-                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
-                UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
-            }
-
-            else{
-                ((Monster) selectedCard).removeMonster(this);
-                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
-                int damage = attackedMonster.getAttack() - attackingMonster.getAttack();
-                turn.LP = turn.LP - damage;
-                UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
-            }
-
-        }
-
-        else {
-
-            if(attackingMonster.getAttack() > attackedMonster.getDefence()){
-                selectedCard.setISAttackedThisTurn(true);
-                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
-                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
-                UserInterface.printResponse("the defense position monster is destroyed");
-            }
-
-            else if(attackingMonster.getAttack() == attackedMonster.getDefence()){
-                selectedCard.setISAttackedThisTurn(true);
-                if(attackedMonster.getCardsFace() == FaceUp.DEFENSE_BACK){
-                    UserInterface.printResponse("opponent’s monster card was " + attackedMonster.getName() + " and no card is destroyed");
-                    opponent.field.monsterZone.get(getIndex(monsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
-                }
-                UserInterface.printResponse("no card is destroyed");
-            }
-
-            else{
-                ((Monster) selectedCard).removeMonster(this);
-                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
-                int damage = attackedMonster.getDefence() - attackingMonster.getAttack();
-                turn.LP = turn.LP - damage;
-                UserInterface.printResponse("no card is destroyed and you received " + damage + " battle damage");
-            }
-
-        }
+        attackingMonster.action(this);
+//        if(attackedMonster.getCardsFace() == FaceUp.ATTACK){
+//
+//            if(attackingMonster.getAttack() > attackedMonster.getAttack()){
+//                selectedCard.setISAttackedThisTurn(true);
+//                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
+//                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
+//                int damage = attackingMonster.getAttack() - attackedMonster.getAttack();
+//                opponent.LP = opponent.LP - damage;
+//                UserInterface.printResponse("your opponent’s monster is destroyed and your opponent receives" + damage + "battle damage");
+//            }
+//
+//            else if(attackingMonster.getAttack() == attackedMonster.getAttack()){
+//                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
+//                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
+//                turn.field.graveYard.add(selectedCard);
+//                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
+//                UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
+//            }
+//
+//            else{
+//                ((Monster) selectedCard).removeMonster(this);
+//                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
+//                int damage = attackedMonster.getAttack() - attackingMonster.getAttack();
+//                turn.LP = turn.LP - damage;
+//                UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
+//            }
+//
+//        }
+//
+//        else {
+//
+//            if(attackingMonster.getAttack() > attackedMonster.getDefence()){
+//                selectedCard.setISAttackedThisTurn(true);
+//                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
+//                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
+//                UserInterface.printResponse("the defense position monster is destroyed");
+//            }
+//
+//            else if(attackingMonster.getAttack() == attackedMonster.getDefence()){
+//                selectedCard.setISAttackedThisTurn(true);
+//                if(attackedMonster.getCardsFace() == FaceUp.DEFENSE_BACK){
+//                    UserInterface.printResponse("opponent’s monster card was " + attackedMonster.getName() + " and no card is destroyed");
+//                    opponent.field.monsterZone.get(getIndex(monsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
+//                }
+//                UserInterface.printResponse("no card is destroyed");
+//            }
+//
+//            else{
+//                ((Monster) selectedCard).removeMonster(this);
+//                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
+//                int damage = attackedMonster.getDefence() - attackingMonster.getAttack();
+//                turn.LP = turn.LP - damage;
+//                UserInterface.printResponse("no card is destroyed and you received " + damage + " battle damage");
+//            }
+//
+//        }
         selectedCard = null;
     }
     public void directAttack(){
