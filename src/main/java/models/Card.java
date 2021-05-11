@@ -20,7 +20,7 @@ public abstract class Card implements Serializable {
     private String description;
     private int price;
     private boolean isExpired;
-    int expireTime;
+    public int expireTime;
 
     public Card(String name, Type cardsType, String description, int price) {
         this.name = name;

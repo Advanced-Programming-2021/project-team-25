@@ -27,15 +27,24 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
 
     @Override
     public void action(Battlefield battlefield) {
-        opponent = battlefield.getOpponent();
-        //face up all cards
-        for(Card card : opponent.field.monsterZone){
-            if(card.getCardsFace().equals(FaceUp.DEFENSE_BACK))
-                card.setCardsFace(FaceUp.DEFENSE_FRONT);
+        if(expireTime == 0){
+            setExpired(true);
+            removeSpellOrTrap(null);
         }
-        //if this card is face up opponent cant attack
-        if(this.getCardsFace().equals(FaceUp.ATTACK) || expireTime!=0)
-            setMonsterCanAttackOrNot(false);
+        else{
+            //expire after three play
+            expireTime--;
+
+            opponent = battlefield.getOpponent();
+            //face up all cards
+            for(Card card : opponent.field.monsterZone){
+                if(card.getCardsFace().equals(FaceUp.DEFENSE_BACK))
+                    card.setCardsFace(FaceUp.DEFENSE_FRONT);
+            }
+            //if this card is face up opponent cant attack
+            if(this.getCardsFace().equals(FaceUp.ATTACK) || expireTime!=0)
+                setMonsterCanAttackOrNot(false);
+        }
     }
 
     private void setMonsterCanAttackOrNot(boolean canAttack) {

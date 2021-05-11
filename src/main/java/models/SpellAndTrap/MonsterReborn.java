@@ -14,7 +14,7 @@ import java.io.Serializable;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
-public class MonsterReborn extends SpellAndTrap  implements Serializable {
+public class MonsterReborn extends SpellAndTrap  implements Serializable , CommonFunctions{
     private static Duelist turn;
     private static Duelist opponent;
     Battlefield battlefield;
@@ -34,7 +34,7 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable {
         //User Input
         boolean isFoundMonsterInTurnGraveyard = false;
         boolean isFoundMonsterInOpponentGraveyard = false;
-        //getting the gam field
+        //getting the game field
         turn = battlefield.getTurn();
         opponent = battlefield.getOpponent();
         //checking not null
@@ -97,16 +97,4 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable {
         }
     }
 
-    private boolean showGraveYard(Duelist duelist) {
-        boolean isFoundMonster = false;
-        int i = 1;
-        for (Card card : duelist.field.graveYard) {
-            if(card.getCardsType().equals(Type.MONSTER)){
-                ShowCard.showCard(card.getName());
-                isFoundMonster = true;
-            }
-        }
-        if(!isFoundMonster) UserInterface.printResponse("No Monster Found in "+duelist.getName()+" graveyard");
-        return isFoundMonster;
-    }
 }
