@@ -1,5 +1,6 @@
 package models.Monster;
 
+import controllers.Battelfield.Battlefield;
 import models.CardStufs.Type;
 
 import java.io.Serializable;
@@ -18,9 +19,9 @@ public class BeastKingBarbaros extends Monster implements Serializable {
                 ((BeastKingBarbaros)object).getMonsterType(), ((BeastKingBarbaros)object).getCardTypeInExel(),
                 ((BeastKingBarbaros)object).getAttack(), ((BeastKingBarbaros)object).getDefence());
     }
-
-//    @Override
-//    public void action() {
-//
-//    }
+    @Override
+    public void removeMonster(Battlefield battlefield){
+        this.setAttack(3000);
+        battlefield.getTurn().field.graveYard.add(this);
+    }
 }

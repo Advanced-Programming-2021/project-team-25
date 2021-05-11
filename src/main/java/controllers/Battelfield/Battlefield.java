@@ -394,6 +394,9 @@ public class Battlefield {
                 summonLevel6Or5("summoned successfully");
                 selectedCard = null;
             }
+            //exception for King Barbaros
+            else if(monster.getName().equals("Beast King Barbaros"))
+                summonKingBarbaros(monster);
             //summon level 7 , 8 monsters
             else if(monster.getLevel()==7 || monster.getLevel()==8){
                 summonLevel8Or7(monster,"summoned successfully");
@@ -408,6 +411,49 @@ public class Battlefield {
             }
         }
     }
+
+    private void summonKingBarbaros(Monster monster) {
+        String command;
+        UserInterface.printResponse("""
+                you can summon this card without tribute two monster by normal summon
+                but Please Not that this monster attack will be decrease 1900 point
+                 enter your decision Y or N""");
+        command = UserInterface.getUserInput();
+        if(command.equals("Y")){
+            monster.setAttack(monster.getAttack()-1900);
+        }
+        else if(command.equals("N")){
+            UserInterface.printResponse("you can summon this card by tribute three monsters of yours by this you can" +
+                    "destroy all opponents monsters\n type Y for agreement and N for disagree");
+            command = UserInterface.getUserInput();
+            if(command.equals("Y")){
+                getThreeMonsterForKingBarbaros();
+            }
+            else if(command.equals("N")) summonLevel8Or7(monster,"summoned successfully");
+            else UserInterface.printResponse(Responses.INVALID_COMMAND);
+        }
+        else UserInterface.printResponse(Responses.INVALID_COMMAND);
+        
+    }
+
+    private void getThreeMonsterForKingBarbaros() {
+        if(getSizeOfMonsterZone()<3) UserInterface.printResponse("not enough monster");
+        else{
+            Monster monsterForTribute1 , monsterForTribute2, monsterForTribute3;
+            UserInterface.printResponse("please select two card to tribute!");
+            UserInterface.printResponse("please select the first one");
+            monsterForTribute1 = tributeOneMonster();
+            UserInterface.printResponse("please select the next one");
+            monsterForTribute2 = tributeOneMonster();
+            UserInterface.printResponse("please select the next one");
+            monsterForTribute3 = tributeOneMonster();
+            //checking is error happened or not
+            if(Objects.isNull(monsterForTribute1) || Objects.isNull(monsterForTribute2)
+                    || Objects.isNull(monsterForTribute3))
+                UserInterface.printResponse("no Valid monster has inputted");
+        }
+    }
+
     private void summonLevel8Or7(Monster monster,String message) {
         //checking if can tribute happened
         if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
