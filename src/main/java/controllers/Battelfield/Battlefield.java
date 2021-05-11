@@ -469,7 +469,7 @@ public class Battlefield {
                 return;
             //checking the levels is enough or not
             assert false;
-            if(monsterForTribute1.getLevel()+monsterForTribute2.getLevel()<monster.getLevel())
+            if(monsterForTribute1.getLevel()+monsterForTribute2.getLevel()<monster.getLevel() && !message.equals("set successfully"))
                 UserInterface.printResponse("selected monster levels don`t match with ritual monster");
             else{
                 moveMonsterToGraveYard(monsterForTribute1);
@@ -506,7 +506,12 @@ public class Battlefield {
         turn.hasPutMonster = true;
         //change FaceUp
         selectedCard.setSetChanged(true);
-        selectedCard.setCardsFace(FaceUp.ATTACK);
+        selectedCard.setIsSetThisTurn(true);
+        selectedCard.setCardsLocation(Location.MONSTER_AREA);
+        if (message.equals("summoned successfully"))
+            selectedCard.setCardsFace(FaceUp.ATTACK);
+        else
+            selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
         //putting card in last monster zone
         turn.field.monsterZone.set(getSizeOfMonsterZone(),selectedCard);
         //delete monster from hand
@@ -610,6 +615,14 @@ public class Battlefield {
                 UserInterface.printResponse("monster card zone is full");
             else if (turn.hasPutMonster)
                 UserInterface.printResponse("you already summoned/set on this turn");
+            else if (((Monster)selectedCard).getLevel() == 5 || ((Monster)selectedCard).getLevel() == 6) {
+                summonLevel6Or5("set successfully");
+                selectedCard = null;
+            }
+            else if (((Monster)selectedCard).getLevel() == 7 || ((Monster)selectedCard).getLevel() == 8){
+                summonLevel8Or7((Monster)selectedCard, "set successfully");
+                selectedCard = null;
+            }
             else{
                 UserInterface.printResponse("set successfully");
                 for (int i = 0; i<5; ++i){
