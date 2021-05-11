@@ -29,10 +29,9 @@ public class Battlefield {
     private boolean isRitualSummoned = false;
     private Duelist winner;
     private Card selectedCard;
-    private boolean isFirstTimeChanged = true;
+    private int changedTurnTime = 0;
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
-        startGame();
         showBattleField();
         runBattleField();
     }
@@ -65,7 +64,7 @@ public class Battlefield {
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
-            if(isFirstTimeChanged) startGame();
+            if(changedTurnTime<2) startGame();
             else if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
             else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
@@ -112,7 +111,6 @@ public class Battlefield {
         for(int i=0;i<6;i++){
             addCardToPlayersHands(turn);
         }
-        if(isFirstTimeChanged) isFirstTimeChanged = false;
     }
     public void cleanTurn(){
         turn.hasPutMonster = false;
@@ -357,6 +355,9 @@ public class Battlefield {
         if (phase == Phase.DRAW_PHASE ) drawCard();
     }
     public void changeTurn(){
+        //timer increase
+        changedTurnTime++;
+
         Duelist temp;
         temp = turn;
         turn = opponent;
@@ -386,7 +387,7 @@ public class Battlefield {
                 UserInterface.printResponse("you already summoned/set on this turn");
                 //summon level 5 or 6 monsters
             else if(monster.getLevel()==5 || monster.getLevel()==6){
-                summonLevel6Or5();
+                summonLevel6Or5("there are not enough cards for tribute");
                 selectedCard = null;
             }
             //summon level 7 , 8 monsters
@@ -434,11 +435,11 @@ public class Battlefield {
         turn.field.monsterZone.set(turn.field.monsterZone.indexOf(monsterForTribute1),null);
         turn.field.graveYard.add(monsterForTribute1);
     }
-    private void summonLevel6Or5() {
+    private void summonLevel6Or5(String message) {
         //get tribute Monster
         Monster monsterForTribute = null;
         //checking if can tribute happened
-        if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
+        if(turn.field.monsterZone.isEmpty()) UserInterface.printResponse(message);
         else {
             while (Objects.isNull(monsterForTribute)){
                 UserInterface.printResponse("please select one card to tribute!");
