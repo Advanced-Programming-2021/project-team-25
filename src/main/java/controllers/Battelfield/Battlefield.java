@@ -495,6 +495,7 @@ public class Battlefield {
                 UserInterface.printResponse("please select one card to tribute!");
                 monsterForTribute = tributeOneMonster();
             }
+            moveMonsterToGraveYard(monsterForTribute);
             //summon
             summonedMonster(message);
             //check monster put
