@@ -28,6 +28,7 @@ public class Battlefield {
     private Phase phase = Phase.DRAW_PHASE;
     private boolean isRitualSummoned = false;
     private Duelist winner;
+    private boolean isTurnChanged = false;
     public Card selectedCard;
     public int changedTurnTime = 0;
     public Monster attackingMonster;
@@ -36,6 +37,7 @@ public class Battlefield {
     public int attackedMonsterNum;
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
+        startGame();
         showBattleField();
         runBattleField();
     }
@@ -68,7 +70,7 @@ public class Battlefield {
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
-            if(changedTurnTime<1) startGame();
+            if(changedTurnTime<1 && isTurnChanged) startGame();
             else if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
             else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
@@ -361,6 +363,7 @@ public class Battlefield {
     public void changeTurn(){
         //timer increase
         changedTurnTime++;
+        isTurnChanged = true;
 
         Duelist temp;
         temp = turn;
