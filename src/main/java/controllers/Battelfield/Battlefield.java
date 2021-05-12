@@ -68,7 +68,7 @@ public class Battlefield {
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
-            if(changedTurnTime<2) startGame();
+            if(changedTurnTime<1) startGame();
             else if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
             else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
