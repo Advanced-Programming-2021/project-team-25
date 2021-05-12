@@ -67,11 +67,11 @@ public class Battlefield {
     public void runBattleField(){
         while (winner == null) {
 
+            if(changedTurnTime<=1 && isTurnChanged) startGame();
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
-            if(changedTurnTime<1 && isTurnChanged) startGame();
-            else if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
+            if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
             else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
             else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
             else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
