@@ -998,15 +998,16 @@ public class Battlefield {
     //checking for that if that spell has a role that we can`t activate it
     private boolean canWeActiveSpell(){
         for(Card card : opponent.field.spellTrapZone) {
-            String name = card.getName();
-            if(name.equals("Harpie’s Feather Duster") ||
-                    name.equals("Twin Twisters") ||
-                    name.equals("Mystical space typhoon") ||
-                    name.equals("Ring of Defense") ||
-                    name.equals("Magic Jammer")){
-                return isOpponentActiveSpellOrTrap();
+            if(!Objects.isNull(card)){
+                String name = card.getName();
+                if(name.equals("Harpie’s Feather Duster") ||
+                        name.equals("Twin Twisters") ||
+                        name.equals("Mystical space typhoon") ||
+                        name.equals("Ring of Defense") ||
+                        name.equals("Magic Jammer")){
+                    return isOpponentActiveSpellOrTrap();
+                }
             }
-
         }
         return true;
     }
