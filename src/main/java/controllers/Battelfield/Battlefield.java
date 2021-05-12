@@ -29,6 +29,7 @@ public class Battlefield {
     private boolean isRitualSummoned = false;
     private Duelist winner;
     private boolean isTurnChanged = false;
+    private int countDraw6Cards =0;
     public Card selectedCard;
     public int changedTurnTime = 0;
     public Monster attackingMonster;
@@ -67,7 +68,7 @@ public class Battlefield {
     public void runBattleField(){
         while (winner == null) {
 
-            if(changedTurnTime<=1 && isTurnChanged) startGame();
+            if(countDraw6Cards<2 && isTurnChanged) startGame();
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
@@ -111,6 +112,7 @@ public class Battlefield {
         }
     }
     public void startGame(){
+        countDraw6Cards++;
         //shuffling the cards
         Collections.shuffle(turn.field.deck);
         //draw 6 cards for opponent and turn
