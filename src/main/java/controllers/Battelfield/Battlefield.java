@@ -435,7 +435,7 @@ public class Battlefield {
                     "destroy all opponents monsters\n type Y for agreement and N for disagree");
             command = UserInterface.getUserInput();
             if(command.equals("Y")){
-                getThreeMonsterForKingBarbaros();
+                getThreeMonsterForTribute();
             }
             else if(command.equals("N")) summonLevel8Or7(monster,"summoned successfully");
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
@@ -444,7 +444,7 @@ public class Battlefield {
         
     }
 
-    private void getThreeMonsterForKingBarbaros() {
+    private void getThreeMonsterForTribute() {
         if(getSizeOfMonsterZone()<3) UserInterface.printResponse("not enough monster");
         else{
             Monster monsterForTribute1 , monsterForTribute2, monsterForTribute3;
@@ -459,6 +459,11 @@ public class Battlefield {
             if(Objects.isNull(monsterForTribute1) || Objects.isNull(monsterForTribute2)
                     || Objects.isNull(monsterForTribute3))
                 UserInterface.printResponse("no Valid monster has inputted");
+            else{
+                monsterForTribute1.removeMonster(this);
+                monsterForTribute2.removeMonster(this);
+                monsterForTribute3.removeMonster(this);
+            }
         }
     }
 
@@ -557,8 +562,7 @@ public class Battlefield {
         }
     }
     private void moveMonsterToGraveYard(Monster monsterForTribute1) {
-        turn.field.monsterZone.set(turn.field.monsterZone.indexOf(monsterForTribute1),null);
-        turn.field.graveYard.add(monsterForTribute1);
+        monsterForTribute1.removeMonster(this);
     }
     private void summonLevel6Or5(String message) {
         //get tribute Monster
@@ -827,7 +831,9 @@ public class Battlefield {
         else if(selectedCard.getIsAttackedThisTurn()) UserInterface.printResponse("this card already attacked");
         else if(getIndex(monsterNum) == -1) UserInterface.printResponse("invalid command");
         else if(opponent.field.monsterZone.get(getIndex(monsterNum)) == null) UserInterface.printResponse("there is no card to attack here");
-        else if(antiAttackTraps().equals("no")) confirmAttack(monsterNum);
+        //else if(antiAttackTraps().equals("no")) confirmAttack(monsterNum);
+        else
+            confirmAttack(monsterNum);
     }
     private String antiAttackTraps(){
         UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");

@@ -40,6 +40,8 @@ public class Texchanger extends Monster implements Serializable, CommonFunctions
 
         int difference = getDifference(battlefield);
         if(difference == 0){
+            UserInterface.printResponse("Pleaser enter the \"card number\" by this order " +
+                    "\n 5 | 3 | 1 | 2 | 4");
             showHand(turn);
             showDeck(turn);
             showGraveYard(turn);
