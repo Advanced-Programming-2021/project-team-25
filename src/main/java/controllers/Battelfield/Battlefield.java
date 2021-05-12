@@ -990,9 +990,7 @@ public class Battlefield {
             else{
                 activeSpellAndTraps.add(spellAndTrap);
                 turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone()+1,selectedCard);
-
             }
-
         }
     }
     //checking for that if that spell has a role that we can`t activate it
