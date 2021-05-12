@@ -245,7 +245,7 @@ public class Battlefield {
     public void selectCard(Matcher matcher){
     	String restOfCommand = matcher.group(1);
         String[] temp = restOfCommand.split(" ");
-        String[] brokenCommand = new String[2];
+        String[] brokenCommand = new String[5];
         int counter = 0;
         for (int i = 0; i<temp.length; ++i){
             if (temp[i].length() > 0){
