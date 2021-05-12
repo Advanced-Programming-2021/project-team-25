@@ -1,5 +1,6 @@
 package models.Monster;
 
+import controllers.Battelfield.Battlefield;
 import models.CardStufs.Type;
 
 import java.io.Serializable;
@@ -23,4 +24,10 @@ public class YomiShip extends Monster implements Serializable {
 //    public void action() {
 //
 //    }
+    @Override
+    public int defenceFunc(Battlefield battlefield){
+        int a = super.defenceFunc(battlefield);
+        if(a == 1) battlefield.attackingMonster.removeMonster(battlefield);
+        return a;
+    }
 }
