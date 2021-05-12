@@ -766,7 +766,7 @@ public class Battlefield {
         UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
         changeTurn();
         showBattleField();
-        UserInterface.printResponse("do you want to activate your trap and spell?");
+        UserInterface.printResponse("do you want to activate your trap or spell?");
         String yesOrNo = UserInterface.getUserInput();
         if(yesOrNo.equals("no")){
             UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
@@ -924,6 +924,56 @@ public class Battlefield {
     }
     //checking for that if that spell has a role that we can`t activate it
     private boolean canWeActiveSpell(){
+        for(Card card : opponent.field.spellTrapZone) {
+            String name = card.getName();
+            if(name.equals("Harpie’s Feather Duster") ||
+                    name.equals("Twin Twisters") ||
+                    name.equals("Mystical space typhoon") ||
+                    name.equals("Ring of Defense") ||
+                    name.equals("Magic Jammer")){
+                return isOpponentActiveSpellOrTrap();
+            }
+
+        }
         return true;
+    }
+
+    private boolean isOpponentActiveSpellOrTrap() {
+        //change turn
+        UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
+        changeTurn();
+        showBattleField();
+        UserInterface.printResponse("do you want to activate your trap or spell?" +
+                "\n enter yes or no");
+
+        String yesOrNo = UserInterface.getUserInput();
+        //decide what to do
+        if(yesOrNo.equals("no")){
+            UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
+            changeTurn();
+            showBattleField();
+            return true;
+        }
+        else if(yesOrNo.equals("yes")){
+            UserInterface.printResponse("enter number of Trap house : " +
+                    "or type \"cancel\"");
+            while(true){
+                //get user input
+                String input = UserInterface.getUserInput();
+                if(input.equals("cancel")) break;
+                //get spell or trap
+                int num = Integer.parseInt(input);
+                SpellAndTrap spellAndTrap = (SpellAndTrap) turn.field.spellTrapZone.get(num);
+                //checking not null
+                if(Objects.isNull(spellAndTrap)){
+                    UserInterface.printResponse("try again");
+                    continue;
+                }
+                //make chain
+                if(canWeActiveSpell())
+                    spellAndTrap.action(this);
+            }
+        }
+        return false;
     }
 }
