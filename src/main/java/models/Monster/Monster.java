@@ -93,10 +93,9 @@ public class Monster extends Card implements Serializable {
 
     @Override
     public void action(Battlefield battlefield) {
+
         if(battlefield.selectedCard.getCardsFace().equals(FaceUp.ATTACK))
             attack(battlefield);
-        else
-            defenceFunc(battlefield);
 
     }
     public void removeMonster(Battlefield battlefield){

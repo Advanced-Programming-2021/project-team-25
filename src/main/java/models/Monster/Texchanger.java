@@ -46,7 +46,7 @@ public class Texchanger extends Monster implements Serializable, CommonFunctions
             //getting card from user and special summon
             getCardFromUser();
         }
-
+        super.action(battlefield);
     }
 
     private void getCardFromUser() {
