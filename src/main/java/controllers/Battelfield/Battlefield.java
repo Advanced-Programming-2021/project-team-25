@@ -1029,7 +1029,7 @@ public class Battlefield {
         }
         else if(yesOrNo.equals("yes")){
             UserInterface.printResponse("enter number of Trap house : " +
-                    "or type \"cancel\"");
+                    "or type \"cancel\" by numbering 5 | 3 | 1 | 2 | 4");
             while(true){
                 //get user input
                 String input = UserInterface.getUserInput();
