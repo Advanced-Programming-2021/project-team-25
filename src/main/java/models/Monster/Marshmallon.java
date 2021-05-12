@@ -3,6 +3,7 @@ package models.Monster;
 import controllers.Battelfield.Battlefield;
 import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
+import models.Duelist;
 import view.UserInterface;
 
 import javax.management.BadAttributeValueExpException;
@@ -30,7 +31,7 @@ public class Marshmallon extends Monster implements Serializable {
 
     }
     @Override
-    public void removeMonster(Battlefield battlefield){
+    public void removeMonster(Duelist duelist){
         UserInterface.printResponse("Marshmallon can not die in normal fight!");
     }
     @Override

@@ -98,8 +98,9 @@ public class Monster extends Card implements Serializable {
             attack(battlefield);
 
     }
-    public void removeMonster(Battlefield battlefield){
-        battlefield.getTurn().field.graveYard.add(this);
+    public void removeMonster(Duelist duelist){
+        duelist.field.graveYard.add(this);
+        duelist.field.monsterZone.set(duelist.field.monsterZone.indexOf(this),null);
     }
     public void attack(Battlefield battlefield){
         Monster attackedMonster = battlefield.attackedMonster;
@@ -113,7 +114,7 @@ public class Monster extends Card implements Serializable {
         // 2 means nothing happened
         int condition = attackedMonster.defenceFunc(battlefield);
         if(condition == 1){
-            attackedMonster.removeMonster(battlefield);
+            attackedMonster.removeMonster(opponent);
             opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
             int damage = this.getAttack() - attackedMonster.getAttack();
             opponent.LP = opponent.LP - damage;
@@ -125,16 +126,16 @@ public class Monster extends Card implements Serializable {
         }
         else if(condition == -1){
             battlefield.selectedCard.setISAttackedThisTurn(true);
-            this.removeMonster(battlefield);
+            this.removeMonster(turn);
             turn.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
             int damage = attackedMonster.getAttack() - this.getAttack();
             turn.LP = turn.LP - damage;
             UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
         }
         else if(condition == 0){
-            this.removeMonster(battlefield);
+            this.removeMonster(turn);
             opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
-            attackedMonster.removeMonster(battlefield);
+            attackedMonster.removeMonster(opponent);
             turn.field.monsterZone.set(battlefield.getIndex(battlefield.getIndexOfSelectedCardInMonsterZone()) , null);
             UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
         }
