@@ -53,6 +53,8 @@ public class Scanner extends Monster implements Serializable , CommonFunctions {
         boolean isChoiceEnded = false;
         //get user input
         String command;
+        UserInterface.printResponse("Pleaser enter the \"card number\" by this order " +
+                "\n 5 | 3 | 1 | 2 | 4");
         UserInterface.printResponse("please select a Monster By this command:\n" +
                 "Or type exit ");
         UserInterface.printResponse("select [card number]");
