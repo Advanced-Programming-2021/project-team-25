@@ -469,7 +469,7 @@ public class Battlefield {
                 return;
             //checking the levels is enough or not
             assert false;
-            if(monsterForTribute1.getLevel()+monsterForTribute2.getLevel()<monster.getLevel())
+            if(monsterForTribute1.getLevel()+monsterForTribute2.getLevel()<monster.getLevel() && !message.equals("set successfully"))
                 UserInterface.printResponse("selected monster levels don`t match with ritual monster");
             else{
                 moveMonsterToGraveYard(monsterForTribute1);
@@ -495,6 +495,7 @@ public class Battlefield {
                 UserInterface.printResponse("please select one card to tribute!");
                 monsterForTribute = tributeOneMonster();
             }
+            moveMonsterToGraveYard(monsterForTribute);
             //summon
             summonedMonster(message);
             //check monster put
@@ -506,7 +507,12 @@ public class Battlefield {
         turn.hasPutMonster = true;
         //change FaceUp
         selectedCard.setSetChanged(true);
-        selectedCard.setCardsFace(FaceUp.ATTACK);
+        selectedCard.setIsSetThisTurn(true);
+        selectedCard.setCardsLocation(Location.MONSTER_AREA);
+        if (message.equals("summoned successfully"))
+            selectedCard.setCardsFace(FaceUp.ATTACK);
+        else
+            selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
         //putting card in last monster zone
         turn.field.monsterZone.set(getSizeOfMonsterZone(),selectedCard);
         //delete monster from hand
@@ -548,20 +554,68 @@ public class Battlefield {
 
     }
     public void flipSummon(){
-        Monster monster = (Monster) selectedCard;
         if(Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
-        else if(!turn.field.monsterZone.contains(monster))
+        else if(!turn.field.monsterZone.contains(selectedCard))
             UserInterface.printResponse("you can`t change this card position");
         else if(!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
             UserInterface.printResponse("you can’t do this action in this phase");
-        else if(monster.getSetChanged() || selectedCard.getCardsFace() != FaceUp.DEFENSE_BACK)
+        else if(selectedCard.getSetChanged() || selectedCard.getCardsFace() != FaceUp.DEFENSE_BACK)
             UserInterface.printResponse("you can’t flip summon this card");
         else{
-            selectedCard.setCardsFace(FaceUp.ATTACK);
-            UserInterface.printResponse("flip summoned successfully");
+            if (selectedCard.getName().equals("Man-Eater Bug")){
+                flipSummonForManEaterBug();
+            }
+            else {
+                selectedCard.setCardsFace(FaceUp.ATTACK);
+                UserInterface.printResponse("flip summoned successfully");
+            }
         }
 
     }
+
+    public void flipSummonForManEaterBug (){
+        int counter = 0;
+        for (int i = 0; i<5; ++i)
+            if (opponent.field.monsterZone.get(i) == null)
+                counter += 1;
+
+        if (counter == 5)
+            UserInterface.printResponse("Your opponent does not have any monster to destroy it.");
+        else{
+            UserInterface.printResponse("Please select one of these cards to destroy it.");
+            for (int i = 0; i<5; ++i)
+                if (opponent.field.monsterZone.get(i) != null)
+                    UserInterface.printResponse(opponent.field.monsterZone.get(i).getName() + ":" +
+                            opponent.field.monsterZone.get(i).getDescription());
+
+            String name = " ";
+            int index = 0;
+            while (true){
+                String command = UserInterface.getUserInput();
+                for (int i = 0; i<5; ++i) {
+                    if (opponent.field.monsterZone.get(i).getName().equals(command)) {
+                        name = command;
+                        index = i;
+                        break;
+                    }
+                }
+                if (name.equals(" "))
+                    UserInterface.printResponse("Insert a valid name please.");
+                else
+                    break;
+            }
+
+            opponent.field.graveYard.add(opponent.field.monsterZone.get(index));
+            opponent.field.monsterZone.set(index, null);
+            UserInterface.printResponse("Opponents card destroyed successfully.");
+            selectedCard.setCardsFace(FaceUp.ATTACK);
+            UserInterface.printResponse("Flipped summon successfully.");
+            selectedCard = null;
+        }
+    }
+
+
+
     public void ritualSummon(){
         String command;
         //getting the ritual monster in hand if exist
@@ -610,6 +664,14 @@ public class Battlefield {
                 UserInterface.printResponse("monster card zone is full");
             else if (turn.hasPutMonster)
                 UserInterface.printResponse("you already summoned/set on this turn");
+            else if (((Monster)selectedCard).getLevel() == 5 || ((Monster)selectedCard).getLevel() == 6) {
+                summonLevel6Or5("set successfully");
+                selectedCard = null;
+            }
+            else if (((Monster)selectedCard).getLevel() == 7 || ((Monster)selectedCard).getLevel() == 8){
+                summonLevel8Or7((Monster)selectedCard, "set successfully");
+                selectedCard = null;
+            }
             else{
                 UserInterface.printResponse("set successfully");
                 for (int i = 0; i<5; ++i){
