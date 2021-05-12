@@ -25,8 +25,8 @@ public class BeastKingBarbaros extends Monster implements Serializable {
         turn = battlefield.getTurn();
     }
     @Override
-    public void removeMonster(Duelist duelist){
+    public void removeMonster(Battlefield battlefield){
         this.setAttack(3000);
-        super.removeMonster(turn);
+        super.removeMonster(battlefield);
     }
 }

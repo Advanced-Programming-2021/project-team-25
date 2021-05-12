@@ -98,9 +98,25 @@ public class Monster extends Card implements Serializable {
             attack(battlefield);
 
     }
-    public void removeMonster(Duelist duelist){
-        duelist.field.graveYard.add(this);
-        duelist.field.monsterZone.set(duelist.field.monsterZone.indexOf(this),null);
+    public void removeMonster(Battlefield battlefield){
+        if (battlefield.getTurn().field.monsterZone.contains(this)){
+            battlefield.getTurn().field.graveYard.add(this);
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getTurn().field.monsterZone.get(i) == this){
+                    battlefield.getTurn().field.monsterZone.set(i, null);
+                    break;
+                }
+            }
+        }
+        else if (battlefield.getOpponent().field.monsterZone.contains(this)){
+            battlefield.getOpponent().field.graveYard.add(this);
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getOpponent().field.monsterZone.get(i) == this){
+                    battlefield.getOpponent().field.monsterZone.set(i, null);
+                    break;
+                }
+            }
+        }
     }
     public void attack(Battlefield battlefield){
         Monster attackedMonster = battlefield.attackedMonster;
@@ -114,7 +130,7 @@ public class Monster extends Card implements Serializable {
         // 2 means nothing happened
         int condition = attackedMonster.defenceFunc(battlefield);
         if(condition == 1){
-            attackedMonster.removeMonster(opponent);
+            attackedMonster.removeMonster(battlefield);
             opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
             int damage = this.getAttack() - attackedMonster.getAttack();
             opponent.LP = opponent.LP - damage;
@@ -126,16 +142,16 @@ public class Monster extends Card implements Serializable {
         }
         else if(condition == -1){
             battlefield.selectedCard.setISAttackedThisTurn(true);
-            this.removeMonster(turn);
+            this.removeMonster(battlefield);
             turn.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
             int damage = attackedMonster.getAttack() - this.getAttack();
             turn.LP = turn.LP - damage;
             UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
         }
         else if(condition == 0){
-            this.removeMonster(turn);
+            this.removeMonster(battlefield);
             opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
-            attackedMonster.removeMonster(opponent);
+            attackedMonster.removeMonster(battlefield);
             turn.field.monsterZone.set(battlefield.getIndex(battlefield.getIndexOfSelectedCardInMonsterZone()) , null);
             UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
         }

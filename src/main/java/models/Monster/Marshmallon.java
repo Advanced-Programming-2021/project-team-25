@@ -31,7 +31,7 @@ public class Marshmallon extends Monster implements Serializable {
 
     }
     @Override
-    public void removeMonster(Duelist duelist){
+    public void removeMonster(Battlefield battlefield){
         UserInterface.printResponse("Marshmallon can not die in normal fight!");
     }
     @Override
