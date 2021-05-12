@@ -754,7 +754,9 @@ public class Battlefield {
         else if(selectedCard.getIsAttackedThisTurn()) UserInterface.printResponse("this card already attacked");
         else if(getIndex(monsterNum) == -1) UserInterface.printResponse("invalid command");
         else if(opponent.field.monsterZone.get(getIndex(monsterNum)) == null) UserInterface.printResponse("there is no card to attack here");
-        else if(antiAttackTraps().equals("no")) confirmAttack(monsterNum);
+        //else if(antiAttackTraps().equals("no")) confirmAttack(monsterNum);
+        else
+            confirmAttack(monsterNum);
     }
     private String antiAttackTraps(){
         UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
