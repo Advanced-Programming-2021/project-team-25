@@ -296,7 +296,7 @@ public class Battlefield {
     public void selectOpponentCard(Matcher matcher){
     	String restOfCommand = matcher.group(1);
         String[] temp = restOfCommand.split(" ");
-        String[] breakedCommand = new String[2];
+        String[] breakedCommand = new String[5];
         int counter = 0;
         for (int i = 0; i<temp.length; ++i){
             if (temp[i].length() > 0){
@@ -402,6 +402,9 @@ public class Battlefield {
             //exception for King Barbaros
             else if(monster.getName().equals("Beast King Barbaros"))
                 summonKingBarbaros(monster);
+            //exception for gate guardian
+            else if(monster.getName().equals("Gate Guardian"))
+                summonOrSetGateGuardian("summoned successfully");
             //summon level 7 , 8 monsters
             else if(monster.getLevel()==7 || monster.getLevel()==8){
                 summonLevel8Or7(monster,"summoned successfully");
@@ -445,7 +448,7 @@ public class Battlefield {
         if(getSizeOfMonsterZone()<3) UserInterface.printResponse("not enough monster");
         else{
             Monster monsterForTribute1 , monsterForTribute2, monsterForTribute3;
-            UserInterface.printResponse("please select two card to tribute!");
+            UserInterface.printResponse("please select there card to tribute!");
             UserInterface.printResponse("please select the first one");
             monsterForTribute1 = tributeOneMonster();
             UserInterface.printResponse("please select the next one");
@@ -462,6 +465,73 @@ public class Battlefield {
                 monsterForTribute3.removeMonster(this);
             }
         }
+    }
+
+    public void summonOrSetGateGuardian (String message){
+        int  counter = 0;
+        for (int i = 0; i<5; ++i)
+            if (turn.field.monsterZone.get(i) != null)
+                counter += 1;
+
+        if (counter < 3)
+            if (message.equals("summoned successfully"))
+                UserInterface.printResponse("You can't summon Gate Guardian.");
+            else
+                UserInterface.printResponse("You can't set Gate Guardian");
+
+        else{
+            Monster monster1, monster2, monster3;
+            monster1 = getMonsterForTributeForGateGuardian();
+            monster2 = getMonsterForTributeForGateGuardian();
+            monster3 = getMonsterForTributeForGateGuardian();
+
+            monster1.removeMonster(this);
+            monster2.removeMonster(this);
+            monster3.removeMonster(this);
+
+            for (int i = 0; i<5; ++i)
+                if (turn.field.monsterZone.get(i) == null){
+                    turn.field.monsterZone.set(i, selectedCard);
+                    turn.field.hand.remove(selectedCard);
+                    selectedCard.setIsSetThisTurn(true);
+                    turn.hasPutMonster = true;
+                    if (message.equals("summon successfully"))
+                        selectedCard.setCardsFace(FaceUp.ATTACK);
+                    else
+                        selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                    selectedCard = null;
+                    UserInterface.printResponse(message);
+                    break;
+                }
+        }
+    }
+
+    public Monster getMonsterForTributeForGateGuardian (){
+        UserInterface.printResponse("Please select one monster name");
+        for (int i = 0; i<5; ++i)
+            if (turn.field.monsterZone.get(i) != null)
+                UserInterface.printResponse(turn.field.monsterZone.get(i).getName());
+
+        String name = " ";
+        while (true){
+            String command = UserInterface.getUserInput();
+            for (Card trueMonster : turn.field.monsterZone) {
+                if (trueMonster.getName().equals(command)) {
+                    name = command;
+                    break;
+                }
+            }
+            if (name.equals(" "))
+                UserInterface.printResponse("Insert a valid name please.");
+            else
+                break;
+        }
+
+        for (int i = 0; i<5; ++i)
+            if (turn.field.monsterZone.get(i) != null && turn.field.monsterZone.get(i).getName().equals(name)) {
+                return (Monster) turn.field.monsterZone.get(i);
+            }
+        return null;
     }
 
     private void summonLevel8Or7(Monster monster,String message) {
@@ -680,6 +750,9 @@ public class Battlefield {
             else if (((Monster)selectedCard).getLevel() == 7 || ((Monster)selectedCard).getLevel() == 8){
                 summonLevel8Or7((Monster)selectedCard, "set successfully");
                 selectedCard = null;
+            }
+            else if (selectedCard.getName().equals("Gate Guardian")){
+                summonOrSetGateGuardian("set successfully");
             }
             else{
                 UserInterface.printResponse("set successfully");
