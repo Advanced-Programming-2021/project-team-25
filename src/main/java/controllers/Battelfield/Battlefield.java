@@ -7,6 +7,7 @@ import models.CardStufs.FaceUp;
 import models.CardStufs.Location;
 import models.CardStufs.Type;
 import models.Duelist;
+import models.Monster.CommandKnight;
 import models.Monster.Monster;
 import models.SpellAndTrap.SpellAndTrap;
 import view.Responses;
@@ -394,17 +395,19 @@ public class Battlefield {
                 //checking if turn can summon
             else if(turn.hasPutMonster)
                 UserInterface.printResponse("you already summoned/set on this turn");
+                //exception for King Barbaros
+            else if(monster.getName().equals("Beast King Barbaros"))
+                summonKingBarbaros(monster);
+                //exception for gate guardian
+            else if(monster.getName().equals("Gate Guardian"))
+                summonOrSetGateGuardian("summoned successfully");
+            else if(monster.getName().equals("Command Knight"))
+                summonOrFlipSummonCommandKnight("summoned successfully");
                 //summon level 5 or 6 monsters
             else if(monster.getLevel()==5 || monster.getLevel()==6){
                 summonLevel6Or5("summoned successfully");
                 selectedCard = null;
             }
-            //exception for King Barbaros
-            else if(monster.getName().equals("Beast King Barbaros"))
-                summonKingBarbaros(monster);
-            //exception for gate guardian
-            else if(monster.getName().equals("Gate Guardian"))
-                summonOrSetGateGuardian("summoned successfully");
             //summon level 7 , 8 monsters
             else if(monster.getLevel()==7 || monster.getLevel()==8){
                 summonLevel8Or7(monster,"summoned successfully");
@@ -534,6 +537,45 @@ public class Battlefield {
         return null;
     }
 
+
+    public void summonOrFlipSummonCommandKnight (String message){
+        CommandKnight commandKnight = (CommandKnight) selectedCard;
+
+        for (int i = 0; i<5; ++i){
+            if (turn.field.monsterZone.get(i) != null){
+                Monster temp = (Monster) turn.field.monsterZone.get(i);
+                temp.setAttack(temp.getAttack() + 400);
+                commandKnight.targetedMonsters.add(temp);
+            }
+            if (opponent.field.monsterZone.get(i) != null){
+                Monster temp = (Monster) opponent.field.monsterZone.get(i);
+                temp.setAttack(temp.getAttack() + 400);
+                commandKnight.targetedMonsters.add(temp);
+            }
+        }
+
+        if (message.equals("summon successfully")){
+            for (int i = 0; i<5; ++i)
+                if (turn.field.monsterZone.get(i) == null){
+                    turn.field.monsterZone.set(i, selectedCard);
+                    turn.field.hand.remove(selectedCard);
+                    selectedCard.setIsSetThisTurn(true);
+                    turn.hasPutMonster = true;
+                    selectedCard.setCardsFace(FaceUp.ATTACK);
+                    selectedCard = null;
+                    UserInterface.printResponse(message);
+                    break;
+                }
+        }
+        else{
+            selectedCard.setCardsFace(FaceUp.ATTACK);
+            UserInterface.printResponse(message);
+        }
+
+    }
+
+
+
     private void summonLevel8Or7(Monster monster,String message) {
         //checking if can tribute happened
         if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
@@ -644,6 +686,8 @@ public class Battlefield {
             if (selectedCard.getName().equals("Man-Eater Bug")){
                 flipSummonForManEaterBug();
             }
+            else if (selectedCard.getName().equals("Command Knight"))
+                summonOrFlipSummonCommandKnight("flip summoned successfully");
             else {
                 selectedCard.setCardsFace(FaceUp.ATTACK);
                 UserInterface.printResponse("flip summoned successfully");

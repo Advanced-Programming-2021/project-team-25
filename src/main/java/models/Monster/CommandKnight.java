@@ -1,10 +1,14 @@
 package models.Monster;
 
+import controllers.Battelfield.Battlefield;
+import models.Card;
 import models.CardStufs.Type;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 
 public class CommandKnight extends Monster implements Serializable {
+    public ArrayList<Card> targetedMonsters = new ArrayList<>();
 
     public CommandKnight (String name, Type cardType, String description, int price, int level, String attribute,
                               String monsterType, String cardTypeInExel, int attack, int defence){
@@ -19,8 +23,14 @@ public class CommandKnight extends Monster implements Serializable {
                 ((CommandKnight)object).getAttack(), ((CommandKnight)object).getDefence());
     }
 
+
 //    @Override
-//    public void action() {
+//    public void removeMonster(Battlefield battlefield) {
+//
+//    }
+
+//    @Override
+//    public int defenceFunc(Battlefield battlefield) {
 //
 //    }
 }
