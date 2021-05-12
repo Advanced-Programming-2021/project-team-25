@@ -20,10 +20,6 @@ public class YomiShip extends Monster implements Serializable {
                 ((YomiShip)object).getAttack(), ((YomiShip)object).getDefence());
     }
 
-//    @Override
-//    public void action() {
-//
-//    }
     @Override
     public int defenceFunc(Battlefield battlefield){
         int a = super.defenceFunc(battlefield);
