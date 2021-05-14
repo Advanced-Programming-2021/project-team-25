@@ -4,6 +4,7 @@ import controllers.Battelfield.Battlefield;
 import controllers.Database.DataBase;
 import controllers.Menu;
 import controllers.Regex;
+import models.AI;
 import models.Deck;
 import models.Duelist;
 import models.User;
@@ -19,7 +20,7 @@ public class DuelMenu {
 
     private static DuelMenu singleToneClass = null;
     private User currUser;
-
+    private User AiUser = User.getUserByUsername("admin");
     public static DuelMenu getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new DuelMenu(currUser);
         singleToneClass.currUser = currUser;
@@ -50,7 +51,7 @@ public class DuelMenu {
         if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
         else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
         else if(!(round.equals("1") || round.equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
-        //else new Battlefield(new Duelist(currUser),new Duelist(User.getUserByUsername(duelistName)));
+        else new Battlefield(new Duelist(currUser),new AI(AiUser));
     }
 
     private void newDuel(Matcher matcher){

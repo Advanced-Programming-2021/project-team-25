@@ -26,7 +26,7 @@ public class NoDangerHandler extends AIHandler{
     }
 
     private boolean isOpponentNoMonsterInAttackPosition(Battlefield battlefield) {
-        for(Card card : battlefield.getOpponent().field.monsterZone){
+        for(Card card : battlefield.getTurn().field.monsterZone){
             if(!Objects.isNull(card)){
                 if(card.getCardsFace().equals(FaceUp.ATTACK))
                     return false;

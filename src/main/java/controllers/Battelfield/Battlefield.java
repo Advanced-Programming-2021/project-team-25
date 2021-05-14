@@ -2,6 +2,7 @@ package controllers.Battelfield;
 
 import controllers.Regex;
 import controllers.ShowCard;
+import models.AI;
 import models.Card;
 import models.CardStufs.FaceUp;
 import models.CardStufs.Location;
@@ -367,11 +368,15 @@ public class Battlefield {
         //timer increase
         changedTurnTime++;
         isTurnChanged = true;
-
-        Duelist temp;
-        temp = turn;
-        turn = opponent;
-        opponent = temp;
+        if(opponent.getName().equals("admin")){
+            ((AI)opponent).runAi(this);
+        }
+        else{
+            Duelist temp;
+            temp = turn;
+            turn = opponent;
+            opponent = temp;
+        }
     }
 
     //summon
