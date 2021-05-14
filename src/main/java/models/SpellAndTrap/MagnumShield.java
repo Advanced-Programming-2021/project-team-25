@@ -78,7 +78,7 @@ public class MagnumShield extends SpellAndTrap  implements Serializable {
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         if (targetedMonsters.get(0) != null){
             if (targetedMonsters.get(0).getCardsFace() == FaceUp.ATTACK){
                 targetedMonsters.get(0).setAttack(targetedMonsters.get(0).getAttack() - targetedMonsters.get(0).getDefence());

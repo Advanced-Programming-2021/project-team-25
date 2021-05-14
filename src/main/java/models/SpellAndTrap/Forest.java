@@ -53,7 +53,7 @@ public class Forest extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         for (int i = 0; i<targetedMonsters.size(); ++i){
             targetedMonsters.get(i).setAttack(targetedMonsters.get(i).getAttack() - 200);
             targetedMonsters.get(i).setDefence(targetedMonsters.get(i).getDefence() - 200);

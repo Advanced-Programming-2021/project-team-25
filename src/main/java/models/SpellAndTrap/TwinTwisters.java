@@ -134,13 +134,13 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
 //                        temp.setAttack(((Monster)allCards.get(temp.getName())).getAttack());
 //                        temp.setDefence(((Monster)allCards.get(temp.getName())).getDefence());
 //                    }
-                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap("nothing");
+                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap(null);
 //                    ((SpellAndTrap) opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
 //                    opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
 //                    opponent.field.spellTrapZone.set(i, null);
                 }
                 else{
-                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap("nothing");
+                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap(null);
 //                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
 //                    opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
 //                    opponent.field.spellTrapZone.set(i, null);
@@ -150,7 +150,7 @@ public class TwinTwisters extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         targetedMonsters = new ArrayList<>();
         turn.field.graveYard.add(this);
         for (int i = 0; i<5; ++i){

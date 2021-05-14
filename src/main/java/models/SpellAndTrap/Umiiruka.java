@@ -53,7 +53,7 @@ public class Umiiruka extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         for (Monster targetedMonster : targetedMonsters) {
             targetedMonster.setAttack(targetedMonster.getAttack() - 500);
             targetedMonster.setDefence(targetedMonster.getDefence() + 400);

@@ -50,7 +50,7 @@ public class ClosedForest extends SpellAndTrap  implements Serializable {
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         for (Monster targetedMonster : targetedMonsters) {
             targetedMonster.setAttack(targetedMonster.getAttack() - numberOfAttackToAdd);
             targetedMonster.setDefence(targetedMonster.getDefence() - numberOfAttackToAdd);

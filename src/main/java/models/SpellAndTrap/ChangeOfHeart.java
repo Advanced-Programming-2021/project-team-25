@@ -36,7 +36,7 @@ public class ChangeOfHeart extends SpellAndTrap implements Serializable {
         if(expireTime == 0){
             setExpired(true);
             //decide to remove or not
-            removeSpellOrTrap();
+            removeSpellOrTrap(battlefield);
         }
         else {
             //because just for one time that`s work perfectly
@@ -116,8 +116,10 @@ public class ChangeOfHeart extends SpellAndTrap implements Serializable {
             if (turn.field.monsterZone.get(i) != null) count += 1;
         return count;
     }
-    public void removeSpellOrTrap (){
+    @Override
+    public void removeSpellOrTrap (Battlefield battlefield){
         turn.field.monsterZone.set(positionOfMonster,null);
         opponent.field.monsterZone.set(positionOfMonster, targetedMonsters.get(0));
-    };
+        super.removeSpellOrTrap(battlefield);
+    }
 }

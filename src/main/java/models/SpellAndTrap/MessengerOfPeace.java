@@ -43,7 +43,7 @@ public class MessengerOfPeace extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         //clearing things done
         for(Card card : opponent.field.monsterZone){
             if(((Monster)card).getAttack()>=1500){

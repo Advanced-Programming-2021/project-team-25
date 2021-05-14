@@ -72,21 +72,19 @@ public class MysticalSpaceTyphoon extends SpellAndTrap implements Serializable {
 //                    ((SpellAndTrap) opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
 //                    opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
 //                    opponent.field.spellTrapZone.set(i, null);
-                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap("nothing");
+                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap(null);
                 }
                 else{
 //                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).targetedMonsters = new ArrayList<>();
 //                    opponent.field.graveYard.add(opponent.field.spellTrapZone.get(i));
 //                    opponent.field.spellTrapZone.set(i, null);
-                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap("nothing");
+                    ((SpellAndTrap)opponent.field.spellTrapZone.get(i)).removeSpellOrTrap(null);
                 }
             }
         }
     }
 
-
-    @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         targetedMonsters = new ArrayList<>();
         turn.field.graveYard.add(this);
         for (int i = 0; i<5; ++i){

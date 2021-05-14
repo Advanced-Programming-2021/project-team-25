@@ -29,7 +29,7 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
     public void action(Battlefield battlefield) {
         if(expireTime == 0){
             setExpired(true);
-            removeSpellOrTrap(null);
+            removeSpellOrTrap(battlefield);
         }
         else{
             //expire after three play
@@ -54,7 +54,8 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         setMonsterCanAttackOrNot(true);
+        super.removeSpellOrTrap(battlefield);
     }
 }

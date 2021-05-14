@@ -21,5 +21,4 @@ public class AdvancedRitualArt extends SpellAndTrap implements Serializable {
         battlefield.ritualSummon();
     }
 
-    public void removeSpellOrTrap (String name){}
 }

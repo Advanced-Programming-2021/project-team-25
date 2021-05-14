@@ -59,5 +59,4 @@ public class SupplySquad extends SpellAndTrap implements Serializable {
         }
     }
 
-    public void removeSpellOrTrap (String name){};
 }

@@ -87,7 +87,7 @@ public class UnitedWeStand extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         if (targetedMonsters.get(0) != null) {
             targetedMonsters.get(0).setAttack(targetedMonsters.get(0).getAttack() - attackToIncrease);
             targetedMonsters.get(0).setDefence(targetedMonsters.get(0).getDefence() + attackToIncrease);

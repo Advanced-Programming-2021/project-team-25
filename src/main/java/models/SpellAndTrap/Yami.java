@@ -56,7 +56,7 @@ public class Yami extends SpellAndTrap implements Serializable {
     }
 
     @Override
-    public void removeSpellOrTrap(String name) {
+    public void removeSpellOrTrap(Battlefield battlefield) {
         for (Monster monster : targetedMonsters) {
             if (monster.getMonsterType().equals("Fiend") || monster.getMonsterType().equals("Spellcaster")) {
                 monster.setAttack(monster.getAttack() - 200);
