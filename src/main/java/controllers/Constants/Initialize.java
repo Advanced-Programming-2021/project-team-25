@@ -89,6 +89,7 @@ public class Initialize {
                 currDeck.mainDeck.add(new BlackPendant(Card.allCards.get("Black Pendant")));
                 currDeck.mainDeck.add(new AdvancedRitualArt(Card.allCards.get("Advanced Ritual Art")));
             }
+
             user.setActiveDeck(currDeck);
         }
     }
