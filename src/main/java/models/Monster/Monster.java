@@ -127,23 +127,28 @@ public class Monster extends Card implements Serializable {
         // -1 means defeated
         // 1 means attacked
         // 0 means equal
-        // 2 means nothing happened
+        // 2 means nothing happened for defense back opponent card
         int condition = attackedMonster.defenceFunc(battlefield);
         if(condition == 1){
-            attackedMonster.removeMonster(battlefield);
-            opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
-            int damage = this.getAttack() - attackedMonster.getAttack();
-            opponent.LP = opponent.LP - damage;
-
-            if(attackedMonster.getCardsFace().equals(FaceUp.ATTACK))
+            if(attackedMonster.getCardsFace().equals(FaceUp.ATTACK)) {
+                battlefield.selectedCard.setISAttackedThisTurn(true);
+                attackedMonster.removeMonster(battlefield);
+                opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
+                int damage = this.getAttack() - attackedMonster.getAttack();
+                opponent.LP = opponent.LP - damage;
                 UserInterface.printResponse("your opponent’s monster is destroyed and your opponent receives" + damage + "battle damage");
-            else
-                UserInterface.printResponse("the defense position monster is destroyed");
+            }
+            else {
+                if(attackedMonster.getCardsFace().equals(FaceUp.DEFENSE_BACK)){
+                    UserInterface.printResponse("opponent’s monster card was " + attackedMonster.getName() + " and no card is destroyed");
+                    opponent.field.monsterZone.get(battlefield.getIndex(battlefield.attackedMonsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
+                }else
+                 UserInterface.printResponse("the defense position monster is destroyed");
+            }
+
         }
         else if(condition == -1){
             battlefield.selectedCard.setISAttackedThisTurn(true);
-            this.removeMonster(battlefield);
-            turn.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
             int damage = attackedMonster.getAttack() - this.getAttack();
             turn.LP = turn.LP - damage;
             UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
@@ -159,7 +164,6 @@ public class Monster extends Card implements Serializable {
             battlefield.selectedCard.setISAttackedThisTurn(true);
             UserInterface.printResponse("opponent’s monster card was " + attackedMonster.getName() + " and no card is destroyed");
             opponent.field.monsterZone.get(battlefield.getIndex(battlefield.attackedMonsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
-
             UserInterface.printResponse("no card is destroyed");
         }
 
@@ -168,18 +172,14 @@ public class Monster extends Card implements Serializable {
     public int defenceFunc(Battlefield battlefield){
         Monster attackingMonster = battlefield.attackingMonster;
 
-        int attackMonsterHero = attackingMonster.getAttack();
+        int attackingMonsterHero = attackingMonster.getAttack();
         int defenseMonsterHero;
         if(this.getCardsFace() == FaceUp.ATTACK) defenseMonsterHero = this.attack;
         else defenseMonsterHero = this.defence;
-        if(attackMonsterHero > defenseMonsterHero){
-            if(this.getCardsFace() == FaceUp.DEFENSE_BACK)
-                return 2;
-            else
-                return 1;
-        }
-        else if(attackMonsterHero<defenseMonsterHero) {
-            if(this.getCardsFace() == FaceUp.DEFENSE_BACK)
+        if(attackingMonsterHero > defenseMonsterHero)
+              return 1;
+        else if(attackingMonsterHero<defenseMonsterHero) {
+            if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
               return 2;
             else
               return -1;
