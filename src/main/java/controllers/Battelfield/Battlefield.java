@@ -401,6 +401,7 @@ public class Battlefield {
                 //exception for gate guardian
             else if(monster.getName().equals("Gate Guardian"))
                 summonOrSetGateGuardian("summoned successfully");
+
             else if(monster.getName().equals("Command Knight"))
                 summonOrFlipSummonCommandKnight("summoned successfully");
                 //summon level 5 or 6 monsters
@@ -672,6 +673,8 @@ public class Battlefield {
         return count;
     }
     public void specialSummon(Monster monster){
+        selectedCard = monster;
+        summon();
 
     }
     public void flipSummon(){

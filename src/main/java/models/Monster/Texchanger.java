@@ -79,6 +79,9 @@ public class Texchanger extends Monster implements Serializable, CommonFunctions
                 }
                 //end choice if monster not null
                 if(!Objects.isNull(monster) && monster.getCardTypeInExel().equals("Cyberse")){
+                    if(type.equals("G")) turn.field.graveYard.remove(monster);
+                    else if(type.equals("D")) turn .field.deck.remove(monster);
+                    else if(type.equals("H")) turn.field.hand.remove(monster);
                     //special summon
                     battlefield.specialSummon(monster);
                     UserInterface.printResponse("special summoned successfully");
