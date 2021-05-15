@@ -16,12 +16,6 @@ public class ProgramController {
         LoginMenu.runLoginMenu();
     }
 
-    private static void exitMenu(){
-        if(currentMenu == Menu.LOGIN_MENU ) currentMenu = Menu.EXIT;
-        else if(currentMenu == Menu.MAIN_MENU ) currentMenu = Menu.LOGIN_MENU;
-        else currentMenu = Menu.MAIN_MENU;
-    }
-
     public static void setLoggedInUsers(User user) {
         currUser = user;
     }

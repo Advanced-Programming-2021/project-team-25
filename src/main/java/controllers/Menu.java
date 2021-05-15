@@ -8,6 +8,6 @@ public enum Menu {
     DECK_MENU,
     DUEL_MENU,
     SCOREBOARD_MENU,
-    IMPORTEXPORT_MENU,
+    IMPORT_EXPORT_MENU,
     EXIT
 }

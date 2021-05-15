@@ -52,7 +52,7 @@ public class MainMenu {
                     ScoreBoardMenu.getInstance().runScoreBoardMenu();
                     break;
                 case "Import/Export" :
-                    ProgramController.currentMenu = Menu.IMPORTEXPORT_MENU;
+                    ProgramController.currentMenu = Menu.IMPORT_EXPORT_MENU;
                     ImportExportMenu.getInstance().runIMPORTEXPORTMenu();
                     break;
             }

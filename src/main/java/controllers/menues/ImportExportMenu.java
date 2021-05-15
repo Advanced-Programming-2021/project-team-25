@@ -24,7 +24,7 @@ public class ImportExportMenu {
     }
 
     public void runIMPORTEXPORTMenu(){
-        while (currentMenu == Menu.IMPORTEXPORT_MENU) {
+        while (currentMenu == Menu.IMPORT_EXPORT_MENU) {
             String command = UserInterface.getUserInput();
 
             if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);

@@ -6,8 +6,6 @@ import models.Deck;
 import models.Monster.*;
 import models.SpellAndTrap.*;
 import models.User;
-import view.Responses;
-import view.UserInterface;
 
 import java.io.File;
 import java.io.IOException;

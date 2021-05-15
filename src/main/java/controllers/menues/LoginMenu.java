@@ -13,30 +13,24 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class LoginMenu {
+
     private static User currUser = null;
 
     public static void runLoginMenu(){
-        String command;
-        while(true)
-        {
-            command = UserInterface.getUserInput();
+        while (true) {
+            String command = UserInterface.getUserInput();
             if (command.startsWith("user login")) loginUser(command);
-            else if (command.startsWith("user create"))
-                createNewUser(Regex.getMatcher(command,Regex.userCreate));
-            else if(command.startsWith("menu enter"))
-                UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
-            else if(command.equals("menu show-current"))
-                UserInterface.printResponse("Login Menu");
-            else if (command.equals("menu exit"))
-                return;
-            else if(!Objects.isNull(currUser)){
+            else if (command.startsWith("user create")) createNewUser(Regex.getMatcher(command, Regex.userCreate));
+            else if (command.startsWith("menu enter")) UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
+            else if (command.equals("menu show-current")) UserInterface.printResponse("Login Menu");
+            else if (command.equals("menu exit")) return;
+            else if (!Objects.isNull(currUser)) {
                 //restore all data
                 DataBase.saveTheUserList(User.getUsers());
                 User.setUsers(DataBase.loadTheList());
             }
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
         }
-
     }
 
     private static void createNewUser(Matcher matcher){
