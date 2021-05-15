@@ -3,7 +3,6 @@ package controllers.menues;
 import controllers.Menu;
 import controllers.Regex;
 import models.User;
-import org.junit.Assert;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -80,7 +79,6 @@ public class ScoreBoardMenu {
                 "3- kevin : 100\n";
         Assertions.assertEquals(expected.trim(), outputStreamCaptor.toString().trim());
     }
-
     @AfterEach
     public void tearDown() {
         System.setOut(standardOut);

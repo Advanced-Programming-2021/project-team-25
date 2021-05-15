@@ -3,7 +3,6 @@ package controllers.menues;
 import controllers.Menu;
 import controllers.ProgramController;
 import controllers.Regex;
-import models.Deck;
 import models.User;
 import view.Responses;
 import view.UserInterface;
@@ -51,6 +50,10 @@ public class MainMenu {
                 case "Scoreboard" :
                     ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
                     ScoreBoardMenu.getInstance().runScoreBoardMenu();
+                    break;
+                case "Import/Export" :
+                    ProgramController.currentMenu = Menu.IMPORTEXPORT_MENU;
+                    ImportExportMenu.getInstance().runIMPORTEXPORTMenu();
                     break;
             }
         }
