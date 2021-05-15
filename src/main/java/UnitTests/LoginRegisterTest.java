@@ -1,13 +1,13 @@
 package UnitTests;
 
 import controllers.Regex;
+import controllers.menues.LoginMenu;
 import org.junit.Test;
 
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 
@@ -19,18 +19,7 @@ public class LoginRegisterTest {
         final String output = "src/main/java/UnitTests/RegisterTestOutput.txt";
         final String input = "src/main/java/UnitTests/RegisterTest.txt";
         final String expectedOutput = "src/main/java/UnitTests/RegisterExpected.txt";
-        compareTXTFiles(output, input, expectedOutput);
-    }
-    @Test
-    public void userLoginTest() throws IOException {
-        final String output = "src/main/java/UnitTests/LoginTestOutput.txt";
-        final String input = "src/main/java/UnitTests/LoginTest.txt";
-        final String expectedOutput = "src/main/java/UnitTests/LoginExpected.txt";
-        compareTXTFiles(output, input, expectedOutput);
-    }
-    private void compareTXTFiles(String output, String input, String expectedOutput) throws IOException {
-        PrintStream fileStream = new PrintStream(output);
-        System.setOut(fileStream);
+        writeOutputsToTXT(output);
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
             String line;
             while ((line = br.readLine()) != null) {
@@ -39,6 +28,15 @@ public class LoginRegisterTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        compareTXT(output, expectedOutput);
+    }
+
+    private void writeOutputsToTXT(String output) throws FileNotFoundException {
+        PrintStream fileStream = new PrintStream(output);
+        System.setOut(fileStream);
+    }
+
+    private void compareTXT(String output, String expectedOutput) throws IOException {
         List<String> file1 = Files.readAllLines(Paths.get(output));
         List<String> file2 = Files.readAllLines(Paths.get(expectedOutput));
 
@@ -47,5 +45,22 @@ public class LoginRegisterTest {
         for(int i = 0; i < file1.size(); i++) {
             assertEquals(file1.get(i), file2.get(i));
         }
+    }
+
+    @Test
+    public void userLoginTest() throws IOException {
+        final String output = "src/main/java/UnitTests/LoginTestOutput.txt";
+        final String input = "src/main/java/UnitTests/LoginTest.txt";
+        final String expectedOutput = "src/main/java/UnitTests/LoginExpected.txt";
+        writeOutputsToTXT(output);
+        try (BufferedReader br = new BufferedReader(new FileReader(input))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                LoginMenu.loginUser(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        compareTXT(output, expectedOutput);
     }
 }

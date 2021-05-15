@@ -60,7 +60,7 @@ public class LoginMenu {
             UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
-    private static void loginUser(String command){
+    public static void loginUser(String command){
         String username;
         String password;
         Matcher matcher = Pattern.compile(Regex.userLogin).matcher(command);
