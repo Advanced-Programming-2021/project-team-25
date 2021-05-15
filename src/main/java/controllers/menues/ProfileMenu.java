@@ -18,7 +18,7 @@ public class ProfileMenu {
         singleToneClass.currUser = currUser;
         return singleToneClass;
     }
-    private ProfileMenu(User currUser){
+    public ProfileMenu(User currUser){
         this.currUser=currUser;
     }
 

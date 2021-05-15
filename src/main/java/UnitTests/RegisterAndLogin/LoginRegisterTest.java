@@ -1,4 +1,4 @@
-package UnitTests;
+package UnitTests.RegisterAndLogin;
 
 import controllers.Regex;
 import controllers.menues.LoginMenu;
@@ -16,9 +16,9 @@ import static controllers.menues.LoginMenu.createNewUser;
 public class LoginRegisterTest {
     @Test
     public void userRegisterTest() throws IOException {
-        final String output = "src/main/java/UnitTests/RegisterTestOutput.txt";
-        final String input = "src/main/java/UnitTests/RegisterTest.txt";
-        final String expectedOutput = "src/main/java/UnitTests/RegisterExpected.txt";
+        final String output = "src/main/java/UnitTests/RegisterAndLogin/RegisterTestOutput.txt";
+        final String input = "src/main/java/UnitTests/RegisterAndLogin/RegisterTest.txt";
+        final String expectedOutput = "src/main/java/UnitTests/RegisterAndLogin/RegisterExpected.txt";
         writeOutputsToTXT(output);
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
             String line;
@@ -31,12 +31,12 @@ public class LoginRegisterTest {
         compareTXT(output, expectedOutput);
     }
 
-    private void writeOutputsToTXT(String output) throws FileNotFoundException {
+    public void writeOutputsToTXT(String output) throws FileNotFoundException {
         PrintStream fileStream = new PrintStream(output);
         System.setOut(fileStream);
     }
 
-    private void compareTXT(String output, String expectedOutput) throws IOException {
+    public static void compareTXT(String output, String expectedOutput) throws IOException {
         List<String> file1 = Files.readAllLines(Paths.get(output));
         List<String> file2 = Files.readAllLines(Paths.get(expectedOutput));
 
@@ -49,9 +49,9 @@ public class LoginRegisterTest {
 
     @Test
     public void userLoginTest() throws IOException {
-        final String output = "src/main/java/UnitTests/LoginTestOutput.txt";
-        final String input = "src/main/java/UnitTests/LoginTest.txt";
-        final String expectedOutput = "src/main/java/UnitTests/LoginExpected.txt";
+        final String output = "src/main/java/UnitTests/RegisterAndLogin/LoginTestOutput.txt";
+        final String input = "src/main/java/UnitTests/RegisterAndLogin/LoginTest.txt";
+        final String expectedOutput = "src/main/java/UnitTests/RegisterAndLogin/LoginExpected.txt";
         writeOutputsToTXT(output);
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
             String line;
