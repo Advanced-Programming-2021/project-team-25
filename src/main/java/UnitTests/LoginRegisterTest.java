@@ -56,7 +56,7 @@ public class LoginRegisterTest {
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
             String line;
             while ((line = br.readLine()) != null) {
-                LoginMenu.loginUser(line);
+                LoginMenu.loginUser(line,false);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -19,7 +19,7 @@ public class LoginMenu {
     public static void runLoginMenu(){
         while (true) {
             String command = UserInterface.getUserInput();
-            if (command.startsWith("user login")) loginUser(command);
+            if (command.startsWith("user login")) loginUser(command,true);
             else if (command.startsWith("user create")) createNewUser(Regex.getMatcher(command, Regex.userCreate),true);
             else if (command.startsWith("menu enter")) UserInterface.printResponse(Responses.LOGIN_FIRST_ERROR);
             else if (command.equals("menu show-current")) UserInterface.printResponse("Login Menu");
@@ -60,7 +60,7 @@ public class LoginMenu {
             UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
 
-    public static void loginUser(String command){
+    public static void loginUser(String command, boolean canGoOn){
         String username;
         String password;
         Matcher matcher = Pattern.compile(Regex.userLogin).matcher(command);
@@ -88,7 +88,7 @@ public class LoginMenu {
                 //update curr user
                 currUser = user;
                 //change menu to main menu
-                new MainMenu(user);
+                if(canGoOn) new MainMenu(user);
             }
         }
         else
