@@ -19,6 +19,16 @@ public class LoginRegisterTest {
         final String output = "src/main/java/UnitTests/RegisterTestOutput.txt";
         final String input = "src/main/java/UnitTests/RegisterTest.txt";
         final String expectedOutput = "src/main/java/UnitTests/RegisterExpected.txt";
+        compareTXTFiles(output, input, expectedOutput);
+    }
+    @Test
+    public void userLoginTest() throws IOException {
+        final String output = "src/main/java/UnitTests/LoginTestOutput.txt";
+        final String input = "src/main/java/UnitTests/LoginTest.txt";
+        final String expectedOutput = "src/main/java/UnitTests/LoginExpected.txt";
+        compareTXTFiles(output, input, expectedOutput);
+    }
+    private void compareTXTFiles(String output, String input, String expectedOutput) throws IOException {
         PrintStream fileStream = new PrintStream(output);
         System.setOut(fileStream);
         try (BufferedReader br = new BufferedReader(new FileReader(input))) {
@@ -35,9 +45,7 @@ public class LoginRegisterTest {
         assertEquals(file1.size(), file2.size());
 
         for(int i = 0; i < file1.size(); i++) {
-            System.out.println("Comparing line: " + i);
             assertEquals(file1.get(i), file2.get(i));
         }
-
     }
 }
