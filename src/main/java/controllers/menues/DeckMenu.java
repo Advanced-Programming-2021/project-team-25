@@ -188,7 +188,7 @@ public class DeckMenu {
     }
 
     private void removeCardFromSide(Matcher matcher){
-        String cardName = matcher.group(1) ,deckName = matcher.group(2);
+        String cardName = matcher.group(2) ,deckName = matcher.group(4);
 
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with " + deckName + "does not exists");
         else if(Deck.getNumberOfCardsInSideDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in side deck");
@@ -203,7 +203,7 @@ public class DeckMenu {
     }
 
     private void removeCard(Matcher matcher){
-        String cardName = matcher.group(1) ,deckName = matcher.group(2);
+        String cardName = matcher.group(2) ,deckName = matcher.group(4);
 
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with " + deckName + "does not exists");
         else if(Deck.getNumberOfCardsInMainDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in main deck");
@@ -254,7 +254,7 @@ public class DeckMenu {
     }
 
     private void showSideDeck(Matcher matcher){
-        String deckName = matcher.group(1);
+        String deckName = matcher.group(2);
         if(Deck.getDeckByName(deckName)==null)
             UserInterface.printResponse("deck with name" + deckName + "does not exist");
         else {
