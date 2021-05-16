@@ -70,7 +70,6 @@ public class Battlefield {
     public void runBattleField(){
         while (winner == null) {
 
-            if(countDraw6Cards<2 && isTurnChanged) startGame();
             String command = UserInterface.getUserInput();
             Matcher matcher;
 
@@ -362,11 +361,17 @@ public class Battlefield {
             UserInterface.printResponse("its " + turn.getName() + "’s turn");
         }
         UserInterface.printResponse("phase: " + phase);
-        if (phase == Phase.DRAW_PHASE ) drawCard();
+        if (phase == Phase.DRAW_PHASE && changedTurnTime>=2) drawCard();
     }
     public void changeTurn(){
         //timer increase
         changedTurnTime++;
+        if(changedTurnTime == 1){
+            //draw 6 card
+            for(int i=0;i<6;i++){
+                addCardToPlayersHands(turn);
+            }
+        }
         isTurnChanged = true;
         if(opponent.getName().equals("admin")){
             ((AI)opponent).runAi(this);
