@@ -106,7 +106,7 @@ public class DeckMenu {
     }
 
     private void addCardToSide(Matcher matcher){
-        String cardName = matcher.group(1) ,deckName = matcher.group(2);
+        String cardName = matcher.group(2) ,deckName = matcher.group(4);
 
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
         else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
@@ -119,7 +119,7 @@ public class DeckMenu {
     }
 
     private void addCard(Matcher matcher){
-        String cardName = matcher.group(1) ,deckName = matcher.group(2);
+        String cardName = matcher.group(2) ,deckName = matcher.group(4);
 
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
         else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
@@ -286,7 +286,7 @@ public class DeckMenu {
     }
 
     private void showDeck(Matcher matcher){
-        String deckName = matcher.group(1);
+        String deckName = matcher.group(2);
         if(Deck.getDeckByName(deckName)==null)
             UserInterface.printResponse("deck with name " + deckName + " does not exist");
         else {

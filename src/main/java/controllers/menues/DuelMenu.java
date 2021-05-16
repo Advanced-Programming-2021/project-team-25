@@ -69,6 +69,34 @@ public class DuelMenu {
 
     }
 
+    private void oneRoundDuel(String duelistName) {
+        int duelist1Wins = 0 , duelist2Wins = 0;
+        //round1
+        Duelist duelist1 = new Duelist(currUser);
+        Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
+        Battlefield battlefield = new Battlefield(duelist1, duelist2);
+
+        //round1Finish
+        if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
+        else duelist2Wins++;
+        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " +  duelist2Wins);
+
+        //matchFinish
+        if(duelist1Wins == 1){
+            UserInterface.printResponse(duelist1.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
+            duelist1.getUser().setScore(duelist1.getUser().getScore() + 1000);
+            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 1000 + duelist1.LP);
+            duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 100 );
+        }
+        else {
+            UserInterface.printResponse(duelist2.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
+            duelist2.getUser().setScore(duelist2.getUser().getScore() + 1000);
+            duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 1000 + duelist2.LP);
+            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 100 );
+        }
+        DataBase.saveTheUserList(User.getUsers());
+    }
+
     private void threeRoundDuel(String duelistName) {
         int duelist1Wins = 0 , duelist2Wins = 0;
 
@@ -82,6 +110,9 @@ public class DuelMenu {
         else duelist2Wins++;
         UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " +  duelist2Wins);
         int round1Duelist1Lp = duelist1.LP, round1Duelist2Lp = duelist2.LP;
+
+        //add card from side
+
 
         //round2
         duelist1 = new Duelist(currUser);
@@ -105,6 +136,8 @@ public class DuelMenu {
             finish2Round(duelist1Wins, duelist2Wins, duelist1, duelist2, round2Duelist2Lp);
             return;
         }
+
+        //add card from side
 
         //round3
         duelist1 = new Duelist(currUser);
@@ -131,34 +164,6 @@ public class DuelMenu {
             duelist2.getUser().setScore(duelist2.getUser().getScore() + 3000);
             duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 3000 + 3 * round3Duelist2Lp);
             duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 300 );
-        }
-        DataBase.saveTheUserList(User.getUsers());
-    }
-
-    private void oneRoundDuel(String duelistName) {
-        int duelist1Wins = 0 , duelist2Wins = 0;
-        //round1
-        Duelist duelist1 = new Duelist(currUser);
-        Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        Battlefield battlefield = new Battlefield(duelist1, duelist2);
-
-        //round1Finish
-        if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
-        else duelist2Wins++;
-        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " +  duelist2Wins);
-
-        //matchFinish
-        if(duelist1Wins == 1){
-            UserInterface.printResponse(duelist1.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
-            duelist1.getUser().setScore(duelist1.getUser().getScore() + 1000);
-            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 1000 + duelist1.LP);
-            duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 100 );
-        }
-        else {
-            UserInterface.printResponse(duelist2.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
-            duelist2.getUser().setScore(duelist2.getUser().getScore() + 1000);
-            duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 1000 + duelist2.LP);
-            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 100 );
         }
         DataBase.saveTheUserList(User.getUsers());
     }

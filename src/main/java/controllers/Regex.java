@@ -23,8 +23,8 @@ public class Regex {
     public static String deckRemoveCardFromSide = "^deck rm-card (--card|-c) (.+) (--deck|-d) (.+) --side$";
     public static String deckRemoveCard = "^deck rm-card (--card|-c) (.+) (--deck|-d) (.+)$";
     public static String deckShowAll = "^deck show (--all|-a)$";
-    public static String deckShowDeckNameSide = "^deck show --deck-name (.+) --side$";
-    public static String deckShowDeckName = "^deck show --deck-name (.+)$";
+    public static String deckShowDeckNameSide = "^deck show (--deck-name|-d) (.+) --side$";
+    public static String deckShowDeckName = "^deck show (--deck-name|-d) (.+)$";
     public static String deckShowCards = "^deck show --cards$";
     public static String shopBuy = "^shop buy (.+)$";
     public static String shopShowAll = "^shop show --all$";
@@ -49,7 +49,7 @@ public class Regex {
     public static String selectCardFromGraveyard = "^select --(M|H) (\\d{0,50})$";
     public static String selectCardInAllFields = "^select --(G|D|H) (\\d{0,50})$";
     public static String selectFieldCard = "^select (\\d+)$";
-    public static String importCard = "^import$";
+    public static String importCard = "^import (.+)$";
 
     public static Matcher getMatcher(String input, String regex) {
         Pattern pattern = Pattern.compile(regex);
