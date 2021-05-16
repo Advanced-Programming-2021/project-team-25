@@ -7,6 +7,7 @@ import models.CardStufs.Type;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.Map;
 
 public abstract class Card implements Serializable {
     public static HashMap<String, Card> allCards = new HashMap<>();
@@ -75,6 +76,14 @@ public abstract class Card implements Serializable {
         return description;
     }
 
+    public static Card getCardByName(String name){
+
+        for(Map.Entry<String, Card> set : allCards.entrySet()){
+            if(set.getKey().equals(name))
+                return set.getValue();
+        }
+        return null;
+    }
     public int getPrice() {
         return price;
     }
