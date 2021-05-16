@@ -27,7 +27,7 @@ public class DuelMenu {
         return singleToneClass;
     }
 
-    private DuelMenu(User currUser){
+    public DuelMenu(User currUser){
         this.currUser=currUser;
     }
 
@@ -54,7 +54,7 @@ public class DuelMenu {
         else new Battlefield(new Duelist(currUser),new AI(AiUser));
     }
 
-    private void newDuel(Matcher matcher){
+    public void newDuel(Matcher matcher){
 
         String duelistName = matcher.group(1) , round = matcher.group(2);
 
