@@ -1,6 +1,4 @@
-package UnitTests.profile;
 
-import UnitTests.RegisterAndLogin.LoginRegisterTest;
 import controllers.Regex;
 import controllers.menues.ProfileMenu;
 import models.User;

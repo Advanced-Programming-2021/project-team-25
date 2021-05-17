@@ -1,5 +1,3 @@
-package UnitTests.attack;
-
 import controllers.Battelfield.Battlefield;
 import controllers.Constants.Initialize;
 import controllers.Regex;

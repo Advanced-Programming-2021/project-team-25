@@ -1,5 +1,3 @@
-package UnitTests.RegisterAndLogin;
-
 import controllers.Regex;
 import controllers.menues.LoginMenu;
 import org.junit.Test;
