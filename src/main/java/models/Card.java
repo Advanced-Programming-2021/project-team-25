@@ -79,7 +79,7 @@ public abstract class Card implements Serializable {
     public static Card getCardByName(String name){
 
         for(Map.Entry<String, Card> set : allCards.entrySet()){
-            if(set.getKey().equals(name))
+            if(set.getKey().equalsIgnoreCase(name))
                 return set.getValue();
         }
         return null;
