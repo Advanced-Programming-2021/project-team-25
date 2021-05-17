@@ -42,6 +42,7 @@ public class Battlefield {
         whoStart(duelist1, duelist2);
         startGame();
         showBattleField();
+        if(!duelist1.getName().equals(duelist2.getName()))
         runBattleField();
     }
 
