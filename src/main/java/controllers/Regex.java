@@ -50,6 +50,8 @@ public class Regex {
     public static String selectCardInAllFields = "^select --(G|D|H) (\\d{0,50})$";
     public static String selectFieldCard = "^select (\\d+)$";
     public static String importCard = "^import (.+)$";
+    public static String forceAddedCardToHand = "select (--hand|-h) (?<cardName>\\S+) (--force|-f)";
+    public static String duelWinCheat = "duel set-winner (?<nickname>\\S+)";
 
     public static Matcher getMatcher(String input, String regex) {
         Pattern pattern = Pattern.compile(regex);
