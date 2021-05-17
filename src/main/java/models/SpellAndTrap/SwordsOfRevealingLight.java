@@ -32,6 +32,10 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
             removeSpellOrTrap(battlefield);
         }
         else{
+            //added all targeted monsters
+            for(Card card : opponent.field.monsterZone){
+               targetedMonsters.add((Monster)card);
+            }
             //expire after three play
             expireTime--;
 
@@ -48,8 +52,8 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
     }
 
     private void setMonsterCanAttackOrNot(boolean canAttack) {
-        for(Card card : opponent.field.monsterZone){
-            ((Monster)card).setCanAttack(canAttack);
+        for(Monster monster: targetedMonsters){
+            monster.setCanAttack(canAttack);
         }
     }
 

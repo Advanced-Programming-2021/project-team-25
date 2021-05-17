@@ -11,6 +11,7 @@ import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.CommandKnight;
 import models.Monster.Monster;
+import models.Monster.Scanner;
 import models.SpellAndTrap.SpellAndTrap;
 import view.Responses;
 import view.UserInterface;
@@ -33,12 +34,14 @@ public class Battlefield {
     private Duelist winner;
     private boolean isTurnChanged = false;
     private int countDraw6Cards =0;
+    private SpellAndTrap currSpell = null;
     public Card selectedCard;
     public int changedTurnTime = 0;
     public Monster attackingMonster;
     public Monster attackedMonster;
-    public int monsterChangedWithScanner;
+    public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
+
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -355,6 +358,9 @@ public class Battlefield {
 
     //end phase & turn
     public void nextPhase(){
+        // to active all needed spells
+        phaseController();
+
         selectedCard = null;
         if( phase == Phase.DRAW_PHASE ) phase = Phase.STANDBY_PHASE;
         else if( phase == Phase.STANDBY_PHASE ) phase = Phase.MAIN1_PHASE;
@@ -941,62 +947,6 @@ public class Battlefield {
         attackedMonsterNum = monsterNum;
 
         attackingMonster.action(this);
-//        if(attackedMonster.getCardsFace() == FaceUp.ATTACK){
-//
-//            if(attackingMonster.getAttack() > attackedMonster.getAttack()){
-//                selectedCard.setISAttackedThisTurn(true);
-//                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
-//                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
-//                int damage = attackingMonster.getAttack() - attackedMonster.getAttack();
-//                opponent.LP = opponent.LP - damage;
-//                UserInterface.printResponse("your opponent’s monster is destroyed and your opponent receives" + damage + "battle damage");
-//            }
-//
-//            else if(attackingMonster.getAttack() == attackedMonster.getAttack()){
-//                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
-//                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
-//                turn.field.graveYard.add(selectedCard);
-//                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
-//                UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
-//            }
-//
-//            else{
-//                ((Monster) selectedCard).removeMonster(this);
-//                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
-//                int damage = attackedMonster.getAttack() - attackingMonster.getAttack();
-//                turn.LP = turn.LP - damage;
-//                UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
-//            }
-//
-//        }
-//
-//        else {
-//
-//            if(attackingMonster.getAttack() > attackedMonster.getDefence()){
-//                selectedCard.setISAttackedThisTurn(true);
-//                ((Monster) opponent.field.monsterZone.get(getIndex(monsterNum))).removeMonster(this);
-//                opponent.field.monsterZone.set(getIndex(monsterNum) , null);
-//                UserInterface.printResponse("the defense position monster is destroyed");
-//            }
-//
-//            else if(attackingMonster.getAttack() == attackedMonster.getDefence()){
-//                selectedCard.setISAttackedThisTurn(true);
-//                if(attackedMonster.getCardsFace() == FaceUp.DEFENSE_BACK){
-//                    UserInterface.printResponse("opponent’s monster card was " + attackedMonster.getName() + " and no card is destroyed");
-//                    opponent.field.monsterZone.get(getIndex(monsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
-//                }
-//                UserInterface.printResponse("no card is destroyed");
-//            }
-//
-//            else{
-//                ((Monster) selectedCard).removeMonster(this);
-//                turn.field.monsterZone.set(getIndex(getIndexOfSelectedCardInMonsterZone()) , null);
-//                int damage = attackedMonster.getDefence() - attackingMonster.getAttack();
-//                turn.LP = turn.LP - damage;
-//                UserInterface.printResponse("no card is destroyed and you received " + damage + " battle damage");
-//            }
-//
-//        }
         selectedCard = null;
     }
     public void directAttack(){
@@ -1059,12 +1009,16 @@ public class Battlefield {
         for(Card card : opponent.field.spellTrapZone) {
             if(!Objects.isNull(card)){
                 String name = card.getName();
-                if(name.equals("Harpie’s Feather Duster") ||
-                        name.equals("Twin Twisters") ||
-                        name.equals("Mystical space typhoon") ||
-                        name.equals("Ring of Defense") ||
-                        name.equals("Magic Jammer")){
-                    return isOpponentActiveSpellOrTrap();
+                //preventing a true while
+                if(Objects.isNull(currSpell) || !currSpell.getName().equals(card.getName())){
+                    if(name.equals("Harpie’s Feather Duster") ||
+                            name.equals("Twin Twisters") ||
+                            name.equals("Mystical space typhoon") ||
+                            name.equals("Ring of Defense") ||
+                            name.equals("Magic Jammer")){
+                        currSpell = (SpellAndTrap) card;
+                        return isOpponentActiveSpellOrTrap();
+                    }
                 }
             }
         }
@@ -1108,5 +1062,36 @@ public class Battlefield {
             }
         }
         return false;
+    }
+    private void phaseController(){
+        int lastChangedTurn = 0;
+        //checking just one time turn changed
+        if(changedTurnTime-lastChangedTurn==1 && phase.equals(Phase.DRAW_PHASE)) {
+            //changing scanner
+            if(monsterChangedWithScanner != 0){
+                Monster monster = (Monster) turn.field.monsterZone.get(monsterChangedWithScanner);
+                monster.removeMonster(this);
+                turn.field.monsterZone.set(monsterChangedWithScanner,new Scanner(Card.allCards.get("Scanner")));
+            }
+            else if(!Objects.isNull(getSpellFromActiveSpells("Messenger of peace"))){
+                if(phase.equals(Phase.STANDBY_PHASE))
+                    turn.LP-=100;
+            }
+        }
+        else{
+            //action all spells based on which phase they want
+            for(SpellAndTrap spellAndTrap : activeSpellAndTraps)
+                spellAndTrap.action(this);
+        }
+
+        if(phase.equals(Phase.END_TURN))
+        lastChangedTurn = changedTurnTime;
+    }
+    private SpellAndTrap getSpellFromActiveSpells(String name){
+        for(SpellAndTrap spellAndTrap : activeSpellAndTraps){
+            if (spellAndTrap.getName().equals(name))
+                return spellAndTrap;
+        }
+        return null;
     }
 }

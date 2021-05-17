@@ -29,10 +29,6 @@ public class MessengerOfPeace extends SpellAndTrap implements Serializable {
     public void action(Battlefield battlefield) {
         opponent = battlefield.getOpponent();
         turn = battlefield.getTurn();
-        //get phase
-        Phase phase = battlefield.getPhase();
-        if(phase.equals(Phase.STANDBY_PHASE))
-            turn.LP-=100;
         //monster wit attack >= 1500 cant attack
         for(Card card : opponent.field.monsterZone){
             if(((Monster)card).getAttack()>=1500){

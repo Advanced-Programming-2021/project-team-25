@@ -86,9 +86,12 @@ public class Scanner extends Monster implements Serializable , CommonFunctions {
 
         Monster monster = (Monster)opponent.field.graveYard.get(number);
 
+        opponent.field.graveYard.remove(number);
+
         battlefield.monsterChangedWithScanner = battlefield.attackedMonsterNum;
 
         turn.field.monsterZone.set(battlefield.attackedMonsterNum,monster);
         //in the end of turn will be replaced by scanner
+        this.removeMonster(battlefield);
     }
 }
