@@ -1,5 +1,6 @@
 package controllers.Battelfield;
 
+import controllers.Battelfield.AI.Commander;
 import controllers.Regex;
 import controllers.ShowCard;
 import models.AI;
@@ -38,12 +39,13 @@ public class Battlefield {
     public Monster attackedMonster;
     public int monsterChangedWithScanner;
     public int attackedMonsterNum;
+
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
         startGame();
         showBattleField();
         if(!duelist1.getName().equals(duelist2.getName()))
-        runBattleField();
+            runBattleField();
     }
 
     public Duelist getTurn(){
@@ -72,7 +74,11 @@ public class Battlefield {
         while (winner == null) {
 
             if(countDraw6Cards<2 && isTurnChanged) startGame();
-            String command = UserInterface.getUserInput();
+
+            String command;
+            if(!turn.getName().equals("admin")) command = UserInterface.getUserInput();
+            else command = new Commander().getCommand(this);
+
             Matcher matcher;
 
             if(isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");

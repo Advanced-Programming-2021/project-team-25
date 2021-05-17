@@ -19,4 +19,8 @@ public class AI extends Duelist{
         midLevelHandler.setNextHandler(highLevelHandler);
         noDangerHandler.handle(battlefield);
     }
+
+    public String getCommand(Battlefield battlefield){
+        return "salam";
+    }
 }
