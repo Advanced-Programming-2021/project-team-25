@@ -89,6 +89,7 @@ public class Initialize {
             }
 
             user.setActiveDeck(currDeck);
+            DataBase.saveTheUserList(User.getUsers());
             DataBase.storeDecks(allDecks);
         }
     }
