@@ -65,9 +65,9 @@ public class Initialize {
                 currDeck.mainDeck.add(new YomiShip(Card.allCards.get("Yomi Ship")));
                 currDeck.mainDeck.add(new Suijin(Card.allCards.get("Suijin")));
                 currDeck.mainDeck.add(new GateGuardian(Card.allCards.get("Gate Guardian")));
-                currDeck.mainDeck.add(new Scanner(Card.allCards.get("Scanner")));
+                currDeck.mainDeck.add(Card.getCardByName("Dark Blade"));
                 currDeck.mainDeck.add(new BeastKingBarbaros(Card.allCards.get("Beast King Barbaros")));
-                currDeck.mainDeck.add(new Texchanger(Card.allCards.get("Texchanger")));
+                currDeck.mainDeck.add(Card.getCardByName("Blue-Eyes white dragon"));
                 currDeck.mainDeck.add(new MirageDragon(Card.allCards.get("Mirage Dragon")));
                 currDeck.mainDeck.add(new HeraldOfCreation(Card.allCards.get("Herald of Creation")));
                 currDeck.mainDeck.add(new CommandKnight(Card.allCards.get("Command Knight")));
@@ -76,7 +76,7 @@ public class Initialize {
                 currDeck.mainDeck.add(new MindCrush(Card.allCards.get("Mind Crush")));
                 currDeck.mainDeck.add(new NegateAttack(Card.allCards.get("Negate Attack")));
                 currDeck.mainDeck.add(new SolemnWarning(Card.allCards.get("Solemn Warning")));
-               // currDeck.mainDeck.add(new MagicJammer(Card.allCards.get("Magic Jammer")));
+//                currDeck.mainDeck.add(new MagicJammer(Card.allCards.get("Magic Jammer")));
                 currDeck.mainDeck.add(new MonsterReborn(Card.allCards.get("Monster Reborn")));
                 currDeck.mainDeck.add(new SwordsOfRevealingLight(Card.allCards.get("Swords of Revealing Light")));
                 currDeck.mainDeck.add(new MessengerOfPeace(Card.allCards.get("Messenger of peace")));
