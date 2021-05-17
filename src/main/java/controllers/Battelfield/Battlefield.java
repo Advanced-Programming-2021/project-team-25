@@ -181,7 +181,9 @@ public class Battlefield {
 
     public void drawCard() {
         if (turn.field.deck.size() > 0) {
-            if (changedTurnTime >= 2) addCardToPlayersHands(turn);
+            if (changedTurnTime >= 2 && turn.field.hand.size()<6) {
+                addCardToPlayersHands(turn);
+            }
         } else winner = opponent;
     }
 
