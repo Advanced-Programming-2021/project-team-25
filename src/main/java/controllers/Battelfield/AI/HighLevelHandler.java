@@ -14,6 +14,9 @@ public class HighLevelHandler extends AIHandler implements functions{
         if(countOpponentMonsterInAttackPosition(battlefield)>=4 || someOfAttacksOfOpponentMonster(battlefield)>=2000){
 
             if (howManyPlacesAreEmpty(battlefield) != 0)
+                attack(battlefield);
+
+            if (howManyPlacesAreEmpty(battlefield) != 0)
                 setOrSummonMonsters(battlefield);
         }
         else{
@@ -158,6 +161,69 @@ public class HighLevelHandler extends AIHandler implements functions{
 
     }
 
+
+
+
+
+
+
+
+    public void attack (Battlefield battlefield){
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null){
+                Monster temp = (Monster) battlefield.getOpponent().field.monsterZone.get(i);
+                int attackToWho = attackToWhichMonster(battlefield, temp.getAttack());
+                if (attackToWho == -1){
+                    battlefield.getTurn().LP -= temp.getAttack();
+                }
+                else if (attackToWho == -2){
+                    //nothing
+                }
+                else{
+                    battlefield.attackingMonster = temp;
+                    battlefield.attackedMonster = (Monster) battlefield.getTurn().field.monsterZone.get(attackToWho);
+                    battlefield.attackedMonsterNum = attackToWho;
+                    temp.action(battlefield);
+                }
+            }
+        }
+
+
+    }
+
+    public int attackToWhichMonster (Battlefield battlefield, int attack){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getTurn().field.monsterZone.get(i) != null)
+                counter += 1;
+        }
+
+        int indexToAttack = -2;
+        int mostHighAttackOrDef = -1;
+        if (counter == 0) return -1;
+        else{
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getTurn().field.monsterZone.get(i) != null){
+                    Monster temp = (Monster) battlefield.getTurn().field.monsterZone.get(i);
+                    if (temp.getCardsFace() == FaceUp.ATTACK){
+                        if (temp.getAttack() < attack && temp.getAttack() > mostHighAttackOrDef) {
+                            indexToAttack = i;
+                            mostHighAttackOrDef = temp.getAttack();
+                        }
+                    }
+                    else{
+                        if (temp.getDefence() < attack && temp.getDefence() > mostHighAttackOrDef){
+                            indexToAttack = i;
+                            mostHighAttackOrDef = temp.getDefence();
+                            temp.setCardsFace(FaceUp.DEFENSE_FRONT);
+                        }
+                    }
+                }
+            }
+        }
+        return indexToAttack;
+
+    }
 
 
 
