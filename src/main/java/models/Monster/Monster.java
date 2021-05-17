@@ -177,6 +177,9 @@ public class Monster extends Card implements Serializable {
         if(this.getCardsFace() == FaceUp.ATTACK) defenseMonsterHero = this.attack;
         else defenseMonsterHero = this.defence;
         if(attackingMonsterHero > defenseMonsterHero)
+            if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
+              return 2;
+            else
               return 1;
         else if(attackingMonsterHero<defenseMonsterHero) {
             if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
@@ -184,7 +187,12 @@ public class Monster extends Card implements Serializable {
             else
               return -1;
         }
-        else
-            return 0;
+        else{
+            if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
+                return 2;
+            else
+                return 0;
+        }
+
     }
 }

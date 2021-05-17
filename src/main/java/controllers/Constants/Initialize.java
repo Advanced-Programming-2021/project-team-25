@@ -76,7 +76,8 @@ public class Initialize {
                 currDeck.mainDeck.add(new MindCrush(Card.allCards.get("Mind Crush")));
                 currDeck.mainDeck.add(new NegateAttack(Card.allCards.get("Negate Attack")));
                 currDeck.mainDeck.add(new SolemnWarning(Card.allCards.get("Solemn Warning")));
-//                currDeck.mainDeck.add(new MagicJammer(Card.allCards.get("Magic Jammer")));
+//                currDeck.mainDeck.add(new MagicJammer(Card.allCards.get("Magic jammer")));
+                currDeck.mainDeck.add(Card.getCardByName("Battle warrior"));
                 currDeck.mainDeck.add(new MonsterReborn(Card.allCards.get("Monster Reborn")));
                 currDeck.mainDeck.add(new SwordsOfRevealingLight(Card.allCards.get("Swords of Revealing Light")));
                 currDeck.mainDeck.add(new MessengerOfPeace(Card.allCards.get("Messenger of peace")));
