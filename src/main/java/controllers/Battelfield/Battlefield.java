@@ -76,7 +76,7 @@ public class Battlefield {
             if(countDraw6Cards<2 && isTurnChanged) startGame();
 
             String command;
-            if(!turn.getName().equals("admin")) command = UserInterface.getUserInput();
+            if(!turn.getName().equals("Game")) command = UserInterface.getUserInput();
             else command = new Commander().getCommand(this);
 
             Matcher matcher;

@@ -1,7 +1,5 @@
 package controllers.menues;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import controllers.Menu;
 import controllers.Regex;
 import models.Card;
@@ -11,13 +9,8 @@ import models.SpellAndTrap.SpellAndTrap;
 import view.Responses;
 import view.UserInterface;
 
-import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.regex.Matcher;
 
 import static controllers.ProgramController.currentMenu;
