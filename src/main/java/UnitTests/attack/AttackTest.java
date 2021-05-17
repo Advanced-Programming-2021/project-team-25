@@ -20,6 +20,12 @@ import java.util.Objects;
 import static org.junit.Assert.assertEquals;
 
 public class AttackTest {
+    ArrayList<Monster> listOfSpecialMonsters = new ArrayList<>();
+    ArrayList<Monster> listOfNormalMonsters = new ArrayList<>();
+
+    ArrayList<Integer> defenceReturn = new ArrayList<>();
+    ArrayList<Integer> expectedReturn = new ArrayList<>();
+
     Battlefield battlefield;
     @BeforeEach
     public void initBattlefield(){
@@ -30,15 +36,9 @@ public class AttackTest {
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         battlefield = new Battlefield(duelist1, duelist2);
     }
-    @Test
-    public void testMonsterAttack(){
+
+    private void initializeMonster() {
         initBattlefield();
-        ArrayList<Monster> listOfSpecialMonsters = new ArrayList<>();
-        ArrayList<Monster> listOfNormalMonsters = new ArrayList<>();
-
-        ArrayList<Integer> defenceReturn = new ArrayList<>();
-        ArrayList<Integer> expectedReturn = new ArrayList<>();
-
         listOfSpecialMonsters.add(new YomiShip(Card.allCards.get("Yomi Ship")));
         listOfSpecialMonsters.add(new Suijin(Card.allCards.get("Suijin")));
         listOfSpecialMonsters.add(new ManEaterBug(Card.allCards.get("Man-Eater Bug")));
@@ -71,7 +71,11 @@ public class AttackTest {
         //ritual monsters
         listOfNormalMonsters.add((Monster) Card.getCardByName("Crab Turtle"));
         listOfNormalMonsters.add((Monster) Card.getCardByName("Skull Guardian"));
+    }
 
+    @Test
+    public void testMonsterAttack(){
+        initializeMonster();
         for(int i=0;i<6;i++) {
             //0 until 5
             battlefield.attackingMonster = listOfNormalMonsters.get(i);
@@ -96,4 +100,59 @@ public class AttackTest {
         }
 
     }
+    @Test
+    public void testMonsterDefence(){
+        initializeMonster();
+
+        battlefield.attackingMonster = listOfNormalMonsters.get(0);
+        battlefield.attackingMonster.setCardsFace(FaceUp.ATTACK);
+        battlefield.attackedMonster = listOfNormalMonsters.get(11);
+        battlefield.attackingMonster.setCardsFace(FaceUp.DEFENSE_FRONT);
+        defenceReturn.add(battlefield.attackedMonster.defenceFunc(battlefield));
+
+        battlefield.attackingMonster = listOfNormalMonsters.get(1);
+        battlefield.attackingMonster.setCardsFace(FaceUp.ATTACK);
+        battlefield.attackedMonster = listOfNormalMonsters.get(10);
+        battlefield.attackingMonster.setCardsFace(FaceUp.DEFENSE_BACK);
+        defenceReturn.add(battlefield.attackedMonster.defenceFunc(battlefield));
+
+        battlefield.attackingMonster = listOfNormalMonsters.get(2);
+        battlefield.attackingMonster.setCardsFace(FaceUp.ATTACK);
+        battlefield.attackedMonster = listOfNormalMonsters.get(9);
+        battlefield.attackingMonster.setCardsFace(FaceUp.DEFENSE_BACK);
+        defenceReturn.add(battlefield.attackedMonster.defenceFunc(battlefield));
+
+        battlefield.attackingMonster = listOfNormalMonsters.get(3);
+        battlefield.attackingMonster.setCardsFace(FaceUp.ATTACK);
+        battlefield.attackedMonster = listOfNormalMonsters.get(8);
+        battlefield.attackingMonster.setCardsFace(FaceUp.DEFENSE_BACK);
+        defenceReturn.add(battlefield.attackedMonster.defenceFunc(battlefield));
+
+        battlefield.attackingMonster = listOfNormalMonsters.get(4);
+        battlefield.attackingMonster.setCardsFace(FaceUp.ATTACK);
+        battlefield.attackedMonster = listOfNormalMonsters.get(7);
+        battlefield.attackingMonster.setCardsFace(FaceUp.DEFENSE_FRONT);
+        defenceReturn.add(battlefield.attackedMonster.defenceFunc(battlefield));
+
+        battlefield.attackingMonster = listOfNormalMonsters.get(5);
+        battlefield.attackingMonster.setCardsFace(FaceUp.ATTACK);
+        battlefield.attackedMonster = listOfNormalMonsters.get(6);
+        battlefield.attackingMonster.setCardsFace(FaceUp.DEFENSE_BACK);
+        defenceReturn.add(battlefield.attackedMonster.defenceFunc(battlefield));
+
+        expectedReturn.add(-1);
+        expectedReturn.add(1);
+        expectedReturn.add(-1);
+        expectedReturn.add(1);
+        expectedReturn.add(-1);
+        expectedReturn.add(1);
+
+        assertEquals(defenceReturn.size(), expectedReturn.size());
+
+        for(int i = 0; i < defenceReturn.size(); i++) {
+            assertEquals(defenceReturn.get(i), expectedReturn.get(i));
+        }
+
+    }
+
 }
