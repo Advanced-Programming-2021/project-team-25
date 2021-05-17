@@ -42,15 +42,17 @@ public class Battlefield {
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
 
-
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
         startGame();
         showBattleField();
-        if(!duelist1.getName().equals(duelist2.getName()))
-            runBattleField();
+        runBattleField();
     }
 
+    //getter methods
+    public Duelist getWinner() {
+        return winner;
+    }
     public Duelist getTurn(){
         return turn;
     }
@@ -64,10 +66,6 @@ public class Battlefield {
         return selectedCard;
     }
 
-    //getter methods
-    public Duelist getWinner() {
-        return winner;
-    }
     //setter methods
     public void setPhase(Phase phase) {
         this.phase = phase;
@@ -443,7 +441,6 @@ public class Battlefield {
             }
         }
     }
-
     private void summonKingBarbaros(Monster monster) {
         String command;
         UserInterface.printResponse("""
@@ -467,7 +464,6 @@ public class Battlefield {
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
     }
-
     private void getThreeMonsterForTribute() {
         if(getSizeOfMonsterZone()<3) UserInterface.printResponse("not enough monster");
         else{
@@ -490,7 +486,6 @@ public class Battlefield {
             }
         }
     }
-
     public void summonOrSetGateGuardian (String message){
         int  counter = 0;
         for (int i = 0; i<5; ++i)
@@ -529,7 +524,6 @@ public class Battlefield {
                 }
         }
     }
-
     public Monster getMonsterForTributeForGateGuardian (){
         UserInterface.printResponse("Please select one monster name");
         for (int i = 0; i<5; ++i)
@@ -557,8 +551,6 @@ public class Battlefield {
             }
         return null;
     }
-
-
     public void summonOrFlipSummonCommandKnight (String message){
         CommandKnight commandKnight = (CommandKnight) selectedCard;
 
@@ -594,9 +586,6 @@ public class Battlefield {
         }
 
     }
-
-
-
     private void summonLevel8Or7(Monster monster,String message) {
         //checking if can tribute happened
         if(getSizeOfMonsterZone()<2) UserInterface.printResponse("there are not enough cards for tribute");
@@ -718,7 +707,6 @@ public class Battlefield {
         }
 
     }
-
     public void flipSummonForManEaterBug (){
         int counter = 0;
         for (int i = 0; i<5; ++i)
@@ -759,9 +747,6 @@ public class Battlefield {
             selectedCard = null;
         }
     }
-
-
-
     public void ritualSummon(){
         String command;
         //getting the ritual monster in hand if exist
@@ -1085,7 +1070,7 @@ public class Battlefield {
         }
 
         if(phase.equals(Phase.END_TURN))
-        lastChangedTurn = changedTurnTime;
+            lastChangedTurn = changedTurnTime;
     }
     private SpellAndTrap getSpellFromActiveSpells(String name){
         for(SpellAndTrap spellAndTrap : activeSpellAndTraps){

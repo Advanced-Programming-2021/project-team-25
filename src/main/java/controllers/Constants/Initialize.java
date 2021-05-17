@@ -13,7 +13,6 @@ import java.io.IOException;
 import static models.Deck.allDecks;
 
 public class Initialize {
-
     public static void init() {
         try {
             DataBase.loadCards();
@@ -98,5 +97,4 @@ public class Initialize {
         File tmpDir = new File("Decks.list");
         if(tmpDir.exists()) Deck.allDecks = DataBase.restoreDecks();
     }
-
 }

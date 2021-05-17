@@ -4,10 +4,7 @@ import controllers.Battelfield.Battlefield;
 import controllers.Database.DataBase;
 import controllers.Menu;
 import controllers.Regex;
-import models.AI;
-import models.Deck;
-import models.Duelist;
-import models.User;
+import models.*;
 import view.Responses;
 import view.UserInterface;
 
@@ -20,7 +17,6 @@ public class DuelMenu {
 
     private static DuelMenu singleToneClass = null;
     private User currUser;
-    private User AiUser = User.getUserByUsername("admin");
     public static DuelMenu getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new DuelMenu(currUser);
         singleToneClass.currUser = currUser;
@@ -51,7 +47,7 @@ public class DuelMenu {
         if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
         else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
         else if(!(round.equals("1") || round.equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
-        else new Battlefield(new Duelist(currUser),new AI(AiUser));
+        else new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")));
     }
 
     public void newDuel(Matcher matcher){
@@ -59,6 +55,7 @@ public class DuelMenu {
         String duelistName = matcher.group(1) , round = matcher.group(2);
 
         if(User.getUserByUsername(duelistName) == null) UserInterface.printResponse("there is no player with this username");
+        else if(duelistName.equals(currUser.getUsername())) UserInterface.printResponse("you can't play with yourself");
         else if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
         else if(Objects.requireNonNull(User.getUserByUsername(duelistName)).activeDeck == null) System.out.println(duelistName + " has no active deck");
         else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
@@ -66,7 +63,6 @@ public class DuelMenu {
         else if(!(round.equals("1") || round.equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
         else if(round.equals("1")) oneRoundDuel(duelistName);
         else threeRoundDuel(duelistName);
-
     }
 
     private void oneRoundDuel(String duelistName) {
@@ -112,7 +108,7 @@ public class DuelMenu {
         int round1Duelist1Lp = duelist1.LP, round1Duelist2Lp = duelist2.LP;
 
         //add card from side
-
+        transferPermission(duelistName);
 
         //round2
         duelist1 = new Duelist(currUser);
@@ -138,6 +134,7 @@ public class DuelMenu {
         }
 
         //add card from side
+        transferPermission(duelistName);
 
         //round3
         duelist1 = new Duelist(currUser);
@@ -168,11 +165,56 @@ public class DuelMenu {
         DataBase.saveTheUserList(User.getUsers());
     }
 
+    private void transferPermission(String duelistName) {
+        UserInterface.printResponse("Hey " + currUser.getUsername() + "do you want to transfer card?");
+        String yesOrNo = UserInterface.getUserInput();
+        if(yesOrNo.equals("yes")) transferCard(currUser);
+        UserInterface.printResponse("Hey " + currUser.getUsername() + "do you want to transfer card?");
+        yesOrNo = UserInterface.getUserInput();
+        if(yesOrNo.equals("yes")) transferCard(Objects.requireNonNull(User.getUserByUsername(duelistName)));
+    }
+
     private void finish2Round(int duelist1Wins, int duelist2Wins, Duelist duelist1, Duelist duelist2, int round2Duelist2Lp) {
         UserInterface.printResponse(duelist2.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
         duelist2.getUser().setScore(duelist2.getUser().getScore() + 3000);
         duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 3000 + 3 * round2Duelist2Lp);
         duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 300);
         DataBase.saveTheUserList(User.getUsers());
+    }
+
+    private void transferCard(User user){
+        UserInterface.printResponse("enter name of the card from side deck : ");
+        String sideName = UserInterface.getUserInput();
+        boolean sideExist = false;
+        Card tempSide = null;
+        for (Card card: user.activeDeck.sideDeck) {
+            if(card.getName().equals(sideName)){
+                tempSide = card;
+                user.activeDeck.sideDeck.remove(card);
+                sideExist = true;
+            }
+        }
+        if(!sideExist){
+            UserInterface.printResponse("you don't have this card in your side deck");
+            return;
+        }
+
+        UserInterface.printResponse("enter name of the card from main deck : ");
+        String mainName = UserInterface.getUserInput();
+        boolean mainExist = false;
+        Card tempMain = null;
+        for (Card card: user.activeDeck.mainDeck) {
+            if(card.getName().equals(mainName)){
+                tempMain = card;
+                user.activeDeck.mainDeck.remove(card);
+                mainExist = true;
+            }
+        }
+        if(!mainExist){
+            UserInterface.printResponse("you don't have this card in your main deck");
+            return;
+        }
+        user.activeDeck.mainDeck.add(tempSide);
+        user.activeDeck.sideDeck.add(tempMain);
     }
 }

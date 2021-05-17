@@ -3,8 +3,6 @@ package models;
 import controllers.Battelfield.AI.*;
 import controllers.Battelfield.Battlefield;
 
-import java.util.ArrayList;
-
 public class AI extends Duelist{
     public AI(User user) {
         super(user);
@@ -18,9 +16,5 @@ public class AI extends Duelist{
         lowLevelHandler.setNextHandler(midLevelHandler);
         midLevelHandler.setNextHandler(highLevelHandler);
         noDangerHandler.handle(battlefield);
-    }
-
-    public String getCommand(Battlefield battlefield){
-        return "salam";
     }
 }
