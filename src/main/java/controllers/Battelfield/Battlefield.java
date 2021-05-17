@@ -82,8 +82,9 @@ public class Battlefield {
             if (countDraw6Cards < 2 && isTurnChanged) startGame();
 
             String command;
-            if (!turn.getName().equals("Game")) command = UserInterface.getUserInput();
-            else command = new Commander().getCommand(this);
+//            if (!turn.getName().equals("Game")) command = UserInterface.getUserInput();
+//            else command = new Commander().getCommand(this);
+            command = UserInterface.getUserInput();
 
             Matcher matcher;
 
@@ -638,7 +639,10 @@ public class Battlefield {
         if (turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
         else {
             while (Objects.isNull(monsterForTribute)) {
-                UserInterface.printResponse("please select one card to tribute!");
+                UserInterface.printResponse("""
+                        please select one card to tribute!\s
+                         by entering the address by this way\s
+                         5 | 3 | 1 | 2 | 4""");
                 monsterForTribute = tributeOneMonster();
             }
             moveMonsterToGraveYard(monsterForTribute);
