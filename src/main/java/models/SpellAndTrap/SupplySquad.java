@@ -10,7 +10,7 @@ import view.UserInterface;
 import java.io.Serializable;
 
 public class SupplySquad extends SpellAndTrap implements Serializable {
-    boolean isFirsTimeCalled = true;
+    public boolean isFirsTimeCalled = true;
 
     public SupplySquad (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
