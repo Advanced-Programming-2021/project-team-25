@@ -100,6 +100,7 @@ public class Battlefield {
             else if (Regex.getMatcher(command, Regex.surrender).matches()) winner = opponent;
             else if (Regex.getMatcher(command, Regex.forceAddedCardToHand).matches()) forceAddedToHand(matcher);
             else if (Regex.getMatcher(command, Regex.duelWinCheat).matches()) duelWinCheat(matcher);
+            else if (Regex.getMatcher(command, Regex.increaseLPCheat).matches()) increaseLPCheat(matcher);
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
             showBattleField();
         }
@@ -435,7 +436,6 @@ public class Battlefield {
             }
         }
     }
-
     private void summonKingBarbaros(Monster monster) {
         String command;
         UserInterface.printResponse("""
@@ -456,7 +456,6 @@ public class Battlefield {
         } else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
     }
-
     private void getThreeMonsterForTribute() {
         if (getSizeOfMonsterZone() < 3) UserInterface.printResponse("not enough monster");
         else {
@@ -479,7 +478,6 @@ public class Battlefield {
             }
         }
     }
-
     public void summonOrSetGateGuardian(String message) {
         int counter = 0;
         for (int i = 0; i < 5; ++i)
@@ -518,7 +516,6 @@ public class Battlefield {
                 }
         }
     }
-
     public Monster getMonsterForTributeForGateGuardian() {
         UserInterface.printResponse("Please select one monster name");
         for (int i = 0; i < 5; ++i)
@@ -546,7 +543,6 @@ public class Battlefield {
             }
         return null;
     }
-
     public void summonOrFlipSummonCommandKnight(String message) {
         CommandKnight commandKnight = (CommandKnight) selectedCard;
 
@@ -581,7 +577,6 @@ public class Battlefield {
         }
 
     }
-
     private void summonLevel8Or7(Monster monster, String message) {
         //checking if can tribute happened
         if (getSizeOfMonsterZone() < 2) UserInterface.printResponse("there are not enough cards for tribute");
@@ -609,11 +604,9 @@ public class Battlefield {
             }
         }
     }
-
     private void moveMonsterToGraveYard(Monster monsterForTribute1) {
         monsterForTribute1.removeMonster(this);
     }
-
     private void summonLevel6Or5(String message) {
         //get tribute Monster
         Monster monsterForTribute = null;
@@ -634,7 +627,6 @@ public class Battlefield {
             turn.hasPutMonster = true;
         }
     }
-
     private void summonedMonster(String message) {
         //set turn put the monster
         turn.hasPutMonster = true;
@@ -652,7 +644,6 @@ public class Battlefield {
         turn.field.hand.remove(selectedCard);
         UserInterface.printResponse(message);
     }
-
     private Monster tributeOneMonster() {
         //selecting card to tribute
         String command = UserInterface.getUserInput();
@@ -672,27 +663,22 @@ public class Battlefield {
             return null;
         }
     }
-
     public int getSizeOfMonsterZone() {
         int count = 0;
         for (int i = 0; i < 5; ++i)
             if (turn.field.monsterZone.get(i) != null) count += 1;
         return count;
     }
-
     public int getSizeOfSpellAndTrapZone() {
         int count = 0;
         for (int i = 0; i < 5; ++i)
             if (turn.field.spellTrapZone.get(i) != null) count += 1;
         return count;
     }
-
     public void specialSummon(Monster monster) {
         selectedCard = monster;
         summon();
-
     }
-
     public void flipSummon() {
         if (Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
         else if (!turn.field.monsterZone.contains(selectedCard))
@@ -713,7 +699,6 @@ public class Battlefield {
         }
 
     }
-
     public void flipSummonForManEaterBug() {
         int counter = 0;
         for (int i = 0; i < 5; ++i)
@@ -754,7 +739,6 @@ public class Battlefield {
             selectedCard = null;
         }
     }
-
     public void ritualSummon() {
         String command;
         //getting the ritual monster in hand if exist
@@ -775,7 +759,6 @@ public class Battlefield {
             summonLevel8Or7(ritualMonster, "summoned successfully");
         }
     }
-
     private Monster getRitualMonsterInHand() {
         for (Card card : turn.field.hand) {
             if (card.getCardsType().equals(Type.MONSTER) && ((Monster) card).getCardTypeInExel().equals("Ritual")) {
@@ -784,7 +767,6 @@ public class Battlefield {
         }
         return null;
     }
-
     private int getSumOfLevelsInZone() {
         int sum = 0;
         for (Card card : turn.field.monsterZone) {
@@ -902,45 +884,6 @@ public class Battlefield {
         else
             confirmAttack(monsterNum);
     }
-
-    private String antiAttackTraps() {
-        UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
-        changeTurn();
-        showBattleField();
-        UserInterface.printResponse("do you want to activate your trap or spell?");
-        String yesOrNo = UserInterface.getUserInput();
-        if (yesOrNo.equals("no")) {
-            UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
-            changeTurn();
-            showBattleField();
-            return "no";
-        } else {
-            UserInterface.printResponse("enter number of Trap house : ");
-            while (true) {
-
-                String input = UserInterface.getUserInput();
-                if (input.equals("cancel")) break;
-                int num = Integer.parseInt(input);
-
-                if (getIndex(num) == -1 || turn.field.spellTrapZone.get(getIndex(num)) == null) {
-                    UserInterface.printResponse("try again");
-                    continue;
-                }
-
-                String trapName = turn.field.spellTrapZone.get(getIndex(num)).getName();
-
-                if (trapName.equals("Magic Cylinder") || trapName.equals("Mirror Force") || trapName.equals("Torrential Tribute")) {
-                    turn.field.spellTrapZone.get(getIndex(num)).action(this);
-                    turn.field.graveYard.add(turn.field.spellTrapZone.get(num));
-                    turn.field.spellTrapZone.set(getIndex(num), null);
-                    UserInterface.printResponse("Trap activated");
-                } else UserInterface.printResponse("it’s not your turn to play this kind of moves\n try again!");
-
-            }
-            return "yes";
-        }
-    }
-
     private void confirmAttack(int monsterNum) {
         attackedMonster = (Monster) opponent.field.monsterZone.get(getIndex(monsterNum));
         attackingMonster = (Monster) selectedCard;
@@ -949,7 +892,6 @@ public class Battlefield {
         attackingMonster.action(this);
         selectedCard = null;
     }
-
     public void directAttack() {
         if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
         else if (!turn.field.monsterZone.contains(selectedCard))
@@ -965,7 +907,6 @@ public class Battlefield {
             selectedCard = null;
         }
     }
-
     public int getIndex(int num) {
         if (num == 1) return 2;
         else if (num == 2) return 1;
@@ -974,13 +915,11 @@ public class Battlefield {
         else if (num == 5) return 4;
         else return -1;
     }
-
     public int getIndexOfSelectedCardInMonsterZone() {
         for (int i = 0; i < 5; i++)
             if (selectedCard == turn.field.monsterZone.get(i)) return i;
         return -1;
     }
-
     public boolean isOpponentEmptyOfMonsters() {
         for (Card card : opponent.field.monsterZone)
             if (card != null) return false;
@@ -1010,7 +949,6 @@ public class Battlefield {
             }
         }
     }
-
     //checking for that if that spell has a role that we can`t activate it
     private boolean canWeActiveSpell() {
         for (Card card : opponent.field.spellTrapZone) {
@@ -1031,15 +969,12 @@ public class Battlefield {
         }
         return true;
     }
-
     private boolean isOpponentActiveSpellOrTrap() {
         //change turn
         UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
         changeTurn();
         showBattleField();
-        UserInterface.printResponse("do you want to activate your trap or spell?" +
-                "\n enter yes or no");
-
+        UserInterface.printResponse("do you want to activate your trap or spell?" + "\n enter yes or no");
         String yesOrNo = UserInterface.getUserInput();
         //decide what to do
         if (yesOrNo.equals("no")) {
@@ -1048,8 +983,7 @@ public class Battlefield {
             showBattleField();
             return true;
         } else if (yesOrNo.equals("yes")) {
-            UserInterface.printResponse("enter number of Trap house : " +
-                    "or type \"cancel\" by numbering 5 | 3 | 1 | 2 | 4");
+            UserInterface.printResponse("enter number of Trap house : " + "or type \"cancel\" by numbering 5 | 3 | 1 | 2 | 4");
             while (true) {
                 //get user input
                 String input = UserInterface.getUserInput();
@@ -1062,6 +996,13 @@ public class Battlefield {
                     UserInterface.printResponse("try again");
                     continue;
                 }
+                String trapName = spellAndTrap.getName();
+                if (trapName.equals("Magic Cylinder") || trapName.equals("Mirror Force") || trapName.equals("Torrential Tribute")) {
+                    turn.field.spellTrapZone.get(getIndex(num)).action(this);
+                    turn.field.graveYard.add(turn.field.spellTrapZone.get(num));
+                    turn.field.spellTrapZone.set(getIndex(num), null);
+                    UserInterface.printResponse("Trap activated");
+                } else UserInterface.printResponse("it’s not your turn to play this kind of moves\n try again!");
                 //make chain
                 if (canWeActiveSpell())
                     spellAndTrap.action(this);
@@ -1069,7 +1010,6 @@ public class Battlefield {
         }
         return false;
     }
-
     private void phaseController() {
         int lastChangedTurn = 0;
         //checking just one time turn changed
@@ -1093,7 +1033,6 @@ public class Battlefield {
                 lastChangedTurn = changedTurnTime;
         }
     }
-
     private SpellAndTrap getSpellFromActiveSpells(String name) {
         for (SpellAndTrap spellAndTrap : activeSpellAndTraps) {
             if (spellAndTrap.getName().equals(name))
@@ -1102,11 +1041,11 @@ public class Battlefield {
         return null;
     }
 
+    //cheats
     private void forceAddedToHand(Matcher matcher) {
         String cardName = matcher.group("cardName");
         turn.field.hand.add(Card.getCardByName(cardName));
     }
-
     private void duelWinCheat(Matcher matcher) {
         String name = matcher.group("nickname");
         if (turn.getName().equals(name))
@@ -1114,5 +1053,10 @@ public class Battlefield {
         else if (opponent.getName().equals(name))
             winner = opponent;
 
+    }
+
+    private void increaseLPCheat(Matcher matcher){
+        int amount = Integer.parseInt(matcher.group(1));
+        turn.LP += amount ;
     }
 }

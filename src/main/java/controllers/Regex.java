@@ -54,6 +54,7 @@ public class Regex {
     public static String extractName = "^Name: (.+)$";
     public static String forceAddedCardToHand = "select (--hand|-h) (?<cardName>\\S+) (--force|-f)";
     public static String duelWinCheat = "duel set-winner (?<nickname>\\S+)";
+    public static String increaseLPCheat = "increase --LP (.+)";
 
     public static Matcher getMatcher(String input, String regex) {
         Pattern pattern = Pattern.compile(regex);
