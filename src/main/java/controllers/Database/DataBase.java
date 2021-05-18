@@ -197,29 +197,9 @@ public class DataBase {
                             Integer.parseInt(matcher.group(7))
                     ));
         }
-        else if (matcher.group(1).equals("Mirage Dragon")){
-            temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
-                    new MirageDragon(
-                            matcher.group(1).replace("%",",").replace("\"",""),
-                            Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
-                            Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
-                            matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
-                            Integer.parseInt(matcher.group(7))
-                    ));
-        }
         else if (matcher.group(1).equals("Herald of Creation")){
             temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
                     new HeraldOfCreation(
-                            matcher.group(1).replace("%",",").replace("\"",""),
-                            Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
-                            Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),
-                            matcher.group(3), matcher.group(4), matcher.group(5), Integer.parseInt(matcher.group(6)),
-                            Integer.parseInt(matcher.group(7))
-                    ));
-        }
-        else if (matcher.group(1).equals("Exploder Dragon")){
-            temp.put(matcher.group(1).replace("%", ",").replace("\"", ""),
-                    new ExploderDragon(
                             matcher.group(1).replace("%",",").replace("\"",""),
                             Type.MONSTER, matcher.group(8).replace("%", ",").replace("\"", ""),
                             Integer.parseInt(matcher.group(9)), Integer.parseInt(matcher.group(2)),

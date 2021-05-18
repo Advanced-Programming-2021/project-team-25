@@ -46,9 +46,7 @@ public class AttackTest {
         listOfSpecialMonsters.add(new BeastKingBarbaros(Card.allCards.get("Beast King Barbaros")));
         listOfSpecialMonsters.add(new Texchanger(Card.allCards.get("Texchanger")));
         listOfSpecialMonsters.add(new TheCalculator(Card.allCards.get("The Calculator")));
-        listOfSpecialMonsters.add(new MirageDragon(Card.allCards.get("Mirage Dragon")));
         listOfSpecialMonsters.add(new HeraldOfCreation(Card.allCards.get("Herald of Creation")));
-        listOfSpecialMonsters.add(new ExploderDragon(Card.allCards.get("Exploder Dragon")));
         listOfSpecialMonsters.add(new TerratigerTheEmpoweredWarrior(Card.allCards.get("Terratiger, the Empowered Warrior")));
         listOfSpecialMonsters.add(new TheTricky(Card.allCards.get("The Tricky")));
         //normal monsters with 14 monsters
