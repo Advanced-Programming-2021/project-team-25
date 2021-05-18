@@ -34,7 +34,7 @@ public class ChangeOfHeart extends SpellAndTrap implements Serializable {
     @Override
     public void action(Battlefield battlefield) {
         if(expireTime == 0){
-            setExpired(true);
+            expireTime = 1;
             //decide to remove or not
             removeSpellOrTrap(battlefield);
         }

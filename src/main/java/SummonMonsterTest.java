@@ -36,7 +36,6 @@ public class SummonMonsterTest {
         battlefield.selectedCard = Card.getCardByName("Wattaildragon");
         battlefield.getTurn().field.monsterZone.set(0,Card.getCardByName("Wattaildragon"));
         battlefield.getTurn().field.monsterZone.set(1,Card.getCardByName("Warrior Dai Grepher"));
-//        battlefield.getTurn().field.monsterZone.set(2,Card.getCardByName("Dark Blade"));
         battlefield.getTurn().field.monsterZone.set(3,new ManEaterBug(Card.allCards.get("Man-Eater Bug")));
         battlefield.getTurn().field.monsterZone.set(4,new GateGuardian(Card.allCards.get("Gate Guardian")));
     }

@@ -15,19 +15,20 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
 
     public SwordsOfRevealingLight (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
-        expireTime = 3;
+        expireTime = 4;// 3 times for opponent means 4 time for us!
     }
 
     public SwordsOfRevealingLight (Object object){
         super(((SwordsOfRevealingLight)object).getName(), ((SwordsOfRevealingLight)object).getCardsType(),
                 ((SwordsOfRevealingLight)object).getDescription(), ((SwordsOfRevealingLight)object).getPrice(),
                 ((SwordsOfRevealingLight)object).getIcon(), ((SwordsOfRevealingLight)object).getStatus());
-        expireTime = 3;
+        expireTime = 4;
     }
 
     @Override
     public void action(Battlefield battlefield) {
         if(expireTime == 0){
+            expireTime = 4;
             setExpired(true);
             removeSpellOrTrap(battlefield);
         }
@@ -59,6 +60,7 @@ public class SwordsOfRevealingLight extends SpellAndTrap implements Serializable
 
     @Override
     public void removeSpellOrTrap(Battlefield battlefield) {
+        expireTime = 3;
         setMonsterCanAttackOrNot(true);
         super.removeSpellOrTrap(battlefield);
     }

@@ -20,35 +20,46 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable , Commo
     Battlefield battlefield;
     public MonsterReborn (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
+        expireTime = 1;
     }
 
     public MonsterReborn (Object object){
         super(((MonsterReborn)object).getName(), ((MonsterReborn)object).getCardsType(),
                 ((MonsterReborn)object).getDescription(), ((MonsterReborn)object).getPrice(),
                 ((MonsterReborn)object).getIcon(), ((MonsterReborn)object).getStatus());
+        expireTime = 1;
     }
 
     @Override
     public void action(Battlefield battlefield) {
-        this.battlefield = battlefield;
-        //User Input
-        boolean isFoundMonsterInTurnGraveyard = false;
-        boolean isFoundMonsterInOpponentGraveyard = false;
-        //getting the game field
-        turn = battlefield.getTurn();
-        opponent = battlefield.getOpponent();
-        //checking not null
-        if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
-            //show graveyards
-            if(turn.field.graveYard.isEmpty()) UserInterface.printResponse("your graveyard is empty");
-            else isFoundMonsterInTurnGraveyard = showGraveYard(turn);
+        if(expireTime == 0){
+            expireTime = 1;
+            removeSpellOrTrap(battlefield);
+        }
+        else {
+            //expireTime added
+            expireTime--;
 
-            if(opponent.field.graveYard.isEmpty()) UserInterface.printResponse("your rival graveyard is empty");
-            else isFoundMonsterInOpponentGraveyard = showGraveYard(opponent);
+            this.battlefield = battlefield;
+            //User Input
+            boolean isFoundMonsterInTurnGraveyard = false;
+            boolean isFoundMonsterInOpponentGraveyard = false;
+            //getting the game field
+            turn = battlefield.getTurn();
+            opponent = battlefield.getOpponent();
+            //checking not null
+            if(!Objects.isNull(turn) && !Objects.isNull(opponent)){
+                //show graveyards
+                if(turn.field.graveYard.isEmpty()) UserInterface.printResponse("your graveyard is empty");
+                else isFoundMonsterInTurnGraveyard = showGraveYard(turn);
 
-            //get monster from user input
-            if(isFoundMonsterInTurnGraveyard || isFoundMonsterInOpponentGraveyard) initializeForSpell();
+                if(opponent.field.graveYard.isEmpty()) UserInterface.printResponse("your rival graveyard is empty");
+                else isFoundMonsterInOpponentGraveyard = showGraveYard(opponent);
 
+                //get monster from user input
+                if(isFoundMonsterInTurnGraveyard || isFoundMonsterInOpponentGraveyard) initializeForSpell();
+
+            }
         }
     }
 

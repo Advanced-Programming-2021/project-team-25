@@ -18,36 +18,44 @@ public class Terraforming extends SpellAndTrap implements Serializable {
     Duelist turn;
     public Terraforming (String name, Type cardType, String description, int price, String icon, String status){
         super(name, cardType, description, price, icon, status);
+        expireTime = 1;
     }
 
     public Terraforming (Object object){
         super(((Terraforming)object).getName(), ((Terraforming)object).getCardsType(),
                 ((Terraforming)object).getDescription(), ((Terraforming)object).getPrice(),
                 ((Terraforming)object).getIcon(), ((Terraforming)object).getStatus());
+        expireTime = 1;
     }
 
     @Override
     public void action(Battlefield battlefield) {
+        if(expireTime == 0){
+            expireTime = 1;
+            removeSpellOrTrap(battlefield);
+        }
+        else {
+            expireTime--;
+            turn = battlefield.getTurn();
+            ArrayList<Card> fieldCards = new ArrayList<>();
 
-        turn = battlefield.getTurn();
-        ArrayList<Card> fieldCards = new ArrayList<>();
+            //checking not null
+            if(!Objects.isNull(turn)){
 
-        //checking not null
-        if(!Objects.isNull(turn)){
+                showFieldCardsToUser(fieldCards);
+                //checking that is a field card found or not
+                if(fieldCards.isEmpty()){
+                    UserInterface.printResponse("No field card in deck");
+                    return;
+                }
 
-            showFieldCardsToUser(fieldCards);
-            //checking that is a field card found or not
-            if(fieldCards.isEmpty()){
-                UserInterface.printResponse("No field card in deck");
-                return;
-            }
-            
-            UserInterface.printResponse("""
+                UserInterface.printResponse("""
                     please enter the card id you want by entering the id in command
                     "select [id]"
                      or type exit""");
 
-            addFieldCardToHand(fieldCards);
+                addFieldCardToHand(fieldCards);
+            }
         }
     }
 
