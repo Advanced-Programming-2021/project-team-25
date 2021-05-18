@@ -1023,6 +1023,7 @@ public class Battlefield {
                 UserInterface.printResponse("preparation of this spell are not done yet");
             else {
                 activeSpellAndTraps.add(spellAndTrap);
+                spellAndTrap.action(this);
                 turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone() + 1, selectedCard);
             }
         }
