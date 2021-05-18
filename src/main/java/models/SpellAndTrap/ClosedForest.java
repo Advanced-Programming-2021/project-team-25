@@ -28,6 +28,17 @@ public class ClosedForest extends SpellAndTrap  implements Serializable {
         turn = battlefield.getTurn();
         opponent = battlefield.getOpponent();
 
+        if (opponent.getName().equalsIgnoreCase("admin")) {
+            opponent.field.fieldZone = this;
+            opponent.field.hand.remove(this);
+            turn = battlefield.getOpponent();
+            opponent = battlefield.getTurn();
+        }
+        else {
+            turn.field.fieldZone = this;
+            turn.field.hand.remove(this);
+        }
+
 
         numberOfAttackToAdd = 100 * turn.field.graveYard.size();
 

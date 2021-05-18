@@ -27,6 +27,15 @@ public class Yami extends SpellAndTrap implements Serializable {
         turn = battlefield.getTurn();
         opponent = battlefield.getOpponent();
 
+        if (opponent.getName().equalsIgnoreCase("admin")) {
+            opponent.field.fieldZone = this;
+            opponent.field.hand.remove(this);
+        }
+        else {
+            turn.field.fieldZone = this;
+            turn.field.hand.remove(this);
+        }
+
         for (int i = 0; i<5; ++i){
             if (turn.field.monsterZone.get(i) != null){
                 Monster turnMonster = (Monster) turn.field.monsterZone.get(i);

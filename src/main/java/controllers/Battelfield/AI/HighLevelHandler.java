@@ -1,11 +1,11 @@
 package controllers.Battelfield.AI;
 
 import controllers.Battelfield.Battlefield;
-import controllers.Regex;
 import models.Card;
 import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
 import models.Monster.Monster;
+import models.SpellAndTrap.SpellAndTrap;
 import view.UserInterface;
 
 public class HighLevelHandler extends AIHandler implements functions{
@@ -18,18 +18,12 @@ public class HighLevelHandler extends AIHandler implements functions{
             if (whereIsSpellInHand(battlefield, "raigeki") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0){
                 battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "raigeki")));
                 battlefield.getOpponent().field.hand.remove(whereIsSpellInHand(battlefield, "raigeki"));
-                for (int i = 0; i<5; ++i){
-                    if (battlefield.getTurn().field.monsterZone.get(i) != null)
-                        ((Monster)battlefield.getTurn().field.monsterZone.get(i)).removeMonster(battlefield);
-                }
+                destroyHumanMonsters(battlefield);
             }
             else if (whereIsSpellInSpellZone(battlefield, "raigeki") != -1){
                 battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "raigeki")));
                 battlefield.getOpponent().field.spellTrapZone.remove(whereIsSpellInSpellZone(battlefield, "raigeki"));
-                for (int i = 0; i<5; ++i){
-                    if (battlefield.getTurn().field.monsterZone.get(i) != null)
-                        ((Monster)battlefield.getTurn().field.monsterZone.get(i)).removeMonster(battlefield);
-                }
+                destroyHumanMonsters(battlefield);
             }
 
             if (howManyPlacesAreEmpty(battlefield) != 0)
@@ -361,6 +355,36 @@ public class HighLevelHandler extends AIHandler implements functions{
             activeMonsterReborn(battlefield, 1);
         else if (whereIsSpellInSpellZone(battlefield, "monster reborn") != -1 && howManyPlacesAreEmpty(battlefield) > 0)
             activeMonsterReborn(battlefield, 2);
+        else if (whereIsSpellInHand(battlefield, "harpie’s feather duster") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0)
+            activeHarpiesFeatherDuster(battlefield, 1);
+        else if (whereIsSpellInSpellZone(battlefield, "harpie’s feather duster") != -1)
+            activeHarpiesFeatherDuster(battlefield, 2);
+        else if (whereIsSpellInHand(battlefield, "dark hole") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0 &&
+                numberOfMonstersInHumanMonsterZone(battlefield) - numberOfMonstersInAiMonsterZone(battlefield) > 1){
+            destroyAiMonsters(battlefield);
+            destroyHumanMonsters(battlefield);
+            summonASpellOrTrap(battlefield, "dark hole", "summon");
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "dark hole") != -1 &&
+            numberOfMonstersInHumanMonsterZone(battlefield) - numberOfMonstersInAiMonsterZone(battlefield) > 1){
+            destroyHumanMonsters(battlefield);
+            destroyAiMonsters(battlefield);
+        }
+        else if (whereIsSpellInHand(battlefield, "twin twisters") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
+            numberOfSpellsInHumanSpellZone(battlefield) > 1){
+            activeTwinTwisters(battlefield);
+            summonASpellOrTrap(battlefield, "twin twisters", "summon");
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "twin twisters") != -1 && numberOfSpellsInHumanSpellZone(battlefield) > 1)
+            activeTwinTwisters(battlefield);
+        else if (whereIsSpellInHand(battlefield, "mystical space typhoon") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
+            numberOfSpellsInHumanSpellZone(battlefield) > 0){
+            activeMysticalSpaceTyphoon(battlefield);
+            summonASpellOrTrap(battlefield, "mystical space typhoon", "summon");
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "mystical space typhoon") != -1 && numberOfSpellsInHumanSpellZone(battlefield) > 0)
+            activeMysticalSpaceTyphoon(battlefield);
+        else if (activateFieldZoneSpell(battlefield));
     }
 
 
@@ -442,8 +466,150 @@ public class HighLevelHandler extends AIHandler implements functions{
     }
 
 
+    public void activeHarpiesFeatherDuster (Battlefield battlefield, int number){
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getTurn().field.spellTrapZone.get(i) != null)
+                ((SpellAndTrap)(battlefield.getTurn().field.spellTrapZone.get(i))).removeSpellOrTrap(battlefield);
+        }
+        if (number == 1){
+            for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
+                if (battlefield.getOpponent().field.hand.get(i).getName().equalsIgnoreCase("harpie's feather duster")){
+                    battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.hand.get(i));
+                    battlefield.getOpponent().field.hand.remove(i);
+                    break;
+                }
+            }
+        }
+        else{
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getOpponent().field.spellTrapZone.get(i) != null &&
+                        battlefield.getOpponent().field.hand.get(i).getName().equalsIgnoreCase("harpie's feather duster")){
+                    battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.spellTrapZone.get(i));
+                    battlefield.getOpponent().field.spellTrapZone.remove(i);
+                    break;
+                }
+            }
+        }
+    }
+
+    public int numberOfSpellsInHumanSpellZone (Battlefield battlefield){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.spellTrapZone.get(i) != null)
+                counter += 1;
+        }
+        return counter;
+    }
 
 
+    public int numberOfMonstersInAiMonsterZone (Battlefield battlefield){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null)
+                counter += 1;
+        }
+        return counter;
+    }
+
+    public int numberOfMonstersInHumanMonsterZone (Battlefield battlefield){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getTurn().field.monsterZone.get(i) != null)
+                counter += 1;
+        }
+        return counter;
+    }
+
+
+    public void destroyAiMonsters (Battlefield battlefield){
+        for (int i = 0; i<5; ++i)
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null)
+                ((Monster)battlefield.getOpponent().field.monsterZone.get(i)).removeMonster(battlefield);
+    }
+
+    public void destroyHumanMonsters (Battlefield battlefield){
+        for (int i = 0; i<5; ++i)
+            if (battlefield.getTurn().field.monsterZone.get(i) != null)
+                ((Monster)battlefield.getTurn().field.monsterZone.get(i)).removeMonster(battlefield);
+    }
+
+    public void summonASpellOrTrap (Battlefield battlefield, String name, String setOrSummon){
+        int index = whereIsSpellInHand(battlefield, name);
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.spellTrapZone.get(i) == null){
+                battlefield.getOpponent().field.spellTrapZone.set(i, battlefield.getOpponent().field.hand.get(index));
+                if (setOrSummon.equalsIgnoreCase("summon"))
+                    battlefield.getOpponent().field.hand.get(index).setCardsFace(FaceUp.ATTACK);
+                else
+                    battlefield.getOpponent().field.hand.get(index).setCardsFace(FaceUp.DEFENSE_BACK);
+                battlefield.getOpponent().field.hand.remove(index);
+                break;
+            }
+        }
+    }
+
+
+    public void activeTwinTwisters (Battlefield battlefield){
+        int index = -1;
+        int money = 100000;
+        for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
+            if (battlefield.getOpponent().field.hand.get(i).getPrice() < money){
+                index = i;
+                money = battlefield.getOpponent().field.hand.get(i).getPrice();
+            }
+        }
+        battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.hand.get(index));
+        battlefield.getOpponent().field.hand.remove(index);
+
+        for (int i = 0; i<2; ++i){
+            index = -1;
+            money = -1;
+            for (int j = 0; j<5; ++j){
+                if (battlefield.getTurn().field.spellTrapZone.get(j) != null && battlefield.getTurn().field.spellTrapZone.get(j).getPrice() > money){
+                    index = j;
+                    money = battlefield.getTurn().field.spellTrapZone.get(j).getPrice();
+                }
+            }
+            ((SpellAndTrap)(battlefield.getTurn().field.monsterZone.get(index))).removeSpellOrTrap(battlefield);
+        }
+    }
+
+    public void activeMysticalSpaceTyphoon (Battlefield battlefield){
+        int index = -1;
+        int money = -1;
+        for (int k = 0; k<5; ++k){
+            if (battlefield.getTurn().field.spellTrapZone.get(k) != null && battlefield.getTurn().field.spellTrapZone.get(k).getPrice() > money){
+                index = k;
+                money = battlefield.getTurn().field.spellTrapZone.get(k).getPrice();
+            }
+        }
+        ((SpellAndTrap)(battlefield.getTurn().field.monsterZone.get(index))).removeSpellOrTrap(battlefield);
+    }
+
+
+    public boolean activateFieldZoneSpell (Battlefield battlefield){
+        boolean toReturn = false;
+        int index = -1;
+        for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
+            if (battlefield.getOpponent().field.hand.get(i).getCardsType() == Type.SPELL &&
+                    ((SpellAndTrap)battlefield.getOpponent().field.hand.get(i)).getIcon().equalsIgnoreCase("field")){
+                toReturn = true;
+                index = i;
+                break;
+            }
+        }
+
+        if (!toReturn)
+            return false;
+
+        if (battlefield.getOpponent().field.fieldZone != null)
+            ((SpellAndTrap)battlefield.getOpponent().field.fieldZone).removeSpellOrTrap(battlefield);
+        if (battlefield.getTurn().field.fieldZone != null)
+            ((SpellAndTrap)battlefield.getTurn().field.fieldZone).removeSpellOrTrap(battlefield);
+
+        battlefield.getOpponent().field.hand.get(index).action(battlefield);
+        return true;
+    }
 
 
 }
