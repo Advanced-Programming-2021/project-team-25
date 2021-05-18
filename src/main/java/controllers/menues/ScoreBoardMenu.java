@@ -51,6 +51,7 @@ public class ScoreBoardMenu {
         int rank=1;
         //iterate users
         for (int i = users.size() - 1 ; i >= 0 ; i-- ) {
+            if(users.get(i).getNickName().equals("Game")) continue;
             System.out.print((rank + "- " + users.get(i).getNickName() + " : " + users.get(i).getScore()) + "\n");
             if(i != 0 && users.get(i).getScore() > users.get(i-1).getScore() ) rank++;
         }

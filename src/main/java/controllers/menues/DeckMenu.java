@@ -258,30 +258,26 @@ public class DeckMenu {
         if(Deck.getDeckByName(deckName)==null)
             UserInterface.printResponse("deck with name" + deckName + "does not exist");
         else {
-            UserInterface.printResponse("Deck: " + deckName);
-            UserInterface.printResponse("Side deck:");
-            UserInterface.printResponse("Monsters:");
+            UserInterface.printResponse("Deck: " + deckName + "\nSide deck:\nMonsters:");
+
             ArrayList<Card> monsters = new ArrayList<>();
-            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck) {
+            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck)
                 if(card.getCardsType() == Type.MONSTER) monsters.add(card);
-            }
+
             Comparator<Card> orderedCards = Comparator.comparing(Card::getName);
 
             monsters.sort(orderedCards);
-            for (Card card : monsters) {
+            for (Card card : monsters)
                 UserInterface.printResponse(card.getName() + " : " + card.getDescription());
-            }
 
             UserInterface.printResponse("Spell and Traps:");
             ArrayList<Card> spellAndTraps = new ArrayList<>();
-            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck) {
+            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck)
                 if(card.getCardsType() != Type.MONSTER) spellAndTraps.add(card);
-            }
 
             spellAndTraps.sort(orderedCards);
-            for (Card card : spellAndTraps) {
+            for (Card card : spellAndTraps)
                 UserInterface.printResponse(card.getName() + " : " + card.getDescription());
-            }
         }
     }
 
@@ -290,30 +286,26 @@ public class DeckMenu {
         if(Deck.getDeckByName(deckName)==null)
             UserInterface.printResponse("deck with name " + deckName + " does not exist");
         else {
-            UserInterface.printResponse("Deck: " + deckName);
-            UserInterface.printResponse("Main deck:");
-            UserInterface.printResponse("Monsters:");
+            UserInterface.printResponse("Deck: " + deckName + "Main deck:\nMonsters:");
+
             ArrayList<Card> monsters = new ArrayList<>();
-            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck) {
+            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck)
                 if(card.getCardsType() == Type.MONSTER) monsters.add(card);
-            }
+
             Comparator<Card> orderedCards = Comparator.comparing(Card::getName);
 
             monsters.sort(orderedCards);
-            for (Card card : monsters) {
+            for (Card card : monsters)
                 UserInterface.printResponse(card.getName() + " : " + card.getDescription());
-            }
 
             UserInterface.printResponse("Spell and Traps:");
             ArrayList<Card> spellAndTraps = new ArrayList<>();
-            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck) {
+            for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck)
                 if(card.getCardsType() != Type.MONSTER) spellAndTraps.add(card);
-            }
 
             spellAndTraps.sort(orderedCards);
-            for (Card card : spellAndTraps) {
+            for (Card card : spellAndTraps)
                 UserInterface.printResponse(card.getName() + " : " + card.getDescription());
-            }
         }
     }
 
