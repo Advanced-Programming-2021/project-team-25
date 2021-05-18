@@ -13,8 +13,32 @@ public class HighLevelHandler extends AIHandler implements functions{
     public void handle(Battlefield battlefield) {
         if(countOpponentMonsterInAttackPosition(battlefield)>=4 || someOfAttacksOfOpponentMonster(battlefield)>=2000){
 
+            //raigeki is great for this situation, so i active it first in high level handler
+            //but you should not do it in your own handlers :)
+            if (whereIsSpellInHand(battlefield, "raigeki") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0){
+                battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "raigeki")));
+                battlefield.getOpponent().field.hand.remove(whereIsSpellInHand(battlefield, "raigeki"));
+                for (int i = 0; i<5; ++i){
+                    if (battlefield.getTurn().field.monsterZone.get(i) != null)
+                        ((Monster)battlefield.getTurn().field.monsterZone.get(i)).removeMonster(battlefield);
+                }
+            }
+            else if (whereIsSpellInSpellZone(battlefield, "raigeki") != -1){
+                battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "raigeki")));
+                battlefield.getOpponent().field.spellTrapZone.remove(whereIsSpellInSpellZone(battlefield, "raigeki"));
+                for (int i = 0; i<5; ++i){
+                    if (battlefield.getTurn().field.monsterZone.get(i) != null)
+                        ((Monster)battlefield.getTurn().field.monsterZone.get(i)).removeMonster(battlefield);
+                }
+            }
+
+            if (howManyPlacesAreEmpty(battlefield) != 0)
+                attack(battlefield);
+
             if (howManyPlacesAreEmpty(battlefield) != 0)
                 setOrSummonMonsters(battlefield);
+
+            activateSpells(battlefield);
         }
         else{
             if(nextHandler != null) nextHandler.handle(battlefield);
@@ -29,7 +53,7 @@ public class HighLevelHandler extends AIHandler implements functions{
         if (findMonster("the tricky", battlefield) != -1){
             int where = findMonster("the tricky", battlefield);
             int index = -1;
-            int money = 10000;
+            int money = 100000;
             for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i) {
                 if (i != where && battlefield.getOpponent().field.hand.get(i) != null && battlefield.getOpponent().field.hand.get(i).getPrice() < money) {
                     index = i;
@@ -44,7 +68,7 @@ public class HighLevelHandler extends AIHandler implements functions{
             if (isThereAnyMonsterUpper6InGraveYard(battlefield) != -1){
                 int graveIndex = isThereAnyMonsterUpper6InGraveYard(battlefield);
                 int index = -1;
-                int money = 10000;
+                int money = 100000;
                 for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i) {
                     if (battlefield.getOpponent().field.hand.get(i).getPrice() < money) {
                         index = i;
@@ -165,9 +189,62 @@ public class HighLevelHandler extends AIHandler implements functions{
 
 
 
+    public void attack (Battlefield battlefield){
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null){
+                Monster temp = (Monster) battlefield.getOpponent().field.monsterZone.get(i);
+                int attackToWho = attackToWhichMonster(battlefield, temp.getAttack());
+                if (attackToWho == -1){
+                    battlefield.getTurn().LP -= temp.getAttack();
+                }
+                else if (attackToWho == -2){
+                    //nothing
+                }
+                else{
+                    battlefield.attackingMonster = temp;
+                    battlefield.attackedMonster = (Monster) battlefield.getTurn().field.monsterZone.get(attackToWho);
+                    battlefield.attackedMonsterNum = attackToWho;
+                    temp.action(battlefield);
+                }
+            }
+        }
 
 
+    }
 
+    public int attackToWhichMonster (Battlefield battlefield, int attack){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getTurn().field.monsterZone.get(i) != null)
+                counter += 1;
+        }
+
+        int indexToAttack = -2;
+        int mostHighAttackOrDef = -1;
+        if (counter == 0) return -1;
+        else{
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getTurn().field.monsterZone.get(i) != null){
+                    Monster temp = (Monster) battlefield.getTurn().field.monsterZone.get(i);
+                    if (temp.getCardsFace() == FaceUp.ATTACK){
+                        if (temp.getAttack() < attack && temp.getAttack() > mostHighAttackOrDef) {
+                            indexToAttack = i;
+                            mostHighAttackOrDef = temp.getAttack();
+                        }
+                    }
+                    else{
+                        if (temp.getDefence() < attack && temp.getDefence() > mostHighAttackOrDef){
+                            indexToAttack = i;
+                            mostHighAttackOrDef = temp.getDefence();
+                            temp.setCardsFace(FaceUp.DEFENSE_FRONT);
+                        }
+                    }
+                }
+            }
+        }
+        return indexToAttack;
+
+    }
 
 
 
@@ -246,10 +323,12 @@ public class HighLevelHandler extends AIHandler implements functions{
         return counter;
     }
 
+
+
     public void tributeXMonster (Battlefield battlefield, int x){
         for (int i = 0; i<x; ++i){
             int index = -1;
-            int price = 10000;
+            int price = 100000;
             for (int j = 0; j<5; ++j){
                 if (battlefield.getOpponent().field.monsterZone.get(j) != null && battlefield.getOpponent().field.monsterZone.get(j).getPrice() < price){
                     index = j;
@@ -259,6 +338,112 @@ public class HighLevelHandler extends AIHandler implements functions{
             ((Monster)battlefield.getOpponent().field.monsterZone.get(index)).removeMonster(battlefield);
         }
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public void activateSpells (Battlefield battlefield){
+        if (whereIsSpellInHand(battlefield, "monster reborn") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0
+        && howManyPlacesAreEmpty(battlefield) > 0)
+            activeMonsterReborn(battlefield, 1);
+        else if (whereIsSpellInSpellZone(battlefield, "monster reborn") != -1 && howManyPlacesAreEmpty(battlefield) > 0)
+            activeMonsterReborn(battlefield, 2);
+    }
+
+
+
+
+
+
+
+    public int howManyPlacesAreEmptyInSpellZone (Battlefield battlefield){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.spellTrapZone.get(i) == null)
+                counter += 1;
+        }
+        return counter;
+    }
+
+
+    public int whereIsSpellInHand (Battlefield battlefield, String name){
+        for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
+            if (battlefield.getOpponent().field.hand.get(i) != null && battlefield.getOpponent().field.hand.get(i).getName().equalsIgnoreCase(name))
+                return i;
+        }
+        return -1;
+    }
+
+
+    public int whereIsSpellInSpellZone (Battlefield battlefield, String name){
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.spellTrapZone.get(i) != null && battlefield.getOpponent().field.spellTrapZone.get(i).getName().equalsIgnoreCase(name))
+                return i;
+        }
+        return -1;
+    }
+
+
+    public void activeMonsterReborn (Battlefield battlefield, int number){
+        int indexOpponent = -1;
+        int priceOpponent = -1;
+        for (int i = 0; i<battlefield.getOpponent().field.graveYard.size(); ++i){
+            if (battlefield.getOpponent().field.graveYard.get(i).getPrice() > priceOpponent){
+                indexOpponent = i;
+                priceOpponent = battlefield.getOpponent().field.graveYard.get(i).getPrice();
+            }
+        }
+
+        int indexTurn = -1;
+        int priceTurn = -1;
+        for (int i = 0; i<battlefield.getTurn().field.graveYard.size(); ++i){
+            if (battlefield.getTurn().field.graveYard.get(i).getPrice() > priceTurn){
+                indexTurn = i;
+                priceTurn = battlefield.getTurn().field.graveYard.get(i).getPrice();
+            }
+        }
+
+        if (indexOpponent != -1 || indexTurn != -1){
+            Monster temp = null;
+            if (priceOpponent > priceTurn){
+                temp = (Monster) battlefield.getOpponent().field.graveYard.get(indexOpponent);
+                temp.setCardsFace(FaceUp.ATTACK);
+                battlefield.getOpponent().field.graveYard.remove(indexOpponent);
+            }
+            else{
+                temp = (Monster) battlefield.getTurn().field.graveYard.get(indexTurn);
+                temp.setCardsFace(FaceUp.ATTACK);
+                battlefield.getTurn().field.graveYard.remove(indexTurn);
+            }
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getOpponent().field.monsterZone.get(i) == null){
+                    battlefield.getOpponent().field.monsterZone.set(i, temp);
+                    break;
+                }
+            }
+            if (number == 1)
+                battlefield.getOpponent().field.hand.remove(whereIsSpellInHand(battlefield, "monster reborn"));
+            else
+                battlefield.getOpponent().field.spellTrapZone.remove(whereIsSpellInSpellZone(battlefield, "monster reborn"));
+        }
+    }
+
+
+
+
 
 
 }

@@ -67,7 +67,7 @@ public class Initialize {
                 currDeck.mainDeck.add(Card.getCardByName("Dark Blade"));
                 currDeck.mainDeck.add(new BeastKingBarbaros(Card.allCards.get("Beast King Barbaros")));
                 currDeck.mainDeck.add(Card.getCardByName("Blue-Eyes white dragon"));
-                currDeck.mainDeck.add(new MirageDragon(Card.allCards.get("Mirage Dragon")));
+
                 currDeck.mainDeck.add(new HeraldOfCreation(Card.allCards.get("Herald of Creation")));
                 currDeck.mainDeck.add(new CommandKnight(Card.allCards.get("Command Knight")));
                 currDeck.mainDeck.add(new TrapHole(Card.allCards.get("Trap Hole")));

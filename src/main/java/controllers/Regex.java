@@ -49,7 +49,9 @@ public class Regex {
     public static String selectCardFromGraveyard = "^select --(M|H) (\\d{0,50})$";
     public static String selectCardInAllFields = "^select --(G|D|H) (\\d{0,50})$";
     public static String selectFieldCard = "^select (\\d+)$";
+    public static String exportCard = "^export (.+)$";
     public static String importCard = "^import (.+)$";
+    public static String extractName = "^Name: (.+)$";
     public static String forceAddedCardToHand = "select (--hand|-h) (?<cardName>\\S+) (--force|-f)";
     public static String duelWinCheat = "duel set-winner (?<nickname>\\S+)";
 

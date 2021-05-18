@@ -1,6 +1,5 @@
 package controllers.Battelfield;
 
-import controllers.Battelfield.AI.Commander;
 import controllers.Regex;
 import controllers.ShowCard;
 import models.AI;
@@ -54,19 +53,15 @@ public class Battlefield {
     public Duelist getWinner() {
         return winner;
     }
-
     public Duelist getTurn() {
         return turn;
     }
-
     public Duelist getOpponent() {
         return opponent;
     }
-
     public Phase getPhase() {
         return phase;
     }
-
     public Card getSelectedCard() {
         return selectedCard;
     }
@@ -81,10 +76,7 @@ public class Battlefield {
 
             if (countDraw6Cards < 2 && isTurnChanged) startGame();
 
-            String command;
-//            if (!turn.getName().equals("Game")) command = UserInterface.getUserInput();
-//            else command = new Commander().getCommand(this);
-            command = UserInterface.getUserInput();
+            String command = UserInterface.getUserInput();
 
             Matcher matcher;
 
@@ -117,7 +109,6 @@ public class Battlefield {
         if (ran.nextInt(2) == 0) chooseStarter(duelist2, duelist1);
         else chooseStarter(duelist1, duelist2);
     }
-
     private void chooseStarter(Duelist duelist1, Duelist duelist2) {
         UserInterface.printResponse("I flipped a coin and " + duelist2.getName() + " can decide who start’s\n1." + duelist2.getName() + "\n2." + duelist1.getName());
         String num = UserInterface.getUserInput();
@@ -129,17 +120,14 @@ public class Battlefield {
             opponent = duelist2;
         }
     }
-
     public void startGame() {
         countDraw6Cards++;
         //shuffling the cards
         Collections.shuffle(turn.field.deck);
         //draw 6 cards for opponent and turn
-        for (int i = 0; i < 6; i++) {
+        for (int i = 0; i < 6; i++)
             addCardToPlayersHands(turn);
-        }
     }
-
     public void cleanTurn() {
         turn.hasPutMonster = false;
         opponent.hasPutMonster = false;
@@ -179,7 +167,6 @@ public class Battlefield {
         UserInterface.printResponse("new card added to the hand: " + turn.field.deck.get(0).getName());
         turn.field.deck.remove(0);
     }
-
     public void drawCard() {
         if (turn.field.deck.size() > 0) {
             if (changedTurnTime >= 2 && turn.field.hand.size()<6) {
@@ -237,20 +224,17 @@ public class Battlefield {
 
         UserInterface.printResponse("\n" + turn.getName() + " : " + turn.LP);
     }
-
     private void showSpellAndTrapsZone(int i, Duelist duelist) {
         if (duelist.field.spellTrapZone.get(i) == null) System.out.print("E\t");
         else if (duelist.field.spellTrapZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) System.out.print("H\t");
         else if (duelist.field.spellTrapZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) System.out.print("O\t");
     }
-
     private void showMonsterZone(int i, Duelist duelist) {
         if (duelist.field.monsterZone.get(i) == null) System.out.print("E\t");
         else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) System.out.print("DH\t");
         else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) System.out.print("DO\t");
         else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK) System.out.print("OO\t");
     }
-
     public void showGraveyard() {
         if (turn.field.graveYard.isEmpty()) UserInterface.printResponse("graveyard empty");
         else {
@@ -260,7 +244,6 @@ public class Battlefield {
         }
         UserInterface.getUserInput();
     }
-
     public void showSelectedCard() {
         if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
         else if (selectedCard.getCardsFace() == FaceUp.DEFENSE_BACK &&
@@ -318,7 +301,6 @@ public class Battlefield {
             UserInterface.printResponse("invalid selection");
         }
     }
-
     public void selectOpponentCard(Matcher matcher) {
         String restOfCommand = matcher.group(1);
         String[] temp = restOfCommand.split(" ");
@@ -357,7 +339,6 @@ public class Battlefield {
             UserInterface.printResponse("invalid selection");
         }
     }
-
     public void deselectCard() {
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         else {
@@ -389,7 +370,6 @@ public class Battlefield {
         UserInterface.printResponse("phase: " + phase);
         if (phase == Phase.DRAW_PHASE) drawCard();
     }
-
     public void changeTurn() {
         //timer increase
         changedTurnTime++;
