@@ -76,6 +76,8 @@ public class Battlefield {
 
             if (countDraw6Cards < 2 && isTurnChanged) startGame();
 
+            if(turn.getName().equals(opponent.getName())) return;
+
             String command = UserInterface.getUserInput();
 
             Matcher matcher;

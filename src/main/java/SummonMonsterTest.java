@@ -19,33 +19,35 @@ import static org.junit.Assert.assertEquals;
 public class SummonMonsterTest {
     Battlefield battlefield;
     ArrayList<Card> expectedMonsterZone = new ArrayList<>();
+
     @BeforeEach
     public void initForSummon(){
         Initialize.init();
         Duelist duelist1 = new Duelist(Objects.requireNonNull(User.getUserByUsername("admin")));
         Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername("admin")));
-        String data = "1";
+        String data = "1\nselect 5";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         battlefield = new Battlefield(duelist1, duelist2);
+        //going to main_phase 1
+        battlefield.nextPhase();
+        battlefield.nextPhase();
         //cards added to monsterZone
+        battlefield.getTurn().field.hand.add(Card.getCardByName("Wattaildragon"));
         battlefield.selectedCard = Card.getCardByName("Wattaildragon");
-        battlefield.getOpponent().field.monsterZone.add(Card.getCardByName("Wattaildragon"));
-        battlefield.getOpponent().field.monsterZone.add(Card.getCardByName("Warrior Dai Grepher"));
-        battlefield.getOpponent().field.monsterZone.add(Card.getCardByName("Dark Blade"));
-        battlefield.getOpponent().field.monsterZone.add(new ManEaterBug(Card.allCards.get("Man-Eater Bug")));
-        battlefield.getOpponent().field.monsterZone.add(new GateGuardian(Card.allCards.get("Gate Guardian")));
+        battlefield.getTurn().field.monsterZone.set(0,Card.getCardByName("Wattaildragon"));
+        battlefield.getTurn().field.monsterZone.set(1,Card.getCardByName("Warrior Dai Grepher"));
+//        battlefield.getTurn().field.monsterZone.set(2,Card.getCardByName("Dark Blade"));
+        battlefield.getTurn().field.monsterZone.set(3,new ManEaterBug(Card.allCards.get("Man-Eater Bug")));
+        battlefield.getTurn().field.monsterZone.set(4,new GateGuardian(Card.allCards.get("Gate Guardian")));
     }
 
     @Test
     public void summonMonsterTest(){
         initForSummon();
         Monster monster = (Monster) battlefield.getTurn().field.monsterZone.get(4);
-        battlefield.summon();
         String data = "select 5";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
-        String data2 = "surrender$";
-        System.setIn(new ByteArrayInputStream(data2.getBytes()));
-
+        battlefield.summon();
         assertEquals(battlefield.getTurn().field.graveYard.get(0), monster);
     }
 }
