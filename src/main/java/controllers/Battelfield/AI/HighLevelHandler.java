@@ -385,6 +385,42 @@ public class HighLevelHandler extends AIHandler implements functions{
         else if (whereIsSpellInSpellZone(battlefield, "mystical space typhoon") != -1 && numberOfSpellsInHumanSpellZone(battlefield) > 0)
             activeMysticalSpaceTyphoon(battlefield);
         else if (activateFieldZoneSpell(battlefield));
+        else if (whereIsSpellInHand(battlefield, "sword of dark destruction") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
+                (isThereMonsterWithTypeX(battlefield, "fiend") || isThereMonsterWithTypeX(battlefield, "spellcaster"))){
+            activatingSwordOfDarkDestruction(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "sword of dark destruction")));
+            summonASpellOrTrap(battlefield, "sword of dark destruction", "summon");
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "sword of dark destruction") != -1 &&
+                (isThereMonsterWithTypeX(battlefield, "fiend") || isThereMonsterWithTypeX(battlefield, "spellcaster")))
+            activatingSwordOfDarkDestruction(battlefield, battlefield.getOpponent().field.monsterZone.get(whereIsSpellInSpellZone(battlefield, "sword of dark destruction")));
+        else if (whereIsSpellInHand(battlefield, "black pendant") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+            activatingBlackPendant(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "black pendant")));
+            summonASpellOrTrap(battlefield, "black pendant", "summon");
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "black pendant") != -1)
+            activatingBlackPendant(battlefield, battlefield.getOpponent().field.monsterZone.get(whereIsSpellInSpellZone(battlefield, "black pendant")));
+        else if (whereIsSpellInHand(battlefield, "united we stand") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+            activatingUnitedWeStand(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "united we stand")));
+            summonASpellOrTrap(battlefield, "united we stand", "summon");
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "united we stand") != -1)
+            activatingBlackPendant(battlefield, battlefield.getOpponent().field.monsterZone.get(whereIsSpellInSpellZone(battlefield, "united we stand")));
+        else if (whereIsSpellInHand(battlefield, "magnum shield") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
+                isThereMonsterWithTypeX(battlefield, "warrior")){
+            activatingMagnumShield(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "magnum shield")));
+            summonASpellOrTrap(battlefield, "magnum shield", "summon");
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "magnum shield") != -1 && isThereMonsterWithTypeX(battlefield, "magnum shield"))
+            activatingMagnumShield(battlefield, battlefield.getOpponent().field.monsterZone.get(whereIsSpellInSpellZone(battlefield, "magnum shield")));
+        else{
+            for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
+                if (battlefield.getOpponent().field.hand.get(i).getCardsType() != Type.MONSTER){
+                    summonASpellOrTrap(battlefield, battlefield.getOpponent().field.hand.get(i).getName(), "set");
+                    break;
+                }
+            }
+        }
+
     }
 
 
@@ -418,6 +454,16 @@ public class HighLevelHandler extends AIHandler implements functions{
                 return i;
         }
         return -1;
+    }
+
+
+    public boolean isThereMonsterWithTypeX (Battlefield battlefield, String name){
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null &&
+                    ((Monster)battlefield.getOpponent().field.monsterZone.get(i)).getMonsterType().equalsIgnoreCase(name))
+                return true;
+        }
+        return false;
     }
 
 
@@ -610,6 +656,75 @@ public class HighLevelHandler extends AIHandler implements functions{
         battlefield.getOpponent().field.hand.get(index).action(battlefield);
         return true;
     }
+
+
+    public void activatingSwordOfDarkDestruction (Battlefield battlefield, Card card){
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null &&
+                    (((Monster)battlefield.getOpponent().field.monsterZone.get(i)).getMonsterType().equalsIgnoreCase("fiend") ||
+                            ((Monster)battlefield.getOpponent().field.monsterZone.get(i)).getMonsterType().equalsIgnoreCase("spellcaster"))){
+                Monster monster = (Monster) battlefield.getOpponent().field.monsterZone.get(i);
+                if (((SpellAndTrap)card).targetedMonsters.size() == 0) {
+                    monster.setAttack(monster.getAttack() + 400);
+                    monster.setDefence(monster.getDefence() - 200);
+                    ((SpellAndTrap) card).targetedMonsters.add(monster);
+                }
+                break;
+            }
+        }
+    }
+
+
+    public void activatingBlackPendant (Battlefield battlefield, Card card){
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null){
+                Monster monster = (Monster) battlefield.getOpponent().field.monsterZone.get(i);
+                if (((SpellAndTrap)card).targetedMonsters.size() == 0) {
+                    monster.setAttack(monster.getAttack() + 500);
+                    ((SpellAndTrap) card).targetedMonsters.add(monster);
+                }
+                break;
+            }
+        }
+    }
+
+
+    public void activatingUnitedWeStand (Battlefield battlefield, Card card){
+        int x = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null && battlefield.getOpponent().field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK)
+                x += 1;
+        }
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null){
+                Monster monster = (Monster) battlefield.getOpponent().field.monsterZone.get(i);
+                if (((SpellAndTrap)card).targetedMonsters.size() == 0) {
+                    monster.setAttack(monster.getAttack() + x*800);
+                    monster.setDefence(monster.getDefence() + x*800);
+                    ((SpellAndTrap) card).targetedMonsters.add(monster);
+                }
+                break;
+            }
+        }
+    }
+
+    public void activatingMagnumShield (Battlefield battlefield, Card card){
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null &&
+                    ((Monster)battlefield.getOpponent().field.monsterZone.get(i)).getMonsterType().equalsIgnoreCase("warrior")){
+                Monster monster = (Monster) battlefield.getOpponent().field.monsterZone.get(i);
+                if (((SpellAndTrap)card).targetedMonsters.size() == 0) {
+                    if (monster.getCardsFace() == FaceUp.ATTACK)
+                        monster.setAttack(monster.getAttack() + monster.getDefence());
+                    else
+                        monster.setDefence(monster.getDefence() + monster.getAttack());
+                    ((SpellAndTrap) card).targetedMonsters.add(monster);
+                }
+                break;
+            }
+        }
+    }
+
 
 
 }
