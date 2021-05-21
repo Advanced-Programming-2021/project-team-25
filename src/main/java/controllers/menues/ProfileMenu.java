@@ -29,7 +29,9 @@ public class ProfileMenu {
             command = UserInterface.getUserInput();
             if(command.startsWith("Menu enter")) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
             else if(command.startsWith("profile change --nickname")) changeNickname(Regex.getMatcher(command,Regex.changeNickname));
+            else if(command.startsWith("profile change -n")) changeNickname(Regex.getMatcher(command,Regex.changeNickname));
             else if(command.startsWith("profile change --password")) changPass(Regex.getMatcher(command,Regex.changePassword));
+            else if(command.startsWith("profile change -p")) changPass(Regex.getMatcher(command,Regex.changePassword));
             else if(command.equals("menu show-current")) UserInterface.printResponse("Profile Menu");
             else if (command.equals("menu exit")){
                 ProgramController.currentMenu = Menu.MAIN_MENU;
@@ -41,15 +43,16 @@ public class ProfileMenu {
     }
     public void changeNickname(Matcher matcher){
         if(matcher.find()){
-            String newNickname = matcher.group(1);
+            String newNickname = matcher.group("nickname");
             currUser.setNickName(newNickname);
+            UserInterface.printResponse("User nickname changed successfully");
         }
         else UserInterface.printResponse(Responses.INVALID_COMMAND);
     }
     public void changPass(Matcher matcher){
         if(matcher.find()){
-            String currentPass = matcher.group(1);
-            String newPass = matcher.group(2);
+            String currentPass = matcher.group("curr");
+            String newPass = matcher.group("new");
             if(!currUser.getPassword().equals(currentPass))
                 UserInterface.printResponse("current password is invalid");
             else if(currUser.getPassword().equals(newPass))

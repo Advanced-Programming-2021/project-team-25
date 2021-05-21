@@ -9,14 +9,5 @@ invalid command
 invalid command
 invalid command
 invalid command
-Comparing line: 0
-Comparing line: 1
-Comparing line: 2
-Comparing line: 3
-Comparing line: 4
-Comparing line: 5
-Comparing line: 6
-Comparing line: 7
-Comparing line: 8
-Comparing line: 9
-Comparing line: 10
+user database renamed successfully
+Class transformation time: 0.15100746s for 610 classes or 2.4714805237315875E-4s per class

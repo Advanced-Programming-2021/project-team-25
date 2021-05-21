@@ -9,6 +9,7 @@ import models.User;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Objects;
 
 import static models.Deck.allDecks;
 
@@ -32,11 +33,11 @@ public class Initialize {
         }
     }
 
-    private static void makeAI() {
+    public static void makeAI() {
         User user = User.getUserByUsername("admin");
+        if(Objects.isNull(user)) user = new User("admin","admin","Game");
         Deck currDeck = null;
         for(int i=0;i<3;i++){
-            assert user != null;
             user.cardsBought.add("Magic Cylinder");
             user.cardsBought.add("Mirror Force");
             user.cardsBought.add("Trap Hole");
@@ -92,6 +93,7 @@ public class Initialize {
             DataBase.saveTheUserList(User.getUsers());
             DataBase.storeDecks(allDecks);
         }
+        user.setActiveDeck(currDeck);
     }
 
     public static void initDeckList(){

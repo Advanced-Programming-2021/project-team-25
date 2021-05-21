@@ -28,8 +28,10 @@ public class AttackTest {
     @BeforeEach
     public void initBattlefield(){
         Initialize.init();
-        Duelist duelist1 = new Duelist(Objects.requireNonNull(User.getUserByUsername("admin")));
-        Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername("admin")));
+        User user = User.getUserByUsername("admin");
+        Initialize.makeAI();
+        Duelist duelist1 = new Duelist(user);
+        Duelist duelist2 = new Duelist(user);
         String data = "1\nnext phase";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         battlefield = new Battlefield(duelist1, duelist2);

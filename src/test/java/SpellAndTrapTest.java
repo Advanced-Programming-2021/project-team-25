@@ -11,12 +11,13 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 
-public class SpellAndTrapTest {
+public class SpellAndTrapTest implements BackupDatabase {
     Battlefield battlefield;
     ArrayList<Card> expectedMonsterZone = new ArrayList<>();
     ArrayList<Card> expectedSpellAndTrapZone = new ArrayList<>();
@@ -42,7 +43,9 @@ public class SpellAndTrapTest {
         battlefield.getOpponent().field.monsterZone.add(new ChangeOfHeart(Card.allCards.get("Change of Heart")));
     }
     @Test
-    public void spellAndTrapTest(){
+    public void spellAndTrapTest() throws IOException {
+        moveDatabase();
+
         initForSpell();
         //just one card added to turn and activate it
         //first test :
@@ -57,5 +60,6 @@ public class SpellAndTrapTest {
         for(int i = 0; i < 5; i++) {
             assertEquals(expectedMonsterZone.get(i), battlefield.getOpponent().field.monsterZone.get(i));
         }
+        backDatabase();
     }
 }

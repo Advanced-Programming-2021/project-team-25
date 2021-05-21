@@ -11,12 +11,13 @@ import org.junit.Test;
 import org.junit.jupiter.api.BeforeEach;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 
 import static org.junit.Assert.assertEquals;
 
-public class SummonMonsterTest {
+public class SummonMonsterTest implements BackupDatabase {
     Battlefield battlefield;
     ArrayList<Card> expectedMonsterZone = new ArrayList<>();
 
@@ -41,12 +42,16 @@ public class SummonMonsterTest {
     }
 
     @Test
-    public void summonMonsterTest(){
+    public void summonMonsterTest() throws IOException {
+        moveDatabase();
+
         initForSummon();
         Monster monster = (Monster) battlefield.getTurn().field.monsterZone.get(4);
         String data = "select 5";
         System.setIn(new ByteArrayInputStream(data.getBytes()));
         battlefield.summon();
         assertEquals(battlefield.getTurn().field.graveYard.get(0), monster);
+
+        backDatabase();
     }
 }

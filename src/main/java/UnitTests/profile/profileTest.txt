@@ -1,0 +1,56 @@
+user login -u alireza -p 123
+menu enter Shop
+menu enter Shop
+shop buy Magic Cylinder
+shop buy Magic Cylinder
+shop buy Magic Cylinder
+shop buy Mirror Force
+shop buy Mirror Force
+shop buy Mirror Force
+shop buy Trap Hole
+shop buy Trap Hole
+shop buy Trap Hole
+shop buy Torrential Tribute
+shop buy Torrential Tribute
+shop buy Torrential Tribute
+shop buy Negate Attack
+shop buy Negate Attack
+shop buy Negate Attack
+shop buy Solemn Warning
+shop buy Solemn Warning
+shop buy Solemn Warning
+shop buy Call of The Haunted
+shop buy Call of The Haunted
+shop buy Call of The Haunted
+shop buy Time Seal
+shop buy Time Seal
+shop buy Time Seal
+shop buy Mind Crush
+shop buy Mind Crush
+shop buy Mind Crush
+shop buy Battle OX
+shop buy Battle OX
+shop buy Battle OX
+shop buy Axe Raider
+shop buy Axe Raider
+shop buy Axe Raider
+shop buy Horn Imp
+shop buy Horn Imp
+shop buy Horn Imp
+shop buy Baby dragon
+shop buy Baby dragon
+shop buy Baby dragon
+shop buy Battle warrior
+shop buy Battle warrior
+shop buy Battle warrior
+shop buy Crab Turtle
+shop buy Crab Turtle
+shop buy Crab Turtle
+menu exit
+menu enter Deck
+deck rm-card -c Battle warrior -d alireza1
+deck rm-card -c Battle warrior -d alireza1 --side
+deck rm-card -c Battle warrior -d alireza1
+deck rm-card -c Battle warrior -d alireza1
+deck show -d alireza1
+card show Axe Raider
