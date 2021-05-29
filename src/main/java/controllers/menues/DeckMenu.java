@@ -231,7 +231,7 @@ public class DeckMenu {
         if(Deck.getDeckByName(deckName)==null)
             UserInterface.printResponse("deck with name " + deckName + " does not exist");
         else {
-            UserInterface.printResponse("Deck: " + deckName + "Main deck:\nMonsters:");
+            UserInterface.printResponse("Deck: " + deckName + "view.Main deck:\nMonsters:");
 
             ArrayList<Card> monsters = new ArrayList<>();
             for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck)

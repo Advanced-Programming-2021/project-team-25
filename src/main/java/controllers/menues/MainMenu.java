@@ -21,7 +21,7 @@ public class MainMenu {
 
             if(command.startsWith("menu enter")) changeMenu(Regex.getMatcher(command, Regex.menuEnter),currUser);
             else if(command.equals("user logout")) logoutUser();
-            else if(command.equals("menu Show Current")) UserInterface.printResponse("Main Menu");
+            else if(command.equals("menu Show Current")) UserInterface.printResponse("view.Main Menu");
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
             if(!isUserLoggedOut) command = UserInterface.getUserInput();

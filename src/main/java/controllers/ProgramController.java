@@ -1,19 +1,20 @@
 package controllers;
 
 import controllers.Constants.Initialize;
-import controllers.menues.*;
+import javafx.stage.Stage;
 import models.User;
+import view.WelcomeMenu;
 
 public class ProgramController {
 
     public static Menu currentMenu = Menu.LOGIN_MENU;
     public static User currUser;
 
-    public static void run() {
+    public static void run(Stage stage) {
         //load data from dataBase
         Initialize.init();
         //start from login menu
-        LoginMenu.runLoginMenu();
+        new WelcomeMenu().start(stage);
     }
 
     public static void setLoggedInUsers(User user) {

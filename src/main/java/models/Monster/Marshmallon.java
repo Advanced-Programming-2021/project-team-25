@@ -6,7 +6,7 @@ import models.CardStufs.Type;
 import models.Duelist;
 import view.UserInterface;
 
-import javax.management.BadAttributeValueExpException;
+
 import java.io.Serializable;
 
 public class Marshmallon extends Monster implements Serializable {
