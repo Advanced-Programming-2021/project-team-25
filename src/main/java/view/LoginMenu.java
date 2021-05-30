@@ -37,14 +37,7 @@ public class LoginMenu{
         grid.add(txtPassword,1,2);
 
         Button loginBtn = new Button("Login");
-        loginBtn.setOnAction(actionEvent -> {
-            if(User.getUserByUsername(txtUsername.getText()) == null)
-                showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is not user with this username");
-            else if(!txtPassword.getText().equals(Objects.requireNonNull(User.getUserByUsername(txtUsername.getText())).getPassword()))
-                showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "Wrong Password!");
-            else
-                new MainMenu().start(stage);
-        });
+        loginBtn.setOnAction(actionEvent -> loginFunc(stage, grid, txtUsername, txtPassword));
         grid.add(loginBtn,1 ,3);
 
         Button exitButton = new Button("Exit");
@@ -53,6 +46,15 @@ public class LoginMenu{
 
         Scene scene = new Scene(grid ,500 ,500);
         stage.setScene(scene);
+    }
+
+    private void loginFunc(Stage stage, GridPane grid, TextField txtUsername, PasswordField txtPassword) {
+        if(User.getUserByUsername(txtUsername.getText()) == null)
+            showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is not user with this username");
+        else if(!txtPassword.getText().equals(Objects.requireNonNull(User.getUserByUsername(txtUsername.getText())).getPassword()))
+            showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "Wrong Password!");
+        else
+            new MainMenu().start(stage);
     }
 
     private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {

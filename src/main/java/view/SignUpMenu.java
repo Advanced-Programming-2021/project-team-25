@@ -43,19 +43,7 @@ public class SignUpMenu {
         grid.add(txtPassword,1,3);
 
         Button signUpBtn = new Button("Sign Up");
-        signUpBtn.setOnAction(actionEvent -> {
-            if(User.getUserByUsername(txtUsername.getText()) != null)
-                showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is a user with this username");
-            else if(User.getUserByNickName(txtNickname.getText()) != null)
-                showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is a user with this Nickname");
-            else if(txtPassword.getText().isEmpty())
-                showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "Please enter a password");
-            else{
-                new User(txtUsername.getText(),txtNickname.getText(),txtPassword.getText());
-                showAlert(Alert.AlertType.CONFIRMATION, grid.getScene().getWindow(), "Registration Successful!", "Welcome " + txtUsername.getText());
-                new WelcomeMenu().start(primaryStage);
-            }
-        });
+        signUpBtn.setOnAction(actionEvent -> signupFunc(primaryStage, grid, txtUsername, txtNickname, txtPassword));
         grid.add(signUpBtn,1 ,4);
 
         Button exitButton = new Button("Exit");
@@ -64,6 +52,20 @@ public class SignUpMenu {
 
         Scene scene = new Scene(grid ,500 ,500);
         primaryStage.setScene(scene);
+    }
+
+    private void signupFunc(Stage primaryStage, GridPane grid, TextField txtUsername, TextField txtNickname, PasswordField txtPassword) {
+        if(User.getUserByUsername(txtUsername.getText()) != null)
+            showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is a user with this username");
+        else if(User.getUserByNickName(txtNickname.getText()) != null)
+            showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is a user with this Nickname");
+        else if(txtPassword.getText().isEmpty())
+            showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "Please enter a password");
+        else{
+            new User(txtUsername.getText(), txtNickname.getText(), txtPassword.getText());
+            showAlert(Alert.AlertType.CONFIRMATION, grid.getScene().getWindow(), "Registration Successful!", "Welcome " + txtUsername.getText());
+            new WelcomeMenu().start(primaryStage);
+        }
     }
 
     private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
