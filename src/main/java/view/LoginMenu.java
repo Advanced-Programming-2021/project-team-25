@@ -1,5 +1,7 @@
 package view;
 
+import javafx.scene.ImageCursor;
+import javafx.scene.image.Image;
 import models.User;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -44,7 +46,12 @@ public class LoginMenu{
         grid.add(exitButton, 0, 3);
         exitButton.setOnAction(event -> new WelcomeMenu().start(stage));
 
+        Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
+        ImageCursor cursor = new ImageCursor(img, 30, 30);
         Scene scene = new Scene(grid ,500 ,500);
+        String style= Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
+        scene.getStylesheets().add(style);
+        scene.setCursor(cursor);
         stage.setScene(scene);
     }
 
