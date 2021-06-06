@@ -1,0 +1,403 @@
+package view;
+
+import javafx.application.Application;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Stage;
+import javafx.stage.Window;
+import models.Card;
+import models.CardStufs.Type;
+
+import java.util.Objects;
+import java.util.Optional;
+
+public class ShopMenu extends Application {
+    public String username;
+    @Override
+    public void start(Stage stage) throws Exception {
+        //initialize nodes
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.CENTER);
+
+        //add buttons
+        Button button = new Button("Show Card");
+        button.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400)," +
+                "linear-gradient(#ffef84, #f2ba44)," +
+                "linear-gradient(#ffea6a, #efaa22)," +
+                "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));" +
+                "-fx-background-radius: 30;" +
+                "-fx-background-insets: 0,1,2,3,0;" +
+                "-fx-text-fill: #654b00;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 14px;" +
+                "-fx-padding: 10 20 10 20;");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    ShowCard showCard = new ShowCard();
+                    showCard.username = username;
+                    showCard.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        gridPane.add(button, 0, 0);
+
+
+        Button button1 = new Button("Buy Card");
+        button1.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400)," +
+                "linear-gradient(#ffef84, #f2ba44)," +
+                "linear-gradient(#ffea6a, #efaa22)," +
+                "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));" +
+                "-fx-background-radius: 30;" +
+                "-fx-background-insets: 0,1,2,3,0;" +
+                "-fx-text-fill: #654b00;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 14px;" +
+                "-fx-padding: 10 20 10 20;");
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        });
+        gridPane.add(button1, 0, 1);
+
+
+        Button button2 = new Button("Show All Cards");
+        button2.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400)," +
+                "linear-gradient(#ffef84, #f2ba44)," +
+                "linear-gradient(#ffea6a, #efaa22)," +
+                "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));" +
+                "-fx-background-radius: 30;" +
+                "-fx-background-insets: 0,1,2,3,0;" +
+                "-fx-text-fill: #654b00;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 14px;" +
+                "-fx-padding: 10 20 10 20;");
+        button2.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        });
+        gridPane.add(button2, 0, 2);
+
+
+        Button button3 = new Button("Back");
+        button3.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400)," +
+                "linear-gradient(#ffef84, #f2ba44)," +
+                "linear-gradient(#ffea6a, #efaa22)," +
+                "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));" +
+                "-fx-background-radius: 30;" +
+                "-fx-background-insets: 0,1,2,3,0;" +
+                "-fx-text-fill: #654b00;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 14px;" +
+                "-fx-padding: 10 20 10 20;");
+        button3.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+
+            }
+        });
+        gridPane.add(button3, 0, 3);
+
+
+
+        //add nodes to vbox
+        vBox.setSpacing(8);
+        vBox.setPadding(new Insets(10,10,10,10));
+        vBox.getChildren().add(gridPane);
+
+
+        // create a image
+        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/shop/background.png")).toExternalForm());
+        double width = image.getWidth();
+        double height = image.getHeight();
+        // create a background image
+        BackgroundImage backgroundimage = new BackgroundImage(image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        // create Background
+        Background background = new Background(backgroundimage);
+        vBox.setBackground(background);
+
+
+        //show stage
+        Scene scene = new Scene(vBox);
+        stage.setScene(scene);
+        stage.setWidth(width);
+        stage.setHeight(height);
+        stage.setTitle("Shop Menu");
+        stage.show();
+
+
+    }
+
+
+
+}
+//----------------------------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------------------------
+class ShowCard extends Application{
+    public String username;
+
+    @Override
+    public void start(Stage stage) throws Exception {
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+
+
+        Label label = new Label("Enter the cards name:");
+        label.setFont(Font.font(20));
+        label.setTextFill(Color.web("white"));
+
+
+        TextField textField = new TextField();
+        HBox hBox = new HBox(textField);
+        hBox.setAlignment(Pos.CENTER);
+        textField.setPrefColumnCount(15);
+
+
+        HBox hBox1 = new HBox();
+        hBox1.setAlignment(Pos.CENTER);
+
+
+        Button button = new Button("Search");
+        button.setStyle("-fx-background-color: #000000," +
+                "linear-gradient(#7ebcea, #2f4b8f)," +
+                "linear-gradient(#426ab7, #263e75)," +
+                "linear-gradient(#395cab, #223768);" +
+                "-fx-background-insets: 0,1,2,3;" +
+                "-fx-background-radius: 3,2,2,2;" +
+                "-fx-padding: 12 30 12 30; -fx-text-fill: white;" +
+                "-fx-font-size: 12px;");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String cardsName = textField.getText();
+                if (Card.allCards.containsKey(cardsName)){
+                    if (Card.allCards.get(cardsName).getCardsType() == Type.MONSTER){
+                        VBox vBox = new VBox();
+                        vBox.setAlignment(Pos.CENTER);
+
+                        Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/shop/Monsters/" + cardsName + ".jpg")).toExternalForm());
+                        ImageView imageView = new ImageView(image2);
+
+                        vBox.getChildren().add(imageView);
+
+                        HBox hBox1 = new HBox();
+                        hBox1.setAlignment(Pos.CENTER);
+
+                        Button button1 = new Button("Buy");
+                        button1.setStyle("-fx-background-color: #ecebe9," +
+                                "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
+                                "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
+                                "linear-gradient(#f6ebbe, #e6c34d);" +
+                                "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
+                                "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
+                                "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
+                                "-fx-text-fill: #311c09;" +
+                                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+                        button1.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+
+                            }
+                        });
+                        hBox1.getChildren().add(button1);
+
+
+                        Button button2 = new Button("Back");
+                        button2.setStyle("-fx-background-color: #ecebe9," +
+                                "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
+                                "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
+                                "linear-gradient(#f6ebbe, #e6c34d);" +
+                                "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
+                                "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
+                                "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
+                                "-fx-text-fill: #311c09;" +
+                                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+                        button2.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+
+                            }
+                        });
+                        hBox1.getChildren().add(button2);
+
+                        vBox.getChildren().add(hBox1);
+
+                        // create a image
+                        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/shop/background.png")).toExternalForm());
+                        // create a background image
+                        BackgroundImage backgroundimage = new BackgroundImage(image,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.DEFAULT,
+                                BackgroundSize.DEFAULT);
+                        // create Background
+                        Background background = new Background(backgroundimage);
+                        vBox.setBackground(background);
+
+                        Scene scene = new Scene(vBox);
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                    else{
+                        VBox vBox = new VBox();
+                        vBox.setAlignment(Pos.CENTER);
+
+                        Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/shop/SpellTrap/" + cardsName + ".jpg")).toExternalForm());
+                        ImageView imageView = new ImageView(image2);
+
+                        vBox.getChildren().add(imageView);
+
+                        HBox hBox1 = new HBox();
+                        hBox1.setAlignment(Pos.CENTER);
+
+                        Button button1 = new Button("Buy");
+                        button1.setStyle("-fx-background-color: #ecebe9," +
+                                "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
+                                "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
+                                "linear-gradient(#f6ebbe, #e6c34d);" +
+                                "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
+                                "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
+                                "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
+                                "-fx-text-fill: #311c09;" +
+                                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+                        button1.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+
+                            }
+                        });
+                        hBox1.getChildren().add(button1);
+
+
+                        Button button2 = new Button("Back");
+                        button2.setStyle("-fx-background-color: #ecebe9," +
+                                "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
+                                "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
+                                "linear-gradient(#f6ebbe, #e6c34d);" +
+                                "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
+                                "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
+                                "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
+                                "-fx-text-fill: #311c09;" +
+                                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+                        button2.setOnAction(new EventHandler<ActionEvent>() {
+                            @Override
+                            public void handle(ActionEvent actionEvent) {
+
+                            }
+                        });
+                        hBox1.getChildren().add(button2);
+
+                        vBox.getChildren().add(hBox1);
+
+                        // create a image
+                        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/shop/background.png")).toExternalForm());
+                        // create a background image
+                        BackgroundImage backgroundimage = new BackgroundImage(image,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.DEFAULT,
+                                BackgroundSize.DEFAULT);
+                        // create Background
+                        Background background = new Background(backgroundimage);
+                        vBox.setBackground(background);
+
+                        Scene scene = new Scene(vBox);
+                        stage.setScene(scene);
+                        stage.show();
+                    }
+                }
+                else {
+                    showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "Invalid Name", "Please enter a valid name.");
+                }
+            }
+        });
+
+
+        Button button1 = new Button("Back");
+        button1.setStyle("-fx-background-color: #000000," +
+                "linear-gradient(#7ebcea, #2f4b8f)," +
+                "linear-gradient(#426ab7, #263e75)," +
+                "linear-gradient(#395cab, #223768);" +
+                "-fx-background-insets: 0,1,2,3;" +
+                "-fx-background-radius: 3,2,2,2;" +
+                "-fx-padding: 12 30 12 30; -fx-text-fill: white;" +
+                "-fx-font-size: 12px;");
+        button1.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                ShopMenu shopMenu = new ShopMenu();
+                shopMenu.username = username;
+                try {
+                    shopMenu.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+
+
+
+        hBox1.getChildren().addAll(button, button1);
+
+
+
+        vBox.getChildren().addAll(label, hBox, hBox1);
+
+
+        // create a image
+        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/shop/background.png")).toExternalForm());
+        // create a background image
+        BackgroundImage backgroundimage = new BackgroundImage(image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        // create Background
+        Background background = new Background(backgroundimage);
+        vBox.setBackground(background);
+
+        Scene scene = new Scene(vBox);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+
+    private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(owner);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isEmpty()) System.exit(0);
+        //else if(result.get() == ButtonType.OK) new app().start(this.stage);
+    }
+}

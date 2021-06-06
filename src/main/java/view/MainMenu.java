@@ -25,7 +25,11 @@ public class MainMenu {
 
         Button ShopBtn = new Button("Shop Menu");
         ShopBtn.setOnAction(actionEvent -> {
-            //new DuelMenu().runDuelMenu();
+            try {
+                new ShopMenu().start(stage);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
         });
         grid.add(ShopBtn,0,2);
 
