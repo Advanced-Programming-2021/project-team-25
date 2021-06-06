@@ -62,7 +62,7 @@ public class SignUpMenu {
         else if(txtPassword.getText().isEmpty())
             showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "Please enter a password");
         else{
-            new User(txtUsername.getText(), txtNickname.getText(), txtPassword.getText());
+            new User(txtUsername.getText(), txtPassword.getText(), txtNickname.getText());
             showAlert(Alert.AlertType.CONFIRMATION, grid.getScene().getWindow(), "Registration Successful!", "Welcome " + txtUsername.getText());
             new WelcomeMenu().start(primaryStage);
         }
