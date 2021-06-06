@@ -12,7 +12,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class MainMenu {
-
+    public static Scene mainMenuScene;
     public void start(Stage stage){
         GridPane grid = CreateGrid.createGridPane();
 
@@ -63,6 +63,7 @@ public class MainMenu {
         grid.add(LogoutBtn,0,7);
 
         Scene scene = new Scene(grid ,500 ,500);
+        mainMenuScene = scene;
         stage.setScene(scene);
     }
 
