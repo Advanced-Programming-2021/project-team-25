@@ -1,7 +1,9 @@
 package view;
 
+import controllers.ProgramController;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
+import javafx.scene.input.KeyCode;
 import models.User;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -42,13 +44,19 @@ public class LoginMenu{
         loginBtn.setOnAction(actionEvent -> loginFunc(stage, grid, txtUsername, txtPassword));
         grid.add(loginBtn,1 ,3);
 
+        grid.setOnKeyPressed(ev ->{
+            if (ev.getCode() == KeyCode.ENTER) {
+                loginBtn.fire();
+                ev.consume();
+            }
+        });
         Button exitButton = new Button("Exit");
         grid.add(exitButton, 0, 3);
         exitButton.setOnAction(event -> new WelcomeMenu().start(stage));
 
         Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
-        ImageCursor cursor = new ImageCursor(img, 30, 30);
-        Scene scene = new Scene(grid ,500 ,500);
+        ImageCursor cursor = new ImageCursor(img, 10, 10);
+        Scene scene = new Scene(grid ,600 ,600);
         String style= Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
         scene.getStylesheets().add(style);
         scene.setCursor(cursor);
@@ -60,8 +68,10 @@ public class LoginMenu{
             showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is not user with this username");
         else if(!txtPassword.getText().equals(Objects.requireNonNull(User.getUserByUsername(txtUsername.getText())).getPassword()))
             showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "Wrong Password!");
-        else
+        else {
+            ProgramController.currUser = User.getUserByUsername(txtUsername.getText());
             new MainMenu().start(stage);
+        }
     }
 
     private void showAlert(Alert.AlertType alertType, Window owner, String title, String message) {

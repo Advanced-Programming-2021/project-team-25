@@ -1,7 +1,10 @@
 package view;
 
+import controllers.ProgramController;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
@@ -19,7 +22,7 @@ public class MainMenu {
 
         Button DuelBtn = new Button("Duel Menu");
         DuelBtn.setOnAction(actionEvent -> {
-            //new DuelMenu().runDuelMenu();
+            DuelMenu.getInstance(ProgramController.currUser).run(stage);
         });
         grid.add(DuelBtn,0,1);
 
@@ -51,7 +54,7 @@ public class MainMenu {
 
         Button ImportExportBtn = new Button("Import/Export Menu");
         ImportExportBtn.setOnAction(actionEvent -> {
-            //new DuelMenu().runDuelMenu();
+           //
         });
         grid.add(ImportExportBtn,0,6);
 

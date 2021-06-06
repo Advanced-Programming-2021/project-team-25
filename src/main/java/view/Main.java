@@ -16,10 +16,10 @@ public class Main extends Application {
     @Override
     public void start(Stage stage) {
         //Music
-        String path = "Nick-Cave-Red-Right-Hand.mp3";
-        Media media = new Media(new File(path).toURI().toString());
-        MediaPlayer mediaPlayer = new MediaPlayer(media);
-        mediaPlayer.setAutoPlay(true);
+//        String path = "Nick-Cave-Red-Right-Hand.mp3";
+//        Media media = new Media(new File(path).toURI().toString());
+//        MediaPlayer mediaPlayer = new MediaPlayer(media);
+//        mediaPlayer.setAutoPlay(true);
 
         stage.setTitle("YU-GI-UH!");
         stage.resizableProperty().set(false);
