@@ -99,6 +99,7 @@ public class DuelMenu {
         Scene scene = new Scene(gridPane ,600 ,600);
         String style= Objects.requireNonNull(this.getClass().getResource("duel/duel.css")).toExternalForm();
         scene.getStylesheets().add(style);
+        stage.centerOnScreen();
         stage.setScene(scene);
     }
 

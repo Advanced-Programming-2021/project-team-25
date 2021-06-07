@@ -45,7 +45,7 @@ public class MainMenu {
 
         Button ProfileBtn = new Button("Profile Menu");
         ProfileBtn.setOnAction(actionEvent -> {
-            //new DuelMenu().runDuelMenu();
+            ProfileMenu.getInstance(ProgramController.currUser).runProfileMenu(stage);
         });
         grid.add(ProfileBtn,0,4);
 

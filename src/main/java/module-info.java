@@ -4,6 +4,8 @@ module AP {
     requires javafx.media;
     requires org.junit.jupiter.api;
     requires java.desktop;
+    requires java.logging;
+    requires opencv;
 
 
     opens controllers to javafx.fxml;
