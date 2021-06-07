@@ -23,9 +23,9 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
-public class ShopMenu extends Application {
+public class ShopMenu {
     public String username;
-    @Override
+
     public void start(Stage stage) throws Exception {
         //initialize nodes
         VBox vBox = new VBox();
@@ -151,10 +151,9 @@ public class ShopMenu extends Application {
 }
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
-class ShowCard extends Application{
+class ShowCard{
     public String username;
 
-    @Override
     public void start(Stage stage) throws Exception {
         VBox vBox = new VBox();
         vBox.setAlignment(Pos.CENTER);
@@ -418,10 +417,9 @@ class ShowCard extends Application{
 }
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
-class ShowAllCards extends Application{
+class ShowAllCards{
     public String username;
 
-    @Override
     public void start(Stage stage) throws Exception {
         BorderPane borderPane = new BorderPane();
 
