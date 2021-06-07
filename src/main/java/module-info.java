@@ -13,4 +13,7 @@ module AP {
 
     opens view to javafx.fxml;
     exports view;
+
+    opens models to javafx.fxml;
+    exports models;
 }

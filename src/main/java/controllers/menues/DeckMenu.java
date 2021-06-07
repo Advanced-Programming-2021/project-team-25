@@ -7,8 +7,6 @@ import controllers.ShowCard;
 import models.Card;
 import models.CardStufs.Type;
 import models.Deck;
-import models.Monster.*;
-import models.SpellAndTrap.*;
 import models.User;
 import view.Responses;
 import view.UserInterface;
