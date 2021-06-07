@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Map;
 import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import static controllers.ProgramController.currentMenu;
 import static controllers.ShowCard.showCard;
@@ -65,6 +66,34 @@ public class ShopMenu {
         }
     }
 
+
+    //for graphic i should write buyCard function again
+    public static String buyCardForGraphic (String command){
+        Pattern pattern = Pattern.compile("^buy card --username (.+)? --card (.+)?$");
+        Matcher matcher = pattern.matcher(command);
+
+        String username = "";
+        String cardsName = "";
+
+        if (matcher.find()){
+            username = matcher.group(1);
+            cardsName = matcher.group(2);
+        }
+
+        User user = User.getUserByUsername(username);
+        if (Card.allCards.get(cardsName).getPrice() > user.getMoney())
+            return "not enough money";
+        else{
+            ArrayList<String> temp = user.getCardsBought();
+            temp.add(cardsName);
+            user.setCardsBought(temp);
+            int money = user.getMoney();
+            money -= Card.allCards.get(cardsName).getPrice();
+            user.setMoney(money);
+            return "card bought successfully";
+        }
+    }
+
     private void showAllCards(){
         ArrayList<String> allCards = new ArrayList<>();
         for (Map.Entry<String, Card> entry: Card.allCards.entrySet()){
@@ -79,6 +108,21 @@ public class ShopMenu {
             UserInterface.printResponse(allCard + ":" + Card.allCards.get(allCard).getPrice());
         }
     }
+
+    //for graphic i should write showAllCards function again
+    public static  ArrayList<String> showAllCardsForGraphic (){
+        ArrayList<String> allCards = new ArrayList<>();
+        for (Map.Entry<String, Card> entry: Card.allCards.entrySet()){
+            String key = entry.getKey();
+            allCards.add(key);
+        }
+
+        Collections.sort(allCards);
+
+        return allCards;
+    }
+
+
 
     private void increaseMoney(Matcher matcher){
         int amount = Integer.parseInt(matcher.group(1));
