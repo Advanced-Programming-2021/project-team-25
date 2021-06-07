@@ -13,6 +13,7 @@ import models.Monster.Monster;
 import models.Monster.Scanner;
 import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
+import view.Game;
 import view.Responses;
 import view.UserInterface;
 
@@ -43,6 +44,7 @@ public class Battlefield {
     public int attackedMonsterNum;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
+        Game.getInstance().runGame();
         whoStart(duelist1, duelist2);
         startGame();
         showBattleField();

@@ -33,7 +33,7 @@ public class MainMenu {
             switch (matcher.group(1)) {
                 case "Duel" :
                     ProgramController.currentMenu = Menu.DUEL_MENU;
-                    DuelMenu.getInstance(currUser).runDuelMenu();
+                    DuelMenuController.getInstance(currUser).runDuelMenu();
                     break;
                 case "Shop" :
                     ProgramController.currentMenu = Menu.SHOP_MENU;

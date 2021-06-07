@@ -13,6 +13,7 @@ import javafx.stage.Stage;
 
 public class MainMenu {
     public static Scene mainMenuScene;
+    public static Stage gameStage;
     public void start(Stage stage){
         GridPane grid = CreateGrid.createGridPane();
 
@@ -65,6 +66,7 @@ public class MainMenu {
         Scene scene = new Scene(grid ,500 ,500);
         mainMenuScene = scene;
         stage.setScene(scene);
+        gameStage = stage;
     }
 
 }

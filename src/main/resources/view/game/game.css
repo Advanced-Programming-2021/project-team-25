@@ -2,7 +2,7 @@ root {
     display: block;
 }
 .root {
-    -fx-background-image: url("background.jpg");
+    -fx-background-image: url("../field/fie_normal.bmp");
 }
 .label {
     -fx-font-size: 16px;

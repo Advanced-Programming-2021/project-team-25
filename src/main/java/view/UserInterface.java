@@ -1,5 +1,6 @@
 package view;
 
+import javax.swing.*;
 import java.util.HashMap;
 import java.util.Scanner;
 
@@ -13,10 +14,10 @@ public class UserInterface {
         System.out.println(response);
     }
     public static String getUserInput(){
-        return scanner.nextLine();
+        return JOptionPane.showInputDialog("input");
     }
 
     public static void printResponse(int input) {
-        System.out.println(input);
+        JOptionPane.showMessageDialog(null,input);
     }
 }

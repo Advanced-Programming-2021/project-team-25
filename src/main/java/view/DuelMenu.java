@@ -1,21 +1,16 @@
 package view;
 
+import controllers.menues.DuelMenuController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
-import javax.swing.*;
+import javafx.scene.control.*;
+
 import javax.swing.JOptionPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Font;
-import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import models.Deck;
 import models.User;
 
 import java.util.Objects;
@@ -42,31 +37,62 @@ public class DuelMenu {
         Text welcomeText = new Text("Duel Menu");
         welcomeText.getStyleClass().add("welcome-text");
         gridPane.add(welcomeText,0 ,0);
+        Text currUserName = new Text("User : "+currUser.getUsername()+" "+currUser.getNickName());
+        currUserName.getStyleClass().add("user-text");
 
-        gridPane.add(new Label("Play with AI:"),1,1);
+        gridPane.add(currUserName,1,0);
+        Label lblPlayWithAI = new Label("Play with AI:");
         CheckBox gameWithAi = new CheckBox("AI");
-        gridPane.add(gameWithAi,1,2);
+        gridPane.addRow(1,lblPlayWithAI,gameWithAi);
 
         Label lblUsername = new Label("Username of your rival!");
-        gridPane.add(lblUsername,3,1);
 
         TextField txtRival = new TextField();
         txtRival.setPromptText("username");
-        gridPane.add(txtRival,3,2);
+        gridPane.addRow(2,lblUsername,txtRival);
 
         Button back = new Button("back");
-        gridPane.add(back,0,3);
 
         Button btnStartGame = new Button("Start Game!");
-        gridPane.add(btnStartGame,3,3);
 
+        Label lblRounds= new Label("round to play");
+
+        ChoiceBox<String> rounds = new ChoiceBox<>();
+        rounds.setValue("1");
+        // Add the items to the ChoiceBox
+        rounds.getItems().addAll("1", "3");
+        // Create the Selection Message Label
+        Label result = new Label("Your selection is:");
+        // Create the Selection Value Label
+        Label selectedValueLbl = new Label();
+        // Bind the value property to the text property of the Label
+        selectedValueLbl.textProperty().bind(rounds.valueProperty());
+
+        gridPane.addRow(3,lblRounds,rounds);
+        gridPane.addRow(4,result,selectedValueLbl);
+        gridPane.addRow(5,back,btnStartGame);
         back.setOnMouseClicked(e->{
             stage.setScene(mainMenuScene);
             stage.show();
         });
 
         btnStartGame.setOnMouseClicked(e->{
+            DuelMenuController duelMenuController = DuelMenuController.getInstance(currUser);
 
+            if(User.getUserByUsername(txtRival.getText()) == null) JOptionPane.showMessageDialog(null,
+                    "there is no player with this username");
+            else if(currUser.getUsername().equals(txtRival.getText())) JOptionPane.showMessageDialog(null,
+                    "you can't play with yourself");
+            else if(currUser.activeDeck == null) JOptionPane.showMessageDialog(null,
+                    currUser.getUsername() + " has no active deck");
+            else if(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck == null)
+                JOptionPane.showMessageDialog(null,txtRival.getText() + " has no active deck");
+            else if(!Deck.isValid(currUser.activeDeck.getDeckName())) JOptionPane.showMessageDialog(null,
+                    currUser.getUsername() + "'s deck is not valid");
+            else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck.getDeckName()))
+                JOptionPane.showMessageDialog(null,txtRival.getText() + "'s deck is not valid");
+            else if(rounds.getValue().equals("1")) duelMenuController.oneRoundDuel(txtRival.getText());
+            else duelMenuController.threeRoundDuel(txtRival.getText());
         });
         checkBoxEvent(gameWithAi, lblUsername, txtRival);
 
