@@ -106,7 +106,7 @@ public class ShopMenu {
         button3.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-
+                new MainMenu().start(stage);
             }
         });
         gridPane.add(button3, 0, 3);
