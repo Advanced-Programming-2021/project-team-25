@@ -46,9 +46,7 @@ public class MainMenu {
         grid.add(welcomeText,0 ,0);
 
         Button DuelBtn = new Button("Duel Menu");
-        DuelBtn.setOnAction(actionEvent -> {
-            DuelMenu.getInstance(ProgramController.currUser).run(stage);
-        });
+        DuelBtn.setOnAction(actionEvent -> DuelMenu.getInstance(ProgramController.currUser).run(stage));
         grid.add(DuelBtn,0,1);
 
         Button ShopBtn = new Button("Shop Menu");
@@ -64,13 +62,11 @@ public class MainMenu {
         grid.add(ShopBtn,0,2);
 
         Button DeckBtn = new Button("Deck Menu");
-        DeckBtn.setOnAction(actionEvent -> new DeckView().start(stage));
+        DeckBtn.setOnAction(actionEvent -> DeckView.getInstance(ProgramController.currUser).start(stage));
         grid.add(DeckBtn,0,3);
 
         Button ProfileBtn = new Button("Profile Menu");
-        ProfileBtn.setOnAction(actionEvent -> {
-            ProfileMenu.getInstance(ProgramController.currUser).runProfileMenu(stage);
-        });
+        ProfileBtn.setOnAction(actionEvent -> ProfileMenu.getInstance(ProgramController.currUser).runProfileMenu(stage));
         grid.add(ProfileBtn,0,4);
 
         Button ScoreBoardBtn = new Button("ScoreBoard Menu");
@@ -78,9 +74,7 @@ public class MainMenu {
         grid.add(ScoreBoardBtn,0,5);
 
         Button ImportExportBtn = new Button("Import/Export Menu");
-        ImportExportBtn.setOnAction(actionEvent -> {
-           //
-        });
+        ImportExportBtn.setOnAction(actionEvent -> { });
         grid.add(ImportExportBtn,0,6);
 
         Button LogoutBtn = new Button("Logout");

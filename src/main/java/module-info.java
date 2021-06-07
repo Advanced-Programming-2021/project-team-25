@@ -5,7 +5,7 @@ module AP {
     requires org.junit.jupiter.api;
     requires java.desktop;
     requires java.logging;
-    requires opencv;
+    //requires opencv;
 
 
     opens controllers to javafx.fxml;

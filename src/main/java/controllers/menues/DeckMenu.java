@@ -47,7 +47,7 @@ public class DeckMenu {
             else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
             else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
             else if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
-            else if ((matcher = Regex.getMatcher(command, Regex.deckCreate)).matches()) createDeck(matcher);
+            //else if ((matcher = Regex.getMatcher(command, Regex.deckCreate)).matches()) createDeck(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckDelete)).matches()) deleteDeck(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckSetActive)).matches()) setActive(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckAddCardToSide)).matches()) addCardToSide(matcher);
@@ -65,15 +65,12 @@ public class DeckMenu {
         }
     }
 
-    private void createDeck(Matcher matcher){
-        String deckName = matcher.group(1);
-            for (Deck deck : allDecks)
-                if (deck.getDeckName().equals(deckName)) {
-                    UserInterface.printResponse("deck with name " + deckName + " already exists");
-                    return;
-                }
-        UserInterface.printResponse(Responses.DECK_CREATE_SUCCESS);
+    public String createDeck(String deckName){
+        for (Deck deck : allDecks)
+            if (deck.getDeckName().equals(deckName)) return "deck with name " + deckName + " already exists";
+
         new Deck(deckName , currUser.getUsername());
+        return "deck created successfully!";
     }
 
     private void deleteDeck(Matcher matcher){
