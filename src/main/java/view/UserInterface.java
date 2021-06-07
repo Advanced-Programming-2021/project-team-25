@@ -11,7 +11,7 @@ public class UserInterface {
         System.out.println(response.getMessage());
     }
     public static void printResponse(String response) {
-        System.out.println(response);
+        JOptionPane.showMessageDialog(null,response);
     }
     public static String getUserInput(){
         return JOptionPane.showInputDialog("input");

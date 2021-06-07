@@ -79,11 +79,12 @@ public class ProfileMenu {
         TextField txtNewPassword = new TextField();
         txtNickname.setPromptText("new password...");
 
-        gridPane.addRow(0,imageView,btnUploadImage,lblUser);
-        gridPane.addRow(1,lblChangeNickname,txtNickname);
-        gridPane.addRow(2,lblOldPassword,txtOldPassword);
-        gridPane.addRow(3,lblNewPassword,txtNewPassword);
-        gridPane.addRow(4,btnBack,btnChangeNickname,btnChangePassword);
+        gridPane.addRow(0,imageView,btnUploadImage);
+        gridPane.addRow(1,lblUser);
+        gridPane.addRow(2,lblChangeNickname,txtNickname);
+        gridPane.addRow(3,lblOldPassword,txtOldPassword);
+        gridPane.addRow(4,lblNewPassword,txtNewPassword);
+        gridPane.addRow(5,btnBack,btnChangeNickname,btnChangePassword);
 
         btnBack.setOnMouseClicked(e->{
             stage.setScene(mainMenuScene);
@@ -114,7 +115,7 @@ public class ProfileMenu {
             new FileChooserSample().start(stage);
         });
 
-        Scene scene = new Scene(gridPane ,600 ,600);
+        Scene scene = new Scene(gridPane ,900 ,600);
         String style= Objects.requireNonNull(this.getClass().getResource("profile/profile.css")).toExternalForm();
         scene.getStylesheets().add(style);
         profileScene = scene;

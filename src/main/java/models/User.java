@@ -10,10 +10,6 @@ import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
-import javafx.scene.image.Image;
-import org.opencv.core.Core;
-import org.opencv.core.Mat;
-import org.opencv.highgui.Highgui;
 
 import javax.imageio.ImageIO;
 
