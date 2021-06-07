@@ -31,7 +31,7 @@ public class MainMenu {
         String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
         scene.getStylesheets().add(style);
         scene.setCursor(cursor);
-
+        mainMenuScene = scene;
         stage.setTitle("YU-GI-UH!");
         stage.resizableProperty().set(false);
         stage.setScene(scene);
