@@ -19,9 +19,9 @@ import models.Card;
 import models.CardStufs.Type;
 import models.User;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.Optional;
+import java.util.*;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ShopMenu {
     public String username;
@@ -145,6 +145,60 @@ public class ShopMenu {
 
 
     }
+    //for graphic i should write buyCard function again
+    public static String buyCardForGraphic (String command){
+        Pattern pattern = Pattern.compile("^buy card --username (.+)? --card (.+)?$");
+        Matcher matcher = pattern.matcher(command);
+
+        String username = "";
+        String cardsName = "";
+
+        if (matcher.find()){
+            username = matcher.group(1);
+            cardsName = matcher.group(2);
+        }
+
+        User user = User.getUserByUsername(username);
+        if (Card.allCards.get(cardsName).getPrice() > user.getMoney())
+            return "not enough money";
+        else{
+            ArrayList<String> temp = user.getCardsBought();
+            temp.add(cardsName);
+            user.setCardsBought(temp);
+            int money = user.getMoney();
+            money -= Card.allCards.get(cardsName).getPrice();
+            user.setMoney(money);
+            return "card bought successfully";
+        }
+    }
+
+    private void showAllCards(){
+        ArrayList<String> allCards = new ArrayList<>();
+        for (Map.Entry<String, Card> entry: Card.allCards.entrySet()){
+            String key = entry.getKey();
+            allCards.add(key);
+        }
+
+        Collections.sort(allCards);
+
+
+        for (String allCard : allCards) {
+            UserInterface.printResponse(allCard + ":" + Card.allCards.get(allCard).getPrice());
+        }
+    }
+
+    //for graphic i should write showAllCards function again
+    public static  ArrayList<String> showAllCardsForGraphic (){
+        ArrayList<String> allCards = new ArrayList<>();
+        for (Map.Entry<String, Card> entry: Card.allCards.entrySet()){
+            String key = entry.getKey();
+            allCards.add(key);
+        }
+
+        Collections.sort(allCards);
+
+        return allCards;
+    }
 
 
 
@@ -217,7 +271,7 @@ class ShowCard{
                         button1.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                String response = controllers.menues.ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
+                                String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
                                 showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
                             }
                         });
@@ -295,7 +349,7 @@ class ShowCard{
                         button1.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                String response = controllers.menues.ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
+                                String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
                                 showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
                             }
                         });
@@ -464,7 +518,7 @@ class ShowAllCards{
         VBox vBox = new VBox(gridPane);
         vBox.setAlignment(Pos.CENTER);
 
-        ArrayList<String> allCards = controllers.menues.ShopMenu.showAllCardsForGraphic();
+        ArrayList<String> allCards = ShopMenu.showAllCardsForGraphic();
         for (int i = 0; i<allCards.size(); ++i){
             String name = allCards.get(i);
             if (Card.allCards.get(allCards.get(i)).getCardsType() == Type.MONSTER){
@@ -489,7 +543,7 @@ class ShowAllCards{
                         button1.setOnAction(new EventHandler<ActionEvent>() {
                             @Override
                             public void handle(ActionEvent actionEvent) {
-                                String response = controllers.menues.ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
+                                String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
                                 showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
                                 ShowAllCards showAllCards = new ShowAllCards();
                                 showAllCards.username = username;
@@ -532,7 +586,7 @@ class ShowAllCards{
                             button1.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
-                                    String response = controllers.menues.ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
+                                    String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
                                     showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
                                     ShowAllCards showAllCards = new ShowAllCards();
                                     showAllCards.username = username;
@@ -574,7 +628,7 @@ class ShowAllCards{
                             button1.setOnAction(new EventHandler<ActionEvent>() {
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
-                                    String response = controllers.menues.ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
+                                    String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
                                     showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
                                     ShowAllCards showAllCards = new ShowAllCards();
                                     showAllCards.username = username;

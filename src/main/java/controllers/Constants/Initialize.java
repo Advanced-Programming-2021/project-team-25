@@ -14,6 +14,7 @@ import java.util.Objects;
 import static models.Deck.allDecks;
 
 public class Initialize {
+
     public static void init() {
         try {
             DataBase.loadCards();

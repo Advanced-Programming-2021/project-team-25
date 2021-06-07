@@ -1,5 +1,7 @@
 package view;
 
+import javafx.scene.ImageCursor;
+import javafx.scene.image.Image;
 import models.User;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,13 +12,31 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
+import java.util.Objects;
 import java.util.Optional;
 
 public class SignUpMenu {
 
-    public void start(Stage primaryStage) {
-        GridPane grid = CreateGrid.createGridPane();
+    public void start(Stage stage) {
+        GridPane gridPane = CreateGrid.createGridPane();
+        addUIControls(gridPane, stage);
 
+        Scene scene = new Scene(gridPane, 600, 600);
+
+        Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
+        ImageCursor cursor = new ImageCursor(img, 10, 10);
+
+        String style = Objects.requireNonNull(this.getClass().getResource("login/login.css")).toExternalForm();
+        scene.getStylesheets().add(style);
+        scene.setCursor(cursor);
+
+        stage.setTitle("YU-GI-UH!");
+        stage.resizableProperty().set(false);
+        stage.setScene(scene);
+        stage.show();
+    }
+
+    private void addUIControls(GridPane grid, Stage stage) {
         Text welcomeText = new Text("Sign Up Menu");
         welcomeText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
         grid.add(welcomeText,0 ,0);
@@ -43,15 +63,12 @@ public class SignUpMenu {
         grid.add(txtPassword,1,3);
 
         Button signUpBtn = new Button("Sign Up");
-        signUpBtn.setOnAction(actionEvent -> signupFunc(primaryStage, grid, txtUsername, txtNickname, txtPassword));
+        signUpBtn.setOnAction(actionEvent -> signupFunc(stage, grid, txtUsername, txtNickname, txtPassword));
         grid.add(signUpBtn,1 ,4);
 
         Button exitButton = new Button("Exit");
         grid.add(exitButton, 0, 4);
-        exitButton.setOnAction(event -> new WelcomeMenu().start(primaryStage));
-
-        Scene scene = new Scene(grid ,500 ,500);
-        primaryStage.setScene(scene);
+        exitButton.setOnAction(event -> new WelcomeMenu().start(stage));
     }
 
     private void signupFunc(Stage primaryStage, GridPane grid, TextField txtUsername, TextField txtNickname, PasswordField txtPassword) {
