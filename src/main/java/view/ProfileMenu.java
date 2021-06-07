@@ -1,6 +1,7 @@
 package view;
 
 
+import controllers.ProgramController;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -13,6 +14,7 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -38,7 +40,7 @@ import static view.MainMenu.mainMenuScene;
 public class ProfileMenu {
     public User currUser;
     private static ProfileMenu singleToneClass = null;
-
+    public static Scene profileScene;
     public ProfileMenu(User currUser) {
         this.currUser = currUser;
     }
@@ -115,6 +117,7 @@ public class ProfileMenu {
         Scene scene = new Scene(gridPane ,600 ,600);
         String style= Objects.requireNonNull(this.getClass().getResource("profile/profile.css")).toExternalForm();
         scene.getStylesheets().add(style);
+        profileScene = scene;
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
@@ -139,6 +142,7 @@ public class ProfileMenu {
                             if (file != null) {
                                 openFile(file);
                             }
+                            stage.setScene(profileScene);
                         }
                     });
 
@@ -161,10 +165,9 @@ public class ProfileMenu {
             final GridPane inputGridPane = new GridPane();
 
             GridPane.setConstraints(openButton, 0, 1);
-            GridPane.setConstraints(openMultipleButton, 1, 1);
             inputGridPane.setHgap(6);
             inputGridPane.setVgap(6);
-            inputGridPane.getChildren().addAll(openButton, openMultipleButton);
+            inputGridPane.getChildren().addAll(openButton);
 
             final Pane rootGroup = new VBox(12);
             rootGroup.getChildren().addAll(inputGridPane);
@@ -181,8 +184,6 @@ public class ProfileMenu {
                     new File(System.getProperty("user.home"))
             );
             fileChooser.getExtensionFilters().addAll(
-//                    new FileChooser.ExtensionFilter("All Images", "*.*"),
-//                    new FileChooser.ExtensionFilter("JPG", "*.jpg"),
                     new FileChooser.ExtensionFilter("PNG", "*.png")
             );
         }
@@ -192,7 +193,7 @@ public class ProfileMenu {
             Path from = Paths.get(file.toURI());
             try {
                 UserInterface.printResponse("your image uploaded successfully!");
-                Files.copy(from, Path.of(Objects.requireNonNull(getClass().getResource("../models/users/"+singleToneClass.currUser.getUsername()+".png")).getPath()));
+                Files.copy(from, Path.of(ProgramController.currUser.getUsername() + "png"), StandardCopyOption.REPLACE_EXISTING);
             }catch (Exception e){
                 e.printStackTrace();
             }

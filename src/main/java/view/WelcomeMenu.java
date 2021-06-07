@@ -23,7 +23,7 @@ public class WelcomeMenu{
         Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
         ImageCursor cursor = new ImageCursor(img, 10, 10);
 
-        String style = Objects.requireNonNull(this.getClass().getResource("login/login.css")).toExternalForm();
+        String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
         scene.getStylesheets().add(style);
         scene.setCursor(cursor);
 
