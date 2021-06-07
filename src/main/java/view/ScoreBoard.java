@@ -1,5 +1,6 @@
 package view;
 
+import javafx.scene.control.Button;
 import models.User;
 import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
@@ -11,6 +12,8 @@ import javafx.stage.Stage;
 import java.util.ArrayList;
 import java.util.Comparator;
 
+import static view.MainMenu.mainMenuScene;
+
 
 public class ScoreBoard {
     public void start(Stage primaryStage) {
@@ -20,6 +23,8 @@ public class ScoreBoard {
         Text welcomeText = new Text("ScoreBoard");
         welcomeText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
         grid.add(welcomeText,0 ,0);
+
+        Button back = new Button("back");
 
         ArrayList<User> users = User.getUsers();
         //compare users
@@ -38,6 +43,11 @@ public class ScoreBoard {
         }
 
         Scene scene = new Scene(grid ,500 ,500);
+        grid.addRow(2,back);
+        back.setOnMouseClicked(e->{
+            primaryStage.setScene(mainMenuScene);
+            primaryStage.show();
+        });
         primaryStage.setScene(scene);
     }
 }

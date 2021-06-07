@@ -106,7 +106,7 @@ public class ProfileMenu {
             else if(currUser.getPassword().equals(newPass))
                 UserInterface.printResponse("new password and old password are same!");
             else{
-                currUser.setPassword(newPass);
+                currUser.setPassword(txtNewPassword.getText());
                 UserInterface.printResponse("password changed successfully!");
             }
         });
