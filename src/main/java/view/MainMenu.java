@@ -30,7 +30,9 @@ public class MainMenu {
         Button ShopBtn = new Button("Shop Menu");
         ShopBtn.setOnAction(actionEvent -> {
             try {
-                new ShopMenu().start(stage);
+                ShopMenu shopMenu = new ShopMenu();
+                shopMenu.username = ProgramController.currUser.getUsername();
+                shopMenu.start(stage);
             } catch (Exception e) {
                 e.printStackTrace();
             }
