@@ -48,11 +48,11 @@ public class DeckMenu {
             else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
             else if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
             //else if ((matcher = Regex.getMatcher(command, Regex.deckCreate)).matches()) createDeck(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.deckDelete)).matches()) deleteDeck(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.deckSetActive)).matches()) setActive(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.deckAddCardToSide)).matches()) addCardToSide(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.deckAddCard)).matches()) addCard(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCardFromSide)).matches()) removeCardFromSide(matcher);
+            //else if ((matcher = Regex.getMatcher(command, Regex.deckDelete)).matches()) deleteDeck(matcher);
+            //else if ((matcher = Regex.getMatcher(command, Regex.deckSetActive)).matches()) setActive(matcher);
+            //else if ((matcher = Regex.getMatcher(command, Regex.deckAddCardToSide)).matches()) addCardToSide(matcher);
+            //else if ((matcher = Regex.getMatcher(command, Regex.deckAddCard)).matches()) addCard(matcher);
+            //else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCardFromSide)).matches()) removeCardFromSide(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCard)).matches()) removeCard(matcher);
             else if (Regex.getMatcher(command, Regex.deckShowAll).matches()) deckShowAll();
             else if ((matcher = Regex.getMatcher(command, Regex.deckShowDeckNameSide)).matches()) showSideDeck(matcher);
@@ -73,36 +73,32 @@ public class DeckMenu {
         return "deck created successfully!";
     }
 
-    private void deleteDeck(Matcher matcher){
+    public String deleteDeck(String deckName){
         boolean exists = false;
         for (Deck deck:allDecks)
-            if (deck.getDeckName().equals(matcher.group(1))) {
+            if (deck.getDeckName().equals(deckName)) {
                 exists = true;
                 break;
             }
 
         if (exists) {
-            allDecks.removeIf(deck -> deck.getDeckName().equals(matcher.group(1)));
-            UserInterface.printResponse(Responses.DECK_DELETE_SUCCESS);
+            allDecks.removeIf(deck -> deck.getDeckName().equals(deckName));
+            return "deck deleted successfully!";
         }
-        else
-            UserInterface.printResponse(Responses.INVALID_COMMAND);
+        else return "invalid command";
     }
 
-    private void setActive(Matcher matcher){
-        String deckName = matcher.group(1);
+    public String setActive(String deckName){
         for (Deck deck:allDecks){
             if (deck.getDeckName().equals(deckName)){
                 currUser.setActiveDeck(deck);
-                UserInterface.printResponse(Responses.DECK_ACTIVE_SUCCESS);
-                return;
+                return "deck activated successfully!";
             }
         }
-        UserInterface.printResponse(Responses.INVALID_COMMAND);
+        return "invalid command";
     }
 
-    private void addCardToSide(Matcher matcher){
-        String cardName = matcher.group(2) ,deckName = matcher.group(4);
+    public String addCardToSide(String cardName, String deckName){
 
         if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
         else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
@@ -112,6 +108,7 @@ public class DeckMenu {
             Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.add(ShowCard.Cards(cardName));
             UserInterface.printResponse("card added to deck successfully");
         }
+        return "as";
     }
 
     private void addCard(Matcher matcher){

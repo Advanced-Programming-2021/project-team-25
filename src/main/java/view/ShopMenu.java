@@ -1,6 +1,5 @@
 package view;
 
-import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -172,21 +171,6 @@ public class ShopMenu {
         }
     }
 
-    private void showAllCards(){
-        ArrayList<String> allCards = new ArrayList<>();
-        for (Map.Entry<String, Card> entry: Card.allCards.entrySet()){
-            String key = entry.getKey();
-            allCards.add(key);
-        }
-
-        Collections.sort(allCards);
-
-
-        for (String allCard : allCards) {
-            UserInterface.printResponse(allCard + ":" + Card.allCards.get(allCard).getPrice());
-        }
-    }
-
     //for graphic i should write showAllCards function again
     public static  ArrayList<String> showAllCardsForGraphic (){
         ArrayList<String> allCards = new ArrayList<>();
@@ -199,9 +183,6 @@ public class ShopMenu {
 
         return allCards;
     }
-
-
-
 }
 //----------------------------------------------------------------------------------------------------------------------
 //----------------------------------------------------------------------------------------------------------------------
