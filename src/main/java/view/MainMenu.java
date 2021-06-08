@@ -1,5 +1,6 @@
 package view;
 
+import controllers.Battelfield.Battlefield;
 import controllers.ProgramController;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -10,6 +11,8 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import models.Duelist;
+import models.User;
 
 import java.util.Objects;
 
@@ -19,7 +22,7 @@ public class MainMenu {
     public static Stage gameStage;
 
     public void start(Stage stage){
-
+        gameStage = stage;
         GridPane gridPane = CreateGrid.createGridPane();
         addUIControls(stage, gridPane);
 
