@@ -45,11 +45,13 @@ public class Game {
         vBoxRight.setAlignment(Pos.CENTER);
         vBoxRight.setSpacing(4);
         vBoxRight.getChildren().addAll(btnGetFromHand,btnMuteSounds,btnExit);
+
         //make up top things
         Button Duelist = new Button("duelists");
         HBox hBoxTop = new HBox();
         hBoxTop.setAlignment(Pos.CENTER);
         hBoxTop.getChildren().addAll(Duelist);
+
         //make down things (hand in here)
         Button hand = new Button("hand");
         HBox hBoxDown = new HBox();
