@@ -44,7 +44,7 @@ public class Battlefield {
     public int attackedMonsterNum;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
-        Game.getInstance().runGame();
+        Game.getInstance().runGame(duelist1,duelist2);
         whoStart(duelist1, duelist2);
         startGame();
         showBattleField();
@@ -80,31 +80,31 @@ public class Battlefield {
 
             if(turn.getName().equals(opponent.getName())) return;
 
-            String command = UserInterface.getUserInput();
-
-            Matcher matcher;
-
-            if (isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
-            else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
-            else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
-            else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
-            else if (Regex.getMatcher(command, Regex.nextPhase).matches()) nextPhase();
-            else if (Regex.getMatcher(command, Regex.summon).matches()) summon();
-            else if (Regex.getMatcher(command, Regex.set).matches()) set();
-            else if ((matcher = Regex.getMatcher(command, Regex.setPosition)).matches()) setPosition(matcher);
-            else if (Regex.getMatcher(command, Regex.flipSummon).matches()) flipSummon();
-            else if (Regex.getMatcher(command, Regex.attackDirect).matches()) directAttack();
-            else if ((matcher = Regex.getMatcher(command, Regex.attack)).matches()) attack(matcher);
-            else if (Regex.getMatcher(command, Regex.activateEffect).matches()) activeSpell();
-            else if (Regex.getMatcher(command, Regex.showGraveyard).matches()) showGraveyard();
-            else if (Regex.getMatcher(command, Regex.showSelectedCard).matches()) showSelectedCard();
-            else if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
-            else if (Regex.getMatcher(command, Regex.surrender).matches()) winner = opponent;
-            else if (Regex.getMatcher(command, Regex.forceAddedCardToHand).matches()) forceAddedToHand(matcher);
-            else if (Regex.getMatcher(command, Regex.duelWinCheat).matches()) duelWinCheat(matcher);
-            else if (Regex.getMatcher(command, Regex.increaseLPCheat).matches()) increaseLPCheat(matcher);
-            else UserInterface.printResponse(Responses.INVALID_COMMAND);
-            showBattleField();
+//            String command = UserInterface.getUserInput();
+//
+//            Matcher matcher;
+//
+//            if (isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
+//            else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
+//            else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
+//            else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
+//            else if (Regex.getMatcher(command, Regex.nextPhase).matches()) nextPhase();
+//            else if (Regex.getMatcher(command, Regex.summon).matches()) summon();
+//            else if (Regex.getMatcher(command, Regex.set).matches()) set();
+//            else if ((matcher = Regex.getMatcher(command, Regex.setPosition)).matches()) setPosition(matcher);
+//            else if (Regex.getMatcher(command, Regex.flipSummon).matches()) flipSummon();
+//            else if (Regex.getMatcher(command, Regex.attackDirect).matches()) directAttack();
+//            else if ((matcher = Regex.getMatcher(command, Regex.attack)).matches()) attack(matcher);
+//            else if (Regex.getMatcher(command, Regex.activateEffect).matches()) activeSpell();
+//            else if (Regex.getMatcher(command, Regex.showGraveyard).matches()) showGraveyard();
+//            else if (Regex.getMatcher(command, Regex.showSelectedCard).matches()) showSelectedCard();
+//            else if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
+//            else if (Regex.getMatcher(command, Regex.surrender).matches()) winner = opponent;
+//            else if (Regex.getMatcher(command, Regex.forceAddedCardToHand).matches()) forceAddedToHand(matcher);
+//            else if (Regex.getMatcher(command, Regex.duelWinCheat).matches()) duelWinCheat(matcher);
+//            else if (Regex.getMatcher(command, Regex.increaseLPCheat).matches()) increaseLPCheat(matcher);
+//            else UserInterface.printResponse(Responses.INVALID_COMMAND);
+//            showBattleField();
         }
     }
 

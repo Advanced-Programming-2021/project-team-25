@@ -1,5 +1,7 @@
 package view;
 
+import javafx.beans.binding.DoubleBinding;
+import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -9,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import models.Duelist;
 import models.User;
@@ -32,6 +36,7 @@ public class Game {
         BorderPane root = new BorderPane();
         StackPane base = new StackPane();
 
+
         base.getChildren().add(canvas);
         root.setCenter(base);
         //make left buttons
@@ -50,12 +55,13 @@ public class Game {
         vBoxRight.getChildren().addAll(btnGetFromHand,btnMuteSounds,btnExit);
 
         //make up top things
-        ImageView imgDuelist1 = new ImageView("file:admin.png");
+        ImageView imgDuelist1 = new ImageView("file:"+duelist1.getUser().getUsername()+".png");
         imgDuelist1.setFitHeight(100);
         imgDuelist1.setFitWidth(100);
-        ImageView imgDuelist2 = new ImageView("file:admin.png");
+        ImageView imgDuelist2 = new ImageView("file:"+duelist2.getUser().getUsername()+".png");
         imgDuelist2.setFitHeight(100);
         imgDuelist2.setFitWidth(100);
+
         HBox hbox1 = new HBox();
         Label lblDuelist1Name = new Label(duelist1.getUser().getNickName());
         lblDuelist1Name.setAlignment(Pos.CENTER);
