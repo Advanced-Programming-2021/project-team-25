@@ -7,8 +7,11 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
+import models.Duelist;
+import models.User;
 
 import java.util.Objects;
 
@@ -23,7 +26,7 @@ public class Game {
         if(singleToneClass == null) singleToneClass = new Game();
         return singleToneClass;
     }
-    public void runGame(){
+    public void runGame(Duelist duelist1,Duelist duelist2){
         Stage stage = MainMenu.gameStage;
         //Controller is Battlefield
         BorderPane root = new BorderPane();
@@ -47,10 +50,32 @@ public class Game {
         vBoxRight.getChildren().addAll(btnGetFromHand,btnMuteSounds,btnExit);
 
         //make up top things
-        Button Duelist = new Button("duelists");
+        ImageView imgDuelist1 = new ImageView("file:admin.png");
+        imgDuelist1.setFitHeight(100);
+        imgDuelist1.setFitWidth(100);
+        ImageView imgDuelist2 = new ImageView("file:admin.png");
+        imgDuelist2.setFitHeight(100);
+        imgDuelist2.setFitWidth(100);
+        HBox hbox1 = new HBox();
+        Label lblDuelist1Name = new Label(duelist1.getUser().getNickName());
+        lblDuelist1Name.setAlignment(Pos.CENTER);
+        Label lblDuelist1LP = new Label(" "+duelist1.LP);
+        lblDuelist1LP.setAlignment(Pos.CENTER);
+        hbox1.getChildren().addAll(imgDuelist1,lblDuelist1Name,lblDuelist1LP);
+        hbox1.setSpacing(20);
+
+        HBox hbox2 = new HBox();
+        Label lblDuelist2Name = new Label(duelist2.getUser().getNickName());
+        lblDuelist2Name.setAlignment(Pos.CENTER);
+        Label lblDuelist2LP = new Label(" "+duelist2.LP);
+        lblDuelist2LP.setAlignment(Pos.CENTER);
+        hbox2.getChildren().addAll(lblDuelist2LP,lblDuelist2Name,imgDuelist2);
+        hbox2.setSpacing(20);
         HBox hBoxTop = new HBox();
+        hBoxTop.getChildren().addAll(hbox1,hbox2);
+        hBoxTop.setSpacing(40);
         hBoxTop.setAlignment(Pos.CENTER);
-        hBoxTop.getChildren().addAll(Duelist);
+
 
         //make down things (hand in here)
         Button hand = new Button("hand");
