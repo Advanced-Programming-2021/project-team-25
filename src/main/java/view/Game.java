@@ -94,7 +94,7 @@ public class Game {
         root.setTop(hBoxTop);
         root.setBottom(hBoxDown);
 
-        gameScene = new Scene(root ,750 ,600);
+        gameScene = new Scene(root ,850 ,650);
         // Set the width of the Canvas
         canvas.setWidth(500);
         // Set the height of the Canvas
