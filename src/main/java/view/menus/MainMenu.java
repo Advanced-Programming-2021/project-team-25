@@ -72,4 +72,5 @@ public class MainMenu {
         LogoutBtn.setOnAction(actionEvent -> new WelcomeMenu().start());
         grid.add(LogoutBtn,0,7);
     }
+
 }

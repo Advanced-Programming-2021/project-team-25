@@ -90,4 +90,5 @@ public class SignUpMenu {
         alert.initOwner(owner);
         alert.showAndWait();
     }
+
 }

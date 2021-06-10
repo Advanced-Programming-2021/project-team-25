@@ -31,8 +31,8 @@ public class WelcomeMenu{
         Main.stage.setTitle("YU-GI-UH!");
         Main.stage.resizableProperty().set(false);
         Main.stage.setScene(scene);
-        Main.stage.setHeight(1000);
-        Main.stage.setWidth(800);
+        Main.stage.setHeight(800);
+        Main.stage.setWidth(1000);
         Main.stage.show();
     }
 
