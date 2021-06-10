@@ -32,7 +32,7 @@ public class MainMenu {
     }
 
     private void addUIControls(GridPane grid) {
-        Text welcomeText = new Text("view.Main Menu");
+        Text welcomeText = new Text("Main Menu");
         welcomeText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
         grid.add(welcomeText,0 ,0);
 
@@ -53,7 +53,7 @@ public class MainMenu {
         grid.add(ShopBtn,0,2);
 
         Button DeckBtn = new Button("Deck Menu");
-        DeckBtn.setOnAction(actionEvent -> DeckView.getInstance(ProgramController.currUser).start(Main.stage));
+        DeckBtn.setOnAction(actionEvent -> DeckView.getInstance(ProgramController.currUser).start());
         grid.add(DeckBtn,0,3);
 
         Button ProfileBtn = new Button("Profile Menu");
