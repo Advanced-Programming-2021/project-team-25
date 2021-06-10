@@ -1,4 +1,4 @@
-package view;
+package view.menus;
 
 
 import controllers.ProgramController;
@@ -8,17 +8,14 @@ import javafx.scene.layout.GridPane;
 import models.User;
 
 
-import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -26,16 +23,13 @@ import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
-
-import javax.imageio.ImageIO;
-
-import static view.MainMenu.mainMenuScene;
+import view.CreateGrid;
+import view.UserInterface;
 
 public class ProfileMenu {
     public User currUser;
@@ -87,8 +81,7 @@ public class ProfileMenu {
         gridPane.addRow(5,btnBack,btnChangeNickname,btnChangePassword);
 
         btnBack.setOnMouseClicked(e->{
-            stage.setScene(mainMenuScene);
-            stage.show();
+            new MainMenu().start();
         });
 
         btnChangeNickname.setOnMouseClicked(e->{

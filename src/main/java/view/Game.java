@@ -1,7 +1,5 @@
 package view;
 
-import javafx.beans.binding.DoubleBinding;
-import javafx.beans.property.DoubleProperty;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -11,27 +9,27 @@ import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import models.Duelist;
-import models.User;
 
 import java.util.Objects;
 
 public class Game {
+
     private static Game singleToneClass = null;
     final String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
     Image backGroundIMG = new Image(backGroundPath);
     static Canvas canvas = new Canvas(400, 400);
     static GraphicsContext graphic = canvas.getGraphicsContext2D();
     private Scene gameScene;
+
     public static Game getInstance() {
         if(singleToneClass == null) singleToneClass = new Game();
         return singleToneClass;
     }
+
     public void runGame(Duelist duelist1,Duelist duelist2){
-        Stage stage = MainMenu.gameStage;
+        Stage stage = Main.stage;
         //Controller is Battlefield
         BorderPane root = new BorderPane();
         StackPane base = new StackPane();

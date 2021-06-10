@@ -1,4 +1,4 @@
-package view;
+package view.menus;
 
 import javafx.scene.control.Button;
 import models.User;
@@ -8,12 +8,10 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import view.CreateGrid;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-
-import static view.MainMenu.mainMenuScene;
-
 
 public class ScoreBoard {
     public void start(Stage primaryStage) {
@@ -41,13 +39,10 @@ public class ScoreBoard {
             j++;
             if(i != 0 && users.get(i).getScore() > users.get(i-1).getScore() ) rank++;
         }
-
-        Scene scene = new Scene(grid ,500 ,500);
         grid.addRow(2,back);
-        back.setOnMouseClicked(e->{
-            primaryStage.setScene(mainMenuScene);
-            primaryStage.show();
-        });
+        Scene scene = new Scene(grid);
+
+        back.setOnMouseClicked(e-> new MainMenu().start());
         primaryStage.setScene(scene);
     }
 }

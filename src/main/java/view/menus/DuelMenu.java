@@ -1,4 +1,4 @@
-package view;
+package view.menus;
 
 import controllers.menues.DuelMenuController;
 import javafx.beans.value.ChangeListener;
@@ -12,10 +12,9 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import models.Deck;
 import models.User;
+import view.CreateGrid;
 
 import java.util.Objects;
-
-import static view.MainMenu.mainMenuScene;
 
 public class DuelMenu {
 
@@ -71,10 +70,8 @@ public class DuelMenu {
         gridPane.addRow(3,lblRounds,rounds);
         gridPane.addRow(4,result,selectedValueLbl);
         gridPane.addRow(5,back,btnStartGame);
-        back.setOnMouseClicked(e->{
-            stage.setScene(mainMenuScene);
-            stage.show();
-        });
+
+        back.setOnMouseClicked(e-> new MainMenu().start());
 
         btnStartGame.setOnMouseClicked(e->{
             DuelMenuController duelMenuController = DuelMenuController.getInstance(currUser);

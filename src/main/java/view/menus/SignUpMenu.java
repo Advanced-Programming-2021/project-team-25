@@ -1,4 +1,4 @@
-package view;
+package view.menus;
 
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
@@ -9,34 +9,31 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
 import javafx.stage.Window;
+import view.CreateGrid;
+import view.Main;
 
 import java.util.Objects;
-import java.util.Optional;
 
 public class SignUpMenu {
 
-    public void start(Stage stage) {
+    public void start() {
         GridPane gridPane = CreateGrid.createGridPane();
-        addUIControls(gridPane, stage);
+        addUIControls(gridPane);
 
-        Scene scene = new Scene(gridPane, 600, 600);
+        Scene scene = new Scene(gridPane);
 
         Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
         ImageCursor cursor = new ImageCursor(img, 10, 10);
+        scene.setCursor(cursor);
 
         String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
         scene.getStylesheets().add(style);
-        scene.setCursor(cursor);
 
-        stage.setTitle("YU-GI-UH!");
-        stage.resizableProperty().set(false);
-        stage.setScene(scene);
-        stage.show();
+        Main.stage.setScene(scene);
     }
 
-    private void addUIControls(GridPane grid, Stage stage) {
+    private void addUIControls(GridPane grid) {
         Text welcomeText = new Text("Sign Up Menu");
         welcomeText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
         grid.add(welcomeText,0 ,0);
@@ -63,15 +60,15 @@ public class SignUpMenu {
         grid.add(txtPassword,1,3);
 
         Button signUpBtn = new Button("Sign Up");
-        signUpBtn.setOnAction(actionEvent -> signupFunc(stage, grid, txtUsername, txtNickname, txtPassword));
+        signUpBtn.setOnAction(actionEvent -> signupFunc(grid, txtUsername, txtNickname, txtPassword));
         grid.add(signUpBtn,1 ,4);
 
         Button exitButton = new Button("Exit");
         grid.add(exitButton, 0, 4);
-        exitButton.setOnAction(event -> new WelcomeMenu().start(stage));
+        exitButton.setOnAction(event -> new WelcomeMenu().start());
     }
 
-    private void signupFunc(Stage primaryStage, GridPane grid, TextField txtUsername, TextField txtNickname, PasswordField txtPassword) {
+    private void signupFunc(GridPane grid, TextField txtUsername, TextField txtNickname, PasswordField txtPassword) {
         if(User.getUserByUsername(txtUsername.getText()) != null)
             showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is a user with this username");
         else if(User.getUserByNickName(txtNickname.getText()) != null)
@@ -81,7 +78,7 @@ public class SignUpMenu {
         else{
             new User(txtUsername.getText(), txtPassword.getText(), txtNickname.getText());
             showAlert(Alert.AlertType.CONFIRMATION, grid.getScene().getWindow(), "Registration Successful!", "Welcome " + txtUsername.getText());
-            new WelcomeMenu().start(primaryStage);
+            new WelcomeMenu().start();
         }
     }
 
@@ -91,9 +88,6 @@ public class SignUpMenu {
         alert.setHeaderText(null);
         alert.setContentText(message);
         alert.initOwner(owner);
-
-        Optional<ButtonType> result = alert.showAndWait();
-        if(result.isEmpty()) System.exit(0);
-        //else if(result.get() == ButtonType.OK) new app().start(this.stage);
+        alert.showAndWait();
     }
 }
