@@ -21,7 +21,7 @@ public class SignUpMenu {
         GridPane gridPane = CreateGrid.createGridPane();
         addUIControls(gridPane);
 
-        Scene scene = new Scene(gridPane);
+        Scene scene = new Scene(gridPane,800,650);
 
         Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
         ImageCursor cursor = new ImageCursor(img, 10, 10);
