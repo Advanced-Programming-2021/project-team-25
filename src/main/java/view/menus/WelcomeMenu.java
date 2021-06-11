@@ -19,7 +19,7 @@ public class WelcomeMenu{
         GridPane gridPane = CreateGrid.createGridPane();
         addUIControls(gridPane);
 
-        Scene scene = new Scene(gridPane);
+        Scene scene = new Scene(gridPane,800,650);
 
         Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
         ImageCursor cursor = new ImageCursor(img, 10, 10);
@@ -32,8 +32,6 @@ public class WelcomeMenu{
         Main.stage.resizableProperty().set(false);
         Main.stage.centerOnScreen();
         Main.stage.setScene(scene);
-        Main.stage.setHeight(800);
-        Main.stage.setWidth(1000);
         Main.stage.show();
     }
 

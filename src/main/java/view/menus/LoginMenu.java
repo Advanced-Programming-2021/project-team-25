@@ -23,7 +23,7 @@ public class LoginMenu{
         GridPane grid = CreateGrid.createGridPane();
         addUIControl(grid);
 
-        Scene scene = new Scene(grid);
+        Scene scene = new Scene(grid,800,650);
 
         Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
         ImageCursor cursor = new ImageCursor(img, 10, 10);
