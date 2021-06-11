@@ -2,6 +2,8 @@ package view.menus;
 
 
 import controllers.ProgramController;
+import javafx.scene.canvas.Canvas;
+import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
@@ -29,15 +31,20 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import view.CreateGrid;
+import view.Main;
 import view.UserInterface;
 
 public class ProfileMenu {
-    public User currUser;
     private static ProfileMenu singleToneClass = null;
+    public User currUser;
+    ImageView imageViewProfile;
+    Image userImageProfile;
     public static Scene profileScene;
     public ProfileMenu(User currUser) {
         this.currUser = currUser;
     }
+    Canvas canvas = new Canvas(300,300);
+    GraphicsContext graphic = canvas.getGraphicsContext2D();
 
     public static ProfileMenu getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new ProfileMenu(currUser);
@@ -48,11 +55,11 @@ public class ProfileMenu {
     public void runProfileMenu(Stage stage){
         GridPane gridPane = CreateGrid.createGridPane();
 
-        Image userImageProfile = new Image("file:admin.png");
+        userImageProfile = new Image("file:admin.png");
 
-        ImageView imageView = new ImageView(userImageProfile);
-        imageView.setFitHeight(100);
-        imageView.setFitWidth(100);
+        imageViewProfile = new ImageView(userImageProfile);
+        imageViewProfile.setFitHeight(100);
+        imageViewProfile.setFitWidth(100);
 
         Label lblUser = new Label("User LoggedIn - username:"+currUser.getUsername()+" Nickname :"+currUser.getNickName());
 
@@ -73,7 +80,7 @@ public class ProfileMenu {
         TextField txtNewPassword = new TextField();
         txtNickname.setPromptText("new password...");
 
-        gridPane.addRow(0,imageView,btnUploadImage);
+        gridPane.addRow(0,imageViewProfile,btnUploadImage);
         gridPane.addRow(1,lblUser);
         gridPane.addRow(2,lblChangeNickname,txtNickname);
         gridPane.addRow(3,lblOldPassword,txtOldPassword);
@@ -81,7 +88,7 @@ public class ProfileMenu {
         gridPane.addRow(5,btnBack,btnChangeNickname,btnChangePassword);
 
         btnBack.setOnMouseClicked(e->{
-            new MainMenu().start();
+            Main.stage.setScene(MainMenu.mainMenuScene);
         });
 
         btnChangeNickname.setOnMouseClicked(e->{
@@ -108,7 +115,7 @@ public class ProfileMenu {
             new FileChooserSample().start(stage);
         });
 
-        Scene scene = new Scene(gridPane ,900 ,600);
+        Scene scene = new Scene(gridPane,800,650);
         String style= Objects.requireNonNull(this.getClass().getResource("profile/profile.css")).toExternalForm();
         scene.getStylesheets().add(style);
         profileScene = scene;
@@ -117,11 +124,10 @@ public class ProfileMenu {
         stage.show();
     }
 
-    public static class FileChooserSample extends Application {
+    public class FileChooserSample {
 
-        @Override
         public void start(final Stage stage) {
-            stage.setTitle("File Chooser Sample");
+            stage.setTitle("update image");
 
             final FileChooser fileChooser = new FileChooser();
             final Button openButton = new Button("Open a Picture...");
@@ -136,6 +142,9 @@ public class ProfileMenu {
                             if (file != null) {
                                 openFile(file);
                             }
+                            //refresh image!
+                            userImageProfile = new Image("file:admin.png");
+                            imageViewProfile.setImage(userImageProfile);
                             stage.setScene(profileScene);
                         }
                     });
@@ -157,17 +166,26 @@ public class ProfileMenu {
 
 
             final GridPane inputGridPane = new GridPane();
+            Button btnBack = new Button("back");
+
+            btnBack.setOnMouseClicked(e->{
+                Main.stage.setScene(MainMenu.mainMenuScene);
+            });
 
             GridPane.setConstraints(openButton, 0, 1);
+
             inputGridPane.setHgap(6);
             inputGridPane.setVgap(6);
             inputGridPane.getChildren().addAll(openButton);
 
             final Pane rootGroup = new VBox(12);
-            rootGroup.getChildren().addAll(inputGridPane);
+            rootGroup.getChildren().addAll(inputGridPane,btnBack);
             rootGroup.setPadding(new Insets(12, 12, 12, 12));
+            String style= Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
 
-            stage.setScene(new Scene(rootGroup));
+            Scene scene = new Scene(rootGroup,300,300);
+            scene.getStylesheets().add(style);
+            stage.setScene(scene);
             stage.show();
         }
 
@@ -186,8 +204,11 @@ public class ProfileMenu {
             System.out.println(file.getName());
             Path from = Paths.get(file.toURI());
             try {
+                String backGroundPath = ProgramController.currUser.getUsername() + ".png";
+                Files.copy(from, Path.of(backGroundPath), StandardCopyOption.REPLACE_EXISTING);
+                //Image backGroundIMG = new Image("admin.png");
                 UserInterface.printResponse("your image uploaded successfully!");
-                Files.copy(from, Path.of(ProgramController.currUser.getUsername() + "png"), StandardCopyOption.REPLACE_EXISTING);
+                //graphic.drawImage(backGroundIMG,0,0,100,100);
             }catch (Exception e){
                 e.printStackTrace();
             }
