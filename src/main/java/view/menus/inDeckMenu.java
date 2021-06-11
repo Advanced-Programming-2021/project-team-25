@@ -1,5 +1,7 @@
 package view.menus;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
@@ -36,9 +38,9 @@ public class inDeckMenu {
 
         //Left and Right Pics!
         BorderPane borderPane = new BorderPane();
-        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/right.png")).toExternalForm(), 200, 800, false, false);
+        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/right.png")).toExternalForm(), 170, 700, false, false);
         ImageView imageView = new ImageView(image);
-        Image image1 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/left.png")).toExternalForm(), 200, 800, false, false);
+        Image image1 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/left.png")).toExternalForm(), 170, 700, false, false);
         ImageView imageView1 = new ImageView(image1);
         borderPane.setRight(imageView);
         borderPane.setLeft(imageView1);
@@ -47,7 +49,14 @@ public class inDeckMenu {
         Button button = new Button("Back");
         button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
                 "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
-        button.setOnAction(actionEvent -> DeckView.getInstance(user).start());
+//        button.setOnAction(actionEvent -> DeckView.getInstance(user).start());
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                Main.stage.setWidth(1000);
+                DeckView.getInstance(user).start();
+            }
+        });
         button.setAlignment(Pos.CENTER);
         HBox hBox = new HBox(button);
         hBox.setAlignment(Pos.CENTER);
@@ -68,6 +77,8 @@ public class inDeckMenu {
         borderPane.setCenter(scrollPane);
         Scene scene = new Scene(borderPane);
 
+        Main.stage.setWidth(1200);
+        Main.stage.setHeight(800);
         Main.stage.setScene(scene);
     }
 
