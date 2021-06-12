@@ -132,7 +132,7 @@ public class DeckView {
         ImageView eye = new ImageView(new Image("file:images.png"));
         eye.setFitHeight(50);
         eye.setFitWidth(50);
-        eye.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new ShowDeck(deck).start());
+        eye.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new ShowDeck(deck,currUser).start());
 
         ImageView delete = new ImageView(new Image("file:download.png"));
         delete.setFitHeight(50);

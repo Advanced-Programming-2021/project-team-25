@@ -91,25 +91,23 @@ public class DeckMenu {
             for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck)
                 if(card.getName().equals(cardName)){
                     Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.remove(card);
-                    return "card removed from deck successfully";
+                    return "card removed from side deck successfully";
                 }
         }
         return "invalid command";
     }
 
-    private void removeCard(Matcher matcher){
-        String cardName = matcher.group(2) ,deckName = matcher.group(4);
-
-        if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with " + deckName + "does not exists");
-        else if(Deck.getNumberOfCardsInMainDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in main deck");
+    public String removeCard(String cardName, String deckName){
+        if(Deck.getDeckByName(deckName) == null ) return "deck with " + deckName + "does not exists";
+        else if(Deck.getNumberOfCardsInMainDeck(deckName , cardName) == 0) return "card with name " + cardName + " does not exist in main deck";
         else{
             for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck)
                 if(card.getName().equals(cardName)){
                     Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.remove(card);
-                    UserInterface.printResponse("card removed from deck successfully");
-                    return;
+                    return "card removed from main deck successfully";
                 }
         }
+        return "invalid command";
     }
 
     private boolean numberOfCards(String cardName ,String deckName){
