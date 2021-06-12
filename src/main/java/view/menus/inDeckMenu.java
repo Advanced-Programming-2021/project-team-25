@@ -49,19 +49,21 @@ public class inDeckMenu {
         borderPane.setRight(imageView);
         borderPane.setLeft(imageView1);
 
+        HBox hBox1 = new HBox();
+
+        Label label = new Label("Username: " + user.getUsername() + "    DeckName: "+ deck.getDeckName());
+        label.setFont(Font.font(20));
+        label.setTextFill(Color.web("Black"));
+
         //Back Button
-//        Button button = new Button("Back");
-//        button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
-//                "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
-////        button.setOnAction(actionEvent -> DeckView.getInstance(user).start());
-//        button.setOnAction(actionEvent -> {
-//            //Main.stage.setWidth(1000);
-//            DeckView.getInstance(user).start();
-//        });
-//        button.setAlignment(Pos.CENTER);
-//        HBox hBox = new HBox(button);
-//        hBox.setAlignment(Pos.CENTER);
-//        borderPane.setBottom(hBox);
+        Button button = new Button("Back");
+        button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
+                "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
+        button.setOnAction(actionEvent -> DeckView.getInstance(user).start());
+
+        hBox1.getChildren().addAll(label,button);
+        hBox1.setSpacing(10);
+        borderPane.setTop(hBox1);
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);

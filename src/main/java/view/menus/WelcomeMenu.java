@@ -52,5 +52,6 @@ public class WelcomeMenu{
         exitBtn.setOnAction(actionEvent -> System.exit(0));
         grid.add(exitBtn,0 ,3);
     }
+
 }
 
