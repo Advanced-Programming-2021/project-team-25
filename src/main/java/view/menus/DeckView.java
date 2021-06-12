@@ -2,6 +2,8 @@ package view.menus;
 
 import controllers.Database.DataBase;
 import controllers.menues.DeckMenu;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -40,7 +42,7 @@ public class DeckView {
         GridPane gridPane = CreateGrid.createGridPane();
         addUIControls(gridPane);
 
-        Scene scene = new Scene(gridPane);
+        Scene scene = new Scene(gridPane,800,650);
 
         Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
         ImageCursor cursor = new ImageCursor(img, 10, 10);
@@ -48,10 +50,6 @@ public class DeckView {
 
         String style = Objects.requireNonNull(this.getClass().getResource("login/login.css")).toExternalForm();
         scene.getStylesheets().add(style);
-
-        System.out.println("Data Saved in DeckMenu!");
-        if(allDecks!=null) DataBase.storeDecks(allDecks);
-        DataBase.saveTheUserList(User.getUsers());
 
         Main.stage.setScene(scene);
     }
@@ -94,6 +92,8 @@ public class DeckView {
         Button addDeckButton = new Button("Add New Deck");
         addDeckButton.setOnAction(event -> {
             showAlert(grid.getScene().getWindow(), "Add New Deck", DeckMenu.getInstance(currUser).createDeck(deckName.getText()));
+            DataBase.storeDecks(allDecks);
+            DataBase.saveTheUserList(User.getUsers());
             start();
         });
 
@@ -101,7 +101,11 @@ public class DeckView {
 
         Button exitButton = new Button("Exit");
         grid.add(exitButton, 0, i + 5);
-        exitButton.setOnAction(event -> new MainMenu().start());
+        exitButton.setOnAction(event -> {
+            new MainMenu().start();
+            DataBase.storeDecks(allDecks);
+            DataBase.saveTheUserList(User.getUsers());
+        });
     }
 
     private void deckInRow(GridPane grid, Deck deck, int i) {
@@ -115,6 +119,8 @@ public class DeckView {
         star.setFitWidth(50);
         star.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             showAlert(grid.getScene().getWindow(), "Activate this Deck", DeckMenu.getInstance(currUser).setActive(deck.getDeckName()));
+            DataBase.storeDecks(allDecks);
+            DataBase.saveTheUserList(User.getUsers());
             start();
         });
 
@@ -133,6 +139,8 @@ public class DeckView {
         delete.setFitWidth(50);
         delete.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
             showAlert(grid.getScene().getWindow(), "Delete this Deck", DeckMenu.getInstance(currUser).deleteDeck(deck.getDeckName()));
+            DataBase.storeDecks(allDecks);
+            DataBase.saveTheUserList(User.getUsers());
             start();
         });
 

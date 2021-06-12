@@ -1,14 +1,10 @@
 package controllers.menues;
 
-import controllers.Database.DataBase;
-import controllers.Menu;
-import controllers.Regex;
 import controllers.ShowCard;
 import models.Card;
 import models.CardStufs.Type;
 import models.Deck;
 import models.User;
-import view.Responses;
 import view.UserInterface;
 
 import java.util.ArrayList;
@@ -17,12 +13,9 @@ import java.util.Comparator;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
-import static controllers.ProgramController.currentMenu;
-import static controllers.ShowCard.showCard;
 import static models.Deck.allDecks;
 
 public class DeckMenu {
-
     private User currUser;
     private static DeckMenu singleToneClass = null;
 
@@ -34,35 +27,6 @@ public class DeckMenu {
         if (singleToneClass == null) singleToneClass = new DeckMenu(currUser);
         singleToneClass.currUser = currUser;
         return singleToneClass;
-    }
-
-    public void runDeckMenu(){
-
-        while (currentMenu == Menu.DECK_MENU) {
-
-            String command = UserInterface.getUserInput();
-            Matcher matcher;
-
-            if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
-            else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
-            else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
-            else if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
-            //else if ((matcher = Regex.getMatcher(command, Regex.deckCreate)).matches()) createDeck(matcher);
-            //else if ((matcher = Regex.getMatcher(command, Regex.deckDelete)).matches()) deleteDeck(matcher);
-            //else if ((matcher = Regex.getMatcher(command, Regex.deckSetActive)).matches()) setActive(matcher);
-            //else if ((matcher = Regex.getMatcher(command, Regex.deckAddCardToSide)).matches()) addCardToSide(matcher);
-            //else if ((matcher = Regex.getMatcher(command, Regex.deckAddCard)).matches()) addCard(matcher);
-            //else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCardFromSide)).matches()) removeCardFromSide(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCard)).matches()) removeCard(matcher);
-            else if (Regex.getMatcher(command, Regex.deckShowAll).matches()) deckShowAll();
-            else if ((matcher = Regex.getMatcher(command, Regex.deckShowDeckNameSide)).matches()) showSideDeck(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.deckShowDeckName)).matches()) showDeck(matcher);
-            else if (Regex.getMatcher(command, Regex.deckShowCards).matches()) deckShowCards();
-            else UserInterface.printResponse(Responses.INVALID_COMMAND);
-
-            if(allDecks!=null) DataBase.storeDecks(allDecks);
-            DataBase.saveTheUserList(User.getUsers());
-        }
     }
 
     public String createDeck(String deckName){
@@ -99,44 +63,38 @@ public class DeckMenu {
     }
 
     public String addCardToSide(String cardName, String deckName){
-
-        if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
-        else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
-        else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.size() == 15) UserInterface.printResponse("side deck is full");
-        else if(Deck.getNumberOfCardsInWholeDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards with name " + cardName + " in deck " + deckName);
+        if(Deck.getDeckByName(deckName) == null ) return "deck with name " + deckName + " does not exists";
+        else if(numberOfCards(cardName,deckName)) return "card with name " + cardName + " does not exists";
+        else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.size() == 15) return "side deck is full";
+        else if(Deck.getNumberOfCardsInWholeDeck(deckName , cardName) == 3) return "there are already three cards with name " + cardName + " in deck " + deckName;
         else{
             Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.add(ShowCard.Cards(cardName));
-            UserInterface.printResponse("card added to deck successfully");
+            return "card added to deck successfully";
         }
-        return "as";
     }
 
-    private void addCard(Matcher matcher){
-        String cardName = matcher.group(2) ,deckName = matcher.group(4);
-
-        if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with name " + deckName + " does not exists");
-        else if(numberOfCards(cardName,deckName)) UserInterface.printResponse("card with name " + cardName + " does not exists");
-        else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() == 60) UserInterface.printResponse("main deck is full");
-        else if(Deck.getNumberOfCardsInWholeDeck(deckName , cardName) == 3) UserInterface.printResponse("there are already three cards with name " + cardName + " in deck " + deckName);
+    public String addCard(String cardName, String deckName){
+        if(Deck.getDeckByName(deckName) == null ) return "deck with name " + deckName + " does not exists";
+        else if(numberOfCards(cardName,deckName)) return "card with name " + cardName + " does not exists";
+        else if(Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() == 60) return "main deck is full";
+        else if(Deck.getNumberOfCardsInWholeDeck(deckName , cardName) == 3) return "there are already three cards with name " + cardName + " in deck " + deckName;
         else{
             Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.add(ShowCard.Cards(cardName));
-            UserInterface.printResponse("card added to deck successfully");
+            return "card added to deck successfully";
         }
     }
 
-    private void removeCardFromSide(Matcher matcher){
-        String cardName = matcher.group(2) ,deckName = matcher.group(4);
-
-        if(Deck.getDeckByName(deckName) == null ) UserInterface.printResponse("deck with " + deckName + "does not exists");
-        else if(Deck.getNumberOfCardsInSideDeck(deckName , cardName) == 0) UserInterface.printResponse("card with name " + cardName + " does not exist in side deck");
+    public String removeCardFromSide(String cardName, String deckName){
+        if(Deck.getDeckByName(deckName) == null ) return "deck with " + deckName + "does not exists";
+        else if(Deck.getNumberOfCardsInSideDeck(deckName , cardName) == 0) return "card with name " + cardName + " does not exist in side deck";
         else{
             for (Card card: Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck)
                 if(card.getName().equals(cardName)){
                     Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.remove(card);
-                    UserInterface.printResponse("card removed from deck successfully");
-                    return;
+                    return "card removed from deck successfully";
                 }
         }
+        return "invalid command";
     }
 
     private void removeCard(Matcher matcher){

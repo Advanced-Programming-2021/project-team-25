@@ -11,7 +11,7 @@ import java.util.regex.Matcher;
 
 public class MainMenu {
 
-    private User currUser;
+    private final User currUser;
     private boolean isUserLoggedOut = false;
 
     public MainMenu(User currUser) {
@@ -30,31 +30,29 @@ public class MainMenu {
 
     static void changeMenu(Matcher matcher, User currUser){
         if(matcher.find()) {
+            //DeckMenu.getInstance(currUser).runDeckMenu();
             switch (matcher.group(1)) {
-                case "Duel" :
+                case "Duel" -> {
                     ProgramController.currentMenu = Menu.DUEL_MENU;
                     DuelMenuController.getInstance(currUser).runDuelMenu();
-                    break;
-                case "Shop" :
+                }
+                case "Shop" -> {
                     ProgramController.currentMenu = Menu.SHOP_MENU;
                     ShopMenu.getInstance(currUser).runShopMenu(currUser);
-                    break;
-                case "Deck" :
-                    ProgramController.currentMenu = Menu.DECK_MENU;
-                    DeckMenu.getInstance(currUser).runDeckMenu();
-                    break;
-                case "Profile" :
+                }
+                case "Deck" -> ProgramController.currentMenu = Menu.DECK_MENU;
+                case "Profile" -> {
                     ProgramController.currentMenu = Menu.PROFILE_MENU;
                     ProfileMenu.getInstance(currUser).runProfileMenu(currUser);
-                    break;
-                case "Scoreboard" :
+                }
+                case "Scoreboard" -> {
                     ProgramController.currentMenu = Menu.SCOREBOARD_MENU;
                     ScoreBoardMenu.getInstance().runScoreBoardMenu();
-                    break;
-                case "Import/Export" :
+                }
+                case "Import/Export" -> {
                     ProgramController.currentMenu = Menu.IMPORT_EXPORT_MENU;
                     ImportExportMenu.getInstance().runIMPORTEXPORTMenu();
-                    break;
+                }
             }
         }
         else UserInterface.printResponse(Responses.INVALID_COMMAND);

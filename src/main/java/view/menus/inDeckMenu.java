@@ -1,5 +1,8 @@
 package view.menus;
 
+import controllers.Database.DataBase;
+import controllers.menues.DeckMenu;
+import controllers.menues.ShopMenu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -25,6 +28,8 @@ import view.Main;
 
 import java.util.Objects;
 
+import static models.Deck.allDecks;
+
 public class inDeckMenu {
     private final User user;
     private final Deck deck;
@@ -35,33 +40,28 @@ public class inDeckMenu {
     }
 
     public void start() {
-
         //Left and Right Pics!
         BorderPane borderPane = new BorderPane();
-        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/right.png")).toExternalForm(), 170, 700, false, false);
+        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/right.png")).toExternalForm(), 170, 650, false, false);
         ImageView imageView = new ImageView(image);
-        Image image1 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/left.png")).toExternalForm(), 170, 700, false, false);
+        Image image1 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/left.png")).toExternalForm(), 170, 650, false, false);
         ImageView imageView1 = new ImageView(image1);
         borderPane.setRight(imageView);
         borderPane.setLeft(imageView1);
 
         //Back Button
-        Button button = new Button("Back");
-        button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
-                "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
-//        button.setOnAction(actionEvent -> DeckView.getInstance(user).start());
-        button.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent actionEvent) {
-                Main.stage.setWidth(1000);
-                DeckView.getInstance(user).start();
-            }
-        });
-        button.setAlignment(Pos.CENTER);
-        HBox hBox = new HBox(button);
-        hBox.setAlignment(Pos.CENTER);
-        borderPane.setBottom(hBox);
-
+//        Button button = new Button("Back");
+//        button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
+//                "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
+////        button.setOnAction(actionEvent -> DeckView.getInstance(user).start());
+//        button.setOnAction(actionEvent -> {
+//            //Main.stage.setWidth(1000);
+//            DeckView.getInstance(user).start();
+//        });
+//        button.setAlignment(Pos.CENTER);
+//        HBox hBox = new HBox(button);
+//        hBox.setAlignment(Pos.CENTER);
+//        borderPane.setBottom(hBox);
 
         GridPane gridPane = new GridPane();
         gridPane.setAlignment(Pos.TOP_CENTER);
@@ -75,20 +75,18 @@ public class inDeckMenu {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(vBox);
         borderPane.setCenter(scrollPane);
-        Scene scene = new Scene(borderPane);
+        Scene scene = new Scene(borderPane,800,650);
 
-        Main.stage.setWidth(1200);
-        Main.stage.setHeight(800);
         Main.stage.setScene(scene);
     }
 
     private void addCard(BorderPane borderPane, GridPane gridPane, VBox vBox, int i, String cardName) {
         if (Card.allCards.get(cardName).getCardsType() == Type.MONSTER) {
-            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 275, 275, false, false));
+            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 150, 200, false, false));
             imageView2.setOnMouseClicked(mouseEvent -> addFunc(borderPane, vBox, cardName));
             gridPane.add(imageView2, i % 3, i / 3);
         } else {
-            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 275, 275, false, false));
+            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 150, 200, false, false));
             imageView2.setOnMouseClicked(mouseEvent -> addFunc(borderPane, vBox, cardName));
             gridPane.add(imageView2, i % 3, i / 3);
         }
@@ -97,29 +95,35 @@ public class inDeckMenu {
     private void addFunc(BorderPane borderPane, VBox vBox, String cardName) {
         HBox hBox1 = new HBox();
 
-        Label label = new Label("Where Do You Want To Add " + cardName + "To Deck " + deck.getDeckName());
+        Label label = new Label("Where Do You Want To Add " + cardName + " To Deck " + deck.getDeckName());
         label.setFont(Font.font(20));
         label.setTextFill(Color.web("Black"));
 
-        Button button1 = new Button("view.Main");
+        Button button1 = new Button("Main");
         button1.setStyle("-fx-background-color: #c3c4c4," +
                 "linear-gradient(#d6d6d6 50%, white 100%)," +
                 "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
                 "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
                 "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
         button1.setOnAction(actionEvent -> {
-            String response = ShopMenu.buyCardForGraphic("buy card --username " + user.getUsername() + " --card " + cardName);
-            showAlert(vBox.getScene().getWindow(), "add Card To Deck", response);
-            ShowAllCards showAllCards = new ShowAllCards();
-            showAllCards.username = user.getUsername();
-            try {
-                showAllCards.start(Main.stage);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
+            showAlert(vBox.getScene().getWindow(), "add Card To Deck", DeckMenu.getInstance(user).addCard(cardName, deck.getDeckName()));
+            DataBase.storeDecks(allDecks);
+            new DeckView(user).start();
         });
 
-        hBox1.getChildren().addAll(label,button1);
+        Button button2 = new Button("Side");
+        button2.setStyle("-fx-background-color: #c3c4c4," +
+                "linear-gradient(#d6d6d6 50%, white 100%)," +
+                "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
+                "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
+                "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
+        button2.setOnAction(actionEvent -> {
+            showAlert(vBox.getScene().getWindow(), "add Card To Deck", DeckMenu.getInstance(user).addCardToSide(cardName, deck.getDeckName()));
+            DataBase.storeDecks(allDecks);
+            new DeckView(user).start();
+        });
+
+        hBox1.getChildren().addAll(label,button1,button2);
         hBox1.setSpacing(10);
         borderPane.setTop(hBox1);
     }
