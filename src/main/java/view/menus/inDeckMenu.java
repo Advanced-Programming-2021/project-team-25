@@ -8,10 +8,7 @@ import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
+import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
@@ -20,6 +17,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Window;
 import models.Card;
 import models.CardStufs.Type;
@@ -27,6 +26,7 @@ import models.Deck;
 import models.User;
 import view.Main;
 
+import java.util.HashMap;
 import java.util.Objects;
 
 import static models.Deck.allDecks;
@@ -34,6 +34,7 @@ import static models.Deck.allDecks;
 public class inDeckMenu {
     private final User user;
     private final Deck deck;
+    private final HashMap<String,Integer> map = new HashMap<>();
 
     public inDeckMenu(Deck deck, User user){
         this.user = user;
@@ -72,8 +73,18 @@ public class inDeckMenu {
         VBox vBox = new VBox(gridPane);
         vBox.setAlignment(Pos.CENTER);
 
-        for (int i = 0; i < user.cardsBought.size(); i++)
-            addCard(borderPane, gridPane, vBox, i, user.cardsBought.get(i));
+        for (int i = 0; i < user.cardsBought.size(); i++){
+            if(map.containsKey(user.cardsBought.get(i))) map.put(user.cardsBought.get(i),map.get(user.cardsBought.get(i))+1);
+            else{
+                map.put(user.cardsBought.get(i),1);
+            }
+        }
+
+        int i =0;
+        for (String cardName: map.keySet()) {
+            addCard(borderPane, gridPane, vBox, i, cardName);
+            i++;
+        }
 
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setContent(vBox);
@@ -89,13 +100,29 @@ public class inDeckMenu {
 
     private void addCard(BorderPane borderPane, GridPane gridPane, VBox vBox, int i, String cardName) {
         if (Card.allCards.get(cardName).getCardsType() == Type.MONSTER) {
-            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 140, 200, false, false));
+            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + cardName + ".jpg")).toExternalForm(), 80, 100, false, false));
             imageView2.setOnMouseClicked(mouseEvent -> addFunc(borderPane, vBox, cardName));
-            gridPane.add(imageView2, i % 3, i / 3);
+            gridPane.add(imageView2,0,i);
+
+            Text cardNameTxt = new Text(cardName);
+            cardNameTxt.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
+            gridPane.add(cardNameTxt,1,i);
+
+            Text activeDeckText = new Text("َX" + map.get(cardName));
+            activeDeckText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
+            gridPane.add(activeDeckText,2,i);
         } else {
-            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 140, 200, false, false));
+            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + cardName + ".jpg")).toExternalForm(), 80, 100, false, false));
             imageView2.setOnMouseClicked(mouseEvent -> addFunc(borderPane, vBox, cardName));
-            gridPane.add(imageView2, i % 3, i / 3);
+            gridPane.add(imageView2,0,i);
+
+            Text cardNameTxt = new Text(cardName);
+            cardNameTxt.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
+            gridPane.add(cardNameTxt,1,i);
+
+            Text activeDeckText = new Text("َX" + map.get(cardName));
+            activeDeckText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
+            gridPane.add(activeDeckText,2,i);
         }
     }
 
@@ -116,7 +143,7 @@ public class inDeckMenu {
             showAlert(vBox.getScene().getWindow(), "add Card To Main Deck", DeckMenu.getInstance(user).addCard(cardName, deck.getDeckName()));
             DataBase.storeDecks(allDecks);
             DataBase.saveTheUserList(User.getUsers());
-            new DeckView(user).start();
+            new inDeckMenu(deck,user).start();
         });
 
         Button button2 = new Button("Side");
@@ -129,7 +156,7 @@ public class inDeckMenu {
             showAlert(vBox.getScene().getWindow(), "add Card To Side Deck", DeckMenu.getInstance(user).addCardToSide(cardName, deck.getDeckName()));
             DataBase.storeDecks(allDecks);
             DataBase.saveTheUserList(User.getUsers());
-            new DeckView(user).start();
+            new inDeckMenu(deck,user).start();
         });
 
         hBox1.getChildren().addAll(label,button1,button2);
