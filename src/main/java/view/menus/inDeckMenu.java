@@ -6,6 +6,7 @@ import controllers.menues.ShopMenu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -79,16 +80,20 @@ public class inDeckMenu {
         borderPane.setCenter(scrollPane);
         Scene scene = new Scene(borderPane,800,650);
 
+        Image img = new Image(Objects.requireNonNull(getClass().getResource("cursor.png")).toExternalForm());
+        ImageCursor cursor = new ImageCursor(img, 10, 10);
+        scene.setCursor(cursor);
+
         Main.stage.setScene(scene);
     }
 
     private void addCard(BorderPane borderPane, GridPane gridPane, VBox vBox, int i, String cardName) {
         if (Card.allCards.get(cardName).getCardsType() == Type.MONSTER) {
-            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 150, 200, false, false));
+            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 140, 200, false, false));
             imageView2.setOnMouseClicked(mouseEvent -> addFunc(borderPane, vBox, cardName));
             gridPane.add(imageView2, i % 3, i / 3);
         } else {
-            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 150, 200, false, false));
+            ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + user.cardsBought.get(i) + ".jpg")).toExternalForm(), 140, 200, false, false));
             imageView2.setOnMouseClicked(mouseEvent -> addFunc(borderPane, vBox, cardName));
             gridPane.add(imageView2, i % 3, i / 3);
         }

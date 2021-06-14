@@ -24,6 +24,7 @@ public class Main extends Application {
 
         //load data from dataBase
         Initialize.init();
+
         //start from welcome menu
         new WelcomeMenu().start();
     }

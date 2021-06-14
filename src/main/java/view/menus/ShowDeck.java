@@ -2,10 +2,8 @@ package view.menus;
 
 import controllers.Database.DataBase;
 import controllers.menues.DeckMenu;
-import controllers.menues.ShopMenu;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
+import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
@@ -72,6 +70,9 @@ public class ShowDeck {
         borderPane.setCenter(scrollPane);
         Scene scene = new Scene(borderPane,800,650);
 
+        Image img = new Image(Objects.requireNonNull(getClass().getResource("cursor.png")).toExternalForm());
+        ImageCursor cursor = new ImageCursor(img, 10, 10);
+        scene.setCursor(cursor);
         Main.stage.setScene(scene);
     }
 
@@ -121,22 +122,22 @@ public class ShowDeck {
     private void addCard(BorderPane borderPane, GridPane gridPane, VBox vBox, int i, String cardName) {
         if(loc.equals("Main")) {
             if (Card.allCards.get(cardName).getCardsType() == Type.MONSTER) {
-                ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + deck.mainDeck.get(i).getName() + ".jpg")).toExternalForm(), 150, 200, false, false));
+                ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + deck.mainDeck.get(i).getName() + ".jpg")).toExternalForm(), 140, 200, false, false));
                 imageView2.setOnMouseClicked(mouseEvent -> deleteFunc(borderPane, vBox, cardName));
                 gridPane.add(imageView2, i % 3, i / 3);
             } else {
-                ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + deck.mainDeck.get(i).getName() + ".jpg")).toExternalForm(), 150, 200, false, false));
+                ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + deck.mainDeck.get(i).getName() + ".jpg")).toExternalForm(), 140, 200, false, false));
                 imageView2.setOnMouseClicked(mouseEvent -> deleteFunc(borderPane, vBox, cardName));
                 gridPane.add(imageView2, i % 3, i / 3);
             }
         }
         else{
             if (Card.allCards.get(cardName).getCardsType() == Type.MONSTER) {
-                ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + deck.sideDeck.get(i).getName() + ".jpg")).toExternalForm(), 150, 200, false, false));
+                ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + deck.sideDeck.get(i).getName() + ".jpg")).toExternalForm(), 140, 200, false, false));
                 imageView2.setOnMouseClicked(mouseEvent -> deleteFunc(borderPane, vBox, cardName));
                 gridPane.add(imageView2, i % 3, i / 3);
             } else {
-                ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + deck.sideDeck.get(i).getName() + ".jpg")).toExternalForm(), 150, 200, false, false));
+                ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + deck.sideDeck.get(i).getName() + ".jpg")).toExternalForm(), 140, 200, false, false));
                 imageView2.setOnMouseClicked(mouseEvent -> deleteFunc(borderPane, vBox, cardName));
                 gridPane.add(imageView2, i % 3, i / 3);
             }

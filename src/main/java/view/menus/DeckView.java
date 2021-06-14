@@ -44,11 +44,11 @@ public class DeckView {
 
         Scene scene = new Scene(gridPane,800,650);
 
-        Image img = new Image(Objects.requireNonNull(this.getClass().getResource("cursor.png")).toExternalForm());
+        Image img = new Image(Objects.requireNonNull(getClass().getResource("cursor.png")).toExternalForm());
         ImageCursor cursor = new ImageCursor(img, 10, 10);
         scene.setCursor(cursor);
 
-        String style = Objects.requireNonNull(this.getClass().getResource("login/login.css")).toExternalForm();
+        String style = Objects.requireNonNull(getClass().getResource("deck/Deck.css")).toExternalForm();
         scene.getStylesheets().add(style);
 
         Main.stage.setScene(scene);
@@ -114,7 +114,8 @@ public class DeckView {
 
         HBox hbox = new HBox();
 
-        ImageView star = new ImageView(new Image("file:download (2).png"));
+        Image starImage = new Image(Objects.requireNonNull(getClass().getResource("deck/star.png")).toExternalForm());
+        ImageView star = new ImageView(starImage);
         star.setFitHeight(50);
         star.setFitWidth(50);
         star.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
@@ -124,17 +125,20 @@ public class DeckView {
             start();
         });
 
-        ImageView pencil = new ImageView(new Image("file:pencil.png"));
+        Image pencilImage = new Image(Objects.requireNonNull(getClass().getResource("deck/pencil.png")).toExternalForm());
+        ImageView pencil = new ImageView(pencilImage);
         pencil.setFitHeight(50);
         pencil.setFitWidth(50);
         pencil.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new inDeckMenu(deck,currUser).start());
 
-        ImageView eye = new ImageView(new Image("file:images.png"));
+        Image eyeImage = new Image(Objects.requireNonNull(getClass().getResource("deck/eye.png")).toExternalForm());
+        ImageView eye = new ImageView(eyeImage);
         eye.setFitHeight(50);
         eye.setFitWidth(50);
         eye.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new ShowDeck(deck,currUser).start());
 
-        ImageView delete = new ImageView(new Image("file:download.png"));
+        Image deleteImage = new Image(Objects.requireNonNull(getClass().getResource("deck/delete.png")).toExternalForm());
+        ImageView delete = new ImageView(deleteImage);
         delete.setFitHeight(50);
         delete.setFitWidth(50);
         delete.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
