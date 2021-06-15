@@ -19,14 +19,21 @@ public class Game {
 
     private static Game singleToneClass = null;
     final String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
+    final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
+    final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
     Image backGroundIMG = new Image(backGroundPath);
     static Canvas canvas = new Canvas(400, 400);
     static GraphicsContext graphic = canvas.getGraphicsContext2D();
     private Scene gameScene;
+    private int defaultSize = 20;
     Canvas canvasHealthBar1 = new Canvas(100,15);
     Canvas canvasHealthBar2 = new Canvas(100,15);
+    Canvas canvasHandBar1 = new Canvas(900,100);
+    Canvas canvasHandBar2 = new Canvas(900,100);
     GraphicsContext graphic1 = canvasHealthBar1.getGraphicsContext2D();
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
+    GraphicsContext graphicHand1 = canvasHandBar1.getGraphicsContext2D();
+    GraphicsContext graphicHand2 = canvasHandBar2.getGraphicsContext2D();
 
     public static Game getInstance() {
         if(singleToneClass == null) singleToneClass = new Game();
@@ -42,40 +49,36 @@ public class Game {
         base.getChildren().add(canvas);
         root.setCenter(base);
         //make left buttons
-        Button btnExit = new Button("Exit!");
-        Button btnNextPhase = new Button("next Phase!");
-        Button btnMuteSounds = new Button("mute sounds");
-        VBox vBoxLeft = new VBox();
-        vBoxLeft.setAlignment(Pos.CENTER);
-        vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
+        VBox vBoxLeft = makeLeftBar();
 
         //make right buttons
-        Button btnGetFromHand = new Button("hand!");
-        VBox vBoxRight = new VBox();
-        vBoxRight.setAlignment(Pos.CENTER);
-        vBoxRight.setSpacing(4);
-        vBoxRight.getChildren().addAll(btnGetFromHand,btnMuteSounds,btnExit);
+        VBox vBoxRight = makeRightBar();
 
         //make up top things
-        HBox hBoxTop = makeTopBar(duelist1, duelist2);
+        VBox vBoxTop = makeTopBar(duelist1, duelist2);
 
 
         //make down things (hand in here)
-        Button hand = new Button("hand");
+        //DefaultCardInHandImg
+        for(int row=0;row<6;row++){
+            graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
+        }
         HBox hBoxDown = new HBox();
-        hBoxDown.getChildren().addAll(hand);
+        hBoxDown.getChildren().addAll(canvasHandBar1);
         hBoxDown.setAlignment(Pos.CENTER);
 
         root.setRight(vBoxRight);
         root.setLeft(vBoxLeft);
-        root.setTop(hBoxTop);
+        root.setTop(vBoxTop);
         root.setBottom(hBoxDown);
 
-        gameScene = new Scene(root ,850 ,650);
+        gameScene = new Scene(root ,900 ,660);
         // Set the width of the Canvas
         canvas.setWidth(500);
         // Set the height of the Canvas
         canvas.setHeight(450);
+
+        canvas.setStyle("-fx-padding: 20");
         String style= Objects.requireNonNull(this.getClass().getResource("game/game.css")).toExternalForm();
         gameScene.getStylesheets().add(style);
 
@@ -83,7 +86,29 @@ public class Game {
         stage.setScene(gameScene);
     }
 
-    private HBox makeTopBar(Duelist duelist1, Duelist duelist2) {
+    private VBox makeLeftBar() {
+        Button btnExit = new Button("Exit!");
+        Button btnNextPhase = new Button("next Phase!");
+        Button btnMuteSounds = new Button("mute sounds");
+        VBox vBoxLeft = new VBox();
+        vBoxLeft.setAlignment(Pos.CENTER);
+        vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
+        return vBoxLeft;
+    }
+
+    private VBox makeRightBar() {
+        String imageDeck = Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm();
+        ImageView imgDeck = new ImageView(imageDeck);
+        imgDeck.setFitHeight(200);
+        imgDeck.setFitWidth(150);
+        VBox vBoxRight = new VBox();
+        vBoxRight.setAlignment(Pos.CENTER);
+        vBoxRight.setSpacing(4);
+        vBoxRight.getChildren().addAll(imgDeck);
+        return vBoxRight;
+    }
+
+    private VBox makeTopBar(Duelist duelist1, Duelist duelist2) {
         refreshHealthBar(duelist1, duelist2);
 
 
@@ -124,11 +149,17 @@ public class Game {
         hbox2.getChildren().addAll(vboxUserDetail2,imgDuelist2);
         hbox2.setSpacing(20);
         HBox hBoxTop = new HBox();
+        VBox vboxTop = new VBox();
+//        for(int row=0;row<6;row++){
+//            graphicHand2.drawImage(DefaultCardInHandImg, defaultSize * row,defaultSize, defaultSize, defaultSize);
+//        }
         hBoxTop.getChildren().addAll(hbox1,hbox2);
-        hBoxTop.setSpacing(40);
+        hBoxTop.setSpacing(100);
+//        vboxTop.getChildren().addAll(hBoxTop,canvasHandBar2);
+        vboxTop.getChildren().addAll(hBoxTop);
         hBoxTop.setAlignment(Pos.CENTER);
         //top menu ready
-        return hBoxTop;
+        return vboxTop;
     }
 
     private void refreshHealthBar(Duelist duelist1, Duelist duelist2) {
