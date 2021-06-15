@@ -16,8 +16,6 @@ import models.Duelist;
 import java.util.Objects;
 
 public class Game {
-
-    private static Game singleToneClass = null;
     final String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
     final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
     final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
@@ -34,17 +32,18 @@ public class Game {
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
     GraphicsContext graphicHand1 = canvasHandBar1.getGraphicsContext2D();
     GraphicsContext graphicHand2 = canvasHandBar2.getGraphicsContext2D();
+    BorderPane root = new BorderPane();
+    StackPane base = new StackPane();
+    Duelist turn, opponent;
 
-    public static Game getInstance() {
-        if(singleToneClass == null) singleToneClass = new Game();
-        return singleToneClass;
+    public Game(Duelist turn, Duelist opponent){
+        this.turn = turn;
+        this.opponent = opponent;
     }
-
-    public void runGame(Duelist duelist1,Duelist duelist2){
+    public void runGame(){
+        //Default player is duelist1
         Stage stage = Main.stage;
         //Controller is Battlefield
-        BorderPane root = new BorderPane();
-        StackPane base = new StackPane();
 
         base.getChildren().add(canvas);
         root.setCenter(base);
@@ -55,17 +54,11 @@ public class Game {
         VBox vBoxRight = makeRightBar();
 
         //make up top things
-        VBox vBoxTop = makeTopBar(duelist1, duelist2);
+        VBox vBoxTop = makeTopBar(turn, opponent);
 
 
         //make down things (hand in here)
-        //DefaultCardInHandImg
-        for(int row=0;row<6;row++){
-            graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
-        }
-        HBox hBoxDown = new HBox();
-        hBoxDown.getChildren().addAll(canvasHandBar1);
-        hBoxDown.setAlignment(Pos.CENTER);
+        HBox hBoxDown = makeDownBar();
 
         root.setRight(vBoxRight);
         root.setLeft(vBoxLeft);
@@ -73,17 +66,31 @@ public class Game {
         root.setBottom(hBoxDown);
 
         gameScene = new Scene(root ,900 ,660);
+
+        stylingGame();
+
+        stage.setScene(gameScene);
+    }
+
+    private void stylingGame() {
         // Set the width of the Canvas
         canvas.setWidth(500);
         // Set the height of the Canvas
         canvas.setHeight(450);
-
         canvas.setStyle("-fx-padding: 20");
         String style= Objects.requireNonNull(this.getClass().getResource("game/game.css")).toExternalForm();
         gameScene.getStylesheets().add(style);
-
         graphic.drawImage(backGroundIMG,0,0,500,450);
-        stage.setScene(gameScene);
+    }
+
+    private HBox makeDownBar() {
+        for(int row=0;row<6;row++){
+            graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
+        }
+        HBox hBoxDown = new HBox();
+        hBoxDown.getChildren().addAll(canvasHandBar1);
+        hBoxDown.setAlignment(Pos.CENTER);
+        return hBoxDown;
     }
 
     private VBox makeLeftBar() {
@@ -150,12 +157,8 @@ public class Game {
         hbox2.setSpacing(20);
         HBox hBoxTop = new HBox();
         VBox vboxTop = new VBox();
-//        for(int row=0;row<6;row++){
-//            graphicHand2.drawImage(DefaultCardInHandImg, defaultSize * row,defaultSize, defaultSize, defaultSize);
-//        }
         hBoxTop.getChildren().addAll(hbox1,hbox2);
         hBoxTop.setSpacing(100);
-//        vboxTop.getChildren().addAll(hBoxTop,canvasHandBar2);
         vboxTop.getChildren().addAll(hBoxTop);
         hBoxTop.setAlignment(Pos.CENTER);
         //top menu ready
@@ -169,5 +172,9 @@ public class Game {
         graphic1.fillRect(0,0,100*percentage1,20);
         graphic2.setFill(Color.RED);
         graphic2.fillRect(0,0,100*percentage2,20);
+    }
+
+    public GraphicsContext getGraphicHand1() {
+        return graphicHand1;
     }
 }
