@@ -133,16 +133,18 @@ public class Battlefield {
     }
     public void startGame() {
         Image image = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
-        drawImageOnXY(0,0,image);
-        drawImageOnXY(0,1,image);
-        drawImageOnXY(1,0,image);
-        drawImageOnXY(1,1,image);
-        drawImageOnXY(2,0,image);
-        drawImageOnXY(2,1,image);
-        drawImageOnXY(3,0,image);
-        drawImageOnXY(3,1,image);
-        drawImageOnXY(4,0,image);
-        drawImageOnXY(4,1,image);
+        GraphicsContext mainGraphic = game.getMainGraphic();
+        ImageAdapter.setMonsterOn5(mainGraphic,image);
+        ImageAdapter.setMonsterOn4(mainGraphic,image);
+        ImageAdapter.setMonsterOn3(mainGraphic,image);
+        ImageAdapter.setMonsterOn2(mainGraphic,image);
+        ImageAdapter.setMonsterOn1(mainGraphic,image);
+        ImageAdapter.setSpellOrTrapOn5(mainGraphic,image);
+        ImageAdapter.setSpellOrTrapOn4(mainGraphic,image);
+        ImageAdapter.setSpellOrTrapOn3(mainGraphic,image);
+        ImageAdapter.setSpellOrTrapOn2(mainGraphic,image);
+        ImageAdapter.setSpellOrTrapOn1(mainGraphic,image);
+
         countDraw6Cards++;
         //shuffling the cards
         Collections.shuffle(turn.field.deck);
@@ -152,7 +154,7 @@ public class Battlefield {
     }
     public void drawImageOnXY(int x,int y,Image image){
         GraphicsContext mainGraphic = game.getMainGraphic();
-        mainGraphic.drawImage(image,85+68*x,230+80*y,75,77);
+        mainGraphic.drawImage(image,85+68*x,230+82*y,75,80);
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
