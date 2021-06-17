@@ -20,8 +20,8 @@ public class Game {
     final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
     final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
     Image backGroundIMG = new Image(backGroundPath);
-    static Canvas canvas = new Canvas(400, 400);
-    static GraphicsContext graphic = canvas.getGraphicsContext2D();
+    Canvas canvas = new Canvas(400, 400);
+    GraphicsContext graphic = canvas.getGraphicsContext2D();
     private Scene gameScene;
     private int defaultSize = 20;
     Canvas canvasHealthBar1 = new Canvas(100,15);
@@ -176,5 +176,9 @@ public class Game {
 
     public GraphicsContext getGraphicHand1() {
         return graphicHand1;
+    }
+
+    public GraphicsContext getMainGraphic() {
+        return graphic;
     }
 }
