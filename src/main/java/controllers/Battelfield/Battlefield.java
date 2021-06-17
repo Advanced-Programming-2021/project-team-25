@@ -2,6 +2,9 @@ package controllers.Battelfield;
 
 import controllers.Regex;
 import controllers.ShowCard;
+import javafx.scene.canvas.GraphicsContext;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import models.AI;
 import models.Card;
 import models.CardStufs.FaceUp;
@@ -16,11 +19,10 @@ import models.SpellAndTrap.SupplySquad;
 import view.Game;
 import view.Responses;
 import view.UserInterface;
+import view.menus.ShopMenu;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
-import java.util.Random;
+import java.awt.*;
+import java.util.*;
 import java.util.regex.Matcher;
 
 import static controllers.ShowCard.showCard;
@@ -42,13 +44,17 @@ public class Battlefield {
     public Monster attackedMonster;
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
-
+    private Game game;
     public Battlefield(Duelist duelist1, Duelist duelist2) {
-        Game.getInstance().runGame(duelist1,duelist2);
         whoStart(duelist1, duelist2);
+        game = new Game(turn,opponent);
+        game.runGame();
         startGame();
-        showBattleField();
-        runBattleField();
+        // need something to refresh the board
+
+        //showBattleField();
+
+        //runBattleField();
     }
 
     //getter methods
@@ -131,7 +137,7 @@ public class Battlefield {
         Collections.shuffle(turn.field.deck);
         //draw 6 cards for opponent and turn
         for (int i = 0; i < 6; i++)
-            addCardToPlayersHands(turn);
+            addCardToPlayersHands(turn,i);
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
@@ -167,15 +173,34 @@ public class Battlefield {
     }
 
     //draw
-    private void addCardToPlayersHands(Duelist turn) {
+    private void addCardToPlayersHands(Duelist turn,int i) {
         turn.field.hand.add(turn.field.deck.get(0));
-        UserInterface.printResponse("new card added to the hand: " + turn.field.deck.get(0).getName());
+//        UserInterface.printResponse("new card added to the hand: " + turn.field.deck.get(0).getName());
+        GraphicsContext graphic = game.getGraphicHand1();
+        ArrayList<String> allCards = showAllCardsForGraphic();
+        Image image2 = null;
+        if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+        else
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+        graphic.drawImage(image2, 120 * i,10, 200, 70);
+
         turn.field.deck.remove(0);
+    }
+    public ArrayList<String> showAllCardsForGraphic (){
+        ArrayList<String> allCards = new ArrayList<>();
+        for (Map.Entry<String, Card> entry: Card.allCards.entrySet()){
+            String key = entry.getKey();
+            allCards.add(key.replace(" ",""));
+        }
+        Collections.sort(allCards);
+
+        return allCards;
     }
     public void drawCard() {
         if (turn.field.deck.size() > 0) {
             if (changedTurnTime >= 2 && turn.field.hand.size()<6) {
-                addCardToPlayersHands(turn);
+                addCardToPlayersHands(turn,turn.field.hand.size());
             }
         } else winner = opponent;
     }
