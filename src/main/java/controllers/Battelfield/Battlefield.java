@@ -16,6 +16,7 @@ import models.Monster.Monster;
 import models.Monster.Scanner;
 import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
+
 import view.Game;
 import view.Responses;
 import view.UserInterface;
@@ -24,8 +25,6 @@ import view.menus.ShopMenu;
 import java.awt.*;
 import java.util.*;
 import java.util.regex.Matcher;
-
-import static controllers.ShowCard.showCard;
 
 public class Battlefield {
 

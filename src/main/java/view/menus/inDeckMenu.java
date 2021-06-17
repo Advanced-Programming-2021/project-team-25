@@ -111,6 +111,10 @@ public class inDeckMenu {
             Text activeDeckText = new Text("َX" + map.get(cardName));
             activeDeckText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
             gridPane.add(activeDeckText,2,i);
+
+            Text numberInDeckText = new Text("َX" + Deck.getNumberOfCardsInWholeDeck(deck.getDeckName(), cardName));
+            numberInDeckText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
+            gridPane.add(numberInDeckText,3,i);
         } else {
             ImageView imageView2 = new ImageView(new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + cardName + ".jpg")).toExternalForm(), 80, 100, false, false));
             imageView2.setOnMouseClicked(mouseEvent -> addFunc(borderPane, vBox, cardName));
@@ -123,6 +127,10 @@ public class inDeckMenu {
             Text activeDeckText = new Text("َX" + map.get(cardName));
             activeDeckText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
             gridPane.add(activeDeckText,2,i);
+
+            Text numberInDeckText = new Text("َX" + Deck.getNumberOfCardsInWholeDeck(deck.getDeckName(), cardName));
+            numberInDeckText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
+            gridPane.add(numberInDeckText,3,i);
         }
     }
 
