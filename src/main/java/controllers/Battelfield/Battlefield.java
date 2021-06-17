@@ -152,7 +152,7 @@ public class Battlefield {
     }
     public void drawImageOnXY(int x,int y,Image image){
         GraphicsContext mainGraphic = game.getMainGraphic();
-        mainGraphic.drawImage(image,85+75*x,230+75*y,75,75);
+        mainGraphic.drawImage(image,85+68*x,230+80*y,75,77);
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
