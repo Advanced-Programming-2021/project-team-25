@@ -165,7 +165,7 @@ public class Game {
         return vboxTop;
     }
 
-    private void refreshHealthBar(Duelist duelist1, Duelist duelist2) {
+    public void refreshHealthBar(Duelist duelist1, Duelist duelist2) {
         float percentage1 =((float) duelist1.LP/80)/100;
         float percentage2 =((float) duelist2.LP/80)/100;
         graphic1.setFill(Color.RED);
