@@ -132,12 +132,27 @@ public class Battlefield {
         }
     }
     public void startGame() {
+        Image image = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+        drawImageOnXY(0,0,image);
+        drawImageOnXY(0,1,image);
+        drawImageOnXY(1,0,image);
+        drawImageOnXY(1,1,image);
+        drawImageOnXY(2,0,image);
+        drawImageOnXY(2,1,image);
+        drawImageOnXY(3,0,image);
+        drawImageOnXY(3,1,image);
+        drawImageOnXY(4,0,image);
+        drawImageOnXY(4,1,image);
         countDraw6Cards++;
         //shuffling the cards
         Collections.shuffle(turn.field.deck);
         //draw 6 cards for opponent and turn
         for (int i = 0; i < 6; i++)
             addCardToPlayersHands(turn,i);
+    }
+    public void drawImageOnXY(int x,int y,Image image){
+        GraphicsContext mainGraphic = game.getMainGraphic();
+        mainGraphic.drawImage(image,85+75*x,230+75*y,75,75);
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
@@ -175,10 +190,9 @@ public class Battlefield {
     //draw
     private void addCardToPlayersHands(Duelist turn,int i) {
         turn.field.hand.add(turn.field.deck.get(0));
-//        UserInterface.printResponse("new card added to the hand: " + turn.field.deck.get(0).getName());
+
         GraphicsContext graphic = game.getGraphicHand1();
-        ArrayList<String> allCards = showAllCardsForGraphic();
-        Image image2 = null;
+        Image image2;
         if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
             image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
         else
@@ -186,16 +200,6 @@ public class Battlefield {
         graphic.drawImage(image2, 120 * i,10, 200, 70);
 
         turn.field.deck.remove(0);
-    }
-    public ArrayList<String> showAllCardsForGraphic (){
-        ArrayList<String> allCards = new ArrayList<>();
-        for (Map.Entry<String, Card> entry: Card.allCards.entrySet()){
-            String key = entry.getKey();
-            allCards.add(key.replace(" ",""));
-        }
-        Collections.sort(allCards);
-
-        return allCards;
     }
     public void drawCard() {
         if (turn.field.deck.size() > 0) {
