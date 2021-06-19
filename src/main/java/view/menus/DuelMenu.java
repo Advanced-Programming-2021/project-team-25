@@ -93,7 +93,7 @@ public class DuelMenu {
         });
         checkBoxEvent(gameWithAi, lblUsername, txtRival);
 
-        Scene scene = new Scene(gridPane ,600 ,600);
+        Scene scene = new Scene(gridPane ,800 ,650);
         String style= Objects.requireNonNull(this.getClass().getResource("duel/duel.css")).toExternalForm();
         scene.getStylesheets().add(style);
         stage.centerOnScreen();
