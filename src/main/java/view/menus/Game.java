@@ -1,6 +1,9 @@
-package view;
+package view.menus;
 
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Pos;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -12,15 +15,20 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import models.Duelist;
+import view.Main;
 
+import java.io.IOException;
+import java.net.URL;
 import java.util.Objects;
 
 public class Game {
     final String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
     final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
     final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
+    public Canvas canvas= new Canvas(400, 400);
+    public ImageView imgDuelist1;
     Image backGroundIMG = new Image(backGroundPath);
-    Canvas canvas = new Canvas(400, 400);
+
     GraphicsContext graphic = canvas.getGraphicsContext2D();
     private Scene gameScene;
     private int defaultSize = 20;
@@ -41,6 +49,14 @@ public class Game {
         this.opponent = opponent;
     }
     public void runGame(){
+//        try {
+//            AnchorPane root = FXMLLoader.load(this.getClass().getResource("/view/menus/game/Game.fxml"));
+//            Scene scene = new Scene(root);
+//            Main.stage.setScene(scene);
+//            Main.stage.show();
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
         //Default player is duelist1
         Stage stage = Main.stage;
         //Controller is Battlefield
@@ -87,6 +103,7 @@ public class Game {
         for(int row=0;row<6;row++){
             graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
         }
+
         HBox hBoxDown = new HBox();
         hBoxDown.getChildren().addAll(canvasHandBar1);
         hBoxDown.setAlignment(Pos.CENTER);
@@ -119,7 +136,7 @@ public class Game {
         refreshHealthBar(duelist1, duelist2);
 
 
-        ImageView imgDuelist1 = new ImageView("file:"+ duelist1.getUser().getUsername()+".png");
+        imgDuelist1 = new ImageView("file:"+ duelist1.getUser().getUsername()+".png");
         imgDuelist1.setFitHeight(100);
         imgDuelist1.setFitWidth(100);
         ImageView imgDuelist2 = new ImageView("file:"+ duelist2.getUser().getUsername()+".png");
@@ -180,5 +197,9 @@ public class Game {
 
     public GraphicsContext getMainGraphic() {
         return graphic;
+    }
+
+    public Scene getGameScene() {
+        return gameScene;
     }
 }

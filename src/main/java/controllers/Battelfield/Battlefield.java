@@ -17,7 +17,8 @@ import models.Monster.Scanner;
 import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
 
-import view.Game;
+import view.Main;
+import view.menus.Game;
 import view.Responses;
 import view.UserInterface;
 import view.menus.ShopMenu;
@@ -44,13 +45,17 @@ public class Battlefield {
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
     private Game game;
+
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
         game = new Game(turn,opponent);
         game.runGame();
         startGame();
         // need something to refresh the board
-
+        while (winner == null){
+            game.runGame();
+            Main.stage.setScene(game.getGameScene());
+        }
         //showBattleField();
 
         //runBattleField();
