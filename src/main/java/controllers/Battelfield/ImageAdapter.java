@@ -4,6 +4,7 @@ import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 
 public class ImageAdapter {
+
     private final static int widthImg = 75;
     private final static int heightImg = 80;
     private final static int heightFromTopTurnImg = 222;

@@ -1151,6 +1151,7 @@ public class Battlefield {
             ImageAdapter.setMonsterOn5(graphicsContext, image);
         }
         game.initGraveYardAndFieldZone();
+
     }
 
     private Image getImageOfOpponent(int i) {
