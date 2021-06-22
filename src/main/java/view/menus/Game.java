@@ -79,7 +79,7 @@ public class Game {
         base.getChildren().add(canvas);
         root.setCenter(base);
         //make left buttons
-        VBox vBoxLeft = makeLeftBar();
+        VBox vBoxLeft = makeLeftBar(turn, opponent);
 
         //make right buttons
         VBox vBoxRight = makeRightBar();
@@ -134,32 +134,78 @@ public class Game {
         return hBoxDown;
     }
 
-    private VBox makeLeftBar() {
-
-        Circle cMain = new Circle(150, 45, 25);
-        cMain.setFill(new ImagePattern(mainPhaseIMG));
-        Circle cEnd = new Circle(150, 105, 25);
-        cEnd.setFill(new ImagePattern(endPhaseIMG));
-        Circle cDraw = new Circle(150, 165, 25);
-        cDraw.setFill(new ImagePattern(drawPhaseIMG));
-        Circle cBattle = new Circle(150, 225, 25);
-        cBattle.setFill(new ImagePattern(battlePhaseIMG));
-        Circle cDuel = new Circle(150, 285, 25);
-        cDuel.setFill(new ImagePattern(duelPhaseIMG));
-        Circle cStandby = new Circle(150, 345, 25);
-        cStandby.setFill(new ImagePattern(standbyPhaseIMG));
+    private VBox makeLeftBar(Duelist duelist1, Duelist duelist2) {
+        refreshHealthBar(duelist1, duelist2);
 
 
-        Button btnExit = new Button("Exit!");
-        Button btnNextPhase = new Button("next Phase!");
-        Button btnMuteSounds = new Button("mute sounds");
-        btnNextPhase.setOnMouseClicked(e->{
+        ImageView imgDuelist1 = new ImageView("file:"+ duelist1.getUser().getUsername()+".png");
+        imgDuelist1.setFitHeight(100);
+        imgDuelist1.setFitWidth(100);
+        ImageView imgDuelist2 = new ImageView("file:"+ duelist2.getUser().getUsername()+".png");
+        imgDuelist2.setFitHeight(100);
+        imgDuelist2.setFitWidth(100);
 
-        });
-        VBox vBoxLeft = new VBox();
-        vBoxLeft.setAlignment(Pos.CENTER);
-        vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
-        return vBoxLeft;
+        VBox vbox1 = new VBox();
+        Label lblDuelist1Name = new Label(duelist1.getUser().getNickName());
+        lblDuelist1Name.setAlignment(Pos.CENTER);
+        Label lblDuelist1LP = new Label(" "+ duelist1.LP);
+        lblDuelist1LP.setAlignment(Pos.CENTER);
+
+        VBox hBoxUserDetail1 = new VBox();
+        hBoxUserDetail1.getChildren().addAll(lblDuelist1Name,lblDuelist1LP);
+        VBox vboxUserDetail1 = new VBox();
+        vboxUserDetail1.setSpacing(30);
+        vboxUserDetail1.getChildren().addAll(hBoxUserDetail1,canvasHealthBar1);
+
+        vbox1.getChildren().addAll(imgDuelist1,vboxUserDetail1);
+        vbox1.setSpacing(20);
+
+        VBox vbox2 = new VBox();
+        Label lblDuelist2Name = new Label(duelist2.getUser().getNickName());
+        lblDuelist2Name.setAlignment(Pos.CENTER);
+        Label lblDuelist2LP = new Label(" "+ duelist2.LP);
+        lblDuelist2LP.setAlignment(Pos.CENTER);
+
+        VBox hBoxUserDetail2 = new VBox();
+        hBoxUserDetail2.getChildren().addAll(lblDuelist2Name,lblDuelist2LP);
+        VBox vboxUserDetail2 = new VBox();
+        vboxUserDetail2.setSpacing(30);
+        vboxUserDetail2.getChildren().addAll(hBoxUserDetail2,canvasHealthBar2);
+
+        vbox2.getChildren().addAll(vboxUserDetail2,imgDuelist2);
+        vbox2.setSpacing(20);
+        VBox hBoxTop = new VBox();
+        VBox vboxTop = new VBox();
+        hBoxTop.getChildren().addAll(vbox1,vbox2);
+        hBoxTop.setSpacing(100);
+        vboxTop.getChildren().addAll(hBoxTop);
+        hBoxTop.setAlignment(Pos.CENTER);
+        //top menu ready
+        return vboxTop;
+//        Circle cMain = new Circle(150, 45, 25);
+//        cMain.setFill(new ImagePattern(mainPhaseIMG));
+//        Circle cEnd = new Circle(150, 105, 25);
+//        cEnd.setFill(new ImagePattern(endPhaseIMG));
+//        Circle cDraw = new Circle(150, 165, 25);
+//        cDraw.setFill(new ImagePattern(drawPhaseIMG));
+//        Circle cBattle = new Circle(150, 225, 25);
+//        cBattle.setFill(new ImagePattern(battlePhaseIMG));
+//        Circle cDuel = new Circle(150, 285, 25);
+//        cDuel.setFill(new ImagePattern(duelPhaseIMG));
+//        Circle cStandby = new Circle(150, 345, 25);
+//        cStandby.setFill(new ImagePattern(standbyPhaseIMG));
+//
+//
+//        Button btnExit = new Button("Exit!");
+//        Button btnNextPhase = new Button("next Phase!");
+//        Button btnMuteSounds = new Button("mute sounds");
+//        btnNextPhase.setOnMouseClicked(e->{
+//
+//        });
+//        VBox vBoxLeft = new VBox();
+//        vBoxLeft.setAlignment(Pos.CENTER);
+//        vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
+//        return vBoxLeft;
     }
 
     private VBox makeRightBar() {
