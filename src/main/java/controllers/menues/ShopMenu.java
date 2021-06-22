@@ -42,12 +42,17 @@ public class ShopMenu {
             else if (Regex.getMatcher(command, Regex.shopShowAll).matches()) showAllCards();
             else if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
             else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
-            else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
-            else UserInterface.printResponse(Responses.INVALID_COMMAND);
+            else if (Regex.getMatcher(command, Regex.menuExit).matches()) {
+                currentMenu = Menu.MAIN_MENU;
+                break;
+            }
+            else {
+                UserInterface.printResponse(Responses.INVALID_COMMAND);
+            }
         }
     }
 
-    private void buyCard(Matcher matcher){
+    public void buyCard(Matcher matcher){
         String cardsName = matcher.group(1);
         if (!Card.allCards.containsKey(cardsName)) UserInterface.printResponse("there is no card with this name");
         else{
@@ -65,7 +70,7 @@ public class ShopMenu {
         }
     }
 
-    private void showAllCards(){
+    public void showAllCards(){
         ArrayList<String> allCards = new ArrayList<>();
         for (Map.Entry<String, Card> entry: Card.allCards.entrySet()){
             String key = entry.getKey();
@@ -80,7 +85,7 @@ public class ShopMenu {
         }
     }
 
-    private void increaseMoney(Matcher matcher){
+    public void increaseMoney(Matcher matcher){
         int amount = Integer.parseInt(matcher.group(1));
         currUser.money += amount;
         DataBase.saveTheUserList(User.getUsers());

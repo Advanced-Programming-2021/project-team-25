@@ -400,32 +400,22 @@ public class Battlefield {
             //loading the monster from selected card
             Monster monster = (Monster) selectedCard;
             //checking the correct phase
-            if (!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
-                UserInterface.printResponse("action not allowed in this phase");
+            if (!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE)) UserInterface.printResponse("action not allowed in this phase");
                 //checking is the zone filled
-            else if (getSizeOfMonsterZone() == 5)
-                UserInterface.printResponse("monster card zone is full");
+            else if (getSizeOfMonsterZone() == 5) UserInterface.printResponse("monster card zone is full");
                 //checking if turn can summon
-            else if (turn.hasPutMonster)
-                UserInterface.printResponse("you already summoned/set on this turn");
+            else if (turn.hasPutMonster) UserInterface.printResponse("you already summoned/set on this turn");
                 //exception for King Barbaros
-            else if (monster.getName().equals("Beast King Barbaros"))
-                summonKingBarbaros(monster);
+            else if (monster.getName().equals("Beast King Barbaros")) summonKingBarbaros(monster);
                 //exception for gate guardian
-            else if (monster.getName().equals("Gate Guardian"))
-                summonOrSetGateGuardian("summoned successfully");
+            else if (monster.getName().equals("Gate Guardian")) summonOrSetGateGuardian("summoned successfully");
 
-            else if (monster.getName().equals("Command Knight"))
-                summonOrFlipSummonCommandKnight("summoned successfully");
+            else if (monster.getName().equals("Command Knight")) summonOrFlipSummonCommandKnight("summoned successfully");
                 //summon level 5 or 6 monsters
-            else if (monster.getLevel() == 5 || monster.getLevel() == 6) {
-                summonLevel6Or5("summoned successfully");
-                selectedCard = null;
+            else if (monster.getLevel() == 5 || monster.getLevel() == 6) { summonLevel6Or5("summoned successfully");selectedCard = null;
             }
             //summon level 7 , 8 monsters
-            else if (monster.getLevel() == 7 || monster.getLevel() == 8) {
-                summonLevel8Or7(monster, "summoned successfully");
-                selectedCard = null;
+            else if (monster.getLevel() == 7 || monster.getLevel() == 8) { summonLevel8Or7(monster, "summoned successfully");selectedCard = null;
             }
             //normal summon
             else if (monster.getLevel() <= 4) {

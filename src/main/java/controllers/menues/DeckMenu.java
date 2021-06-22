@@ -52,8 +52,8 @@ public class DeckMenu {
             else if ((matcher = Regex.getMatcher(command, Regex.deckCreate)).matches()) createDeck(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckDelete)).matches()) deleteDeck(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckSetActive)).matches()) setActive(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.deckAddCardToSide)).matches()) addCardToSide(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckAddCard)).matches()) addCard(matcher);
+            else if ((matcher = Regex.getMatcher(command, Regex.deckAddCardToSide)).matches()) addCardToSide(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCardFromSide)).matches()) removeCardFromSide(matcher);
             else if ((matcher = Regex.getMatcher(command, Regex.deckRemoveCard)).matches()) removeCard(matcher);
             else if (Regex.getMatcher(command, Regex.deckShowAll).matches()) deckShowAll();
@@ -165,7 +165,7 @@ public class DeckMenu {
     private boolean numberOfCards(String cardName ,String deckName){
         int i = 0;
         for (String name: currUser.cardsBought)
-            if(name.equals(cardName)) i++;
+            if (name.equals(cardName)) i++;
 
         return i == Deck.getNumberOfCardsInWholeDeck(deckName, cardName);
     }

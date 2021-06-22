@@ -19,7 +19,7 @@ public class Regex {
     public static String deckDelete = "^deck delete (.+)$";
     public static String deckSetActive = "^deck set-activate (.+)$";
     public static String deckAddCardToSide = "^deck add-card (--card|-c) (.+) (--deck|-d) (.+) (--side|-s)$";
-    public static String deckAddCard = "^deck add-card (--card|-c) (.+) (--deck|-d) (.+)$";
+    public static String deckAddCard = "^deck add-card (--card|-c) (.+) (--deck|-d) ([^ ]+)$";
     public static String deckRemoveCardFromSide = "^deck rm-card (--card|-c) (.+) (--deck|-d) (.+) --side$";
     public static String deckRemoveCard = "^deck rm-card (--card|-c) (.+) (--deck|-d) (.+)$";
     public static String deckShowAll = "^deck show (--all|-a)$";

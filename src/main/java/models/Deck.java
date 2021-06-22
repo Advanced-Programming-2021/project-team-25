@@ -60,9 +60,9 @@ public class Deck implements Serializable {
 
     public static boolean isValid(String deckName){
         return (
+                Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.size() <= 15 &&
                 Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() <= 60 &&
-                Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() >= 40 &&
-                Objects.requireNonNull(Deck.getDeckByName(deckName)).sideDeck.size() <= 15
+                Objects.requireNonNull(Deck.getDeckByName(deckName)).mainDeck.size() >= 40
         );
     }
 }

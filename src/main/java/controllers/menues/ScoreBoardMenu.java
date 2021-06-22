@@ -72,7 +72,7 @@ public class ScoreBoardMenu {
         showScoreBoard(users);
     }
     @Test
-    void addition() {
+    public void addition() {
         String expected = "1- danial : 10000\n" +
                 "2- alireza : 1000\n" +
                 "2- alireza : 1000\n" +
