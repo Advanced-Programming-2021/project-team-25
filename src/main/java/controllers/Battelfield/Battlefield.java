@@ -17,13 +17,10 @@ import models.Monster.Scanner;
 import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
 
-import view.Main;
 import view.menus.Game;
 import view.Responses;
 import view.UserInterface;
-import view.menus.ShopMenu;
 
-import java.awt.*;
 import java.util.*;
 import java.util.regex.Matcher;
 
@@ -34,7 +31,7 @@ public class Battlefield {
     private Duelist opponent;
     private Phase phase = Phase.DRAW_PHASE;
     private boolean isRitualSummoned = false;
-    private Duelist winner;
+    public Duelist winner;
     private boolean isTurnChanged = false;
     private int countDraw6Cards = 0;
     private SpellAndTrap currSpell = null;
@@ -48,17 +45,9 @@ public class Battlefield {
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
-        game = new Game(turn,opponent);
+        game = new Game(this,turn,opponent);
         game.runGame();
         startGame();
-        // need something to refresh the board
-        while (winner == null){
-            game.runGame();
-            Main.stage.setScene(game.getGameScene());
-        }
-        //showBattleField();
-
-        //runBattleField();
     }
 
     //getter methods
@@ -196,15 +185,27 @@ public class Battlefield {
     //draw
     private void addCardToPlayersHands(Duelist turn,int i) {
         turn.field.hand.add(turn.field.deck.get(0));
-
-        GraphicsContext graphic = game.getGraphicHand1();
         Image image2;
+        ImageView img;
+        Card card = turn.field.deck.get(0);
         if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
         else
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
-        graphic.drawImage(image2, 120 * i,10, 200, 70);
-
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
+        img = new ImageView(image2);
+        img.setOnMouseClicked(event -> {
+            UserInterface.printResponse("Set Or Summon");
+            String num = UserInterface.getUserInput();
+            if (num.equals("Set")) {
+                selectedCard = card;
+                set();
+            } else {
+                selectedCard = card;
+                summon();
+            }
+        });
+        //graphic.drawImage(image2, 120 * i,10, 200, 70);
+        game.hand.getChildren().add(img);
         turn.field.deck.remove(0);
     }
     public void drawCard() {

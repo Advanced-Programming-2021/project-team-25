@@ -1,9 +1,7 @@
 package view.menus;
 
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
+import controllers.Battelfield.Battlefield;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -17,46 +15,38 @@ import javafx.stage.Stage;
 import models.Duelist;
 import view.Main;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.Objects;
 
 public class Game {
     final String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
-    final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
-    final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
+//    final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
+//    final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
     public Canvas canvas= new Canvas(400, 400);
     public ImageView imgDuelist1;
     Image backGroundIMG = new Image(backGroundPath);
 
     GraphicsContext graphic = canvas.getGraphicsContext2D();
     private Scene gameScene;
-    private int defaultSize = 20;
+    private final int defaultSize = 20;
+
     Canvas canvasHealthBar1 = new Canvas(100,15);
     Canvas canvasHealthBar2 = new Canvas(100,15);
-    Canvas canvasHandBar1 = new Canvas(900,100);
-    Canvas canvasHandBar2 = new Canvas(900,100);
     GraphicsContext graphic1 = canvasHealthBar1.getGraphicsContext2D();
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
-    GraphicsContext graphicHand1 = canvasHandBar1.getGraphicsContext2D();
-    GraphicsContext graphicHand2 = canvasHandBar2.getGraphicsContext2D();
+
+    public HBox hand = new HBox();
     BorderPane root = new BorderPane();
     StackPane base = new StackPane();
     Duelist turn, opponent;
+    Battlefield battlefield;
 
-    public Game(Duelist turn, Duelist opponent){
+    public Game(Battlefield battlefield, Duelist turn, Duelist opponent){
         this.turn = turn;
         this.opponent = opponent;
+        this.battlefield = battlefield;
     }
+
     public void runGame(){
-//        try {
-//            AnchorPane root = FXMLLoader.load(this.getClass().getResource("/view/menus/game/Game.fxml"));
-//            Scene scene = new Scene(root);
-//            Main.stage.setScene(scene);
-//            Main.stage.show();
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
         //Default player is duelist1
         Stage stage = Main.stage;
         //Controller is Battlefield
@@ -72,9 +62,8 @@ public class Game {
         //make up top things
         VBox vBoxTop = makeTopBar(turn, opponent);
 
-
         //make down things (hand in here)
-        HBox hBoxDown = makeDownBar();
+        HBox hBoxDown = hand;
 
         root.setRight(vBoxRight);
         root.setLeft(vBoxLeft);
@@ -99,24 +88,19 @@ public class Game {
         graphic.drawImage(backGroundIMG,0,0,500,450);
     }
 
-    private HBox makeDownBar() {
-        for(int row=0;row<6;row++){
-            graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
-        }
-
-        HBox hBoxDown = new HBox();
-        hBoxDown.getChildren().addAll(canvasHandBar1);
-        hBoxDown.setAlignment(Pos.CENTER);
-        return hBoxDown;
-    }
-
     private VBox makeLeftBar() {
-        Button btnExit = new Button("Exit!");
+        Button btnExit = new Button("Surrender");
+        btnExit.setOnAction(event -> battlefield.winner = opponent);
+
         Button btnNextPhase = new Button("next Phase!");
+        btnNextPhase.setOnAction(event -> battlefield.nextPhase());
+
         Button btnMuteSounds = new Button("mute sounds");
+
         VBox vBoxLeft = new VBox();
         vBoxLeft.setAlignment(Pos.CENTER);
         vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
+        vBoxLeft.setSpacing(15);
         return vBoxLeft;
     }
 
@@ -191,15 +175,8 @@ public class Game {
         graphic2.fillRect(0,0,100*percentage2,20);
     }
 
-    public GraphicsContext getGraphicHand1() {
-        return graphicHand1;
-    }
-
     public GraphicsContext getMainGraphic() {
         return graphic;
     }
 
-    public Scene getGameScene() {
-        return gameScene;
-    }
 }

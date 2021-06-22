@@ -73,10 +73,14 @@ public class DuelMenuController {
         Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
         Battlefield battlefield = new Battlefield(duelist1, duelist2);
 
+        //finishround1(duelist1Wins, duelist2Wins, duelist1, duelist2, battlefield);
+    }
+
+    private void finishround1(int duelist1Wins, int duelist2Wins, Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
         //round1Finish
         if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
         else duelist2Wins++;
-        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " +  duelist2Wins);
+        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " + duelist2Wins);
 
         //matchFinish
         if(duelist1Wins == 1){
