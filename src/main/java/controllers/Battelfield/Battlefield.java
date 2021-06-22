@@ -45,7 +45,7 @@ public class Battlefield {
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
-        game = new Game(this,turn,opponent);
+        game = new Game(turn,opponent);
         game.runGame();
         startGame();
     }
@@ -183,8 +183,9 @@ public class Battlefield {
     }
 
     //draw
-    private void addCardToPlayersHands(Duelist turn,int i) {
-        turn.field.hand.add(turn.field.deck.get(0));
+   /* private void addCardToPlayersHands(Duelist turn,int i) {
+
+       *//* turn.field.hand.add(turn.field.deck.get(0));
         Image image2;
         ImageView img;
         Card card = turn.field.deck.get(0);
@@ -206,6 +207,19 @@ public class Battlefield {
         });
         //graphic.drawImage(image2, 120 * i,10, 200, 70);
         game.hand.getChildren().add(img);
+        turn.field.deck.remove(0);*//*
+    }*/
+    private void addCardToPlayersHands(Duelist turn,int i) {
+        turn.field.hand.add(turn.field.deck.get(0));
+
+        GraphicsContext graphic = game.getGraphicHand1();
+        Image image2;
+        if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+        else
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+        graphic.drawImage(image2, 120 * i,10, 200, 70);
+
         turn.field.deck.remove(0);
     }
     public void drawCard() {
@@ -1137,5 +1151,9 @@ public class Battlefield {
             ImageAdapter.setMonsterOn5(graphicsContext, image);
         }
         game.initGraveYardAndFieldZone();
+    }
+
+    private Image getImageOfOpponent(int i) {
+        return new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + opponent.field.monsterZone.get(i).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
     }
 }
