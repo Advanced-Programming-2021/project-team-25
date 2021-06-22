@@ -1097,4 +1097,45 @@ public class Battlefield {
         int amount = Integer.parseInt(matcher.group(1));
         turn.LP += amount ;
     }
+                                            
+    public void rotateBoard(){
+        Image imageBase = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm());
+        Image image;
+
+        GraphicsContext graphicsContext = game.getMainGraphic();
+        graphicsContext.drawImage(game.getBackGroundIMG(),0,0,500,450);
+
+        if (turn.field.monsterZone.get(0) != null)
+            ImageAdapter.setMonsterOn4Rival(graphicsContext, imageBase);
+        else if (turn.field.monsterZone.get(1) != null)
+            ImageAdapter.setMonsterOn2Rival(graphicsContext, imageBase);
+        else if (turn.field.monsterZone.get(2) != null)
+            ImageAdapter.setMonsterOn1Rival(graphicsContext, imageBase);
+        else if (turn.field.monsterZone.get(3) != null)
+            ImageAdapter.setMonsterOn3Rival(graphicsContext, imageBase);
+        else if (turn.field.monsterZone.get(4) != null)
+            ImageAdapter.setMonsterOn5Rival(graphicsContext, imageBase);
+
+        if (opponent.field.monsterZone.get(0) != null) {
+            image = getImageOfOpponent(0);
+            ImageAdapter.setMonsterOn5(graphicsContext, image);
+        }
+        else if (opponent.field.monsterZone.get(1) != null) {
+            image = getImageOfOpponent(1);
+            ImageAdapter.setMonsterOn3(graphicsContext, image);
+        }
+        else if (opponent.field.monsterZone.get(2) != null) {
+            image = getImageOfOpponent(2);
+            ImageAdapter.setMonsterOn2(graphicsContext, image);
+        }
+        else if (opponent.field.monsterZone.get(3) != null) {
+            image = getImageOfOpponent(3);
+            ImageAdapter.setMonsterOn1(graphicsContext, image);
+        }
+        else if (opponent.field.monsterZone.get(4) != null) {
+            image = getImageOfOpponent(4);
+            ImageAdapter.setMonsterOn5(graphicsContext, image);
+        }
+        game.initGraveYardAndFieldZone();
+    }
 }
