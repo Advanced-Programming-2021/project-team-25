@@ -1,6 +1,7 @@
 package view.menus;
 
 import controllers.Battelfield.ImageAdapter;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -9,6 +10,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
@@ -63,6 +65,13 @@ public class Game {
         this.opponent = opponent;
     }
     public void runGame(){
+        canvas.setOnMouseClicked(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent event) {
+                System.out.println(event.getSceneX());
+                System.out.println(event.getSceneY());
+            }
+        });
         //Default player is duelist1
         Stage stage = Main.stage;
         //Controller is Battlefield
@@ -115,9 +124,9 @@ public class Game {
     }
 
     private HBox makeDownBar() {
-//        for(int row=0;row<6;row++){
-//            graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
-//        }
+        for(int row=0;row<6;row++){
+            graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
+        }
 
         HBox hBoxDown = new HBox();
         hBoxDown.getChildren().addAll(canvasHandBar1);

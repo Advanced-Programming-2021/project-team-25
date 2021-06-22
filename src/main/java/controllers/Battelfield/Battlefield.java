@@ -138,6 +138,7 @@ public class Battlefield {
         ImageAdapter.setSpellOrTrapOn2(mainGraphic,image);
         ImageAdapter.setSpellOrTrapOn1(mainGraphic,image);
 
+        game.initGraveYardAndFieldZone();
         countDraw6Cards++;
         //shuffling the cards
         Collections.shuffle(turn.field.deck);
@@ -960,6 +961,7 @@ public class Battlefield {
         }
     }
     public int getIndex(int num) {
+        //1 in index 2
         if (num == 1) return 2;
         else if (num == 2) return 1;
         else if (num == 3) return 3;
@@ -1155,6 +1157,7 @@ public class Battlefield {
     }
 
     private Image getImageOfOpponent(int i) {
-        return new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + opponent.field.monsterZone.get(i).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+        return new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" +
+                opponent.field.monsterZone.get(i).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
     }
 }
