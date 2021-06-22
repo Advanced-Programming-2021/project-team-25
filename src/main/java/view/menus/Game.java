@@ -1,6 +1,6 @@
 package view.menus;
 
-import controllers.Battelfield.Battlefield;
+import controllers.Battelfield.ImageAdapter;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -11,6 +11,8 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
+import javafx.scene.paint.ImagePattern;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 import models.Duelist;
 import view.Main;
@@ -19,33 +21,47 @@ import java.util.Objects;
 
 public class Game {
     final String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
-//    final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
-//    final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
+    final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
+    final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
+    final String mainPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/Main.png")).toExternalForm();
+    final String endPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/EndPhase.png")).toExternalForm();
+    final String drawPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/DrawPhase.png")).toExternalForm();
+    final String battlePhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/BattlePhase.png")).toExternalForm();
+    final String duelPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/DuelPhase.png")).toExternalForm();
+    final String standbyPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/Standby.png")).toExternalForm();
+    final String graveYardPath = Objects.requireNonNull(this.getClass().getResource("elements/graveYard.png")).toExternalForm();
+    final String fieldPath = Objects.requireNonNull(this.getClass().getResource("elements/field.png")).toExternalForm();
+    Image mainPhaseIMG = new Image(mainPhasePath);
+    Image endPhaseIMG = new Image(endPhasePath);
+    Image drawPhaseIMG = new Image(drawPhasePath);
+    Image battlePhaseIMG = new Image(battlePhasePath);
+    Image duelPhaseIMG = new Image(duelPhasePath);
+    Image standbyPhaseIMG = new Image(standbyPhasePath);
+    Image graveYardIMG = new Image(graveYardPath);
+    Image fieldIMG = new Image(fieldPath);
     public Canvas canvas= new Canvas(400, 400);
     public ImageView imgDuelist1;
     Image backGroundIMG = new Image(backGroundPath);
 
     GraphicsContext graphic = canvas.getGraphicsContext2D();
     private Scene gameScene;
-    private final int defaultSize = 20;
-
+    private int defaultSize = 20;
     Canvas canvasHealthBar1 = new Canvas(100,15);
     Canvas canvasHealthBar2 = new Canvas(100,15);
+    Canvas canvasHandBar1 = new Canvas(900,100);
+    Canvas canvasHandBar2 = new Canvas(900,100);
     GraphicsContext graphic1 = canvasHealthBar1.getGraphicsContext2D();
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
-
-    public HBox hand = new HBox();
+    GraphicsContext graphicHand1 = canvasHandBar1.getGraphicsContext2D();
+    GraphicsContext graphicHand2 = canvasHandBar2.getGraphicsContext2D();
     BorderPane root = new BorderPane();
     StackPane base = new StackPane();
     Duelist turn, opponent;
-    Battlefield battlefield;
 
-    public Game(Battlefield battlefield, Duelist turn, Duelist opponent){
+    public Game(Duelist turn, Duelist opponent){
         this.turn = turn;
         this.opponent = opponent;
-        this.battlefield = battlefield;
     }
-
     public void runGame(){
         //Default player is duelist1
         Stage stage = Main.stage;
@@ -62,8 +78,11 @@ public class Game {
         //make up top things
         VBox vBoxTop = makeTopBar(turn, opponent);
 
+        //init graveYard
+        initGraveYardAndFieldZone();
+
         //make down things (hand in here)
-        HBox hBoxDown = hand;
+        HBox hBoxDown = makeDownBar();
 
         root.setRight(vBoxRight);
         root.setLeft(vBoxLeft);
@@ -77,6 +96,13 @@ public class Game {
         stage.setScene(gameScene);
     }
 
+    public void initGraveYardAndFieldZone() {
+        ImageAdapter.setCardOnOpponentGraveYard(graphic,graveYardIMG);
+        ImageAdapter.setCardOnTurnGraveYard(graphic,graveYardIMG);
+        ImageAdapter.setCardOnOpponentFieldZone(graphic,fieldIMG);
+        ImageAdapter.setCardOnTurnFieldZone(graphic,fieldIMG);
+    }
+
     private void stylingGame() {
         // Set the width of the Canvas
         canvas.setWidth(500);
@@ -88,19 +114,42 @@ public class Game {
         graphic.drawImage(backGroundIMG,0,0,500,450);
     }
 
+    private HBox makeDownBar() {
+//        for(int row=0;row<6;row++){
+//            graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
+//        }
+
+        HBox hBoxDown = new HBox();
+        hBoxDown.getChildren().addAll(canvasHandBar1);
+        hBoxDown.setAlignment(Pos.CENTER);
+        return hBoxDown;
+    }
+
     private VBox makeLeftBar() {
-        Button btnExit = new Button("Surrender");
-        btnExit.setOnAction(event -> battlefield.winner = opponent);
 
+        Circle cMain = new Circle(150, 45, 25);
+        cMain.setFill(new ImagePattern(mainPhaseIMG));
+        Circle cEnd = new Circle(150, 105, 25);
+        cEnd.setFill(new ImagePattern(endPhaseIMG));
+        Circle cDraw = new Circle(150, 165, 25);
+        cDraw.setFill(new ImagePattern(drawPhaseIMG));
+        Circle cBattle = new Circle(150, 225, 25);
+        cBattle.setFill(new ImagePattern(battlePhaseIMG));
+        Circle cDuel = new Circle(150, 285, 25);
+        cDuel.setFill(new ImagePattern(duelPhaseIMG));
+        Circle cStandby = new Circle(150, 345, 25);
+        cStandby.setFill(new ImagePattern(standbyPhaseIMG));
+
+
+        Button btnExit = new Button("Exit!");
         Button btnNextPhase = new Button("next Phase!");
-        btnNextPhase.setOnAction(event -> battlefield.nextPhase());
-
         Button btnMuteSounds = new Button("mute sounds");
+        btnNextPhase.setOnMouseClicked(e->{
 
+        });
         VBox vBoxLeft = new VBox();
         vBoxLeft.setAlignment(Pos.CENTER);
         vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
-        vBoxLeft.setSpacing(15);
         return vBoxLeft;
     }
 
@@ -175,8 +224,19 @@ public class Game {
         graphic2.fillRect(0,0,100*percentage2,20);
     }
 
+    public GraphicsContext getGraphicHand1() {
+        return graphicHand1;
+    }
+
     public GraphicsContext getMainGraphic() {
         return graphic;
     }
 
+    public Image getBackGroundIMG() {
+        return backGroundIMG;
+    }
+
+    public Scene getGameScene() {
+        return gameScene;
+    }
 }
