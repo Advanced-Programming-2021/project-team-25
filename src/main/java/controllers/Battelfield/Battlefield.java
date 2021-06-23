@@ -145,6 +145,8 @@ public class Battlefield {
         //draw 6 cards for opponent and turn
         for (int i = 0; i < 6; i++)
             addCardToPlayersHands(turn,i);
+
+        showOpponentHand();
     }
     public void drawImageOnXY(int x,int y,Image image){
         GraphicsContext mainGraphic = game.getMainGraphic();
@@ -184,16 +186,19 @@ public class Battlefield {
     }
 
     //draw
-   /* private void addCardToPlayersHands(Duelist turn,int i) {
+    private void addCardToPlayersHands(Duelist turn,int i) {
+        turn.field.hand.add(turn.field.deck.get(0));
+        turn.field.deck.remove(0);
+        Card card = turn.field.deck.get(0);
 
-       *//* turn.field.hand.add(turn.field.deck.get(0));
         Image image2;
         ImageView img;
-        Card card = turn.field.deck.get(0);
+
         if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
             image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
         else
             image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
+
         img = new ImageView(image2);
         img.setOnMouseClicked(event -> {
             UserInterface.printResponse("Set Or Summon");
@@ -206,22 +211,48 @@ public class Battlefield {
                 summon();
             }
         });
-        //graphic.drawImage(image2, 120 * i,10, 200, 70);
-        game.hand.getChildren().add(img);
-        turn.field.deck.remove(0);*//*
-    }*/
-    private void addCardToPlayersHands(Duelist turn,int i) {
-        turn.field.hand.add(turn.field.deck.get(0));
+        game.handTurn.getChildren().add(img);
+    }
 
-        GraphicsContext graphic = game.getGraphicHand1();
-        Image image2;
-        if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
-        else
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
-        graphic.drawImage(image2, 120 * i,10, 200, 70);
+//    private void addCardToPlayersHands(Duelist turn,int i) {
+//        turn.field.hand.add(turn.field.deck.get(0));
+//
+//        GraphicsContext graphic = game.getGraphicHand1();
+//        Image image2;
+//        if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
+//            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+//        else
+//            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+//        graphic.drawImage(image2, 120 * i,10, 200, 70);
+//
+//        turn.field.deck.remove(0);
+//    }
+    private void showOpponentHand(){
 
         turn.field.deck.remove(0);
+        Card card = turn.field.deck.get(0);
+
+        Image image2;
+        ImageView img;
+
+        if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
+        else
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
+
+        img = new ImageView(image2);
+        img.setOnMouseClicked(event -> {
+            UserInterface.printResponse("Set Or Summon");
+            String num = UserInterface.getUserInput();
+            if (num.equals("Set")) {
+                selectedCard = card;
+                set();
+            } else {
+                selectedCard = card;
+                summon();
+            }
+        });
+        game.handOpponent.getChildren().add(img);
     }
     public void drawCard() {
         if (turn.field.deck.size() > 0) {
