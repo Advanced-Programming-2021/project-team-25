@@ -1,7 +1,7 @@
 package view.menus;
 
+import controllers.Battelfield.Battlefield;
 import controllers.Battelfield.ImageAdapter;
-import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -10,21 +10,18 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
-import javafx.stage.Stage;
 import models.Duelist;
 import view.Main;
 
 import java.util.Objects;
 
 public class Game {
+
     final String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
-    final String DefaultCardInHandPath = Objects.requireNonNull(this.getClass().getResource("elements/default.png")).toExternalForm();
-    final Image DefaultCardInHandImg = new Image(DefaultCardInHandPath);
     final String mainPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/Main.png")).toExternalForm();
     final String endPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/EndPhase.png")).toExternalForm();
     final String drawPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/DrawPhase.png")).toExternalForm();
@@ -33,6 +30,8 @@ public class Game {
     final String standbyPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/Standby.png")).toExternalForm();
     final String graveYardPath = Objects.requireNonNull(this.getClass().getResource("elements/graveYard.png")).toExternalForm();
     final String fieldPath = Objects.requireNonNull(this.getClass().getResource("elements/field.png")).toExternalForm();
+
+    Image backGroundIMG = new Image(backGroundPath);
     Image mainPhaseIMG = new Image(mainPhasePath);
     Image endPhaseIMG = new Image(endPhasePath);
     Image drawPhaseIMG = new Image(drawPhasePath);
@@ -41,38 +40,40 @@ public class Game {
     Image standbyPhaseIMG = new Image(standbyPhasePath);
     Image graveYardIMG = new Image(graveYardPath);
     Image fieldIMG = new Image(fieldPath);
-    public Canvas canvas= new Canvas(400, 400);
-    public ImageView imgDuelist1;
-    Image backGroundIMG = new Image(backGroundPath);
 
+    public Image selectedCard;
+
+    public Canvas canvas= new Canvas(400, 400);
     GraphicsContext graphic = canvas.getGraphicsContext2D();
+
     private Scene gameScene;
-    private int defaultSize = 20;
+    private final int defaultSize = 20;
     Canvas canvasHealthBar1 = new Canvas(100,15);
     Canvas canvasHealthBar2 = new Canvas(100,15);
-    Canvas canvasHandBar1 = new Canvas(900,100);
-    Canvas canvasHandBar2 = new Canvas(900,100);
+
     public HBox handTurn = new HBox();
     public HBox handOpponent = new HBox();
     GraphicsContext graphic1 = canvasHealthBar1.getGraphicsContext2D();
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
-    GraphicsContext graphicHand1 = canvasHandBar1.getGraphicsContext2D();
-    GraphicsContext graphicHand2 = canvasHandBar2.getGraphicsContext2D();
+
     BorderPane root = new BorderPane();
     StackPane base = new StackPane();
     Duelist turn, opponent;
+    Battlefield battlefield;
 
-    public Game(Duelist turn, Duelist opponent){
+    public Game(Battlefield battlefield, Duelist turn, Duelist opponent){
         this.turn = turn;
         this.opponent = opponent;
+        this.battlefield = battlefield;
     }
+
     public void runGame(){
         canvas.setOnMouseClicked(event -> {
             System.out.println(event.getSceneX());
             System.out.println(event.getSceneY());
         });
+
         //Default player is duelist1
-        Stage stage = Main.stage;
         //Controller is Battlefield
 
         base.getChildren().add(canvas);
@@ -101,7 +102,7 @@ public class Game {
 
         stylingGame();
 
-        stage.setScene(gameScene);
+        Main.stage.setScene(gameScene);
     }
 
     public void initGraveYardAndFieldZone() {
@@ -122,17 +123,6 @@ public class Game {
         graphic.drawImage(backGroundIMG,0,0,500,450);
     }
 
-//    private HBox makeDownBar() {
-//        for(int row=0;row<6;row++){
-//            graphicHand1.drawImage(DefaultCardInHandImg, 120 * row,10, 200, 70);
-//        }
-//
-//        HBox hBoxDown = new HBox();
-//        hBoxDown.getChildren().addAll(canvasHandBar1);
-//        hBoxDown.setAlignment(Pos.CENTER);
-//        return hBoxDown;
-//    }
-
     private VBox makeLeftBar(Duelist duelist1, Duelist duelist2) {
         refreshHealthBar(duelist1, duelist2);
 
@@ -152,8 +142,9 @@ public class Game {
         vbox1.getChildren().addAll(imgDuelist1,lblDuelist1Name,lblDuelist1LP,canvasHealthBar1);
 
         String imageDeck = Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm();
-        ImageView imgDeck = new ImageView(imageDeck);
-        imgDeck.setFitHeight(100);
+        selectedCard = new Image(imageDeck);
+        ImageView imgDeck = new ImageView(selectedCard);
+        imgDeck.setFitHeight(150);
         imgDeck.setFitWidth(100);
         VBox vBoxRight = new VBox();
         vBoxRight.setAlignment(Pos.CENTER);
@@ -189,66 +180,17 @@ public class Game {
         cStandby.setFill(new ImagePattern(standbyPhaseIMG));
 
 
-        Button btnExit = new Button("Exit!");
+        Button btnExit = new Button("Surrender");
+        btnExit.setOnMouseClicked(e -> battlefield.winner = opponent );
         Button btnNextPhase = new Button("next Phase!");
+        btnNextPhase.setOnMouseClicked(e-> battlefield.nextPhase());
         Button btnMuteSounds = new Button("mute sounds");
-        btnNextPhase.setOnMouseClicked(e->{
 
-        });
         VBox vBoxLeft = new VBox();
         vBoxLeft.setAlignment(Pos.CENTER);
         vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
+        vBoxLeft.setSpacing(10);
         return vBoxLeft;
-    }
-
-    private VBox makeTopBar(Duelist duelist1, Duelist duelist2) {
-        refreshHealthBar(duelist1, duelist2);
-
-
-        imgDuelist1 = new ImageView("file:"+ duelist1.getUser().getUsername()+".png");
-        imgDuelist1.setFitHeight(100);
-        imgDuelist1.setFitWidth(100);
-        ImageView imgDuelist2 = new ImageView("file:"+ duelist2.getUser().getUsername()+".png");
-        imgDuelist2.setFitHeight(100);
-        imgDuelist2.setFitWidth(100);
-
-        HBox hbox1 = new HBox();
-        Label lblDuelist1Name = new Label(duelist1.getUser().getNickName());
-        lblDuelist1Name.setAlignment(Pos.CENTER);
-        Label lblDuelist1LP = new Label(" "+ duelist1.LP);
-        lblDuelist1LP.setAlignment(Pos.CENTER);
-
-        HBox hBoxUserDetail1 = new HBox();
-        hBoxUserDetail1.getChildren().addAll(lblDuelist1Name,lblDuelist1LP);
-        VBox vboxUserDetail1 = new VBox();
-        vboxUserDetail1.setSpacing(30);
-        vboxUserDetail1.getChildren().addAll(hBoxUserDetail1,canvasHealthBar1);
-
-        hbox1.getChildren().addAll(imgDuelist1,vboxUserDetail1);
-        hbox1.setSpacing(20);
-
-        HBox hbox2 = new HBox();
-        Label lblDuelist2Name = new Label(duelist2.getUser().getNickName());
-        lblDuelist2Name.setAlignment(Pos.CENTER);
-        Label lblDuelist2LP = new Label(" "+ duelist2.LP);
-        lblDuelist2LP.setAlignment(Pos.CENTER);
-
-        HBox hBoxUserDetail2 = new HBox();
-        hBoxUserDetail2.getChildren().addAll(lblDuelist2Name,lblDuelist2LP);
-        VBox vboxUserDetail2 = new VBox();
-        vboxUserDetail2.setSpacing(30);
-        vboxUserDetail2.getChildren().addAll(hBoxUserDetail2,canvasHealthBar2);
-
-        hbox2.getChildren().addAll(vboxUserDetail2,imgDuelist2);
-        hbox2.setSpacing(20);
-        HBox hBoxTop = new HBox();
-        VBox vboxTop = new VBox();
-        hBoxTop.getChildren().addAll(hbox1,hbox2);
-        hBoxTop.setSpacing(100);
-        vboxTop.getChildren().addAll(hBoxTop);
-        hBoxTop.setAlignment(Pos.CENTER);
-        //top menu ready
-        return vboxTop;
     }
 
     public void refreshHealthBar(Duelist duelist1, Duelist duelist2) {
@@ -258,10 +200,6 @@ public class Game {
         graphic1.fillRect(0,0,100*percentage1,20);
         graphic2.setFill(Color.RED);
         graphic2.fillRect(0,0,100*percentage2,20);
-    }
-
-    public GraphicsContext getGraphicHand1() {
-        return graphicHand1;
     }
 
     public GraphicsContext getMainGraphic() {

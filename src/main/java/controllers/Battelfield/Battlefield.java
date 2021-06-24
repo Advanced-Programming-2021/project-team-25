@@ -45,7 +45,7 @@ public class Battlefield {
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
-        game = new Game(turn,opponent);
+        game = new Game(this, turn, opponent);
         game.runGame();
         startGame();
     }
@@ -143,10 +143,11 @@ public class Battlefield {
         //shuffling the cards
         Collections.shuffle(turn.field.deck);
         //draw 6 cards for opponent and turn
-        for (int i = 0; i < 6; i++)
-            addCardToPlayersHands(turn,i);
-
-        showOpponentHand();
+        for (int i = 0; i < 6; i++) {
+            addCardToPlayersHands(turn, i);
+            showOpponentHand();
+        }
+        if(selectedCard != null) game.selectedCard = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + selectedCard.getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
     }
     public void drawImageOnXY(int x,int y,Image image){
         GraphicsContext mainGraphic = game.getMainGraphic();
@@ -213,20 +214,6 @@ public class Battlefield {
         });
         game.handTurn.getChildren().add(img);
     }
-
-//    private void addCardToPlayersHands(Duelist turn,int i) {
-//        turn.field.hand.add(turn.field.deck.get(0));
-//
-//        GraphicsContext graphic = game.getGraphicHand1();
-//        Image image2;
-//        if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
-//            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
-//        else
-//            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
-//        graphic.drawImage(image2, 120 * i,10, 200, 70);
-//
-//        turn.field.deck.remove(0);
-//    }
     private void showOpponentHand(){
 
         turn.field.deck.remove(0);
@@ -476,9 +463,8 @@ public class Battlefield {
 
         //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
-            //checking that if we have monster
-        else if (!turn.field.hand.contains(selectedCard)
-                || !(selectedCard.getCardsType() == Type.MONSTER))
+        //checking that if we have monster
+        else if (!turn.field.hand.contains(selectedCard) || !(selectedCard.getCardsType() == Type.MONSTER))
             UserInterface.printResponse("you cant summon this card");
         else {
             //loading the monster from selected card
@@ -486,22 +472,21 @@ public class Battlefield {
             //checking the correct phase
             if (!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
                 UserInterface.printResponse("action not allowed in this phase");
-                //checking is the zone filled
+            //checking is the zone filled
             else if (getSizeOfMonsterZone() == 5)
                 UserInterface.printResponse("monster card zone is full");
-                //checking if turn can summon
+            //checking if turn can summon
             else if (turn.hasPutMonster)
                 UserInterface.printResponse("you already summoned/set on this turn");
-                //exception for King Barbaros
+            //exception for King Barbaros
             else if (monster.getName().equals("Beast King Barbaros"))
                 summonKingBarbaros(monster);
-                //exception for gate guardian
+            //exception for gate guardian
             else if (monster.getName().equals("Gate Guardian"))
                 summonOrSetGateGuardian("summoned successfully");
-
             else if (monster.getName().equals("Command Knight"))
                 summonOrFlipSummonCommandKnight("summoned successfully");
-                //summon level 5 or 6 monsters
+            //summon level 5 or 6 monsters
             else if (monster.getLevel() == 5 || monster.getLevel() == 6) {
                 summonLevel6Or5("summoned successfully");
                 selectedCard = null;
