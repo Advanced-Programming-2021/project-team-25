@@ -142,8 +142,10 @@ public class Monster extends Card implements Serializable {
                 if(attackedMonster.getCardsFace().equals(FaceUp.DEFENSE_BACK)){
                     UserInterface.printResponse("opponent’s monster card was " + attackedMonster.getName() + " and no card is destroyed");
                     opponent.field.monsterZone.get(battlefield.getIndex(battlefield.attackedMonsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
-                }else
-                 UserInterface.printResponse("the defense position monster is destroyed");
+                }else {
+                    UserInterface.printResponse("the defense position monster is destroyed");
+                    attackedMonster.removeMonster(battlefield);
+                }
             }
 
         }
@@ -152,12 +154,11 @@ public class Monster extends Card implements Serializable {
             int damage = attackedMonster.getAttack() - this.getAttack();
             turn.LP = turn.LP - damage;
             UserInterface.printResponse("Your monster card is destroyed and you received " + damage + " battle damage");
+            this.removeMonster(battlefield);
         }
         else if(condition == 0){
             this.removeMonster(battlefield);
-            opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
             attackedMonster.removeMonster(battlefield);
-            turn.field.monsterZone.set(battlefield.getIndex(battlefield.getIndexOfSelectedCardInMonsterZone()) , null);
             UserInterface.printResponse("both you and your opponent monster cards are destroyed and no one receives damage");
         }
         else if(condition == 2) {
@@ -176,11 +177,12 @@ public class Monster extends Card implements Serializable {
         int defenseMonsterHero;
         if(this.getCardsFace() == FaceUp.ATTACK) defenseMonsterHero = this.attack;
         else defenseMonsterHero = this.defence;
-        if(attackingMonsterHero > defenseMonsterHero)
-            if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
-              return 2;
+        if(attackingMonsterHero > defenseMonsterHero) {
+            if (this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
+                return 2;
             else
-              return 1;
+                return 1;
+        }
         else if(attackingMonsterHero<defenseMonsterHero) {
             if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
               return 2;
