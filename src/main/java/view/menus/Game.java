@@ -16,6 +16,7 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import models.Duelist;
 import view.Main;
+import view.UserInterface;
 
 import java.util.Objects;
 
@@ -68,10 +69,7 @@ public class Game {
     }
 
     public void runGame(){
-        canvas.setOnMouseClicked(event -> {
-            System.out.println(event.getSceneX());
-            System.out.println(event.getSceneY());
-        });
+        mouseEventInitialize();
 
         //Default player is duelist1
         //Controller is Battlefield
@@ -103,6 +101,65 @@ public class Game {
         stylingGame();
 
         Main.stage.setScene(gameScene);
+    }
+
+    private void mouseEventInitialize() {
+        canvas.setOnMouseClicked(event -> {
+            double x = event.getSceneX();
+            double y = event.getSceneY();
+            //first place
+            if(x<374 && x>315 && y<415 && y>351)
+                battlefield.selectedCard = turn.field.monsterZone.get(0);
+
+            else if(x<442 && x>380 && y<414 && y>352)
+                battlefield.selectedCard = turn.field.monsterZone.get(1);
+
+            else if(x<508 && x>449 && y<413 && y>351)
+                battlefield.selectedCard = turn.field.monsterZone.get(2);
+
+            else if(x<579 && x>519 && y<415 && y>351)
+                battlefield.selectedCard = turn.field.monsterZone.get(3);
+
+            else if(x<645 && x>588 && y<413 && y>352)
+                battlefield.selectedCard = turn.field.monsterZone.get(4);
+
+            //spell and trap
+            else if(x<374 && x>316 && y<490 && y>427)
+                battlefield.selectedCard = turn.field.spellTrapZone.get(0);
+
+            else if(x<441 && x>380 && y<490 && y>428)
+                battlefield.selectedCard = turn.field.spellTrapZone.get(1);
+
+            else if(x<510 && x>450 && y<491 && y>429)
+                battlefield.selectedCard = turn.field.spellTrapZone.get(2);
+
+            else if(x<576 && x>520 && y<489 && y>429)
+                battlefield.selectedCard = turn.field.spellTrapZone.get(3);
+
+            else if(x<646 && x>586 && y<491 && y>426)
+                battlefield.selectedCard = turn.field.spellTrapZone.get(4);
+
+            if(battlefield.selectedCard != null)
+                UserInterface.printResponse("your selected card is"+battlefield.selectedCard.getName());
+
+//            //turn fieldZone
+//            else if(x<289 && x>249 && y<403 && y>348){
+//
+//            }
+//            //turn GraveYard
+//            else if(x<702 && x>660 && y<421 && y>361){
+//
+//            }
+//            //opponent fieldZone
+//            else if(x<699 && x>662 && y<316 && y>256){
+//
+//            }
+//            //opponent GraveYard
+//            else if(x<301 && x>256 && y<317 && y>250){
+//
+//            }
+
+        });
     }
 
     public void initGraveYardAndFieldZone() {
