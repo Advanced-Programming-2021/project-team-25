@@ -2,6 +2,15 @@ package controllers.Battelfield;
 
 import controllers.Regex;
 import controllers.ShowCard;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
+import javafx.scene.control.MenuItem;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.stage.Popup;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -17,6 +26,7 @@ import models.Monster.Scanner;
 import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
 
+import view.Main;
 import view.menus.Game;
 import view.Responses;
 import view.UserInterface;
@@ -242,6 +252,57 @@ public class Battlefield {
         });
         game.handOpponent.getChildren().add(img);
     }
+
+
+
+
+    //monster zone number 5 = index 0 of ArrayList in range of x = (309,375) and y = (345,421)
+    //monster zone number 3 = index 1 of ArrayList in range of x = (377,442) and y = (345,421)
+    //monster zone number 1 = index 2 of ArrayList in range of x = (444,511) and y = (345,421)
+    //monster zone number 2 = index 3 of ArrayList in range of x = (513,580) and y = (345,421)
+    //monster zone number 4 = index 4 of ArrayList in range of x = (582,646) and y = (345,421)
+    public void attackGui (int index){
+        if (turn.field.monsterZone.get(index) != null) {
+            Popup popup = new Popup();
+            VBox vBox1 = new VBox();
+
+            Label label2 = new Label("Choose action");
+            label2.setTextFill(Color.web("white"));
+            label2.setFont(Font.font(20));
+
+            MenuItem menuItem1 = new MenuItem("Attack");
+            menuItem1.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    //TODO
+                }
+            });
+
+            MenuButton menuButton = new MenuButton("Options", null, menuItem1);
+
+
+            Image imageForButton = new Image(getClass().getResource("/view/menus/game/attack.png").toExternalForm());
+            ImageView imageView = new ImageView(imageForButton);
+
+            menuButton.setGraphic(imageView);
+
+            vBox1.getChildren().addAll(label2, menuButton);
+
+            popup.getContent().add(vBox1);
+            popup.setAnchorX(1150);
+            popup.setAnchorY(600);
+            popup.show(Main.stage);
+            popup.setAutoHide(true);
+        }
+    }
+
+
+
+
+
+
+
+
     public void drawCard() {
         if (turn.field.deck.size() > 0) {
             if (changedTurnTime >= 2 && turn.field.hand.size()<6) {

@@ -3,6 +3,8 @@ package view.menus;
 import controllers.Battelfield.Battlefield;
 import controllers.Battelfield.ImageAdapter;
 import javafx.geometry.Pos;
+import javafx.scene.SnapshotParameters;
+import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
@@ -69,7 +71,23 @@ public class Game {
     }
 
     public void runGame(){
-        mouseEventInitialize();
+        canvas.setOnMouseClicked(event -> {
+            double x = event.getSceneX();
+            double y = event.getSceneY();
+            System.out.println(x);
+            System.out.println(y);
+            if (x >= 309.0 && x <= 375 && y >= 345 && y <= 421)
+                battlefield.attackGui(0);
+            else if (x >= 377.0 && x <= 442 && y >= 345 && y <= 421)
+                battlefield.attackGui(1);
+            else if (x >= 444.0 && x <= 511 && y >= 345 && y <= 421)
+                battlefield.attackGui(2);
+            else if (x >= 513.0 && x <= 580 && y >= 345 && y <= 421)
+                battlefield.attackGui(3);
+            else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421)
+                battlefield.attackGui(4);
+        });
+//        mouseEventInitialize();
 
         //Default player is duelist1
         //Controller is Battlefield
@@ -270,4 +288,170 @@ public class Game {
     public Scene getGameScene() {
         return gameScene;
     }
+
+    public void addChanges (){
+        graphic.clearRect(0, 0, canvas.getWidth(), canvas.getHeight());
+        graphic.drawImage(backGroundIMG,0,0,500,450);
+        initGraveYardAndFieldZone();
+
+        //building rivals spell and trap zone
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.spellTrapZone.get(i) != null && battlefield.getOpponent().field.spellTrapZone.get(i).getCardsFace() == FaceUp.ATTACK) {
+                Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
+                        battlefield.getOpponent().field.spellTrapZone.get(i).getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+                if (i == 0) ImageAdapter.setSpellOrTrapOn4Rival(graphic, image);
+                if (i == 1) ImageAdapter.setSpellOrTrapOn2Rival(graphic, image);
+                if (i == 2) ImageAdapter.setSpellOrTrapOn1Rival(graphic, image);
+                if (i == 3) ImageAdapter.setSpellOrTrapOn3Rival(graphic, image);
+                if (i == 4) ImageAdapter.setSpellOrTrapOn5Rival(graphic, image);
+            }
+            else if (battlefield.getOpponent().field.spellTrapZone.get(i) != null && battlefield.getOpponent().field.spellTrapZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) {
+                Image image = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm(), 275, 275, false, false);
+                if (i == 0) ImageAdapter.setSpellOrTrapOn4Rival(graphic, image);
+                if (i == 1) ImageAdapter.setSpellOrTrapOn2Rival(graphic, image);
+                if (i == 2) ImageAdapter.setSpellOrTrapOn1Rival(graphic, image);
+                if (i == 3) ImageAdapter.setSpellOrTrapOn3Rival(graphic, image);
+                if (i == 4) ImageAdapter.setSpellOrTrapOn5Rival(graphic, image);
+            }
+        }
+
+        //building rivals monster zone
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null && battlefield.getOpponent().field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK) {
+                Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" +
+                        battlefield.getOpponent().field.monsterZone.get(i).getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+                if (i == 0) ImageAdapter.setMonsterOn4Rival(graphic, image);
+                if (i == 1) ImageAdapter.setMonsterOn2Rival(graphic, image);
+                if (i == 2) ImageAdapter.setMonsterOn1Rival(graphic, image);
+                if (i == 3) ImageAdapter.setMonsterOn3Rival(graphic, image);
+                if (i == 4) ImageAdapter.setMonsterOn5Rival(graphic, image);
+            }
+            else if (battlefield.getOpponent().field.monsterZone.get(i) != null && battlefield.getOpponent().field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) {
+                Image image = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm(), 275, 275, false, false);
+                //
+                ImageView iv = new ImageView(image);
+                iv.setRotate(90);
+
+                SnapshotParameters params = new SnapshotParameters();
+                params.setFill(Color.TRANSPARENT);
+
+                Image rotatedImage = iv.snapshot(params, null);
+                //
+                if (i == 0) ImageAdapter.setMonsterOn4Rival(graphic, rotatedImage);
+                if (i == 1) ImageAdapter.setMonsterOn2Rival(graphic, rotatedImage);
+                if (i == 2) ImageAdapter.setMonsterOn1Rival(graphic, rotatedImage);
+                if (i == 3) ImageAdapter.setMonsterOn3Rival(graphic, rotatedImage);
+                if (i == 4) ImageAdapter.setMonsterOn5Rival(graphic, rotatedImage);
+            }
+            else if (battlefield.getOpponent().field.monsterZone.get(i) != null && battlefield.getOpponent().field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) {
+                Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" +
+                        battlefield.getOpponent().field.monsterZone.get(i).getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+                ImageView iv = new ImageView(image);
+                iv.setRotate(90);
+
+                SnapshotParameters params = new SnapshotParameters();
+                params.setFill(Color.TRANSPARENT);
+
+                Image rotatedImage = iv.snapshot(params, null);
+                if (i == 0) ImageAdapter.setMonsterOn4Rival(graphic, rotatedImage);
+                if (i == 1) ImageAdapter.setMonsterOn2Rival(graphic, rotatedImage);
+                if (i == 2) ImageAdapter.setMonsterOn1Rival(graphic, rotatedImage);
+                if (i == 3) ImageAdapter.setMonsterOn3Rival(graphic, rotatedImage);
+                if (i == 4) ImageAdapter.setMonsterOn5Rival(graphic, rotatedImage);
+            }
+        }
+
+        //building rivals graveyard
+        if (battlefield.getOpponent().field.graveYard.size() > 0){
+            Image image = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm(), 275, 275, false, false);
+            ImageAdapter.setCardOnOpponentGraveYard(graphic, image);
+        }
+
+        //building rivals field zone spell
+        if (battlefield.getOpponent().field.fieldZone != null){
+            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
+                    battlefield.getOpponent().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+            ImageAdapter.setCardOnOpponentFieldZone(graphic, image);
+        }
+
+        //building turn field zone spell
+        if (battlefield.getTurn().field.fieldZone != null){
+            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
+                    battlefield.getTurn().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+            ImageAdapter.setCardOnTurnFieldZone(graphic, image);
+        }
+
+        //building turn graveyard
+        if (battlefield.getTurn().field.graveYard.size() > 0){
+            Image image = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm(), 275, 275, false, false);
+            ImageAdapter.setCardOnTurnGraveYard(graphic, image);
+        }
+
+        //building turn monster zone
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getTurn().field.monsterZone.get(i) != null && battlefield.getTurn().field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK) {
+                Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" +
+                        battlefield.getTurn().field.monsterZone.get(i).getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+                if (i == 0) ImageAdapter.setMonsterOn5(graphic, image);
+                if (i == 1) ImageAdapter.setMonsterOn3(graphic, image);
+                if (i == 2) ImageAdapter.setMonsterOn1(graphic, image);
+                if (i == 3) ImageAdapter.setMonsterOn2(graphic, image);
+                if (i == 4) ImageAdapter.setMonsterOn4(graphic, image);
+            }
+            else if (battlefield.getTurn().field.monsterZone.get(i) != null && battlefield.getTurn().field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) {
+                Image image = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm(), 275, 275, false, false);
+                ImageView iv = new ImageView(image);
+                iv.setRotate(90);
+
+                SnapshotParameters params = new SnapshotParameters();
+                params.setFill(Color.TRANSPARENT);
+
+                Image rotatedImage = iv.snapshot(params, null);
+                if (i == 0) ImageAdapter.setMonsterOn5(graphic, rotatedImage);
+                if (i == 1) ImageAdapter.setMonsterOn3(graphic, rotatedImage);
+                if (i == 2) ImageAdapter.setMonsterOn1(graphic, rotatedImage);
+                if (i == 3) ImageAdapter.setMonsterOn2(graphic, rotatedImage);
+                if (i == 4) ImageAdapter.setMonsterOn4(graphic, rotatedImage);
+            }
+            else if (battlefield.getTurn().field.monsterZone.get(i) != null && battlefield.getTurn().field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) {
+                Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" +
+                        battlefield.getTurn().field.monsterZone.get(i).getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+                ImageView iv = new ImageView(image);
+                iv.setRotate(90);
+
+                SnapshotParameters params = new SnapshotParameters();
+                params.setFill(Color.TRANSPARENT);
+
+                Image rotatedImage = iv.snapshot(params, null);
+                if (i == 0) ImageAdapter.setMonsterOn5(graphic, rotatedImage);
+                if (i == 1) ImageAdapter.setMonsterOn3(graphic, rotatedImage);
+                if (i == 2) ImageAdapter.setMonsterOn1(graphic, rotatedImage);
+                if (i == 3) ImageAdapter.setMonsterOn2(graphic, rotatedImage);
+                if (i == 4) ImageAdapter.setMonsterOn4(graphic, rotatedImage);
+            }
+        }
+
+        //building turn spell zone
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getTurn().field.spellTrapZone.get(i) != null && battlefield.getTurn().field.spellTrapZone.get(i).getCardsFace() == FaceUp.ATTACK) {
+                Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
+                        battlefield.getTurn().field.spellTrapZone.get(i).getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+                if (i == 0) ImageAdapter.setSpellOrTrapOn5(graphic, image);
+                if (i == 1) ImageAdapter.setSpellOrTrapOn3(graphic, image);
+                if (i == 2) ImageAdapter.setSpellOrTrapOn1(graphic, image);
+                if (i == 3) ImageAdapter.setSpellOrTrapOn2(graphic, image);
+                if (i == 4) ImageAdapter.setSpellOrTrapOn4(graphic, image);
+            }
+            else if (battlefield.getTurn().field.spellTrapZone.get(i) != null && battlefield.getTurn().field.spellTrapZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) {
+                Image image = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm(), 275, 275, false, false);
+                if (i == 0) ImageAdapter.setSpellOrTrapOn5(graphic, image);
+                if (i == 1) ImageAdapter.setSpellOrTrapOn3(graphic, image);
+                if (i == 2) ImageAdapter.setSpellOrTrapOn1(graphic, image);
+                if (i == 3) ImageAdapter.setSpellOrTrapOn2(graphic, image);
+                if (i == 4) ImageAdapter.setSpellOrTrapOn4(graphic, image);
+            }
+        }
+    }
+
+
 }
