@@ -127,7 +127,8 @@ public class Battlefield {
     public void startGame() {
         Image image = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
         GraphicsContext mainGraphic = game.getMainGraphic();
-//        ImageAdapter.setMonsterOn5(mainGraphic,image);
+        ImageAdapter.setMonsterOn5(mainGraphic,image);
+        turn.field.monsterZone.add(0,turn.field.deck.get(0));
 //        ImageAdapter.setMonsterOn4(mainGraphic,image);
 //        ImageAdapter.setMonsterOn3(mainGraphic,image);
 //        ImageAdapter.setMonsterOn2(mainGraphic,image);
