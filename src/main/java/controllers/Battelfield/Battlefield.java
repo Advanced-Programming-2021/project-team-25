@@ -37,22 +37,23 @@ import java.util.regex.Pattern;
 
 public class Battlefield {
 
-    public ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
     private Duelist turn;
     private Duelist opponent;
     private Phase phase = Phase.DRAW_PHASE;
-    private boolean isRitualSummoned = false;
     public Duelist winner;
+    public Card selectedCard;
+    private Game game;
+
+    public ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
+    private boolean isRitualSummoned = false;
     private boolean isTurnChanged = false;
     private int countDraw6Cards = 0;
     private SpellAndTrap currSpell = null;
-    public Card selectedCard;
     public int changedTurnTime = 0;
     public Monster attackingMonster;
     public Monster attackedMonster;
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
-    private Game game;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -136,18 +137,6 @@ public class Battlefield {
         }
     }
     public void startGame() {
-        Image image = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
-        GraphicsContext mainGraphic = game.getMainGraphic();
-//        ImageAdapter.setMonsterOn4(mainGraphic,image);
-//        ImageAdapter.setMonsterOn3(mainGraphic,image);
-//        ImageAdapter.setMonsterOn2(mainGraphic,image);
-//        ImageAdapter.setMonsterOn1(mainGraphic,image);
-//        ImageAdapter.setSpellOrTrapOn5(mainGraphic,image);
-//        ImageAdapter.setSpellOrTrapOn4(mainGraphic,image);
-//        ImageAdapter.setSpellOrTrapOn3(mainGraphic,image);
-//        ImageAdapter.setSpellOrTrapOn2(mainGraphic,image);
-//        ImageAdapter.setSpellOrTrapOn1(mainGraphic,image);
-
         game.initGraveYardAndFieldZone();
         countDraw6Cards++;
         //shuffling the cards
@@ -157,7 +146,6 @@ public class Battlefield {
             addCardToPlayersHands(turn, i);
             showOpponentHand();
         }
-        if(selectedCard != null) game.selectedCard = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + selectedCard.getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
     }
     public void drawImageOnXY(int x,int y,Image image){
         GraphicsContext mainGraphic = game.getMainGraphic();
@@ -198,17 +186,17 @@ public class Battlefield {
 
     //draw
     private void addCardToPlayersHands(Duelist turn,int i) {
-        turn.field.hand.add(turn.field.deck.get(0));
-        turn.field.deck.remove(0);
         Card card = turn.field.deck.get(0);
+        turn.field.hand.add(card);
+        turn.field.deck.remove(0);
 
         Image image2;
         ImageView img;
 
-        if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
+        if(card.getCardsType().equals(Type.MONSTER))
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + card.getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
         else
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + card.getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
 
         img = new ImageView(image2);
         img.setOnMouseClicked(event -> {
@@ -217,25 +205,34 @@ public class Battlefield {
             if (num.equals("Set")) {
                 selectedCard = card;
                 set();
-            } else {
+                game.addChanges();
+            }
+            else if(num.equals("See")){
+                selectedCard = card;
+                game.addChanges();
+            }
+
+            else {
                 selectedCard = card;
                 summon();
+                game.addChanges();
             }
         });
         game.handTurn.getChildren().add(img);
     }
     private void showOpponentHand(){
-
-        turn.field.deck.remove(0);
         Card card = turn.field.deck.get(0);
+        turn.field.hand.add(card);
+        turn.field.deck.remove(0);
+
 
         Image image2;
         ImageView img;
 
-        if(turn.field.deck.get(0).getCardsType().equals(Type.MONSTER))
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + turn.field.deck.get(0).getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
+        if(card.getCardsType().equals(Type.MONSTER))
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + card.getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
         else
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + turn.field.deck.get(0).getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
+            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + card.getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
 
         img = new ImageView(image2);
         img.setOnMouseClicked(event -> {
@@ -251,9 +248,13 @@ public class Battlefield {
         });
         game.handOpponent.getChildren().add(img);
     }
-
-
-
+    public void drawCard() {
+        if (turn.field.deck.size() > 0) {
+            if (changedTurnTime >= 2 && turn.field.hand.size()<6) {
+                addCardToPlayersHands(turn,turn.field.hand.size());
+            }
+        } else winner = opponent;
+    }
 
     //monster zone number 5 = index 0 of ArrayList in range of x = (309,375) and y = (345,421)
     //monster zone number 3 = index 1 of ArrayList in range of x = (377,442) and y = (345,421)
@@ -400,21 +401,6 @@ public class Battlefield {
             game.getMainGraphic().setLineWidth(5);
             game.getMainGraphic().strokeLine(473-226, 134-114, x-226, y-114);
         }
-    }
-
-
-
-
-
-
-
-
-    public void drawCard() {
-        if (turn.field.deck.size() > 0) {
-            if (changedTurnTime >= 2 && turn.field.hand.size()<6) {
-                addCardToPlayersHands(turn,turn.field.hand.size());
-            }
-        } else winner = opponent;
     }
 
     //showBattleField
@@ -632,7 +618,7 @@ public class Battlefield {
         //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         //checking that if we have monster
-        else if (!turn.field.hand.contains(selectedCard) || !(selectedCard.getCardsType() == Type.MONSTER))
+        else if (!turn.field.hand.contains(selectedCard) /* || !(selectedCard.getCardsType() == Type.MONSTER)*/)
             UserInterface.printResponse("you cant summon this card");
         else {
             //loading the monster from selected card
@@ -669,7 +655,7 @@ public class Battlefield {
                 summonedMonster("summoned successfully");
                 //check that monster put
                 turn.hasPutMonster = true;
-                selectedCard = null;
+                //selectedCard = null;
             }
         }
     }

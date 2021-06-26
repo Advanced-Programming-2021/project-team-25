@@ -4,6 +4,7 @@ import controllers.Battelfield.Battlefield;
 import controllers.Battelfield.ImageAdapter;
 import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
+import models.Card;
 import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
@@ -16,6 +17,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
+import models.CardStufs.Type;
 import models.Duelist;
 import view.Main;
 import view.UserInterface;
@@ -44,8 +46,6 @@ public class Game {
     Image graveYardIMG = new Image(graveYardPath);
     Image fieldIMG = new Image(fieldPath);
 
-    public Image selectedCard;
-
     public Canvas canvas= new Canvas(400, 400);
     GraphicsContext graphic = canvas.getGraphicsContext2D();
 
@@ -58,6 +58,7 @@ public class Game {
     public HBox handOpponent = new HBox();
     GraphicsContext graphic1 = canvasHealthBar1.getGraphicsContext2D();
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
+    VBox vBoxLeft;
 
     BorderPane root = new BorderPane();
     StackPane base = new StackPane();
@@ -80,7 +81,7 @@ public class Game {
         base.getChildren().add(canvas);
         root.setCenter(base);
         //make left buttons
-        VBox vBoxLeft = makeLeftBar(turn, opponent);
+        vBoxLeft = makeLeftBar(turn, opponent);
 
         //make right buttons
         VBox vBoxRight = makeRightBar();
@@ -106,8 +107,6 @@ public class Game {
         Main.stage.setScene(gameScene);
     }
 
-
-
     public void mouseEventClick (){
         canvas.setOnMouseClicked(event -> {
             double x = event.getSceneX();
@@ -126,8 +125,6 @@ public class Game {
                 battlefield.attackGui(4);
         });
     }
-
-
 
     private void mouseEventInitialize() {
         canvas.setOnMouseClicked(event -> {
@@ -219,14 +216,22 @@ public class Game {
         VBox vbox1 = new VBox();
         Label lblDuelist1Name = new Label("Nickname : " + duelist1.getUser().getNickName());
         lblDuelist1Name.setAlignment(Pos.CENTER);
-        Label lblDuelist1LP = new Label("LP : "+ duelist1.LP);
+        Label lblDuelist1LP = new Label("LP : " + duelist1.LP);
         lblDuelist1LP.setAlignment(Pos.CENTER);
 
         vbox1.getChildren().addAll(imgDuelist1,lblDuelist1Name,lblDuelist1LP,canvasHealthBar1);
 
-        String imageDeck = Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm();
-        selectedCard = new Image(imageDeck);
-        ImageView imgDeck = new ImageView(selectedCard);
+        String imageDeck ;
+        if(battlefield.selectedCard == null) imageDeck = Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm();
+        else{
+            if(battlefield.selectedCard.getCardsType().equals(Type.MONSTER))
+                //imageDeck = Objects.requireNonNull(this.getClass().getResource("game/Monsters/" + battlefield.selectedCard.getName().replace(" ", "") + ".jpg")).toExternalForm();
+                imageDeck = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
+            else
+                imageDeck = Objects.requireNonNull(this.getClass().getResource("game/SpellTrap/" + battlefield.selectedCard.getName().replace(" ", "") + ".jpg")).toExternalForm();
+        }
+
+        ImageView imgDeck = new ImageView(new Image(imageDeck));
         imgDeck.setFitHeight(150);
         imgDeck.setFitWidth(100);
         VBox vBoxRight = new VBox();
@@ -291,10 +296,6 @@ public class Game {
 
     public Image getBackGroundIMG() {
         return backGroundIMG;
-    }
-
-    public Scene getGameScene() {
-        return gameScene;
     }
 
     public void addChanges (){
@@ -459,7 +460,40 @@ public class Game {
                 if (i == 4) ImageAdapter.setSpellOrTrapOn4(graphic, image);
             }
         }
+
+        vBoxLeft = makeLeftBar(turn, opponent);
+
+//        for (int i = 0; i < turn.field.hand.size(); i++) {
+//            Card card = turn.field.hand.get(i);
+//            Image image2;
+//            ImageView img;
+//
+//            if (card.getCardsType().equals(Type.MONSTER)) {
+//                System.out.println(card.getName());
+//                image2 = new Image(Objects.requireNonNull(this.getClass().getResource("game/Monsters/Alexandrite Dragon.jpg")).toExternalForm(), 50, 100, false, false);
+//            }
+//            else
+//                image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + card.getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
+//
+//            img = new ImageView(image2);
+//            img.setOnMouseClicked(event -> {
+//                UserInterface.printResponse("Set Or Summon");
+//                String num = UserInterface.getUserInput();
+//                if (num.equals("Set")) {
+//                    battlefield.selectedCard = card;
+//                    battlefield.set();
+//                    addChanges();
+//                } else if (num.equals("See")) {
+//                    battlefield.selectedCard = card;
+//                    addChanges();
+//                } else {
+//                    battlefield.selectedCard = card;
+//                    battlefield.summon();
+//                    addChanges();
+//                }
+//            });
+//            handTurn = new HBox();
+//            handTurn.getChildren().add(img);
+//        }
     }
-
-
 }
