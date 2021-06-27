@@ -57,8 +57,7 @@ public class Battlefield {
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
-        game = new Game(this, turn, opponent);
-        game.runGame();
+        game = new Game(this);
         startGame();
     }
 
@@ -137,15 +136,17 @@ public class Battlefield {
         }
     }
     public void startGame() {
-        game.initGraveYardAndFieldZone();
+        //game.initGraveYardAndFieldZone();
         countDraw6Cards++;
         //shuffling the cards
         Collections.shuffle(turn.field.deck);
+        Collections.shuffle(opponent.field.deck);
         //draw 6 cards for opponent and turn
         for (int i = 0; i < 6; i++) {
             addCardToPlayersHands(turn, i);
-            showOpponentHand();
+            addCardToOpponentsHand();
         }
+        game.addChanges();
     }
     public void drawImageOnXY(int x,int y,Image image){
         GraphicsContext mainGraphic = game.getMainGraphic();
@@ -189,64 +190,11 @@ public class Battlefield {
         Card card = turn.field.deck.get(0);
         turn.field.hand.add(card);
         turn.field.deck.remove(0);
-
-        Image image2;
-        ImageView img;
-
-        if(card.getCardsType().equals(Type.MONSTER))
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + card.getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
-        else
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + card.getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
-
-        img = new ImageView(image2);
-        img.setOnMouseClicked(event -> {
-            UserInterface.printResponse("Set Or Summon");
-            String num = UserInterface.getUserInput();
-            if (num.equals("Set")) {
-                selectedCard = card;
-                set();
-                game.addChanges();
-            }
-            else if(num.equals("See")){
-                selectedCard = card;
-                game.addChanges();
-            }
-
-            else {
-                selectedCard = card;
-                summon();
-                game.addChanges();
-            }
-        });
-        game.handTurn.getChildren().add(img);
     }
-    private void showOpponentHand(){
-        Card card = turn.field.deck.get(0);
-        turn.field.hand.add(card);
-        turn.field.deck.remove(0);
-
-
-        Image image2;
-        ImageView img;
-
-        if(card.getCardsType().equals(Type.MONSTER))
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + card.getName().replace(" ", "") + ".jpg")).toExternalForm(), 50, 100, false, false);
-        else
-            image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" + card.getName().replace(" ","") + ".jpg")).toExternalForm(), 50, 100, false, false);
-
-        img = new ImageView(image2);
-        img.setOnMouseClicked(event -> {
-            UserInterface.printResponse("Set Or Summon");
-            String num = UserInterface.getUserInput();
-            if (num.equals("Set")) {
-                selectedCard = card;
-                set();
-            } else {
-                selectedCard = card;
-                summon();
-            }
-        });
-        game.handOpponent.getChildren().add(img);
+    private void addCardToOpponentsHand(){
+        Card card = opponent.field.deck.get(0);
+        opponent.field.hand.add(card);
+        opponent.field.deck.remove(0);
     }
     public void drawCard() {
         if (turn.field.deck.size() > 0) {
@@ -653,9 +601,6 @@ public class Battlefield {
             //normal summon
             else if (monster.getLevel() <= 4) {
                 summonedMonster("summoned successfully");
-                //check that monster put
-                turn.hasPutMonster = true;
-                //selectedCard = null;
             }
         }
     }
