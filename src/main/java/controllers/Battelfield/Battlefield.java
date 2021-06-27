@@ -42,7 +42,7 @@ public class Battlefield {
     private Phase phase = Phase.DRAW_PHASE;
     public Duelist winner;
     public Card selectedCard;
-    private Game game;
+    private final Game game;
 
     public ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
     private boolean isRitualSummoned = false;
@@ -59,6 +59,7 @@ public class Battlefield {
         whoStart(duelist1, duelist2);
         game = new Game(this);
         startGame();
+        game.addChanges();
     }
 
     //getter methods
@@ -70,9 +71,6 @@ public class Battlefield {
     }
     public Duelist getOpponent() {
         return opponent;
-    }
-    public Phase getPhase() {
-        return phase;
     }
     public Card getSelectedCard() {
         return selectedCard;
@@ -136,7 +134,6 @@ public class Battlefield {
         }
     }
     public void startGame() {
-        //game.initGraveYardAndFieldZone();
         countDraw6Cards++;
         //shuffling the cards
         Collections.shuffle(turn.field.deck);
@@ -146,11 +143,6 @@ public class Battlefield {
             addCardToPlayersHands(turn, i);
             addCardToOpponentsHand();
         }
-        game.addChanges();
-    }
-    public void drawImageOnXY(int x,int y,Image image){
-        GraphicsContext mainGraphic = game.getMainGraphic();
-        mainGraphic.drawImage(image,85+68*x,230+82*y,75,80);
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
@@ -1221,9 +1213,7 @@ public class Battlefield {
             winner = turn;
         else if (opponent.getName().equals(name))
             winner = opponent;
-
     }
-
     private void increaseLPCheat(Matcher matcher){
         int amount = Integer.parseInt(matcher.group(1));
         turn.LP += amount ;

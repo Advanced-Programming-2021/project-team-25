@@ -55,10 +55,6 @@ public class Game {
     Canvas canvasHealthBar2 = new Canvas(100,15);
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
 
-    HBox handTurn;
-    HBox handOpponent;
-    VBox vBoxLeft;
-
     Battlefield battlefield;
 
     public Game(Battlefield battlefield){
@@ -232,11 +228,10 @@ public class Game {
         }
 
         //update left
-        vBoxLeft = new VBox();
-        vBoxLeft = makeLeftBar(battlefield.getTurn(), battlefield.getOpponent());
+        VBox vBoxLeft = makeLeftBar(battlefield.getTurn(), battlefield.getOpponent());
 
         //update Turn hand
-        handTurn = new HBox();
+        HBox handTurn = new HBox();
         for (int i = 0; i < battlefield.getTurn().field.hand.size(); i++) {
             Card card = battlefield.getTurn().field.hand.get(i);
             Image image2;
@@ -270,7 +265,7 @@ public class Game {
         }
 
         //update Opponent hand
-        handOpponent = new HBox();
+        HBox handOpponent = new HBox();
         for (int i = 0; i < battlefield.getOpponent().field.hand.size(); i++) {
             Image image2 = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm(), 50, 100, false, false);
 
@@ -406,10 +401,9 @@ public class Game {
         Image imageDeck ;
         if(battlefield.selectedCard == null) imageDeck = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm(), 50, 100, false, false);
         else {
-            System.out.println("Seleceese : " + battlefield.selectedCard.getName());
-            if (battlefield.selectedCard.getCardsType().equals(Type.MONSTER)) {
+            if (battlefield.selectedCard.getCardsType().equals(Type.MONSTER))
                 imageDeck = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + battlefield.selectedCard.getName() + ".jpg")).toExternalForm(), 50, 100, false, false);
-            } else
+            else
                 imageDeck = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + battlefield.selectedCard.getName() + ".jpg")).toExternalForm(), 50, 100, false, false);
         }
         ImageView imgDeck = new ImageView((imageDeck));
