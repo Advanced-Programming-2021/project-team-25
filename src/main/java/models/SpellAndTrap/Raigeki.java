@@ -34,9 +34,9 @@ public class Raigeki extends SpellAndTrap implements Serializable {
             Duelist opponent = battlefield.getOpponent();
             //checking not null
             if(!Objects.isNull(opponent)){
-                for(Card card : opponent.field.monsterZone){
-                    opponent.field.graveYard.add(card);
-                    opponent.field.monsterZone.set(opponent.field.monsterZone.indexOf(card) , null);
+                for (int i = 0; i<5; ++i){
+                    if (opponent.field.monsterZone.get(i) != null)
+                        ((Monster)opponent.field.monsterZone.get(i)).removeMonster(battlefield);
                 }
             }
         }

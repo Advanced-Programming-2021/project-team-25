@@ -304,6 +304,7 @@ public class Game {
             double y = event.getSceneY();
             System.out.println(x);
             System.out.println(y);
+            //turn monster zone
             if (x >= 309.0 && x <= 375 && y >= 345 && y <= 421)
                 battlefield.attackGui(0);
             else if (x >= 377.0 && x <= 442 && y >= 345 && y <= 421)
@@ -314,18 +315,90 @@ public class Game {
                 battlefield.attackGui(3);
             else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421)
                 battlefield.attackGui(4);
+            //turn field zone
             else if (x >= 242 && x <= 293 && y >= 344 && y <= 412 && battlefield.getTurn().field.fieldZone != null){
                 battlefield.selectedCard = battlefield.getTurn().field.fieldZone;
                 addChanges();
             }
+            //opponent field zone
             else if (x >= 653 && x <= 707 && y >= 254 && y <= 328 && battlefield.getOpponent().field.fieldZone != null){
                 battlefield.selectedCard = battlefield.getOpponent().field.fieldZone;
                 addChanges();
             }
+            //turn graveyard
             else if (x >= 656 && x <= 710 && y >= 347 && y <= 419)
                 showGraveyard(battlefield.getTurn());
+            //opponent graveyard
             else if (x >= 233 && x <= 295 && y >= 251 && y <= 317)
                 showGraveyard(battlefield.getOpponent());
+            //opponent monster zone
+            else if (x >= 311 && x <= 370 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(4) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(4);
+                addChanges();
+            }
+            else if (x >= 378 && x <= 441 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(3) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(3);
+                addChanges();
+            }
+            else if (x >= 447 && x <= 507 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(2) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(2);
+                addChanges();
+            }
+            else if (x >= 516 && x <= 575 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(1) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(1);
+                addChanges();
+            }
+            else if (x >= 585 && x <= 642 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(0) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(0);
+                addChanges();
+            }
+            //opponent spell and trap zone
+            else if (x >= 311 && x <= 370 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(4) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(4);
+                addChanges();
+            }
+            else if (x >= 378 && x <= 441 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(3) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(3);
+                addChanges();
+            }
+            else if (x >= 447 && x <= 507 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(2) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(2);
+                addChanges();
+            }
+            else if (x >= 516 && x <= 575 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(1) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(1);
+                addChanges();
+            }
+            else if (x >= 585 && x <= 642 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(0) != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(0);
+                addChanges();
+            }
+            //turn spell and trap zone
+            else if (x >= 311 && x <= 370 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
+                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(0);
+                battlefield.activeSpell("notFirstTime");
+                addChanges();
+            }
+            else if (x >= 378 && x <= 441 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
+                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(1);
+                battlefield.activeSpell("notFirstTime");
+                addChanges();
+            }
+            else if (x >= 447 && x <= 507 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
+                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(2);
+                battlefield.activeSpell("notFirstTime");
+                addChanges();
+            }
+            else if (x >= 516 && x <= 575 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
+                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(3);
+                battlefield.activeSpell("notFirstTime");
+                addChanges();
+            }
+            else if (x >= 585 && x <= 642 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
+                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(4);
+                battlefield.activeSpell("notFirstTime");
+                addChanges();
+            }
         });
     }
 
@@ -502,8 +575,6 @@ public class Game {
 
     public void showGraveyard (Duelist duelist){
         graphic.clearRect(0, 0, 500, 450);
-
-
         Button button = new Button("Back");
         button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
                 "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");

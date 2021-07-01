@@ -1088,7 +1088,7 @@ public class Battlefield {
     }
 
     //activeSpell
-    public void activeSpell() {
+    public void activeSpell(String how) {
         SpellAndTrap spellAndTrap;
         if (Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
         else if (!selectedCard.getCardsType().equals(Type.SPELL))
@@ -1106,7 +1106,8 @@ public class Battlefield {
             else {
                 activeSpellAndTraps.add(spellAndTrap);
                 spellAndTrap.action(this);
-                turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone() + 1, selectedCard);
+                if (how.equals("firstTime"))
+                    turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone() + 1, selectedCard);
             }
         }
     }
