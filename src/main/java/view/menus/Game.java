@@ -2,8 +2,14 @@ package view.menus;
 
 import controllers.Battelfield.Battlefield;
 import controllers.Battelfield.ImageAdapter;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ScrollPane;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.text.Font;
 import models.Card;
 import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
@@ -19,9 +25,11 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import models.CardStufs.Type;
 import models.Duelist;
+import models.User;
 import view.Main;
 import view.UserInterface;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 public class Game {
@@ -54,6 +62,7 @@ public class Game {
     GraphicsContext graphic1 = canvasHealthBar1.getGraphicsContext2D();
     Canvas canvasHealthBar2 = new Canvas(100,15);
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
+    BorderPane root = new BorderPane();
 
     Battlefield battlefield;
 
@@ -275,7 +284,7 @@ public class Game {
             handOpponent.setAlignment(Pos.CENTER);
         }
 
-        BorderPane root = new BorderPane();
+        root = new BorderPane();
         root.setCenter(canvas);
         root.setRight(makeRightBar());
         root.setLeft(vBoxLeft);
@@ -305,6 +314,18 @@ public class Game {
                 battlefield.attackGui(3);
             else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421)
                 battlefield.attackGui(4);
+            else if (x >= 242 && x <= 293 && y >= 344 && y <= 412 && battlefield.getTurn().field.fieldZone != null){
+                battlefield.selectedCard = battlefield.getTurn().field.fieldZone;
+                addChanges();
+            }
+            else if (x >= 653 && x <= 707 && y >= 254 && y <= 328 && battlefield.getOpponent().field.fieldZone != null){
+                battlefield.selectedCard = battlefield.getOpponent().field.fieldZone;
+                addChanges();
+            }
+            else if (x >= 656 && x <= 710 && y >= 347 && y <= 419)
+                showGraveyard(battlefield.getTurn());
+            else if (x >= 233 && x <= 295 && y >= 251 && y <= 317)
+                showGraveyard(battlefield.getOpponent());
         });
     }
 
@@ -446,7 +467,13 @@ public class Game {
         Button btnExit = new Button("Surrender");
         btnExit.setOnMouseClicked(e -> battlefield.winner = battlefield.getOpponent() );
         Button btnNextPhase = new Button("next Phase!");
-        btnNextPhase.setOnMouseClicked(e-> battlefield.nextPhase());
+        btnNextPhase.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                battlefield.nextPhase();
+                addChanges();
+            }
+        });
         Button btnMuteSounds = new Button("mute sounds");
 
         VBox vBoxLeft = new VBox();
@@ -471,5 +498,54 @@ public class Game {
 
     public Image getBackGroundIMG() {
         return backGroundIMG;
+    }
+
+    public void showGraveyard (Duelist duelist){
+        graphic.clearRect(0, 0, 500, 450);
+
+
+        Button button = new Button("Back");
+        button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
+                "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                root.setCenter(canvas);
+                addChanges();
+            }
+        });
+        button.setAlignment(Pos.CENTER);
+
+        HBox hBox = new HBox(button);
+        hBox.setAlignment(Pos.CENTER);
+
+
+        ScrollPane scrollPane = new ScrollPane();
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.TOP_CENTER);
+        VBox vBox = new VBox(gridPane);
+        vBox.setAlignment(Pos.CENTER);
+
+        ArrayList<Card> graveyardCards = duelist.field.graveYard;
+        for (int i = 0; i<graveyardCards.size(); ++i){
+            String name = graveyardCards.get(i).getName();
+            if (graveyardCards.get(i).getCardsType() == Type.MONSTER){
+                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + graveyardCards.get(i).getName() + ".jpg")).toExternalForm(), 230, 230, false, false);
+                ImageView imageView2 = new ImageView(image2);
+                gridPane.add(imageView2, i%3, i/3);
+            }
+            else{
+                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + graveyardCards.get(i).getName() + ".jpg")).toExternalForm(), 230, 230, false, false);
+                ImageView imageView2 = new ImageView(image2);
+                gridPane.add(imageView2, i%3, i/3);
+            }
+        }
+
+        gridPane.add(button, 0, 1000);
+
+
+
+        scrollPane.setContent(vBox);
+        root.setCenter(scrollPane);
     }
 }
