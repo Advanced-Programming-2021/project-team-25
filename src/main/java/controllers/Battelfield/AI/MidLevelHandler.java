@@ -379,6 +379,27 @@ public class MidLevelHandler extends AIHandler implements functions{
         else if (whereIsSpellInSpellZone(battlefield, "magnum shield") != -1 && isThereMonsterWithTypeX(battlefield, "magnum shield")) {
             activatingMagnumShield(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "magnum shield")));
         }
+        else if (whereIsSpellInHand(battlefield, "raigeki") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0){
+            battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "raigeki")));
+            battlefield.getOpponent().field.hand.remove(whereIsSpellInHand(battlefield, "raigeki"));
+            destroyHumanMonsters(battlefield);
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "raigeki") != -1){
+            battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "raigeki")));
+            battlefield.getOpponent().field.spellTrapZone.remove(whereIsSpellInSpellZone(battlefield, "raigeki"));
+            destroyHumanMonsters(battlefield);
+        }
+        else if (whereIsSpellInHand(battlefield, "dark hole") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0 &&
+                numberOfMonstersInHumanMonsterZone(battlefield) - numberOfMonstersInAiMonsterZone(battlefield) > 1){
+            destroyAiMonsters(battlefield);
+            destroyHumanMonsters(battlefield);
+            summonASpellOrTrap(battlefield, "dark hole", "summon");
+        }
+        else if (whereIsSpellInSpellZone(battlefield, "dark hole") != -1 &&
+                numberOfMonstersInHumanMonsterZone(battlefield) - numberOfMonstersInAiMonsterZone(battlefield) > 1){
+            destroyHumanMonsters(battlefield);
+            destroyAiMonsters(battlefield);
+        }
         else{
             for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
                 if (battlefield.getOpponent().field.hand.get(i).getCardsType() != Type.MONSTER){
@@ -660,6 +681,40 @@ public class MidLevelHandler extends AIHandler implements functions{
                 break;
             }
         }
+    }
+
+
+    public void destroyAiMonsters (Battlefield battlefield){
+        for (int i = 0; i<5; ++i)
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null)
+                ((Monster)battlefield.getOpponent().field.monsterZone.get(i)).removeMonster(battlefield);
+    }
+
+
+    public void destroyHumanMonsters (Battlefield battlefield){
+        for (int i = 0; i<5; ++i)
+            if (battlefield.getTurn().field.monsterZone.get(i) != null)
+                ((Monster)battlefield.getTurn().field.monsterZone.get(i)).removeMonster(battlefield);
+    }
+
+
+    public int numberOfMonstersInAiMonsterZone (Battlefield battlefield){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null)
+                counter += 1;
+        }
+        return counter;
+    }
+
+    
+    public int numberOfMonstersInHumanMonsterZone (Battlefield battlefield){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getTurn().field.monsterZone.get(i) != null)
+                counter += 1;
+        }
+        return counter;
     }
 
 
