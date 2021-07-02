@@ -1255,22 +1255,22 @@ public class Battlefield {
     }
 
     //cheats
-    private void forceAddedToHand(Matcher matcher) {
+    public void forceAddedToHand(Matcher matcher) {
         String cardName = matcher.group("cardName");
         turn.field.hand.add(Card.getCardByName(cardName));
     }
-    private void duelWinCheat(Matcher matcher) {
+    public void duelWinCheat(Matcher matcher) {
         String name = matcher.group("nickname");
         if (turn.getName().equals(name))
             winner = turn;
         else if (opponent.getName().equals(name))
             winner = opponent;
     }
-    private void increaseLPCheat(Matcher matcher){
+    public void increaseLPCheat(Matcher matcher){
         int amount = Integer.parseInt(matcher.group(1));
         turn.LP += amount ;
     }
-                                            
+
     public void rotateBoard(){
         Image imageBase = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm());
         Image image;

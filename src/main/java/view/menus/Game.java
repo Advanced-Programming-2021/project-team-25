@@ -4,12 +4,14 @@ import controllers.Battelfield.Battlefield;
 import controllers.Battelfield.ImageAdapter;
 import controllers.Database.DataBase;
 import controllers.ProgramController;
+import controllers.Regex;
 import controllers.menues.DuelMenuController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
 import javafx.scene.control.ScrollPane;
+import javafx.scene.control.TextField;
 import models.Card;
 import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
@@ -565,6 +567,21 @@ public class Game {
 
             }
         } );
+        Button btnCheat = new Button("Cheat!");
+        btnCheat.setOnMouseClicked(e->{
+            String command = UserInterface.getUserInput();
+            if(Objects.isNull(command));
+            else if(command.startsWith("select")) {
+                //play Sound needed
+                battlefield.forceAddedToHand(Regex.getMatcher(command, Regex.forceAddedCardToHand));
+                UserInterface.printResponse("force added to hand!");
+            }
+            else if(command.startsWith("duel set-winner")){
+                battlefield.duelWinCheat(Regex.getMatcher(command,Regex.duelWinCheat));
+            }
+            else if(command.startsWith("increase"))
+                battlefield.increaseLPCheat(Regex.getMatcher(command,Regex.increaseLPCheat));
+        });
         Button btnNextPhase = new Button("next Phase!");
         btnNextPhase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -578,7 +595,7 @@ public class Game {
         VBox vBoxLeft = new VBox();
         vBoxLeft.setAlignment(Pos.CENTER);
 
-        vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
+        vBoxLeft.getChildren().addAll(btnCheat,btnNextPhase,btnMuteSounds,btnExit);
         vBoxLeft.setSpacing(10);
         return vBoxLeft;
     }
