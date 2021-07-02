@@ -11,7 +11,7 @@ import view.UserInterface;
 public class HighLevelHandler extends AIHandler implements functions{
     @Override
     public void handle(Battlefield battlefield) {
-        if(countOpponentMonsterInAttackPosition(battlefield)>=4 || someOfAttacksOfOpponentMonster(battlefield)>=2000){
+        if(countOpponentMonsterInAttackPosition(battlefield) >= 4 || someOfAttacksOfOpponentMonster(battlefield) >= 2000){
 
             //raigeki is great for this situation, so i active it first in high level handler
             //but you should not do it in your own handlers :)
@@ -99,15 +99,7 @@ public class HighLevelHandler extends AIHandler implements functions{
                     counter += 1;
 
             if (counter >= 3){
-                int counter1 = 0;
-                for (int i = 0; i<5; ++i){
-                    if (battlefield.getOpponent().field.monsterZone.get(i) != null){
-                        ((Monster)battlefield.getOpponent().field.monsterZone.get(i)).removeMonster(battlefield);
-                        counter1 += 1;
-                    }
-                    if (counter1 == 3)
-                        break;
-                }
+                tributeXMonster(battlefield, 3);
                 for (int i = 0; i<5; ++i)
                     if (battlefield.getTurn().field.monsterZone.get(i) != null)
                         ((Monster)battlefield.getTurn().field.monsterZone.get(i)).removeMonster(battlefield);
@@ -122,11 +114,10 @@ public class HighLevelHandler extends AIHandler implements functions{
         else if (findMonster("exploder dragon", battlefield) != -1){
             setAMonster(battlefield, "exploder dragon");
         }
-        else if (findMonster("terratiger, the empowered warrior", battlefield) != -1 &&
-                isThereAnyMonsterBelow5(battlefield)){
+        else if (findMonster("terratiger, the empowered warrior", battlefield) != -1 && isThereAnyMonsterBelow5(battlefield)){
             summonAMonster(battlefield, "terratiger, the empowered warrior");
-            for (int i = 0; i<5; ++i)
-                if (battlefield.getTurn().field.hand.get(i) != null &&
+            for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i)
+                if (battlefield.getOpponent().field.hand.get(i) != null &&
                         ((Monster)battlefield.getOpponent().field.hand.get(i)).getLevel() < 5)
                     setAMonster(battlefield, battlefield.getOpponent().field.hand.get(i).getName());
         }
@@ -505,10 +496,14 @@ public class HighLevelHandler extends AIHandler implements functions{
                     break;
                 }
             }
-            if (number == 1)
+            if (number == 1) {
+                battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "monster reborn")));
                 battlefield.getOpponent().field.hand.remove(whereIsSpellInHand(battlefield, "monster reborn"));
-            else
+            }
+            else {
+                battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "monster reborn")));
                 battlefield.getOpponent().field.spellTrapZone.remove(whereIsSpellInSpellZone(battlefield, "monster reborn"));
+            }
         }
     }
 

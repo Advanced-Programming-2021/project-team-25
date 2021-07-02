@@ -6,7 +6,8 @@ import view.UserInterface;
 public class LowLevelHandler extends AIHandler implements functions{
     @Override
     public void handle(Battlefield battlefield) {
-        if(countOpponentMonsterInAttackPosition(battlefield)<=2 || someOfAttacksOfOpponentMonster(battlefield) <= 600){
+        if(countOpponentMonsterInAttackPosition(battlefield) == 1 || countOpponentMonsterInAttackPosition(battlefield) == 2
+                || (someOfAttacksOfOpponentMonster(battlefield) >= 500 && someOfAttacksOfOpponentMonster(battlefield) < 1000)){
 
         }
         else{
