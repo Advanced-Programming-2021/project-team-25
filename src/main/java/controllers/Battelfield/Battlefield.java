@@ -806,14 +806,14 @@ public class Battlefield {
             }
         }
 
-        if (message.equals("summon successfully")) {
+        if (message.equals("summoned successfully")) {
             for (int i = 0; i < 5; ++i)
                 if (turn.field.monsterZone.get(i) == null) {
-                    turn.field.monsterZone.set(i, selectedCard);
-                    turn.field.hand.remove(selectedCard);
-                    selectedCard.setIsSetThisTurn(true);
+                    turn.field.monsterZone.set(i, commandKnight);
+                    turn.field.hand.remove(commandKnight);
+                    commandKnight.setIsSetThisTurn(true);
                     turn.hasPutMonster = true;
-                    selectedCard.setCardsFace(FaceUp.ATTACK);
+                    commandKnight.setCardsFace(FaceUp.ATTACK);
                     selectedCard = null;
                     UserInterface.printResponse(message);
                     break;
