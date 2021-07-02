@@ -26,7 +26,7 @@ public class HighLevelHandler extends AIHandler implements functions{
                 destroyHumanMonsters(battlefield);
             }
 
-            if (howManyPlacesAreEmpty(battlefield) != 0)
+            if (howManyPlacesAreEmpty(battlefield) != 5)
                 attack(battlefield);
 
             if (howManyPlacesAreEmpty(battlefield) != 0)
@@ -58,22 +58,20 @@ public class HighLevelHandler extends AIHandler implements functions{
             battlefield.getOpponent().field.hand.remove(index);
             summonAMonster(battlefield, "the tricky");
         }
-        if (findMonsterInMonsterZone("herald of creation", battlefield) != -1){
-            if (isThereAnyMonsterUpper6InGraveYard(battlefield) != -1){
-                int graveIndex = isThereAnyMonsterUpper6InGraveYard(battlefield);
-                int index = -1;
-                int money = 100000;
-                for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i) {
-                    if (battlefield.getOpponent().field.hand.get(i).getPrice() < money) {
-                        index = i;
-                        money = battlefield.getOpponent().field.hand.get(i).getPrice();
-                    }
+        if (findMonsterInMonsterZone("herald of creation", battlefield) != -1 && isThereAnyMonsterUpper6InGraveYard(battlefield) != -1){
+            int graveIndex = isThereAnyMonsterUpper6InGraveYard(battlefield);
+            int index = -1;
+            int money = 100000;
+            for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i) {
+                if (battlefield.getOpponent().field.hand.get(i).getPrice() < money) {
+                    index = i;
+                    money = battlefield.getOpponent().field.hand.get(i).getPrice();
                 }
-                battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.hand.get(index));
-                battlefield.getOpponent().field.hand.remove(index);
-                battlefield.getOpponent().field.hand.add(battlefield.getOpponent().field.graveYard.get(graveIndex));
-                battlefield.getOpponent().field.graveYard.remove(graveIndex);
             }
+            battlefield.getOpponent().field.graveYard.add(battlefield.getOpponent().field.hand.get(index));
+            battlefield.getOpponent().field.hand.remove(index);
+            battlefield.getOpponent().field.hand.add(battlefield.getOpponent().field.graveYard.get(graveIndex));
+            battlefield.getOpponent().field.graveYard.remove(graveIndex);
         }
         if (findMonster("yomi ship", battlefield) != -1){
             setAMonster(battlefield, "yomi ship");
@@ -160,14 +158,17 @@ public class HighLevelHandler extends AIHandler implements functions{
                     Card temp = battlefield.getOpponent().field.hand.get(i);
                     if (((Monster)temp).getLevel() < 5){
                         summonAMonster(battlefield, temp.getName());
+                        break;
                     }
                     else if ( ((Monster)temp).getLevel() > 4 && ((Monster)temp).getLevel() < 7 && howManyPlacesAreEmpty(battlefield) < 5){
                         tributeXMonster(battlefield, 1);
                         summonAMonster(battlefield, temp.getName());
+                        break;
                     }
                     else if (((Monster)temp).getLevel() > 6 && howManyPlacesAreEmpty(battlefield) < 4){
                         tributeXMonster(battlefield, 2);
                         summonAMonster(battlefield, temp.getName());
+                        break;
                     }
                 }
             }
@@ -392,26 +393,26 @@ public class HighLevelHandler extends AIHandler implements functions{
         }
         else if (whereIsSpellInSpellZone(battlefield, "sword of dark destruction") != -1 &&
                 (isThereMonsterWithTypeX(battlefield, "fiend") || isThereMonsterWithTypeX(battlefield, "spellcaster")))
-            activatingSwordOfDarkDestruction(battlefield, battlefield.getOpponent().field.monsterZone.get(whereIsSpellInSpellZone(battlefield, "sword of dark destruction")));
+            activatingSwordOfDarkDestruction(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "sword of dark destruction")));
         else if (whereIsSpellInHand(battlefield, "black pendant") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
             activatingBlackPendant(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "black pendant")));
             summonASpellOrTrap(battlefield, "black pendant", "summon");
         }
         else if (whereIsSpellInSpellZone(battlefield, "black pendant") != -1)
-            activatingBlackPendant(battlefield, battlefield.getOpponent().field.monsterZone.get(whereIsSpellInSpellZone(battlefield, "black pendant")));
+            activatingBlackPendant(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "black pendant")));
         else if (whereIsSpellInHand(battlefield, "united we stand") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
             activatingUnitedWeStand(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "united we stand")));
             summonASpellOrTrap(battlefield, "united we stand", "summon");
         }
         else if (whereIsSpellInSpellZone(battlefield, "united we stand") != -1)
-            activatingBlackPendant(battlefield, battlefield.getOpponent().field.monsterZone.get(whereIsSpellInSpellZone(battlefield, "united we stand")));
+            activatingUnitedWeStand(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "united we stand")));
         else if (whereIsSpellInHand(battlefield, "magnum shield") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
                 isThereMonsterWithTypeX(battlefield, "warrior")){
             activatingMagnumShield(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "magnum shield")));
             summonASpellOrTrap(battlefield, "magnum shield", "summon");
         }
         else if (whereIsSpellInSpellZone(battlefield, "magnum shield") != -1 && isThereMonsterWithTypeX(battlefield, "magnum shield"))
-            activatingMagnumShield(battlefield, battlefield.getOpponent().field.monsterZone.get(whereIsSpellInSpellZone(battlefield, "magnum shield")));
+            activatingMagnumShield(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "magnum shield")));
         else{
             for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
                 if (battlefield.getOpponent().field.hand.get(i).getCardsType() != Type.MONSTER){
