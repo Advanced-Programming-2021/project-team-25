@@ -6,13 +6,49 @@ import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
 import models.Monster.CommandKnight;
 import models.Monster.Monster;
+import models.SpellAndTrap.HarpiesFeatherDuster;
+import models.SpellAndTrap.MysticalSpaceTyphoon;
 import models.SpellAndTrap.SpellAndTrap;
+import models.SpellAndTrap.TwinTwisters;
 import view.UserInterface;
 
 public class HighLevelHandler extends AIHandler implements functions{
     @Override
     public void handle(Battlefield battlefield) {
         if(countOpponentMonsterInAttackPosition(battlefield) >= 4 || someOfAttacksOfOpponentMonster(battlefield) >= 2000){
+
+            //generating cards :)
+            boolean canActiveSpell = true;
+            if (allCardsWithGivenName(battlefield, "Harpie's Feather Duster") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) >= 3 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+                canActiveSpell = false;
+                HarpiesFeatherDuster harpiesFeatherDuster = new HarpiesFeatherDuster(Card.allCards.get("Harpie's Feather Duster"));
+                for (int i = 0; i<5; ++i){
+                    if (battlefield.getTurn().field.spellTrapZone.get(i) != null)
+                        ((SpellAndTrap)(battlefield.getTurn().field.spellTrapZone.get(i))).removeSpellOrTrap(battlefield);
+                }
+                battlefield.getOpponent().field.graveYard.add(harpiesFeatherDuster);
+                int index = weakestCardInAIHand(battlefield);
+                battlefield.getOpponent().field.hand.remove(index);
+            }
+            else if (allCardsWithGivenName(battlefield, "Twin Twisters") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) == 2 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+                canActiveSpell = false;
+                TwinTwisters twinTwisters = new TwinTwisters(Card.allCards.get("Twin Twisters"));
+                activeTwinTwisters(battlefield);
+                int index = weakestCardInAIHand(battlefield);
+                battlefield.getOpponent().field.hand.set(index, twinTwisters);
+                summonASpellOrTrap(battlefield, "twin twisters", "summon");
+            }
+            else if (allCardsWithGivenName(battlefield, "Mystical space typhoon") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) == 1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+                canActiveSpell = false;
+                MysticalSpaceTyphoon mysticalSpaceTyphoon = new MysticalSpaceTyphoon(Card.allCards.get("Mystical space typhoon"));
+                activeMysticalSpaceTyphoon(battlefield);
+                int index = weakestCardInAIHand(battlefield);
+                battlefield.getOpponent().field.hand.set(index, mysticalSpaceTyphoon);
+                summonASpellOrTrap(battlefield, "mystical space typhoon", "summon");
+            }
+
+
+
 
             //raigeki is great for this situation, so i active it first in high level handler
             //but you should not do it in your own handlers :)
@@ -33,12 +69,50 @@ public class HighLevelHandler extends AIHandler implements functions{
             if (howManyPlacesAreEmpty(battlefield) != 0)
                 setOrSummonMonsters(battlefield);
 
-            activateSpells(battlefield);
+            if (canActiveSpell)
+                activateSpells(battlefield);
         }
         else{
             if(nextHandler != null) nextHandler.handle(battlefield);
             else UserInterface.printResponse("Ai Done!");
         }
+    }
+
+
+    public int allCardsWithGivenName (Battlefield battlefield, String name){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.spellTrapZone.get(i) != null && battlefield.getOpponent().field.spellTrapZone.get(i).getName().equalsIgnoreCase(name))
+                counter += 1;
+        }
+        for (int i = 0; i<battlefield.getOpponent().field.graveYard.size(); ++i){
+            if (battlefield.getOpponent().field.graveYard.get(i).getName().equalsIgnoreCase(name))
+                counter += 1;
+        }
+        return counter;
+    }
+
+
+    public int numberOfTrapsInTurnsSpellTrapZone (Battlefield battlefield){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getTurn().field.spellTrapZone.get(i) != null && battlefield.getTurn().field.spellTrapZone.get(i).getCardsType() == Type.TRAP)
+                counter += 1;
+        }
+        return counter;
+    }
+
+
+    public int weakestCardInAIHand (Battlefield battlefield){
+        int index = -1;
+        int money = 100000;
+        for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
+            if (battlefield.getOpponent().field.hand.get(i).getPrice() < money){
+                index = i;
+                money = battlefield.getOpponent().field.hand.get(i).getPrice();
+            }
+        }
+        return index;
     }
 
 
@@ -555,7 +629,7 @@ public class HighLevelHandler extends AIHandler implements functions{
                 }
             }
         }
-        else{
+        else if (number == 2){
             for (int i = 0; i<5; ++i){
                 if (battlefield.getOpponent().field.spellTrapZone.get(i) != null &&
                         battlefield.getOpponent().field.hand.get(i).getName().equalsIgnoreCase("harpie's feather duster")){
