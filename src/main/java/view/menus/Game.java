@@ -2,15 +2,14 @@ package view.menus;
 
 import controllers.Battelfield.Battlefield;
 import controllers.Battelfield.ImageAdapter;
+import controllers.Database.DataBase;
+import controllers.ProgramController;
+import controllers.menues.DuelMenuController;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.text.Font;
-import javafx.stage.Stage;
 import models.Card;
 import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
@@ -46,7 +45,7 @@ public class Game {
     final String fieldPath = Objects.requireNonNull(this.getClass().getResource("elements/field.png")).toExternalForm();
 
     Image backGroundIMG = new Image(backGroundPath);
-    Image mainPhaseIMG = new Image(mainPhasePath);
+    Image mainPhaseIMG = new Image(mainPhasePath,200,100,false,false);
     Image endPhaseIMG = new Image(endPhasePath);
     Image drawPhaseIMG = new Image(drawPhasePath);
     Image battlePhaseIMG = new Image(battlePhasePath);
@@ -151,19 +150,19 @@ public class Game {
             ImageAdapter.setCardOnOpponentGraveYard(graphic, image);
         }
 
-        //building rivals field zone spell
-        if (battlefield.getOpponent().field.fieldZone != null){
-            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
-                    battlefield.getOpponent().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
-            ImageAdapter.setCardOnOpponentFieldZone(graphic, image);
-        }
-
-        //building turn field zone spell
-        if (battlefield.getTurn().field.fieldZone != null){
-            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
-                    battlefield.getTurn().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
-            ImageAdapter.setCardOnTurnFieldZone(graphic, image);
-        }
+//        //building rivals field zone spell
+//        if (battlefield.getOpponent().field.fieldZone != null){
+//            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
+//                    battlefield.getOpponent().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+//            ImageAdapter.setCardOnOpponentFieldZone(graphic, image);
+//        }
+//
+//        //building turn field zone spell
+//        if (battlefield.getTurn().field.fieldZone != null){
+//            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
+//                    battlefield.getTurn().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+//            ImageAdapter.setCardOnTurnFieldZone(graphic, image);
+//        }
 
         //building turn graveyard
         if (battlefield.getTurn().field.graveYard.size() > 0){
@@ -320,16 +319,16 @@ public class Game {
                 battlefield.attackGui(3);
             else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421)
                 battlefield.attackGui(4);
-            //turn field zone
-            else if (x >= 242 && x <= 293 && y >= 344 && y <= 412 && battlefield.getTurn().field.fieldZone != null){
-                battlefield.selectedCard = battlefield.getTurn().field.fieldZone;
-                addChanges();
-            }
-            //opponent field zone
-            else if (x >= 653 && x <= 707 && y >= 254 && y <= 328 && battlefield.getOpponent().field.fieldZone != null){
-                battlefield.selectedCard = battlefield.getOpponent().field.fieldZone;
-                addChanges();
-            }
+//            //turn field zone
+//            else if (x >= 242 && x <= 293 && y >= 344 && y <= 412 && battlefield.getTurn().field.fieldZone != null){
+//                battlefield.selectedCard = battlefield.getTurn().field.fieldZone;
+//                addChanges();
+//            }
+//            //opponent field zone
+//            else if (x >= 653 && x <= 707 && y >= 254 && y <= 328 && battlefield.getOpponent().field.fieldZone != null){
+//                battlefield.selectedCard = battlefield.getOpponent().field.fieldZone;
+//                addChanges();
+//            }
             //turn graveyard
             else if (x >= 656 && x <= 710 && y >= 347 && y <= 419)
                 showGraveyard(battlefield.getTurn());
@@ -425,8 +424,9 @@ public class Game {
         vBox.setAlignment(Pos.CENTER);
 
         Card fieldZone = duelist.field.fieldZone;
-        if(fieldZone == null)
+        if(fieldZone == null) {
             UserInterface.printResponse("No card in fieldZone");
+            return;        }
         else if (fieldZone.getCardsType() == Type.MONSTER) {
             Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + fieldZone.getName() + ".jpg")).toExternalForm(), 300, 300, false, false);
             ImageView imageView2 = new ImageView(image2);
@@ -484,6 +484,19 @@ public class Game {
                 imageDeck = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + battlefield.selectedCard.getName() + ".jpg")).toExternalForm(), 50, 100, false, false);
         }
         ImageView imgDeck = new ImageView((imageDeck));
+        imgDeck.setOnMouseClicked(e->{
+            ScrollPane scrollPane = new ScrollPane();
+            GridPane gridPane = new GridPane();
+            gridPane.setAlignment(Pos.TOP_CENTER);
+            VBox vBox = new VBox(gridPane);
+            vBox.setAlignment(Pos.CENTER);
+
+            ArrayList<Card> deckCards = battlefield.getTurn().field.deck;
+            makeListOfCardsForShowing(gridPane, deckCards);
+
+            scrollPane.setContent(vBox);
+            root.setCenter(scrollPane);
+        });
         imgDeck.setFitHeight(150);
         imgDeck.setFitWidth(100);
         VBox vBoxRight = new VBox();
@@ -505,23 +518,37 @@ public class Game {
         return vboxLeft;
     }
 
-    private VBox makeRightBar() {
-        Circle cMain = new Circle(150, 45, 25);
-        cMain.setFill(new ImagePattern(mainPhaseIMG));
-        Circle cEnd = new Circle(150, 105, 25);
-        cEnd.setFill(new ImagePattern(endPhaseIMG));
-        Circle cDraw = new Circle(150, 165, 25);
-        cDraw.setFill(new ImagePattern(drawPhaseIMG));
-        Circle cBattle = new Circle(150, 225, 25);
-        cBattle.setFill(new ImagePattern(battlePhaseIMG));
-        Circle cDuel = new Circle(150, 285, 25);
-        cDuel.setFill(new ImagePattern(duelPhaseIMG));
-        Circle cStandby = new Circle(150, 345, 25);
-        cStandby.setFill(new ImagePattern(standbyPhaseIMG));
+    private void makeListOfCardsForShowing(GridPane gridPane, ArrayList<Card> deckCards) {
+        for (int i = 0; i<deckCards.size(); ++i){
+            String name = deckCards.get(i).getName();
+            if (deckCards.get(i).getCardsType() == Type.MONSTER){
+                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + deckCards.get(i).getName() + ".jpg")).toExternalForm(), 230, 230, false, false);
+                ImageView imageView2 = new ImageView(image2);
+                gridPane.add(imageView2, i%3, i/3);
+            }
+            else{
+                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + deckCards.get(i).getName() + ".jpg")).toExternalForm(), 230, 230, false, false);
+                ImageView imageView2 = new ImageView(image2);
+                gridPane.add(imageView2, i%3, i/3);
+            }
+        }
+    }
 
+    private VBox makeRightBar() {
 
         Button btnExit = new Button("Surrender");
-        btnExit.setOnMouseClicked(e -> battlefield.winner = battlefield.getOpponent() );
+        btnExit.setOnMouseClicked(e -> {
+            battlefield.winner = battlefield.getOpponent();
+            if(battlefield.isOneRound){
+              DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
+              duelMenuController.finishround1(0,0,battlefield.getOpponent(),battlefield.getWinner(),battlefield);
+              DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+              DataBase.saveTheUserList(User.getUsers());
+            }
+            else {
+
+            }
+        } );
         Button btnNextPhase = new Button("next Phase!");
         btnNextPhase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -534,6 +561,7 @@ public class Game {
 
         VBox vBoxLeft = new VBox();
         vBoxLeft.setAlignment(Pos.CENTER);
+
         vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
         vBoxLeft.setSpacing(10);
         return vBoxLeft;
@@ -581,19 +609,7 @@ public class Game {
         vBox.setAlignment(Pos.CENTER);
 
         ArrayList<Card> graveyardCards = duelist.field.graveYard;
-        for (int i = 0; i<graveyardCards.size(); ++i){
-            String name = graveyardCards.get(i).getName();
-            if (graveyardCards.get(i).getCardsType() == Type.MONSTER){
-                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + graveyardCards.get(i).getName() + ".jpg")).toExternalForm(), 230, 230, false, false);
-                ImageView imageView2 = new ImageView(image2);
-                gridPane.add(imageView2, i%3, i/3);
-            }
-            else{
-                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + graveyardCards.get(i).getName() + ".jpg")).toExternalForm(), 230, 230, false, false);
-                ImageView imageView2 = new ImageView(image2);
-                gridPane.add(imageView2, i%3, i/3);
-            }
-        }
+        makeListOfCardsForShowing(gridPane, graveyardCards);
 
         gridPane.add(button, 0, 1000);
 
@@ -602,4 +618,5 @@ public class Game {
         scrollPane.setContent(vBox);
         root.setCenter(scrollPane);
     }
+
 }
