@@ -689,8 +689,8 @@ public class MidLevelHandler extends AIHandler implements functions{
             if (battlefield.getOpponent().field.monsterZone.get(i) != null)
                 ((Monster)battlefield.getOpponent().field.monsterZone.get(i)).removeMonster(battlefield);
     }
-
-
+    
+    
     public void destroyHumanMonsters (Battlefield battlefield){
         for (int i = 0; i<5; ++i)
             if (battlefield.getTurn().field.monsterZone.get(i) != null)
@@ -706,7 +706,7 @@ public class MidLevelHandler extends AIHandler implements functions{
         }
         return counter;
     }
-
+    
     
     public int numberOfMonstersInHumanMonsterZone (Battlefield battlefield){
         int counter = 0;
