@@ -30,6 +30,7 @@ import view.Main;
 import view.UserInterface;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class Game {
@@ -150,19 +151,19 @@ public class Game {
             ImageAdapter.setCardOnOpponentGraveYard(graphic, image);
         }
 
-//        //building rivals field zone spell
-//        if (battlefield.getOpponent().field.fieldZone != null){
-//            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
-//                    battlefield.getOpponent().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
-//            ImageAdapter.setCardOnOpponentFieldZone(graphic, image);
-//        }
-//
-//        //building turn field zone spell
-//        if (battlefield.getTurn().field.fieldZone != null){
-//            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
-//                    battlefield.getTurn().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
-//            ImageAdapter.setCardOnTurnFieldZone(graphic, image);
-//        }
+        //building rivals field zone spell
+        if (battlefield.getOpponent().field.fieldZone != null){
+            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
+                    battlefield.getOpponent().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+            ImageAdapter.setCardOnOpponentFieldZone(graphic, image);
+        }
+
+        //building turn field zone spell
+        if (battlefield.getTurn().field.fieldZone != null){
+            Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" +
+                    battlefield.getTurn().field.fieldZone.getName() + ".jpg")).toExternalForm(), 275, 275, false, false);
+            ImageAdapter.setCardOnTurnFieldZone(graphic, image);
+        }
 
         //building turn graveyard
         if (battlefield.getTurn().field.graveYard.size() > 0){
@@ -426,13 +427,14 @@ public class Game {
         Card fieldZone = duelist.field.fieldZone;
         if(fieldZone == null) {
             UserInterface.printResponse("No card in fieldZone");
-            return;        }
+            return;
+        }
         else if (fieldZone.getCardsType() == Type.MONSTER) {
             Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + fieldZone.getName() + ".jpg")).toExternalForm(), 300, 300, false, false);
             ImageView imageView2 = new ImageView(image2);
             gridPane.add(imageView2,0,1);
         }
-        else if (fieldZone.getCardsType() == Type.FIELD_ZONE_SPELL) {
+        else {
             Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + fieldZone.getName() + ".jpg")).toExternalForm(), 300, 300, false, false);
             ImageView imageView2 = new ImageView(image2);
             gridPane.add(imageView2, 0, 1);
@@ -493,6 +495,20 @@ public class Game {
 
             ArrayList<Card> deckCards = battlefield.getTurn().field.deck;
             makeListOfCardsForShowing(gridPane, deckCards);
+
+            Button button = new Button("Back");
+            button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
+                    "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
+            button.setOnAction(new EventHandler<ActionEvent>() {
+                @Override
+                public void handle(ActionEvent actionEvent) {
+                    root.setCenter(canvas);
+                    addChanges();
+                }
+            });
+
+            gridPane.add(button, 0, 1000);
+            Collections.shuffle(battlefield.getTurn().field.deck);
 
             scrollPane.setContent(vBox);
             root.setCenter(scrollPane);
