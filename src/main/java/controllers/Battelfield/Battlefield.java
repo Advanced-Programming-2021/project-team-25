@@ -19,6 +19,7 @@ import javafx.stage.Popup;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.stage.Stage;
 import models.AI;
 import models.Card;
 import models.CardStufs.FaceUp;
@@ -66,6 +67,7 @@ public class Battlefield {
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
     public boolean isOneRound;
+    private Stage currStage;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -283,7 +285,7 @@ public class Battlefield {
                 });
 
             });
-
+            selectedCard =  turn.field.monsterZone.get(index);
             Image imageForButton = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" +
                     turn.field.monsterZone.get(index).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
             ImageView imageView = new ImageView(imageForButton);
@@ -293,14 +295,56 @@ public class Battlefield {
             Label lblFlipSummon= new Label("Flip summon");
 
             Button flipBtn = new Button("FlipSummon");
+            Button back = new Button("back");
+            back.setOnMouseClicked(e->{
+                currStage.close();
+            });
+
+            Button saveChanges = new Button("Save Changes");
+
             ChoiceBox<String> position = new ChoiceBox<>();
             position.setValue("Attack");
             // Add the items to the ChoiceBox
-            position.getItems().addAll("Attack", "Defense","AttackBack","DefenseBack");
+            position.getItems().addAll("Attack", "Defence");
             // Create the Selection Value Label
             Label selectedValueLbl = new Label();
             // Bind the value property to the text property of the Label
             selectedValueLbl.textProperty().bind(position.valueProperty());
+            saveChanges.setOnMouseClicked(e->{
+                if (position.getValue().equals("Attack")) {
+                    if (!turn.field.monsterZone.contains(selectedCard))
+                        UserInterface.printResponse("you can’t change this card position");
+                    else if (!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
+                        UserInterface.printResponse("you can’t do this action in this phase");
+                    else if (selectedCard.getCardsFace() == FaceUp.ATTACK)
+                        UserInterface.printResponse("this card is already in the wanted position");
+                    else if (selectedCard.getSetChanged())
+                        UserInterface.printResponse("you already changed this card position in this turn");
+                    else {
+                        selectedCard.setSetChanged(true);
+                        selectedCard.setCardsFace(FaceUp.ATTACK);
+                        UserInterface.printResponse("monster card position changed successfully");
+                        selectedCard = null;
+                    }
+                } else if (position.getValue().equals("Defence")) {
+                    if (!turn.field.monsterZone.contains(selectedCard))
+                        UserInterface.printResponse("you can’t change this card position");
+                    else if (!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
+                        UserInterface.printResponse("you can’t do this action in this phase");
+                    else if (selectedCard.getCardsFace() != FaceUp.ATTACK)
+                        UserInterface.printResponse("this card is already in the wanted position");
+                    else if (selectedCard.getSetChanged())
+                        UserInterface.printResponse("you already changed this card position in this turn");
+                    else {
+                        selectedCard.setSetChanged(true);
+                        selectedCard.setCardsFace(FaceUp.DEFENSE_FRONT);
+                        UserInterface.printResponse("monster card position changed successfully");
+                        selectedCard = null;
+                    }
+                }
+                game.addChanges();
+            });
+
             HBox hBox1 = new HBox();
             hBox1.setSpacing(5);
             hBox1.getChildren().addAll(lblPositions, position);
@@ -310,6 +354,9 @@ public class Battlefield {
             HBox hBox3 = new HBox();
             hBox3.setSpacing(15);
             hBox3.getChildren().addAll(lblFlipSummon, flipBtn);
+            HBox hBox4 = new HBox();
+            hBox4.setSpacing(60);
+            hBox4.getChildren().addAll(back, saveChanges);
             VBox vboxLeft = new VBox();
             vboxLeft.getChildren().addAll(hBox1,hBox2,hBox3);
             VBox vboxRight = new VBox();
@@ -318,10 +365,13 @@ public class Battlefield {
             BorderPane borderPane = new BorderPane();
             borderPane.setRight(vboxRight);
             borderPane.setLeft(vboxLeft);
+            borderPane.setBottom(hBox4);
             Scene scene = new Scene(borderPane,500,450);
             String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
             scene.getStylesheets().add(style);
-            new subStage("Attack Gui",scene);
+            subStage sub = new subStage("Attack Gui",scene);
+            currStage = sub.getStage();
+
 
 //            popup.getContent().add(vBox1);
 //            popup.setAnchorX(1150);
@@ -1016,42 +1066,6 @@ public class Battlefield {
                         break;
                     }
                 }
-            }
-        }
-    }
-
-    public void setPosition(Matcher matcher) {
-        if (matcher.group(1).equals("attack")) {
-            if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
-            else if (!turn.field.monsterZone.contains(selectedCard))
-                UserInterface.printResponse("you can’t change this card position");
-            else if (!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
-                UserInterface.printResponse("you can’t do this action in this phase");
-            else if (selectedCard.getCardsFace() == FaceUp.ATTACK)
-                UserInterface.printResponse("this card is already in the wanted position");
-            else if (selectedCard.getSetChanged())
-                UserInterface.printResponse("you already changed this card position in this turn");
-            else {
-                selectedCard.setSetChanged(true);
-                selectedCard.setCardsFace(FaceUp.ATTACK);
-                UserInterface.printResponse("monster card position changed successfully");
-                selectedCard = null;
-            }
-        } else if (matcher.group(1).equals("defence")) {
-            if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
-            else if (!turn.field.monsterZone.contains(selectedCard))
-                UserInterface.printResponse("you can’t change this card position");
-            else if (!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
-                UserInterface.printResponse("you can’t do this action in this phase");
-            else if (selectedCard.getCardsFace() != FaceUp.ATTACK)
-                UserInterface.printResponse("this card is already in the wanted position");
-            else if (selectedCard.getSetChanged())
-                UserInterface.printResponse("you already changed this card position in this turn");
-            else {
-                selectedCard.setSetChanged(true);
-                selectedCard.setCardsFace(FaceUp.DEFENSE_FRONT);
-                UserInterface.printResponse("monster card position changed successfully");
-                selectedCard = null;
             }
         }
     }
