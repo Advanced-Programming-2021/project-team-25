@@ -4,6 +4,7 @@ import controllers.Battelfield.Battlefield;
 import models.Card;
 import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
+import models.Monster.CommandKnight;
 import models.Monster.Monster;
 import models.SpellAndTrap.SpellAndTrap;
 import view.UserInterface;
@@ -142,7 +143,13 @@ public class HighLevelHandler extends AIHandler implements functions{
             battlefield.getOpponent().field.hand.remove(where);
             setAMonster(battlefield, "skull guardian");
         }
-        //you must check the others which has effect
+        else if (findMonster("command knight", battlefield) != -1){
+            summonCommandKnight(battlefield, "command knight");
+        }
+        else if (findMonster("gate guardian",battlefield) != -1 && howManyPlacesAreEmpty(battlefield) < 3){
+            tributeXMonster(battlefield, 3);
+            summonAMonster(battlefield, "gate guardian");
+        }
         else{
             for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
                 if (battlefield.getOpponent().field.hand.get(i).getCardsType() == Type.MONSTER){
@@ -166,6 +173,32 @@ public class HighLevelHandler extends AIHandler implements functions{
         }
 
 
+    }
+
+
+    public void summonCommandKnight (Battlefield battlefield, String name){
+        int where = findMonster(name, battlefield);
+        CommandKnight commandKnight = (CommandKnight) battlefield.getOpponent().field.hand.get(where);
+        for (int i = 0; i < 5; ++i) {
+            if (battlefield.getTurn().field.monsterZone.get(i) != null) {
+                Monster temp = (Monster) battlefield.getTurn().field.monsterZone.get(i);
+                temp.setAttack(temp.getAttack() + 400);
+                commandKnight.targetedMonsters.add(temp);
+            }
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null) {
+                Monster temp = (Monster) battlefield.getOpponent().field.monsterZone.get(i);
+                temp.setAttack(temp.getAttack() + 400);
+                commandKnight.targetedMonsters.add(temp);
+            }
+        }
+
+        for (int i = 0; i < 5; ++i)
+            if (battlefield.getOpponent().field.monsterZone.get(i) == null) {
+                battlefield.getOpponent().field.monsterZone.set(i, commandKnight);
+                battlefield.getOpponent().field.hand.remove(commandKnight);
+                commandKnight.setCardsFace(FaceUp.ATTACK);
+                break;
+            }
     }
 
 
