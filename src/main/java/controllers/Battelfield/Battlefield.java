@@ -4,9 +4,14 @@ import controllers.Regex;
 import controllers.ShowCard;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.scene.Scene;
+import javafx.scene.control.Button;
+import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
@@ -30,7 +35,13 @@ import view.Main;
 import view.menus.Game;
 import view.Responses;
 import view.UserInterface;
+import view.menus.subStage;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
+import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -54,6 +65,7 @@ public class Battlefield {
     public Monster attackedMonster;
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
+    public boolean isOneRound;
 
     public Battlefield(Duelist duelist1, Duelist duelist2) {
         whoStart(duelist1, duelist2);
@@ -208,99 +220,114 @@ public class Battlefield {
     //rival monster zone number 4 = index 4 of rival ArrayList in range of x = (312,373) and y = (258,325)
     public void attackGui (int index){
         if (turn.field.monsterZone.get(index) != null) {
-            Popup popup = new Popup();
-            VBox vBox1 = new VBox();
 
-            Label label2 = new Label("Choose action");
-            label2.setTextFill(Color.web("white"));
-            label2.setFont(Font.font(20));
+            javafx.scene.control.Button attackBtn = new javafx.scene.control.Button("Attack");
+            attackBtn.setOnMouseClicked(e-> {
+                game.addChanges();
+                if (index == 0) drawLines(342, 345);
+                if (index == 1) drawLines(409, 345);
+                if (index == 2) drawLines(477, 345);
+                if (index == 3) drawLines(546, 345);
+                if (index == 4) drawLines(614, 345);
+                game.canvas.setOnMouseClicked(event -> {
+                    double x = event.getSceneX();
+                    double y = event.getSceneY();
+                    if (x >= 312 && x <= 373 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(4) != null) {
+                        selectedCard = turn.field.monsterZone.get(index);
+                        Pattern pattern = Pattern.compile("^attack (.+)$");
+                        Matcher matcher = pattern.matcher("attack 4");
+                        matcher.find();
+                        attack(matcher);
+                        game.refreshHealthBar(turn, opponent);
+                        game.addChanges();
+                    } else if (x >= 379 && x <= 448 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(3) != null) {
+                        selectedCard = turn.field.monsterZone.get(index);
+                        Pattern pattern = Pattern.compile("^attack (.+)$");
+                        Matcher matcher = pattern.matcher("attack 2");
+                        matcher.find();
+                        attack(matcher);
+                        game.refreshHealthBar(turn, opponent);
+                        game.addChanges();
+                    } else if (x >= 447 && x <= 508 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(2) != null) {
+                        selectedCard = turn.field.monsterZone.get(index);
+                        Pattern pattern = Pattern.compile("^attack (.+)$");
+                        Matcher matcher = pattern.matcher("attack 1");
+                        matcher.find();
+                        attack(matcher);
+                        game.refreshHealthBar(turn, opponent);
+                        game.addChanges();
+                    } else if (x >= 517 && x <= 576 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(1) != null) {
+                        selectedCard = turn.field.monsterZone.get(index);
+                        Pattern pattern = Pattern.compile("^attack (.+)$");
+                        Matcher matcher = pattern.matcher("attack 3");
+                        matcher.find();
+                        attack(matcher);
+                        game.refreshHealthBar(turn, opponent);
+                        game.addChanges();
+                    } else if (x >= 585 && x <= 644 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(0) != null) {
+                        selectedCard = turn.field.monsterZone.get(index);
+                        Pattern pattern = Pattern.compile("^attack (.+)$");
+                        Matcher matcher = pattern.matcher("attack 5");
+                        matcher.find();
+                        attack(matcher);
+                        game.refreshHealthBar(turn, opponent);
+                        game.addChanges();
+                    } else if (x >= 408 && x <= 545 && y >= 125 && y <= 214 && isOpponentEmptyOfMonsters()) {
+                        selectedCard = turn.field.monsterZone.get(index);
+                        directAttack();
+                        game.refreshHealthBar(turn, opponent);
+                        game.addChanges();
+                    } else
+                        game.addChanges();
+                    game.mouseEventClick();
+                });
 
-            MenuItem menuItem1 = new MenuItem("Attack");
-            menuItem1.setOnAction(new EventHandler<ActionEvent>() {
-                @Override
-                public void handle(ActionEvent actionEvent) {
-                    game.addChanges();
-                    if (index == 0) drawLines(342, 345);
-                    if (index == 1) drawLines(409, 345);
-                    if (index == 2) drawLines(477, 345);
-                    if (index == 3) drawLines(546, 345);
-                    if (index == 4) drawLines(614, 345);
-                    game.canvas.setOnMouseClicked(event ->{
-                        double x = event.getSceneX();
-                        double y = event.getSceneY();
-                        if (x>=312 && x<=373 && y>=258 && y<=325 && opponent.field.monsterZone.get(4) != null){
-                            selectedCard = turn.field.monsterZone.get(index);
-                            Pattern pattern = Pattern.compile("^attack (.+)$");
-                            Matcher matcher = pattern.matcher("attack 4");
-                            matcher.find();
-                            attack(matcher);
-                            game.refreshHealthBar(turn, opponent);
-                            game.addChanges();
-                        }
-                        else if (x>=379 && x<=448 && y>=258 && y<=325 && opponent.field.monsterZone.get(3) != null){
-                            selectedCard = turn.field.monsterZone.get(index);
-                            Pattern pattern = Pattern.compile("^attack (.+)$");
-                            Matcher matcher = pattern.matcher("attack 2");
-                            matcher.find();
-                            attack(matcher);
-                            game.refreshHealthBar(turn, opponent);
-                            game.addChanges();
-                        }
-                        else if (x>=447 && x<=508 && y>=258 && y<=325 && opponent.field.monsterZone.get(2) != null){
-                            selectedCard = turn.field.monsterZone.get(index);
-                            Pattern pattern = Pattern.compile("^attack (.+)$");
-                            Matcher matcher = pattern.matcher("attack 1");
-                            matcher.find();
-                            attack(matcher);
-                            game.refreshHealthBar(turn, opponent);
-                            game.addChanges();
-                        }
-                        else if (x>=517 && x<=576 && y>=258 && y<=325 && opponent.field.monsterZone.get(1) != null){
-                            selectedCard = turn.field.monsterZone.get(index);
-                            Pattern pattern = Pattern.compile("^attack (.+)$");
-                            Matcher matcher = pattern.matcher("attack 3");
-                            matcher.find();
-                            attack(matcher);
-                            game.refreshHealthBar(turn, opponent);
-                            game.addChanges();
-                        }
-                        else if (x>=585 && x<=644 && y>=258 && y<=325 && opponent.field.monsterZone.get(0) != null){
-                            selectedCard = turn.field.monsterZone.get(index);
-                            Pattern pattern = Pattern.compile("^attack (.+)$");
-                            Matcher matcher = pattern.matcher("attack 5");
-                            matcher.find();
-                            attack(matcher);
-                            game.refreshHealthBar(turn, opponent);
-                            game.addChanges();
-                        }
-                        else if (x>=408 && x<=545 && y>=125 && y<=214 && isOpponentEmptyOfMonsters()){
-                            selectedCard = turn.field.monsterZone.get(index);
-                            directAttack();
-                            game.refreshHealthBar(turn, opponent);
-                            game.addChanges();
-                        }
-                        else
-                            game.addChanges();
-                        game.mouseEventClick();
-                    });
-                }
             });
 
-            MenuButton menuButton = new MenuButton("Options", null, menuItem1);
-
-
-            Image imageForButton = new Image(getClass().getResource("/view/menus/game/attack.png").toExternalForm());
+            Image imageForButton = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" +
+                    turn.field.monsterZone.get(index).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
             ImageView imageView = new ImageView(imageForButton);
 
-            menuButton.setGraphic(imageView);
+            Label lblPositions= new Label("set_Position");
+            Label lblAttack= new Label("Attack");
+            Label lblFlipSummon= new Label("Flip summon");
 
-            vBox1.getChildren().addAll(label2, menuButton);
+            Button flipBtn = new Button("FlipSummon");
+            ChoiceBox<String> position = new ChoiceBox<>();
+            position.setValue("Attack");
+            // Add the items to the ChoiceBox
+            position.getItems().addAll("Attack", "Defense","AttackBack","DefenseBack");
+            // Create the Selection Value Label
+            Label selectedValueLbl = new Label();
+            // Bind the value property to the text property of the Label
+            selectedValueLbl.textProperty().bind(position.valueProperty());
+            HBox hBox1 = new HBox();
+            hBox1.setSpacing(5);
+            hBox1.getChildren().addAll(lblPositions, position);
+            HBox hBox2 = new HBox();
+            hBox2.setSpacing(15);
+            hBox2.getChildren().addAll(lblAttack, attackBtn);
+            HBox hBox3 = new HBox();
+            hBox3.setSpacing(15);
+            hBox3.getChildren().addAll(lblFlipSummon, flipBtn);
+            VBox vboxLeft = new VBox();
+            vboxLeft.getChildren().addAll(hBox1,hBox2,hBox3);
+            VBox vboxRight = new VBox();
+            vboxLeft.setSpacing(40);
+            vboxRight.getChildren().addAll(imageView);
+            BorderPane borderPane = new BorderPane();
+            borderPane.setRight(vboxRight);
+            borderPane.setLeft(vboxLeft);
+            Scene scene = new Scene(borderPane,500,450);
+            String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
+            scene.getStylesheets().add(style);
+            new subStage("Attack Gui",scene);
 
-            popup.getContent().add(vBox1);
-            popup.setAnchorX(1150);
-            popup.setAnchorY(600);
-            popup.show(Main.stage);
-            popup.setAutoHide(true);
+//            popup.getContent().add(vBox1);
+//            popup.setAnchorX(1150);
+//            popup.setAnchorY(600);
+//            popup.show(Main.stage);
+//            popup.setAutoHide(true);
         }
     }
 
@@ -522,7 +549,7 @@ public class Battlefield {
 
         selectedCard = null;
         if (phase == Phase.DRAW_PHASE) phase = Phase.STANDBY_PHASE;
-        else if (phase == Phase.STANDBY_PHASE) phase = Phase.MAIN1_PHASE;
+        else if (phase == Phase.STANDBY_PHASE)phase = Phase.MAIN1_PHASE;
         else if (phase == Phase.MAIN1_PHASE) phase = Phase.BATTLE_PHASE;
         else if (phase == Phase.BATTLE_PHASE) phase = Phase.MAIN2_PHASE;
         else if (phase == Phase.MAIN2_PHASE) phase = Phase.END_TURN;
