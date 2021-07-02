@@ -10,6 +10,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.text.Font;
+import javafx.stage.Stage;
 import models.Card;
 import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
@@ -72,7 +73,6 @@ public class Game {
 
     public void addChanges(){
         mouseEventClick();
-//        mouseEventInitialize();
 
         graphic.clearRect(0, 0, 500, 450);
         graphic.drawImage(backGroundIMG,0,0,500,450);
@@ -262,11 +262,16 @@ public class Game {
                 } else if (num.equals("See")) {
                     battlefield.selectedCard = card;
                     addChanges();
-                } else {
+                } else if (num.equals("Summon")){
                     battlefield.selectedCard = card;
-                    battlefield.summon();
+                    if(card.getCardsType().equals(Type.MONSTER))
+                        battlefield.summon();
+                    else
+                        UserInterface.printResponse("summon just allowed on monster Cards");
                     addChanges();
                 }
+                else
+                    UserInterface.printResponse("not correct format");
             });
 
             handTurn.getChildren().add(img);
@@ -328,6 +333,12 @@ public class Game {
             //turn graveyard
             else if (x >= 656 && x <= 710 && y >= 347 && y <= 419)
                 showGraveyard(battlefield.getTurn());
+            //turn FieldZone
+            else if (x >= 250 && x <= 290 && y >= 349 && y <= 402)
+                showFieldZone(battlefield.getTurn());
+            //opponent FieldZone
+            else if (x >= 665 && x <= 700 && y >= 255 && y <= 319)
+                showFieldZone(battlefield.getOpponent());
             //opponent graveyard
             else if (x >= 233 && x <= 295 && y >= 251 && y <= 317)
                 showGraveyard(battlefield.getOpponent());
@@ -402,63 +413,35 @@ public class Game {
         });
     }
 
-    private void mouseEventInitialize() {
-        canvas.setOnMouseClicked(event -> {
-            double x = event.getSceneX();
-            double y = event.getSceneY();
-            //first place
-            if(x<374 && x>315 && y<415 && y>351)
-                battlefield.selectedCard = battlefield.getTurn().field.monsterZone.get(0);
+    private void showFieldZone(Duelist duelist) {
+        Canvas newCanvas = new Canvas();
+        GraphicsContext newGraphic = newCanvas.getGraphicsContext2D();
+        newGraphic.clearRect(0, 0, 500, 450);
 
-            else if(x<442 && x>380 && y<414 && y>352)
-                battlefield.selectedCard = battlefield.getTurn().field.monsterZone.get(1);
+        ScrollPane scrollPane = new ScrollPane();
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.TOP_CENTER);
+        VBox vBox = new VBox(gridPane);
+        vBox.setAlignment(Pos.CENTER);
 
-            else if(x<508 && x>449 && y<413 && y>351)
-                battlefield.selectedCard = battlefield.getTurn().field.monsterZone.get(2);
-
-            else if(x<579 && x>519 && y<415 && y>351)
-                battlefield.selectedCard = battlefield.getTurn().field.monsterZone.get(3);
-
-            else if(x<645 && x>588 && y<413 && y>352)
-                battlefield.selectedCard = battlefield.getTurn().field.monsterZone.get(4);
-
-            //spell and trap
-            else if(x<374 && x>316 && y<490 && y>427)
-                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(0);
-
-            else if(x<441 && x>380 && y<490 && y>428)
-                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(1);
-
-            else if(x<510 && x>450 && y<491 && y>429)
-                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(2);
-
-            else if(x<576 && x>520 && y<489 && y>429)
-                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(3);
-
-            else if(x<646 && x>586 && y<491 && y>426)
-                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(4);
-
-            if(battlefield.selectedCard != null)
-                UserInterface.printResponse("your selected card is"+battlefield.selectedCard.getName());
-
-            //turn fieldZone
-            else if(x<289 && x>249 && y<403 && y>348){
-
-            }
-            //turn GraveYard
-            else if(x<702 && x>660 && y<421 && y>361){
-
-            }
-            //opponent fieldZone
-            else if(x<699 && x>662 && y<316 && y>256){
-
-            }
-            //opponent GraveYard
-            else if(x<301 && x>256 && y<317 && y>250){
-
-            }
-
-        });
+        Card fieldZone = duelist.field.fieldZone;
+        if(fieldZone == null)
+            UserInterface.printResponse("No card in fieldZone");
+        else if (fieldZone.getCardsType() == Type.MONSTER) {
+            Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + fieldZone.getName() + ".jpg")).toExternalForm(), 300, 300, false, false);
+            ImageView imageView2 = new ImageView(image2);
+            gridPane.add(imageView2,0,1);
+        }
+        else if (fieldZone.getCardsType() == Type.FIELD_ZONE_SPELL) {
+            Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + fieldZone.getName() + ".jpg")).toExternalForm(), 300, 300, false, false);
+            ImageView imageView2 = new ImageView(image2);
+            gridPane.add(imageView2, 0, 1);
+        }
+        scrollPane.setContent(vBox);
+        BorderPane root2 = new BorderPane();
+        root2.setCenter(scrollPane);
+        Scene scene = new Scene(root2);
+        new subStage("Field Zone",scene);
     }
 
     public void initGraveYardAndFieldZone() {
