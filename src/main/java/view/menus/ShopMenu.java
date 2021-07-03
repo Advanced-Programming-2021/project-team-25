@@ -685,17 +685,28 @@ class ShowCardsBought{
         vBox.setAlignment(Pos.CENTER);
 
         ArrayList<String> allCards = Objects.requireNonNull(User.getUserByUsername(username)).cardsBought;
+        ArrayList<String> marked = new ArrayList<>();
         for (int i = 0; i<allCards.size(); ++i){
-            String name = allCards.get(i);
-            if (Card.allCards.get(allCards.get(i)).getCardsType() == Type.MONSTER){
-                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + allCards.get(i) + ".jpg")).toExternalForm(), 210, 210, false, false);
-                ImageView imageView2 = new ImageView(image2);
-                gridPane.add(imageView2, i%3, i/3);
-            }
-            else{
-                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + allCards.get(i) + ".jpg")).toExternalForm(), 210, 210, false, false);
-                ImageView imageView2 = new ImageView(image2);
-                gridPane.add(imageView2, i%3, i/3);
+            if (!marked.contains(allCards.get(i))) {
+                marked.add(allCards.get(i));
+                int counter = 0;
+                for (String allCard : allCards) {
+                    if (allCard.equalsIgnoreCase(allCards.get(i)))
+                        counter += 1;
+                }
+                Label label = new Label(String.valueOf(counter));
+                label.setFont(Font.font(20));
+                if (Card.allCards.get(allCards.get(i)).getCardsType() == Type.MONSTER) {
+                    Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + allCards.get(i) + ".jpg")).toExternalForm(), 300, 300, false, false);
+                    ImageView imageView2 = new ImageView(image2);
+                    gridPane.add(imageView2, (i * 2) % 4, (i * 2) / 4);
+                    gridPane.add(label, (i * 2 + 1) % 4, (i * 2 + 1) / 4);
+                } else {
+                    Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + allCards.get(i) + ".jpg")).toExternalForm(), 300, 300, false, false);
+                    ImageView imageView2 = new ImageView(image2);
+                    gridPane.add(imageView2, (i * 2) % 4, (i * 2) / 4);
+                    gridPane.add(label, (i * 2 + 1) % 4, (i * 2 + 1) / 4);
+                }
             }
         }
 
