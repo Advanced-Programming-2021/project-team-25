@@ -686,6 +686,7 @@ public class Battlefield {
                     addCardToPlayersHands(opponent,opponent.field.hand.size());
                 }
             } else winner = turn;
+            ((AI) opponent).runAi(this);
         } else {
             Duelist temp;
             temp = turn;
