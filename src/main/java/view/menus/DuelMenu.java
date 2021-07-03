@@ -1,5 +1,6 @@
 package view.menus;
 
+import controllers.Battelfield.Battlefield;
 import controllers.menues.DuelMenuController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -10,9 +11,13 @@ import javax.swing.JOptionPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import models.AI;
 import models.Deck;
+import models.Duelist;
 import models.User;
 import view.CreateGrid;
+import view.Responses;
+import view.UserInterface;
 
 import java.util.Objects;
 
@@ -75,21 +80,28 @@ public class DuelMenu {
 
         btnStartGame.setOnMouseClicked(e->{
             DuelMenuController duelMenuController = DuelMenuController.getInstance(currUser);
-
-            if(User.getUserByUsername(txtRival.getText()) == null) JOptionPane.showMessageDialog(null,
-                    "there is no player with this username");
-            else if(currUser.getUsername().equals(txtRival.getText())) JOptionPane.showMessageDialog(null,
-                    "you can't play with yourself");
-            else if(currUser.activeDeck == null) JOptionPane.showMessageDialog(null,
-                    currUser.getUsername() + " has no active deck");
-            else if(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck == null)
-                JOptionPane.showMessageDialog(null,txtRival.getText() + " has no active deck");
-            else if(!Deck.isValid(currUser.activeDeck.getDeckName())) JOptionPane.showMessageDialog(null,
-                    currUser.getUsername() + "'s deck is not valid");
-            else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck.getDeckName()))
-                JOptionPane.showMessageDialog(null,txtRival.getText() + "'s deck is not valid");
-            else if(rounds.getValue().equals("1")) duelMenuController.oneRoundDuel(txtRival.getText());
-            else duelMenuController.threeRoundDuel(txtRival.getText());
+            if(gameWithAi.isSelected()){
+                if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
+                else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
+                else if(!(rounds.getValue().equals("1") || rounds.getValue().equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
+                else new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")));
+            }
+            else{
+                if(User.getUserByUsername(txtRival.getText()) == null) JOptionPane.showMessageDialog(null,
+                        "there is no player with this username");
+                else if(currUser.getUsername().equals(txtRival.getText())) JOptionPane.showMessageDialog(null,
+                        "you can't play with yourself");
+                else if(currUser.activeDeck == null) JOptionPane.showMessageDialog(null,
+                        currUser.getUsername() + " has no active deck");
+                else if(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck == null)
+                    JOptionPane.showMessageDialog(null,txtRival.getText() + " has no active deck");
+                else if(!Deck.isValid(currUser.activeDeck.getDeckName())) JOptionPane.showMessageDialog(null,
+                        currUser.getUsername() + "'s deck is not valid");
+                else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck.getDeckName()))
+                    JOptionPane.showMessageDialog(null,txtRival.getText() + "'s deck is not valid");
+                else if(rounds.getValue().equals("1")) duelMenuController.oneRoundDuel(txtRival.getText());
+                else duelMenuController.threeRoundDuel(txtRival.getText());
+            }
         });
         checkBoxEvent(gameWithAi, lblUsername, txtRival);
 
