@@ -175,7 +175,6 @@ public class NoDangerHandler extends AIHandler implements functions{
                         if (temp.getDefence() < attack && temp.getDefence() > mostHighAttackOrDef){
                             indexToAttack = i;
                             mostHighAttackOrDef = temp.getDefence();
-                            temp.setCardsFace(FaceUp.DEFENSE_FRONT);
                         }
                     }
                 }
