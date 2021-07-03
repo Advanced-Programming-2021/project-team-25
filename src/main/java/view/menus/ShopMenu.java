@@ -266,22 +266,35 @@ class ShowCard{
                         hBox1.setAlignment(Pos.CENTER);
 
                         Button button1 = new Button("Buy");
-                        button1.setStyle("-fx-background-color: #ecebe9," +
-                                "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
-                                "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
-                                "linear-gradient(#f6ebbe, #e6c34d);" +
-                                "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
-                                "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
-                                "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
-                                "-fx-text-fill: #311c09;" +
-                                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
-                        button1.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
-                                showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
-                            }
-                        });
+                        if (Card.allCards.get(cardsName).getPrice() < Objects.requireNonNull(User.getUserByUsername(username)).money) {
+                            button1.setStyle("-fx-background-color: #ecebe9," +
+                                    "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
+                                    "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
+                                    "linear-gradient(#f6ebbe, #e6c34d);" +
+                                    "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
+                                    "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
+                                    "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
+                                    "-fx-text-fill: #311c09;" +
+                                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+                            button1.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
+                                    showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
+                                }
+                            });
+                        }
+                        else{
+                            button1.setStyle("-fx-background-color: #FF0000," +
+                                    "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
+                                    "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
+                                    "linear-gradient(#f6ebbe, #e6c34d);" +
+                                    "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
+                                    "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
+                                    "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
+                                    "-fx-text-fill: #311c09;" +
+                                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+                        }
                         hBox1.getChildren().add(button1);
 
 
@@ -344,22 +357,35 @@ class ShowCard{
                         hBox1.setAlignment(Pos.CENTER);
 
                         Button button1 = new Button("Buy");
-                        button1.setStyle("-fx-background-color: #ecebe9," +
-                                "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
-                                "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
-                                "linear-gradient(#f6ebbe, #e6c34d);" +
-                                "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
-                                "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
-                                "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
-                                "-fx-text-fill: #311c09;" +
-                                "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
-                        button1.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
-                                showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
-                            }
-                        });
+                        if (Card.allCards.get(cardsName).getPrice() < Objects.requireNonNull(User.getUserByUsername(username)).money) {
+                            button1.setStyle("-fx-background-color: #ecebe9," +
+                                    "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
+                                    "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
+                                    "linear-gradient(#f6ebbe, #e6c34d);" +
+                                    "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
+                                    "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
+                                    "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
+                                    "-fx-text-fill: #311c09;" +
+                                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+                            button1.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
+                                    showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
+                                }
+                            });
+                        }
+                        else{
+                            button1.setStyle("-fx-background-color: #FF0000," +
+                                    "rgba(0,0,0,0.05), linear-gradient(#dcca8a, #c7a740)," +
+                                    "linear-gradient(#f9f2d6 0%, #f4e5bc 20%, #e6c75d 80%, #e2c045 100%)," +
+                                    "linear-gradient(#f6ebbe, #e6c34d);" +
+                                    "-fx-background-insets: 0,9 9 8 9,9,10,11;" +
+                                    "-fx-background-radius: 50; -fx-padding: 15 30 15 30;" +
+                                    "-fx-font-family: \"Helvetica\"; -fx-font-size: 18px;" +
+                                    "-fx-text-fill: #311c09;" +
+                                    "-fx-effect: innershadow( three-pass-box , rgba(0,0,0,0.1) , 2, 0.0 , 0 , 1);");
+                        }
                         hBox1.getChildren().add(button1);
 
 
@@ -536,26 +562,36 @@ class ShowAllCards{
                         label.setTextFill(Color.web("Black"));
                         hBox1.getChildren().add(label);
 
+
                         Button button1 = new Button("Buy");
-                        button1.setStyle("-fx-background-color: #c3c4c4," +
-                                "linear-gradient(#d6d6d6 50%, white 100%)," +
-                                "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
-                                "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
-                                "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
-                        button1.setOnAction(new EventHandler<ActionEvent>() {
-                            @Override
-                            public void handle(ActionEvent actionEvent) {
-                                String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
-                                showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
-                                ShowAllCards showAllCards = new ShowAllCards();
-                                showAllCards.username = username;
-                                try {
-                                    new ShopMenu(username).start(stage);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
+                        if (Card.allCards.get(name).getPrice() < Objects.requireNonNull(User.getUserByUsername(username)).getMoney()) {
+                            button1.setStyle("-fx-background-color: #c3c4c4," +
+                                    "linear-gradient(#d6d6d6 50%, white 100%)," +
+                                    "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
+                                    "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
+                                    "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
+                            button1.setOnAction(new EventHandler<ActionEvent>() {
+                                @Override
+                                public void handle(ActionEvent actionEvent) {
+                                    String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
+                                    showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
+                                    ShowAllCards showAllCards = new ShowAllCards();
+                                    showAllCards.username = username;
+                                    try {
+                                        new ShopMenu(username).start(stage);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        }
+                        else{
+                            button1.setStyle("-fx-background-color: #FF0000," +
+                                    "linear-gradient(#d6d6d6 50%, white 100%)," +
+                                    "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
+                                    "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
+                                    "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
+                        }
                         hBox1.getChildren().add(button1);
 
                         hBox1.setSpacing(10);
@@ -579,25 +615,34 @@ class ShowAllCards{
                             hBox1.getChildren().add(label);
 
                             Button button1 = new Button("Buy");
-                            button1.setStyle("-fx-background-color: #c3c4c4," +
-                                    "linear-gradient(#d6d6d6 50%, white 100%)," +
-                                    "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
-                                    "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
-                                    "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
-                            button1.setOnAction(new EventHandler<ActionEvent>() {
-                                @Override
-                                public void handle(ActionEvent actionEvent) {
-                                    String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
-                                    showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
-                                    ShowAllCards showAllCards = new ShowAllCards();
-                                    showAllCards.username = username;
-                                    try {
-                                        showAllCards.start(stage);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
+                            if (Card.allCards.get(name).getPrice() < Objects.requireNonNull(User.getUserByUsername(username)).money) {
+                                button1.setStyle("-fx-background-color: #c3c4c4," +
+                                        "linear-gradient(#d6d6d6 50%, white 100%)," +
+                                        "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
+                                        "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
+                                        "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
+                                button1.setOnAction(new EventHandler<ActionEvent>() {
+                                    @Override
+                                    public void handle(ActionEvent actionEvent) {
+                                        String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
+                                        showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
+                                        ShowAllCards showAllCards = new ShowAllCards();
+                                        showAllCards.username = username;
+                                        try {
+                                            showAllCards.start(stage);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                        }
                                     }
-                                }
-                            });
+                                });
+                            }
+                            else{
+                                button1.setStyle("-fx-background-color: #FF0000," +
+                                        "linear-gradient(#d6d6d6 50%, white 100%)," +
+                                        "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
+                                        "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
+                                        "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
+                            }
                             hBox1.getChildren().add(button1);
 
                             hBox1.setSpacing(10);
