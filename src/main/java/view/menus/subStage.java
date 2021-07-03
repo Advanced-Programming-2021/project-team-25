@@ -1,7 +1,9 @@
 package view.menus;
 
 import javafx.scene.Scene;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
+import view.Main;
 
 public class subStage {
     Stage stage;
@@ -10,6 +12,8 @@ public class subStage {
         this.stage = subStage;
         subStage.setTitle(title);
         subStage.setScene(scene);
+        subStage.initModality(Modality.WINDOW_MODAL);
+        subStage.initOwner(Main.stage);
         subStage.show();
     }
 
