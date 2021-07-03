@@ -10,15 +10,14 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.text.Font;
+import javafx.stage.Window;
 import models.Card;
 import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
@@ -36,6 +35,7 @@ import view.UserInterface;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+import java.util.Optional;
 
 public class Game {
 
@@ -582,10 +582,19 @@ public class Game {
         });
         Button btnMuteSounds = new Button("mute sounds");
 
+
+        Button showCardButton = new Button("Show Card");
+        showCardButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                showCard();
+            }
+        });
+
         VBox vBoxLeft = new VBox();
         vBoxLeft.setAlignment(Pos.CENTER);
 
-        vBoxLeft.getChildren().addAll(btnCheat,btnNextPhase,btnMuteSounds,btnExit);
+        vBoxLeft.getChildren().addAll(btnCheat,btnNextPhase,btnMuteSounds,showCardButton,btnExit);
         vBoxLeft.setSpacing(10);
         return vBoxLeft;
     }
@@ -640,5 +649,142 @@ public class Game {
 
         scrollPane.setContent(vBox);
         root.setCenter(scrollPane);
+    }
+
+
+    public void showCard (){
+        VBox vBox = new VBox();
+        vBox.setAlignment(Pos.CENTER);
+
+
+        Label label = new Label("Enter the cards name:");
+        label.setFont(Font.font(20));
+        label.setTextFill(Color.web("white"));
+
+
+        TextField textField = new TextField();
+        HBox hBox = new HBox(textField);
+        hBox.setAlignment(Pos.CENTER);
+        textField.setPrefColumnCount(15);
+
+
+        HBox hBox1 = new HBox();
+        hBox1.setAlignment(Pos.CENTER);
+
+
+        Button button = new Button("Search");
+        button.setStyle("-fx-background-color: #000000," +
+                "linear-gradient(#7ebcea, #2f4b8f)," +
+                "linear-gradient(#426ab7, #263e75)," +
+                "linear-gradient(#395cab, #223768);" +
+                "-fx-background-insets: 0,1,2,3;" +
+                "-fx-background-radius: 3,2,2,2;" +
+                "-fx-padding: 12 30 12 30; -fx-text-fill: white;" +
+                "-fx-font-size: 12px;");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                String cardsName = textField.getText();
+                if (Card.allCards.containsKey(cardsName)){
+                    if (Card.allCards.get(cardsName).getCardsType() == Type.MONSTER){
+                        VBox vBox = new VBox();
+                        vBox.setAlignment(Pos.CENTER);
+
+                        Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + cardsName + ".jpg")).toExternalForm());
+                        ImageView imageView = new ImageView(image2);
+
+                        vBox.getChildren().addAll(imageView);
+
+                        HBox hBox1 = new HBox();
+                        hBox1.setAlignment(Pos.CENTER);
+
+                        vBox.getChildren().add(hBox1);
+
+                        // create a image
+                        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/background.png")).toExternalForm());
+                        // create a background image
+                        BackgroundImage backgroundimage = new BackgroundImage(image,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.DEFAULT,
+                                BackgroundSize.DEFAULT);
+                        // create Background
+                        Background background = new Background(backgroundimage);
+                        vBox.setBackground(background);
+
+                        Scene scene = new Scene(vBox);
+                        new subStage("Show Card", scene);
+                    }
+                    else{
+                        VBox vBox = new VBox();
+                        vBox.setAlignment(Pos.CENTER);
+
+                        Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + cardsName + ".jpg")).toExternalForm());
+                        ImageView imageView = new ImageView(image2);
+
+                        vBox.getChildren().addAll(imageView);
+
+                        HBox hBox1 = new HBox();
+                        hBox1.setAlignment(Pos.CENTER);
+
+                        vBox.getChildren().add(hBox1);
+
+                        // create a image
+                        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/background.png")).toExternalForm());
+                        // create a background image
+                        BackgroundImage backgroundimage = new BackgroundImage(image,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundRepeat.NO_REPEAT,
+                                BackgroundPosition.DEFAULT,
+                                BackgroundSize.DEFAULT);
+                        // create Background
+                        Background background = new Background(backgroundimage);
+                        vBox.setBackground(background);
+
+                        Scene scene = new Scene(vBox);
+                        new subStage("Show Stage", scene);
+                    }
+                }
+                else {
+                    showAlert2(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "Invalid Name", "Please enter a valid name.");
+                }
+            }
+        });
+
+
+        hBox1.getChildren().addAll(button);
+
+
+
+        vBox.getChildren().addAll(label, hBox, hBox1);
+
+
+        // create a image
+        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/background.png")).toExternalForm());
+        // create a background image
+        BackgroundImage backgroundimage = new BackgroundImage(image,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundRepeat.NO_REPEAT,
+                BackgroundPosition.DEFAULT,
+                BackgroundSize.DEFAULT);
+        // create Background
+        Background background = new Background(backgroundimage);
+        vBox.setBackground(background);
+
+        Scene scene = new Scene(vBox);
+        new subStage("Show Card", scene);
+    }
+
+
+    public void showAlert2(Alert.AlertType alertType, Window owner, String title, String message) {
+        Alert alert = new Alert(alertType);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.initOwner(owner);
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if(result.isEmpty()) System.exit(0);
+        //else if(result.get() == ButtonType.OK) new app().start(this.stage);
     }
 }
