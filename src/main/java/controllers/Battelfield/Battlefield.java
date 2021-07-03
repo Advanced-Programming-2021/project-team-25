@@ -55,8 +55,8 @@ import java.util.regex.Pattern;
 
 public class Battlefield {
 
-    private Duelist turn;
-    private Duelist opponent;
+    public Duelist turn;
+    public Duelist opponent;
     private Phase phase = Phase.DRAW_PHASE;
     public Duelist winner;
     public Card selectedCard;
@@ -694,7 +694,12 @@ public class Battlefield {
         //timer increase
         changedTurnTime++;
         isTurnChanged = true;
-        if (opponent.getName().equals("admin")) {
+        if (opponent.getName().equals("Game")) {
+            if (opponent.field.deck.size() > 0) {
+                if (changedTurnTime >= 2 && turn.field.hand.size()<6) {
+                    addCardToPlayersHands(opponent,opponent.field.hand.size());
+                }
+            } else winner = turn;
             ((AI) opponent).runAi(this);
         } else {
             Duelist temp;

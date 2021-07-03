@@ -4,6 +4,7 @@ import controllers.Battelfield.Battlefield;
 import models.Card;
 import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
+import models.Duelist;
 import models.Monster.CommandKnight;
 import models.Monster.Monster;
 import models.SpellAndTrap.HarpiesFeatherDuster;
@@ -30,7 +31,8 @@ public class HighLevelHandler extends AIHandler implements functions{
                 int index = weakestCardInAIHand(battlefield);
                 battlefield.getOpponent().field.hand.remove(index);
             }
-            else if (allCardsWithGivenName(battlefield, "Twin Twisters") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) == 2 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+            else if (allCardsWithGivenName(battlefield, "Twin Twisters") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) == 2 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1
+                    && whereIsSpellInSpellZone(battlefield, "twin twisters") == -1){
                 canActiveSpell = false;
                 TwinTwisters twinTwisters = new TwinTwisters(Card.allCards.get("Twin Twisters"));
                 activeTwinTwisters(battlefield);
@@ -38,13 +40,24 @@ public class HighLevelHandler extends AIHandler implements functions{
                 battlefield.getOpponent().field.hand.set(index, twinTwisters);
                 summonASpellOrTrap(battlefield, "twin twisters", "summon");
             }
-            else if (allCardsWithGivenName(battlefield, "Mystical space typhoon") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) == 1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+            else if (allCardsWithGivenName(battlefield, "Twin Twisters") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) == 2
+                    && whereIsSpellInSpellZone(battlefield, "twin twisters") != -1){
+                canActiveSpell = false;
+                activeTwinTwisters(battlefield);
+            }
+            else if (allCardsWithGivenName(battlefield, "Mystical space typhoon") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) == 1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1
+                    && whereIsSpellInSpellZone(battlefield, "mystical space typhoon") == -1){
                 canActiveSpell = false;
                 MysticalSpaceTyphoon mysticalSpaceTyphoon = new MysticalSpaceTyphoon(Card.allCards.get("Mystical space typhoon"));
                 activeMysticalSpaceTyphoon(battlefield);
                 int index = weakestCardInAIHand(battlefield);
                 battlefield.getOpponent().field.hand.set(index, mysticalSpaceTyphoon);
                 summonASpellOrTrap(battlefield, "mystical space typhoon", "summon");
+            }
+            else if (allCardsWithGivenName(battlefield, "Mystical space typhoon") != 3 && numberOfTrapsInTurnsSpellTrapZone(battlefield) == 1
+                    && whereIsSpellInSpellZone(battlefield, "mystical space typhoon") != -1){
+                canActiveSpell = false;
+                activeMysticalSpaceTyphoon(battlefield);
             }
 
 
@@ -284,7 +297,7 @@ public class HighLevelHandler extends AIHandler implements functions{
 
     public void attack (Battlefield battlefield){
         for (int i = 0; i<5; ++i){
-            if (battlefield.getOpponent().field.monsterZone.get(i) != null){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null && battlefield.getOpponent().field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK){
                 Monster temp = (Monster) battlefield.getOpponent().field.monsterZone.get(i);
                 int attackToWho = attackToWhichMonster(battlefield, temp.getAttack());
                 if (attackToWho == -1){
@@ -294,10 +307,21 @@ public class HighLevelHandler extends AIHandler implements functions{
                     //nothing
                 }
                 else{
+                    battlefield.selectedCard = temp;
                     battlefield.attackingMonster = temp;
                     battlefield.attackedMonster = (Monster) battlefield.getTurn().field.monsterZone.get(attackToWho);
                     battlefield.attackedMonsterNum = attackToWho;
+                    //
+                    Duelist tempD = battlefield.opponent;
+                    battlefield.opponent = battlefield.turn;
+                    battlefield.turn = tempD;
+                    //
                     temp.action(battlefield);
+                    //
+                    Duelist tempDD = battlefield.opponent;
+                    battlefield.opponent = battlefield.turn;
+                    battlefield.turn = tempDD;
+                    //
                 }
             }
         }
@@ -450,7 +474,7 @@ public class HighLevelHandler extends AIHandler implements functions{
 
     public void activateSpells (Battlefield battlefield){
         if (whereIsSpellInHand(battlefield, "monster reborn") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0
-        && howManyPlacesAreEmpty(battlefield) > 0)
+                && howManyPlacesAreEmpty(battlefield) > 0)
             activeMonsterReborn(battlefield, 1);
         else if (whereIsSpellInSpellZone(battlefield, "monster reborn") != -1 && howManyPlacesAreEmpty(battlefield) > 0)
             activeMonsterReborn(battlefield, 2);
@@ -465,19 +489,19 @@ public class HighLevelHandler extends AIHandler implements functions{
             summonASpellOrTrap(battlefield, "dark hole", "summon");
         }
         else if (whereIsSpellInSpellZone(battlefield, "dark hole") != -1 &&
-            numberOfMonstersInHumanMonsterZone(battlefield) - numberOfMonstersInAiMonsterZone(battlefield) > 1){
+                numberOfMonstersInHumanMonsterZone(battlefield) - numberOfMonstersInAiMonsterZone(battlefield) > 1){
             destroyHumanMonsters(battlefield);
             destroyAiMonsters(battlefield);
         }
         else if (whereIsSpellInHand(battlefield, "twin twisters") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
-            numberOfSpellsInHumanSpellZone(battlefield) > 1){
+                numberOfSpellsInHumanSpellZone(battlefield) > 1){
             activeTwinTwisters(battlefield);
             summonASpellOrTrap(battlefield, "twin twisters", "summon");
         }
         else if (whereIsSpellInSpellZone(battlefield, "twin twisters") != -1 && numberOfSpellsInHumanSpellZone(battlefield) > 1)
             activeTwinTwisters(battlefield);
         else if (whereIsSpellInHand(battlefield, "mystical space typhoon") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
-            numberOfSpellsInHumanSpellZone(battlefield) > 0){
+                numberOfSpellsInHumanSpellZone(battlefield) > 0){
             activeMysticalSpaceTyphoon(battlefield);
             summonASpellOrTrap(battlefield, "mystical space typhoon", "summon");
         }
@@ -485,31 +509,31 @@ public class HighLevelHandler extends AIHandler implements functions{
             activeMysticalSpaceTyphoon(battlefield);
         else if (activateFieldZoneSpell(battlefield));
         else if (whereIsSpellInHand(battlefield, "sword of dark destruction") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
-                (isThereMonsterWithTypeX(battlefield, "fiend") || isThereMonsterWithTypeX(battlefield, "spellcaster"))){
+                (isThereMonsterWithTypeX(battlefield, "fiend") || isThereMonsterWithTypeX(battlefield, "spellcaster")) && howManyPlacesAreFullInAIMonsterZone(battlefield) > 0){
             activatingSwordOfDarkDestruction(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "sword of dark destruction")));
             summonASpellOrTrap(battlefield, "sword of dark destruction", "summon");
         }
         else if (whereIsSpellInSpellZone(battlefield, "sword of dark destruction") != -1 &&
-                (isThereMonsterWithTypeX(battlefield, "fiend") || isThereMonsterWithTypeX(battlefield, "spellcaster")))
+                (isThereMonsterWithTypeX(battlefield, "fiend") || isThereMonsterWithTypeX(battlefield, "spellcaster")) && howManyPlacesAreFullInAIMonsterZone(battlefield) > 0)
             activatingSwordOfDarkDestruction(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "sword of dark destruction")));
-        else if (whereIsSpellInHand(battlefield, "black pendant") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+        else if (whereIsSpellInHand(battlefield, "black pendant") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 && howManyPlacesAreFullInAIMonsterZone(battlefield) > 0){
             activatingBlackPendant(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "black pendant")));
             summonASpellOrTrap(battlefield, "black pendant", "summon");
         }
-        else if (whereIsSpellInSpellZone(battlefield, "black pendant") != -1)
+        else if (whereIsSpellInSpellZone(battlefield, "black pendant") != -1 && howManyPlacesAreFullInAIMonsterZone(battlefield) > 0)
             activatingBlackPendant(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "black pendant")));
-        else if (whereIsSpellInHand(battlefield, "united we stand") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1){
+        else if (whereIsSpellInHand(battlefield, "united we stand") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 && howManyPlacesAreFullInAIMonsterZone(battlefield) > 0){
             activatingUnitedWeStand(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "united we stand")));
             summonASpellOrTrap(battlefield, "united we stand", "summon");
         }
-        else if (whereIsSpellInSpellZone(battlefield, "united we stand") != -1)
+        else if (whereIsSpellInSpellZone(battlefield, "united we stand") != -1 && howManyPlacesAreFullInAIMonsterZone(battlefield) > 0)
             activatingUnitedWeStand(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "united we stand")));
         else if (whereIsSpellInHand(battlefield, "magnum shield") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 1 &&
-                isThereMonsterWithTypeX(battlefield, "warrior")){
+                isThereMonsterWithTypeX(battlefield, "warrior") && howManyPlacesAreFullInAIMonsterZone(battlefield) > 0){
             activatingMagnumShield(battlefield, battlefield.getOpponent().field.hand.get(whereIsSpellInHand(battlefield, "magnum shield")));
             summonASpellOrTrap(battlefield, "magnum shield", "summon");
         }
-        else if (whereIsSpellInSpellZone(battlefield, "magnum shield") != -1 && isThereMonsterWithTypeX(battlefield, "magnum shield"))
+        else if (whereIsSpellInSpellZone(battlefield, "magnum shield") != -1 && isThereMonsterWithTypeX(battlefield, "magnum shield") && howManyPlacesAreFullInAIMonsterZone(battlefield) > 0)
             activatingMagnumShield(battlefield, battlefield.getOpponent().field.spellTrapZone.get(whereIsSpellInSpellZone(battlefield, "magnum shield")));
         else{
             for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
@@ -644,7 +668,7 @@ public class HighLevelHandler extends AIHandler implements functions{
     public int numberOfSpellsInHumanSpellZone (Battlefield battlefield){
         int counter = 0;
         for (int i = 0; i<5; ++i){
-            if (battlefield.getOpponent().field.spellTrapZone.get(i) != null)
+            if (battlefield.getTurn().field.spellTrapZone.get(i) != null)
                 counter += 1;
         }
         return counter;
@@ -732,7 +756,7 @@ public class HighLevelHandler extends AIHandler implements functions{
                 money = battlefield.getTurn().field.spellTrapZone.get(k).getPrice();
             }
         }
-        ((SpellAndTrap)(battlefield.getTurn().field.monsterZone.get(index))).removeSpellOrTrap(battlefield);
+        ((SpellAndTrap)(battlefield.getTurn().field.spellTrapZone.get(index))).removeSpellOrTrap(battlefield);
     }
 
 
@@ -826,6 +850,16 @@ public class HighLevelHandler extends AIHandler implements functions{
                 break;
             }
         }
+    }
+
+
+    public int howManyPlacesAreFullInAIMonsterZone (Battlefield battlefield){
+        int counter = 0;
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.monsterZone.get(i) != null)
+                counter += 1;
+        }
+        return counter;
     }
 
 
