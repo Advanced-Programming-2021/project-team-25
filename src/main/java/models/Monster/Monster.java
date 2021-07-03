@@ -120,8 +120,14 @@ public class Monster extends Card implements Serializable {
     }
     public void attack(Battlefield battlefield){
         Monster attackedMonster = battlefield.attackedMonster;
-        Duelist opponent = battlefield.getOpponent();
-        Duelist turn = battlefield.getTurn();
+
+        Duelist opponent = null;
+        Duelist turn = null;
+
+
+        opponent = battlefield.getOpponent();
+        turn = battlefield.getTurn();
+
 
         //if attacking defeated remove our monster
         // -1 means defeated
@@ -133,7 +139,7 @@ public class Monster extends Card implements Serializable {
             if(attackedMonster.getCardsFace().equals(FaceUp.ATTACK)) {
                 battlefield.selectedCard.setISAttackedThisTurn(true);
                 attackedMonster.removeMonster(battlefield);
-                opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
+//                opponent.field.monsterZone.set(battlefield.getIndex(battlefield.attackedMonsterNum) , null);
                 int damage = this.getAttack() - attackedMonster.getAttack();
                 opponent.LP = opponent.LP - damage;
                 UserInterface.printResponse("your opponent’s monster is destroyed and your opponent receives" + damage + "battle damage");
@@ -164,7 +170,8 @@ public class Monster extends Card implements Serializable {
         else if(condition == 2) {
             battlefield.selectedCard.setISAttackedThisTurn(true);
             UserInterface.printResponse("opponent’s monster card was " + attackedMonster.getName() + " and no card is destroyed");
-            opponent.field.monsterZone.get(battlefield.getIndex(battlefield.attackedMonsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
+//            opponent.field.monsterZone.get(battlefield.getIndex(battlefield.attackedMonsterNum)).setCardsFace(FaceUp.DEFENSE_FRONT);
+            battlefield.attackedMonster.setCardsFace(FaceUp.DEFENSE_FRONT);
             UserInterface.printResponse("no card is destroyed");
         }
 
@@ -185,9 +192,9 @@ public class Monster extends Card implements Serializable {
         }
         else if(attackingMonsterHero<defenseMonsterHero) {
             if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))
-              return 2;
+                return 2;
             else
-              return -1;
+                return -1;
         }
         else{
             if(this.getCardsFace().equals(FaceUp.DEFENSE_BACK))

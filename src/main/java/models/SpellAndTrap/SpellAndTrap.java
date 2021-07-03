@@ -38,10 +38,17 @@ public class SpellAndTrap extends Card implements Serializable {
 
 
     public void removeSpellOrTrap (Battlefield battlefield){
-        battlefield.getTurn().field.graveYard.add(this);
         for (int i = 0; i<5; ++i){
-            if (battlefield.getTurn().field.spellTrapZone.get(i) == this){
+            if (battlefield.getTurn().field.spellTrapZone.get(i) != null && battlefield.getTurn().field.spellTrapZone.get(i) == this){
                 battlefield.getTurn().field.spellTrapZone.set(i, null);
+                battlefield.getTurn().field.graveYard.add(this);
+                break;
+            }
+        }
+        for (int i = 0; i<5; ++i){
+            if (battlefield.getOpponent().field.spellTrapZone.get(i) != null && battlefield.getOpponent().field.spellTrapZone.get(i) == this){
+                battlefield.getOpponent().field.spellTrapZone.set(i, null);
+                battlefield.getOpponent().field.graveYard.add(this);
                 break;
             }
         }
