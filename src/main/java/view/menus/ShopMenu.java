@@ -64,7 +64,31 @@ public class ShopMenu {
         gridPane.add(button, 0, 0);
 
 
-
+        Button cardsBoughtByUser = new Button("Your Cards");
+        cardsBoughtByUser.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400)," +
+                "linear-gradient(#ffef84, #f2ba44)," +
+                "linear-gradient(#ffea6a, #efaa22)," +
+                "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));" +
+                "-fx-background-radius: 30;" +
+                "-fx-background-insets: 0,1,2,3,0;" +
+                "-fx-text-fill: #654b00;" +
+                "-fx-font-weight: bold;" +
+                "-fx-font-size: 14px;" +
+                "-fx-padding: 10 20 10 20;");
+        cardsBoughtByUser.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                try {
+                    ShowCardsBought showCardsBought = new ShowCardsBought();
+                    showCardsBought.username = username;
+                    showCardsBought.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        gridPane.add(cardsBoughtByUser, 0, 3);
 
 
         Button button2 = new Button("Show All Cards");
@@ -112,7 +136,7 @@ public class ShopMenu {
                 new MainMenu().start();
             }
         });
-        gridPane.add(button3, 0, 3);
+        gridPane.add(button3, 0, 4);
 
 
 
@@ -542,49 +566,6 @@ class ShowAllCards{
                 gridPane.add(imageView2, i%3, i/3);
             }
             else{
-//                if (allCards.get(i).equals("Magic Jammer")){
-//                    Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/shop/SpellTrap/" + allCards.get(i) + ".png")).toExternalForm(), 275, 275, false, false);
-//                    ImageView imageView2 = new ImageView(image2);
-//                    imageView2.setOnMouseClicked(new EventHandler<MouseEvent>() {
-//                        @Override
-//                        public void handle(MouseEvent mouseEvent) {
-//                            HBox hBox1 = new HBox();
-//                            Label label = new Label("You have " + Objects.requireNonNull(User.getUserByUsername(username)).getMoney() + "$ and the " +
-//                                    "price of this card is " + Card.allCards.get(name).getPrice() + "$");
-//                            label.setFont(Font.font(20));
-//                            label.setTextFill(Color.web("Black"));
-//                            hBox1.getChildren().add(label);
-//
-//                            Button button1 = new Button("Buy");
-//                            button1.setStyle("-fx-background-color: #c3c4c4," +
-//                                    "linear-gradient(#d6d6d6 50%, white 100%)," +
-//                                    "radial-gradient(center 50% -40%, radius 200%, #e6e6e6 45%, rgba(230,230,230,0) 50%);" +
-//                                    "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
-//                                    "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
-//                            button1.setOnAction(new EventHandler<ActionEvent>() {
-//                                @Override
-//                                public void handle(ActionEvent actionEvent) {
-//                                    String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
-//                                    showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
-//                                    ShowAllCards showAllCards = new ShowAllCards();
-//                                    showAllCards.username = username;
-//                                    try {
-//                                        showAllCards.start(stage);
-//                                    } catch (Exception e) {
-//                                        e.printStackTrace();
-//                                    }
-//                                }
-//                            });
-//                            hBox1.getChildren().add(button1);
-//
-//                            hBox1.setSpacing(10);
-//
-//                            borderPane.setTop(hBox1);
-//                        }
-//                    });
-//                    gridPane.add(imageView2, i%3, i/3);
-//                }
-                //else{
                     Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + allCards.get(i) + ".jpg")).toExternalForm(), 275, 275, false, false);
                     ImageView imageView2 = new ImageView(image2);
                     imageView2.setOnMouseClicked(new EventHandler<MouseEvent>() {
@@ -626,7 +607,6 @@ class ShowAllCards{
                     });
                     gridPane.add(imageView2, i%3, i/3);
                 }
-           // }
         }
 
 
@@ -658,5 +638,75 @@ class ShowAllCards{
         Optional<ButtonType> result = alert.showAndWait();
         if(result.isEmpty()) System.exit(0);
         //else if(result.get() == ButtonType.OK) new app().start(this.stage);
+    }
+}
+//----------------------------------------------------------------------------------------------------
+//----------------------------------------------------------------------------------------------------
+class ShowCardsBought{
+    public String username;
+
+    public void start(Stage stage) throws Exception {
+        BorderPane borderPane = new BorderPane();
+
+        Image image = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/right.png")).toExternalForm(), 170, 620, false, false);
+        ImageView imageView = new ImageView(image);
+
+        Image image1 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/left.png")).toExternalForm(), 170, 620, false, false);
+        ImageView imageView1 = new ImageView(image1);
+
+        borderPane.setRight(imageView);
+        borderPane.setLeft(imageView1);
+
+        Button button = new Button("Back");
+        button.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
+                "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
+        button.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                ShopMenu shopMenu = new ShopMenu(username);
+                shopMenu.username = username;
+                try {
+                    shopMenu.start(stage);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+        button.setAlignment(Pos.CENTER);
+
+        HBox hBox = new HBox(button);
+        hBox.setAlignment(Pos.CENTER);
+        borderPane.setBottom(hBox);
+
+        ScrollPane scrollPane = new ScrollPane();
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.TOP_CENTER);
+        VBox vBox = new VBox(gridPane);
+        vBox.setAlignment(Pos.CENTER);
+
+        ArrayList<String> allCards = Objects.requireNonNull(User.getUserByUsername(username)).cardsBought;
+        for (int i = 0; i<allCards.size(); ++i){
+            String name = allCards.get(i);
+            if (Card.allCards.get(allCards.get(i)).getCardsType() == Type.MONSTER){
+                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + allCards.get(i) + ".jpg")).toExternalForm(), 210, 210, false, false);
+                ImageView imageView2 = new ImageView(image2);
+                gridPane.add(imageView2, i%3, i/3);
+            }
+            else{
+                Image image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + allCards.get(i) + ".jpg")).toExternalForm(), 210, 210, false, false);
+                ImageView imageView2 = new ImageView(image2);
+                gridPane.add(imageView2, i%3, i/3);
+            }
+        }
+
+        scrollPane.setContent(vBox);
+        borderPane.setCenter(scrollPane);
+
+        Scene scene = new Scene(borderPane);
+        stage.setScene(scene);
+        stage.setHeight(700);
+        stage.setWidth(1000);
+        stage.centerOnScreen();
+        stage.show();
     }
 }
