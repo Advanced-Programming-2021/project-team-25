@@ -15,6 +15,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
+import javafx.stage.Modality;
 import javafx.stage.Popup;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
@@ -221,7 +222,14 @@ public class Battlefield {
     //rival monster zone number 2 = index 3 of rival ArrayList in range of x = (379,440) and y = (258,325)
     //rival monster zone number 4 = index 4 of rival ArrayList in range of x = (312,373) and y = (258,325)
     public void attackGui (int index){
-        if (turn.field.monsterZone.get(index) != null) {
+        if (turn.field.monsterZone.get(index) != null || turn.field.spellTrapZone.get(index) != null) {
+            Button actionBtn = new Button("Action");
+
+            actionBtn.setOnMouseClicked(e->{
+                game.canvas.setOnMouseClicked(event -> {
+                    mouseClicked(index, event);
+                });
+            });
 
             javafx.scene.control.Button attackBtn = new javafx.scene.control.Button("Attack");
             attackBtn.setOnMouseClicked(e-> {
@@ -236,14 +244,24 @@ public class Battlefield {
                 });
                 currStage.close();
             });
-            selectedCard =  turn.field.monsterZone.get(index);
-            Image imageForButton = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" +
+            if(turn.field.monsterZone.get(index) != null)
+                selectedCard =  turn.field.monsterZone.get(index);
+            else
+                selectedCard =  turn.field.spellTrapZone.get(index);
+            Image imageForButton;
+            if(selectedCard.getCardsType().equals(Type.MONSTER))
+            imageForButton = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" +
                     turn.field.monsterZone.get(index).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+            else
+                imageForButton = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" +
+                        turn.field.spellTrapZone.get(index).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
             ImageView imageView = new ImageView(imageForButton);
 
             Label lblPositions= new Label("set_Position");
             Label lblAttack= new Label("Attack");
+            Label lblAction= new Label("Action Spell or trap");
             Label lblFlipSummon= new Label("Flip summon");
+
 
             Button flipBtn = new Button("FlipSummon");
             Button back = new Button("back");
@@ -266,8 +284,16 @@ public class Battlefield {
             // Bind the value property to the text property of the Label
             selectedValueLbl.textProperty().bind(position.valueProperty());
             saveChanges(saveChanges, position);
-
-            BorderPane borderPane = getBorderPane(attackBtn, imageView, lblPositions, lblAttack, lblFlipSummon, flipBtn, back, saveChanges, position);
+            BorderPane borderPane = new BorderPane();
+            if(selectedCard.getCardsType().equals(Type.MONSTER))
+                borderPane = getBorderPane(attackBtn, imageView, lblPositions, lblAttack, lblFlipSummon, flipBtn, back, saveChanges, position);
+            else {
+                VBox vBox = new VBox();
+                vBox.getChildren().addAll(lblAction,actionBtn);
+                vBox.setSpacing(15);
+                borderPane.setLeft(vBox);
+                borderPane.setRight(imageView);
+            }
             Scene scene = new Scene(borderPane,500,450);
             String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
             scene.getStylesheets().add(style);
@@ -323,6 +349,31 @@ public class Battlefield {
             selectedCard = turn.field.monsterZone.get(index);
             directAttack();
             game.refreshHealthBar(turn, opponent);
+            game.addChanges();
+        } //turn spell and trap zone
+        else if (x >= 311 && x <= 370 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(0) != null){
+            this.selectedCard = this.getTurn().field.spellTrapZone.get(0);
+            this.activeSpell("notFirstTime");
+            game.addChanges();
+        }
+        else if (x >= 378 && x <= 441 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(1) != null){
+            this.selectedCard = this.getTurn().field.spellTrapZone.get(1);
+            this.activeSpell("notFirstTime");
+            game.addChanges();
+        }
+        else if (x >= 447 && x <= 507 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(2) != null){
+            this.selectedCard = this.getTurn().field.spellTrapZone.get(2);
+            this.activeSpell("notFirstTime");
+            game.addChanges();
+        }
+        else if (x >= 516 && x <= 575 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(3) != null){
+            this.selectedCard = this.getTurn().field.spellTrapZone.get(3);
+            this.activeSpell("notFirstTime");
+            game.addChanges();
+        }
+        else if (x >= 585 && x <= 642 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(4) != null){
+            this.selectedCard = this.getTurn().field.spellTrapZone.get(4);
+            this.activeSpell("notFirstTime");
             game.addChanges();
         } else
             game.addChanges();
@@ -1143,8 +1194,8 @@ public class Battlefield {
         SpellAndTrap spellAndTrap;
         if (Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
         else if (!selectedCard.getCardsType().equals(Type.SPELL))
-            UserInterface.printResponse("active effect is only for spell cards.");
-        else if (!phase.equals(Phase.MAIN1_PHASE))
+//            UserInterface.printResponse("active effect is only for spell cards.");
+//        else if (!phase.equals(Phase.MAIN1_PHASE))
             UserInterface.printResponse("you cant active an effect on this turn");
         else {
             spellAndTrap = (SpellAndTrap) selectedCard;
@@ -1157,8 +1208,8 @@ public class Battlefield {
             else {
                 activeSpellAndTraps.add(spellAndTrap);
                 spellAndTrap.action(this);
-                if (how.equals("firstTime"))
-                    turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone() + 1, selectedCard);
+//                if (how.equals("firstTime"))
+//                    turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone() + 1, selectedCard);
             }
         }
     }
