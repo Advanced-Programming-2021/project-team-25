@@ -711,11 +711,10 @@ public class Battlefield {
 
     //summon
     public void summon() {
-
         //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         //checking that if we have monster
-        else if (!turn.field.hand.contains(selectedCard) /* || !(selectedCard.getCardsType() == Type.MONSTER)*/)
+        else if (!turn.field.hand.contains(selectedCard)  || !(selectedCard.getCardsType() == Type.MONSTER))
             UserInterface.printResponse("you cant summon this card");
         else {
             //loading the monster from selected card
@@ -1411,11 +1410,9 @@ public class Battlefield {
             ImageAdapter.setMonsterOn5(graphicsContext, image);
         }
         game.initGraveYardAndFieldZone();
-
     }
 
     private Image getImageOfOpponent(int i) {
-        return new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" +
-                opponent.field.monsterZone.get(i).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
+        return new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + opponent.field.monsterZone.get(i).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
     }
 }

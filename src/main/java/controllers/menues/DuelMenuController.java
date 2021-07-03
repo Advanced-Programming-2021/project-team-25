@@ -73,7 +73,6 @@ public class DuelMenuController {
         Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
         Battlefield battlefield = new Battlefield(duelist1, duelist2);
         battlefield.isOneRound = true;
-        //finishround1(duelist1Wins, duelist2Wins, duelist1, duelist2, battlefield);
     }
 
     public void finishround1(int duelist1Wins, int duelist2Wins, Duelist duelist1, Duelist duelist2, Battlefield battlefield) {

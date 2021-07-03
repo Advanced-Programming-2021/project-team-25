@@ -10,21 +10,18 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
 import javafx.scene.SnapshotParameters;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import javafx.scene.text.Font;
+import javafx.stage.Popup;
 import models.Card;
 import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
-import javafx.scene.paint.ImagePattern;
-import javafx.scene.shape.Circle;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
@@ -256,25 +253,37 @@ public class Game {
 
             img = new ImageView(image2);
             img.setOnMouseClicked(event -> {
-                UserInterface.printResponse("Set Or Summon");
-                String num = UserInterface.getUserInput();
-                if (num.equals("Set")) {
+                Popup popup = new Popup();
+                VBox vBox1 = new VBox();
+                Label label2 = new Label("Set Or Summon");
+                label2.setTextFill(Color.web("black"));
+                label2.setFont(Font.font(20));
+                MenuItem menuItem1 = new MenuItem("Summon");
+                menuItem1.setOnAction(actionEvent -> {
+                    battlefield.selectedCard = card;
+                    battlefield.summon();
+                    addChanges();
+                });
+                MenuItem menuItem2 = new MenuItem("Set");
+                menuItem2.setOnAction(actionEvent -> {
                     battlefield.selectedCard = card;
                     battlefield.set();
                     addChanges();
-                } else if (num.equals("See")) {
-                    battlefield.selectedCard = card;
-                    addChanges();
-                } else if (num.equals("Summon")){
-                    battlefield.selectedCard = card;
-                    if(card.getCardsType().equals(Type.MONSTER))
-                        battlefield.summon();
-                    else
-                        UserInterface.printResponse("summon just allowed on monster Cards");
-                    addChanges();
-                }
-                else
-                    UserInterface.printResponse("not correct format");
+                });
+                MenuButton menuButton = new MenuButton("Summon", null, menuItem1);
+                Image imageForButton = new Image(getClass().getResource("/view/menus/game/attack.png").toExternalForm());
+                ImageView imageView = new ImageView(imageForButton);
+                menuButton.setGraphic(imageView);
+                MenuButton menuButton2 = new MenuButton("Set", null, menuItem2);
+                Image imageForButton2 = new Image(getClass().getResource("/view/menus/game/attack.png").toExternalForm());
+                ImageView imageView2 = new ImageView(imageForButton2);
+                menuButton2.setGraphic(imageView2);
+                vBox1.getChildren().addAll(label2, menuButton, menuButton2);
+                popup.getContent().add(vBox1);
+                popup.setAnchorX(1150);
+                popup.setAnchorY(600);
+                popup.show(Main.stage);
+                popup.setAutoHide(true);
             });
 
             handTurn.getChildren().add(img);
@@ -554,7 +563,12 @@ public class Game {
               DataBase.saveTheUserList(User.getUsers());
             }
             else {
-
+                int duelist1Wins = 0, duelist2Wins = 0;
+                DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
+                duelMenuController.finishRound1Of3(duelist1Wins,duelist2Wins,battlefield.getOpponent(),battlefield.getWinner(),battlefield);
+                duelMenuController.startRound2Of3(battlefield.getOpponent(),battlefield.getWinner());
+                DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+                DataBase.saveTheUserList(User.getUsers());
             }
         } );
         Button btnCheat = new Button("Cheat!");
