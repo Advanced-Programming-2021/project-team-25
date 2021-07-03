@@ -1,5 +1,6 @@
 package view.menus;
 
+import controllers.Battelfield.Battlefield;
 import controllers.ProgramController;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
@@ -10,13 +11,14 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import models.Duelist;
+import models.User;
 import view.*;
 
 import java.util.Objects;
 
 public class MainMenu {
     public static Scene mainMenuScene;
-
     public void start() {
         GridPane gridPane = CreateGrid.createGridPane();
         addUIControls(gridPane);
@@ -30,7 +32,6 @@ public class MainMenu {
         String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
         scene.getStylesheets().add(style);
         mainMenuScene = scene;
-
         Main.stage.setScene(scene);
     }
 
@@ -40,7 +41,9 @@ public class MainMenu {
         grid.add(welcomeText,0 ,0);
 
         Button DuelBtn = new Button("Duel Menu");
-        DuelBtn.setOnAction(actionEvent -> DuelMenu.getInstance(ProgramController.currUser).run(Main.stage));
+        DuelBtn.setOnAction(actionEvent -> {
+           DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+        });
         grid.add(DuelBtn,0,1);
 
         Button ShopBtn = new Button("Shop Menu");
@@ -68,7 +71,9 @@ public class MainMenu {
         grid.add(ScoreBoardBtn,0,5);
 
         Button ImportExportBtn = new Button("Import/Export Menu");
-        ImportExportBtn.setOnAction(actionEvent -> { });
+        ImportExportBtn.setOnAction(actionEvent -> {
+            ImportExport.getInstance().run(Main.stage);
+        });
         grid.add(ImportExportBtn,0,6);
 
         Button LogoutBtn = new Button("Logout");
