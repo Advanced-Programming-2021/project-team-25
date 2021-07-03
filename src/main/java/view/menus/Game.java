@@ -27,6 +27,8 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Circle;
 import models.CardStufs.Type;
 import models.Duelist;
+import models.Monster.Monster;
+import models.SpellAndTrap.SpellAndTrap;
 import models.User;
 import view.Main;
 import view.UserInterface;
@@ -68,7 +70,6 @@ public class Game {
     BorderPane root = new BorderPane();
 
     Battlefield battlefield;
-
     public Game(Battlefield battlefield){
         this.battlefield = battlefield;
     }
@@ -379,33 +380,18 @@ public class Game {
             //turn spell and trap zone
             else if (x >= 311 && x <= 370 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
                 battlefield.attackGui(0);
-//                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(0);
-//                battlefield.activeSpell("notFirstTime");
-//                addChanges();
             }
             else if (x >= 378 && x <= 441 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
                 battlefield.attackGui(1);
-//                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(1);
-//                battlefield.activeSpell("notFirstTime");
-//                addChanges();
             }
             else if (x >= 447 && x <= 507 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
                 battlefield.attackGui(2);
-//                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(2);
-//                battlefield.activeSpell("notFirstTime");
-//                addChanges();
             }
             else if (x >= 516 && x <= 575 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
                 battlefield.attackGui(3);
-//                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(3);
-//                battlefield.activeSpell("notFirstTime");
-//                addChanges();
             }
             else if (x >= 585 && x <= 642 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
                 battlefield.attackGui(4);
-//                battlefield.selectedCard = battlefield.getTurn().field.spellTrapZone.get(4);
-//                battlefield.activeSpell("notFirstTime");
-//                addChanges();
             }
         });
     }
@@ -436,9 +422,18 @@ public class Game {
             ImageView imageView2 = new ImageView(image2);
             gridPane.add(imageView2, 0, 1);
         }
+        Button addToGravYard = new Button("send to graveYard");
+
+        addToGravYard.setOnMouseClicked(e->{
+            if(battlefield.selectedCard.getCardsType().equals(Type.MONSTER))
+                ((Monster)battlefield.selectedCard).removeMonster(battlefield);
+            else
+                ((SpellAndTrap)battlefield.selectedCard).removeSpellOrTrap(battlefield);
+        });
         scrollPane.setContent(vBox);
         BorderPane root2 = new BorderPane();
         root2.setCenter(scrollPane);
+        root2.setBottom(addToGravYard);
         Scene scene = new Scene(root2);
         new subStage("Field Zone",scene);
     }
@@ -531,7 +526,7 @@ public class Game {
         return vboxLeft;
     }
 
-    private void makeListOfCardsForShowing(GridPane gridPane, ArrayList<Card> deckCards) {
+    public void makeListOfCardsForShowing(GridPane gridPane, ArrayList<Card> deckCards) {
         for (int i = 0; i<deckCards.size(); ++i){
             String name = deckCards.get(i).getName();
             if (deckCards.get(i).getCardsType() == Type.MONSTER){
@@ -646,5 +641,4 @@ public class Game {
         scrollPane.setContent(vBox);
         root.setCenter(scrollPane);
     }
-
 }

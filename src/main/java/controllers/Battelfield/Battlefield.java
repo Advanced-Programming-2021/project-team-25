@@ -4,13 +4,16 @@ import controllers.Regex;
 import controllers.ShowCard;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -34,12 +37,14 @@ import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
 
 import view.Main;
+import view.menus.DuelMenu;
 import view.menus.Game;
 import view.Responses;
 import view.UserInterface;
 import view.menus.subStage;
 
 import javax.imageio.ImageIO;
+import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
@@ -248,6 +253,14 @@ public class Battlefield {
                 selectedCard =  turn.field.monsterZone.get(index);
             else
                 selectedCard =  turn.field.spellTrapZone.get(index);
+            Button addToGravYard = new Button("send to graveYard");
+
+            addToGravYard.setOnMouseClicked(e->{
+                if(selectedCard.getCardsType().equals(Type.MONSTER))
+                    ((Monster)selectedCard).removeMonster(this);
+                else
+                    ((SpellAndTrap)selectedCard).removeSpellOrTrap(this);
+            });
             Image imageForButton;
             if(selectedCard.getCardsType().equals(Type.MONSTER))
             imageForButton = new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" +
@@ -286,13 +299,14 @@ public class Battlefield {
             saveChanges(saveChanges, position);
             BorderPane borderPane = new BorderPane();
             if(selectedCard.getCardsType().equals(Type.MONSTER))
-                borderPane = getBorderPane(attackBtn, imageView, lblPositions, lblAttack, lblFlipSummon, flipBtn, back, saveChanges, position);
+                borderPane = getBorderPane(addToGravYard,attackBtn, imageView, lblPositions, lblAttack, lblFlipSummon, flipBtn, back, saveChanges, position);
             else {
                 VBox vBox = new VBox();
                 vBox.getChildren().addAll(lblAction,actionBtn);
                 vBox.setSpacing(15);
                 borderPane.setLeft(vBox);
                 borderPane.setRight(imageView);
+                borderPane.setBottom(addToGravYard);
             }
             Scene scene = new Scene(borderPane,500,450);
             String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
@@ -380,7 +394,7 @@ public class Battlefield {
         game.mouseEventClick();
     }
 
-    private BorderPane getBorderPane(Button attackBtn, ImageView imageView, Label lblPositions, Label lblAttack, Label lblFlipSummon, Button flipBtn, Button back, Button saveChanges, ChoiceBox<String> position) {
+    private BorderPane getBorderPane(Button addToGraveYard,Button attackBtn, ImageView imageView, Label lblPositions, Label lblAttack, Label lblFlipSummon, Button flipBtn, Button back, Button saveChanges, ChoiceBox<String> position) {
         HBox hBox1 = new HBox();
         hBox1.setSpacing(5);
         hBox1.getChildren().addAll(lblPositions, position);
@@ -392,7 +406,7 @@ public class Battlefield {
         hBox3.getChildren().addAll(lblFlipSummon, flipBtn);
         HBox hBox4 = new HBox();
         hBox4.setSpacing(60);
-        hBox4.getChildren().addAll(back, saveChanges);
+        hBox4.getChildren().addAll(back,addToGraveYard,saveChanges);
         VBox vboxLeft = new VBox();
         vboxLeft.getChildren().addAll(hBox1,hBox2,hBox3);
         VBox vboxRight = new VBox();
@@ -1193,9 +1207,9 @@ public class Battlefield {
     public void activeSpell(String how) {
         SpellAndTrap spellAndTrap;
         if (Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
-        else if (!selectedCard.getCardsType().equals(Type.SPELL))
+//        else if (!selectedCard.getCardsType().equals(Type.SPELL))
 //            UserInterface.printResponse("active effect is only for spell cards.");
-//        else if (!phase.equals(Phase.MAIN1_PHASE))
+        else if (!phase.equals(Phase.MAIN1_PHASE))
             UserInterface.printResponse("you cant active an effect on this turn");
         else {
             spellAndTrap = (SpellAndTrap) selectedCard;
@@ -1235,45 +1249,76 @@ public class Battlefield {
     }
     private boolean isOpponentActiveSpellOrTrap() {
         //change turn
-        UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
+        UserInterface.printResponse("Ask" + opponent.getName() + "if want to active spell");
         changeTurn();
-        showBattleField();
-        UserInterface.printResponse("do you want to activate your trap or spell?" + "\n enter yes or no");
-        String yesOrNo = UserInterface.getUserInput();
-        //decide what to do
-        if (yesOrNo.equals("no")) {
-            UserInterface.printResponse("now it will be " + opponent.getName() + "’s turn");
+        int dialogResult = JOptionPane.showConfirmDialog (null, "Would You Like to Active Spell or trap for Chain?","Make chain!",JOptionPane.YES_NO_OPTION);
+        if(dialogResult == JOptionPane.NO_OPTION){
+            UserInterface.printResponse("turn will be back to " + opponent.getName());
             changeTurn();
-            showBattleField();
             return true;
-        } else if (yesOrNo.equals("yes")) {
-            UserInterface.printResponse("enter number of Trap house : " + "or type \"cancel\" by numbering 5 | 3 | 1 | 2 | 4");
-            while (true) {
-                //get user input
-                String input = UserInterface.getUserInput();
-                if (input.equals("cancel")) break;
-                //get spell or trap
-                int num = Integer.parseInt(input);
-                SpellAndTrap spellAndTrap = (SpellAndTrap) turn.field.spellTrapZone.get(num);
-                //checking not null
-                if (Objects.isNull(spellAndTrap)) {
-                    UserInterface.printResponse("try again");
-                    continue;
-                }
-                String trapName = spellAndTrap.getName();
-                if (trapName.equals("Magic Cylinder") || trapName.equals("Mirror Force") || trapName.equals("Torrential Tribute")) {
-                    turn.field.spellTrapZone.get(getIndex(num)).action(this);
-                    turn.field.graveYard.add(turn.field.spellTrapZone.get(num));
-                    turn.field.spellTrapZone.set(getIndex(num), null);
-                    UserInterface.printResponse("Trap activated");
-                } else UserInterface.printResponse("it’s not your turn to play this kind of moves\n try again!");
-                //make chain
-                if (canWeActiveSpell())
-                    spellAndTrap.action(this);
-            }
+        }
+        else {
+            UserInterface.printResponse("choose the spell or trap you want to active");
+            MakeChainScene(turn);
+            changeTurn();
+            game.addChanges();
         }
         return false;
     }
+
+    private void MakeChainScene(Duelist duelist) {
+        BorderPane root = new BorderPane();
+        Button cancelBtn = new Button("Cancel");
+        cancelBtn.setStyle("-fx-background-color: linear-gradient(#ff5400, #be1d00);" +
+                "-fx-background-radius: 30; -fx-background-insets: 0; -fx-text-fill: white;");
+        cancelBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                currStage.close();
+            }
+        });
+        cancelBtn.setAlignment(Pos.CENTER);
+
+        HBox hBox = new HBox(cancelBtn);
+        hBox.setAlignment(Pos.CENTER);
+
+
+        javafx.scene.control.ScrollPane scrollPane = new ScrollPane();
+        GridPane gridPane = new GridPane();
+        gridPane.setAlignment(Pos.TOP_CENTER);
+        VBox vBox = new VBox(gridPane);
+        vBox.setAlignment(Pos.CENTER);
+
+        ArrayList<Card> spellAndTrapCards = duelist.field.spellTrapZone;
+
+        for (int i = 0; i<spellAndTrapCards.size(); ++i){
+            String name = spellAndTrapCards.get(i).getName();
+            if (name.equals("Harpie’s Feather Duster") ||
+                        name.equals("Twin Twisters") ||
+                        name.equals("Mystical space typhoon") ||
+                        name.equals("Ring of Defense") ||
+                        name.equals("Magic Jammer")) {
+                Image image2 = new Image(Objects.requireNonNull(this.getClass().getResource("SpellTrap/" +
+                        spellAndTrapCards.get(i).getName().replace(" ","") + ".jpg")).toExternalForm(), 230, 230, false, false);
+                ImageView imageView2 = new ImageView(image2);
+                int finalI = i;
+                imageView2.setOnMouseClicked(e->{
+                    if(canWeActiveSpell())
+                        spellAndTrapCards.get(finalI).action(this);
+                });
+                gridPane.add(imageView2, i%2, i/2);
+            }
+        }
+        scrollPane.setContent(vBox);
+        Label lblTitle = new Label("If you want to make chain Select one spell or trap to active it Or click cancel!");
+        lblTitle.setAlignment(Pos.CENTER);
+        root.setTop(lblTitle);
+        root.setCenter(scrollPane);
+        Scene scene = new Scene(root,500,600);
+        subStage stage = new subStage("Chain",scene);
+        currStage = stage.getStage();
+    }
+
     private void phaseController() {
         int lastChangedTurn = 0;
         //checking just one time turn changed
