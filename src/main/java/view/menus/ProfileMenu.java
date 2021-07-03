@@ -55,7 +55,7 @@ public class ProfileMenu {
     public void runProfileMenu(Stage stage){
         GridPane gridPane = CreateGrid.createGridPane();
 
-        userImageProfile = new Image("file:admin.png");
+        userImageProfile = new Image("file:"+currUser.getUsername()+".png");
 
         imageViewProfile = new ImageView(userImageProfile);
         imageViewProfile.setFitHeight(100);
@@ -143,7 +143,7 @@ public class ProfileMenu {
                                 openFile(file);
                             }
                             //refresh image!
-                            userImageProfile = new Image("file:admin.png");
+                            userImageProfile = new Image("file:"+currUser.getUsername()+".png");
                             imageViewProfile.setImage(userImageProfile);
                             stage.setScene(profileScene);
                         }

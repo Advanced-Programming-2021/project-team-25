@@ -1,10 +1,16 @@
 package controllers;
 
+import controllers.menues.ImportExportMenu;
+import javafx.scene.control.TextArea;
 import models.Card;
 import models.CardStufs.Type;
 import models.Monster.*;
 import models.SpellAndTrap.*;
+import view.Main;
 import view.UserInterface;
+import view.menus.ImportExport;
+
+import java.awt.*;
 
 public class ShowCard {
 
@@ -13,20 +19,24 @@ public class ShowCard {
         else{
             if (Card.allCards.get(cardsName).getCardsType() == Type.MONSTER){
                 Monster monster = (Monster) Card.allCards.get(cardsName);
-                UserInterface.printResponse("Name: " + cardsName);
-                UserInterface.printResponse("Level: " + monster.getLevel());
-                UserInterface.printResponse("Type: " + monster.getCardTypeInExel());
-                UserInterface.printResponse("ATK: " + monster.getAttack());
-                UserInterface.printResponse("DEF: " + monster.getDefence());
-                UserInterface.printResponse("Description: " + monster.getDescription());
+                ImportExport importExportMenu = ImportExport.getInstance();
+                TextArea textArea = importExportMenu.getTextArea();
+                textArea.appendText("Name: " + cardsName);
+                textArea.appendText("\nLevel: " + monster.getLevel());
+                textArea.appendText("\nType: " + monster.getCardTypeInExel());
+                textArea.appendText("\nATK: " + monster.getAttack());
+                textArea.appendText("\nDEF: " + monster.getDefence());
+                textArea.appendText("\nDescription: " + monster.getDescription());
             }
             else{
                 SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(cardsName);
-                UserInterface.printResponse("Name: " + cardsName);
-                if (spellAndTrap.getCardsType() == Type.SPELL) UserInterface.printResponse("Spell");
-                else UserInterface.printResponse("Trap");
-                UserInterface.printResponse("Type: " + spellAndTrap.getIcon());
-                UserInterface.printResponse("Description: " + spellAndTrap.getDescription());
+                ImportExport importExportMenu = ImportExport.getInstance();
+                TextArea textArea = importExportMenu.getTextArea();
+                textArea.appendText("Name: " + cardsName);
+                if (spellAndTrap.getCardsType() == Type.SPELL) textArea.appendText("\nSpell");
+                else textArea.appendText("\nTrap");
+                textArea.appendText("\nType: " + spellAndTrap.getIcon());
+                textArea.appendText("\nDescription: " + spellAndTrap.getDescription());
             }
         }
     }
