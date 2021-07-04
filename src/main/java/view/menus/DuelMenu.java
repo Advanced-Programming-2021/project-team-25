@@ -84,7 +84,7 @@ public class DuelMenu {
                 if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
                 else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
                 else if(!(rounds.getValue().equals("1") || rounds.getValue().equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
-                else new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")));
+                else new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")), 1);
             }
             else{
                 if(User.getUserByUsername(txtRival.getText()) == null) JOptionPane.showMessageDialog(null,

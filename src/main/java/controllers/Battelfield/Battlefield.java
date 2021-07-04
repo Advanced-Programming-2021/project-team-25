@@ -74,8 +74,10 @@ public class Battlefield {
     public int attackedMonsterNum;
     public boolean isOneRound;
     private Stage currStage;
+    public int round;
 
-    public Battlefield(Duelist duelist1, Duelist duelist2) {
+    public Battlefield(Duelist duelist1, Duelist duelist2, int round) {
+        this.round = round;
         whoStart(duelist1, duelist2);
         game = new Game(this);
         startGame();

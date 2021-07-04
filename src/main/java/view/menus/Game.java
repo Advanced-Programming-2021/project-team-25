@@ -72,6 +72,7 @@ public class Game {
     }
 
     public void addChanges(){
+        checkEnd();
         mouseEventClick();
 
         graphic.clearRect(0, 0, 500, 450);
@@ -245,7 +246,6 @@ public class Game {
             Card card = battlefield.getTurn().field.hand.get(i);
             Image image2;
             ImageView img;
-            System.out.println(card.getName());
             if (card.getCardsType().equals(Type.MONSTER))
                 image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/Monsters/" + card.getName() + ".jpg")).toExternalForm(), 50, 100, false, false);
             else
@@ -313,6 +313,47 @@ public class Game {
         stylingGame();
 
         Main.stage.setScene(gameScene);
+    }
+
+    private void checkEnd() {
+        if(battlefield.turn.LP <= 0){
+            battlefield.winner = battlefield.opponent;
+            DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
+            if(battlefield.isOneRound) {
+                duelMenuController.finishround1(0, 0, battlefield.getOpponent(), battlefield.getWinner(), battlefield);
+                DataBase.saveTheUserList(User.getUsers());
+                DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+            }
+            else {
+                if(battlefield.round == 1) duelMenuController.finishRound1(battlefield.turn,battlefield.opponent,battlefield);
+                else if(battlefield.round == 2) duelMenuController.finishRound2(battlefield.turn,battlefield.opponent,battlefield);
+                else if(battlefield.round == 3){
+                    duelMenuController.finishRound3(battlefield.turn,battlefield.opponent,battlefield);
+                    duelMenuController.matchFinish(battlefield.turn,battlefield.opponent);
+                    DataBase.saveTheUserList(User.getUsers());
+                    DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+                }
+            }
+        }
+        if(battlefield.opponent.LP <= 0){
+            battlefield.winner = battlefield.turn;
+            DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
+            if(battlefield.isOneRound) {
+                duelMenuController.finishround1(0, 0, battlefield.getOpponent(), battlefield.getWinner(), battlefield);
+                DataBase.saveTheUserList(User.getUsers());
+                DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+            }
+            else {
+                if(battlefield.round == 1) duelMenuController.finishRound1(battlefield.turn,battlefield.opponent,battlefield);
+                else if(battlefield.round == 2) duelMenuController.finishRound2(battlefield.turn,battlefield.opponent,battlefield);
+                else if(battlefield.round == 3){
+                    duelMenuController.finishRound3(battlefield.turn,battlefield.opponent,battlefield);
+                    duelMenuController.matchFinish(battlefield.turn,battlefield.opponent);
+                    DataBase.saveTheUserList(User.getUsers());
+                    DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+                }
+            }
+        }
     }
 
     public void mouseEventClick (){
@@ -530,7 +571,7 @@ public class Game {
         vbox2.getChildren().addAll(canvasHealthBar2, lblDuelist2LP, lblDuelist2Name, imgDuelist2);
 
         VBox vboxLeft = new VBox();
-        vboxLeft.getChildren().addAll(vbox1, vBoxRight, vbox2);
+        vboxLeft.getChildren().addAll(vbox2, vBoxRight, vbox1);
 
         return vboxLeft;
     }
@@ -552,25 +593,26 @@ public class Game {
     }
 
     private VBox makeRightBar() {
-
         Button btnExit = new Button("Surrender");
         btnExit.setOnMouseClicked(e -> {
             battlefield.winner = battlefield.getOpponent();
-            if(battlefield.isOneRound){
-              DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
-              duelMenuController.finishround1(0,0,battlefield.getOpponent(),battlefield.getWinner(),battlefield);
-              DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
-              DataBase.saveTheUserList(User.getUsers());
+            DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
+            if(battlefield.isOneRound) {
+                duelMenuController.finishround1(0, 0, battlefield.getOpponent(), battlefield.getWinner(), battlefield);
+                DataBase.saveTheUserList(User.getUsers());
+                DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
             else {
-                int duelist1Wins = 0, duelist2Wins = 0;
-                DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
-                duelMenuController.finishRound1Of3(duelist1Wins,duelist2Wins,battlefield.getOpponent(),battlefield.getWinner(),battlefield);
-                duelMenuController.startRound2Of3(battlefield.getOpponent(),battlefield.getWinner());
-                DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
-                DataBase.saveTheUserList(User.getUsers());
+                if(battlefield.round == 1) duelMenuController.finishRound1(battlefield.getOpponent(),battlefield.getWinner(),battlefield);
+                else if(battlefield.round == 2) duelMenuController.finishRound2(battlefield.getOpponent(),battlefield.getWinner(),battlefield);
+                else if(battlefield.round == 3){
+                    duelMenuController.finishRound3(battlefield.getOpponent(),battlefield.getWinner(),battlefield);
+                    duelMenuController.matchFinish(battlefield.getOpponent(),battlefield.getWinner());
+                    DataBase.saveTheUserList(User.getUsers());
+                    DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+                }
             }
-        } );
+        });
         Button btnCheat = new Button("Cheat!");
         btnCheat.setOnMouseClicked(e->{
             String command = UserInterface.getUserInput();
