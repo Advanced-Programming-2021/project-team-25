@@ -9,6 +9,7 @@ import models.*;
 import view.Main;
 import view.Responses;
 import view.UserInterface;
+import view.menus.ChangeMainAndSideCards;
 import view.menus.DuelMenu;
 
 import javax.swing.*;
@@ -124,13 +125,7 @@ public class DuelMenuController {
         round1Duelist2Lp = duelist2.LP;
 
         //add card from side
-        transferPermission(duelistName);
-
-        //round2
-        duelist1 = new Duelist(currUser);
-        duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        battlefield = new Battlefield(duelist1, duelist2, 2);
-        battlefield.isOneRound = false;
+        transferPermission(currUser, "oneToTwo");
     }
 
     public void finishRound2(Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
@@ -157,13 +152,7 @@ public class DuelMenuController {
         }
 
         //add card from side
-        transferPermission(duelistName);
-
-        //round3
-        duelist1 = new Duelist(currUser);
-        duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        battlefield = new Battlefield(duelist1, duelist2, 3);
-        battlefield.isOneRound = false;
+        transferPermission(currUser, "twoToThree");
     }
 
     private void finish2Round(Duelist duelist1, Duelist duelist2) {
@@ -202,58 +191,38 @@ public class DuelMenuController {
         DataBase.saveTheUserList(User.getUsers());
     }
 
-    private void transferPermission(String duelistName) {
+    public void transferPermission(User user, String how) {
         Object[] options = {"Yes", "No"};
         int n1 = JOptionPane.showOptionDialog(null,
-                "Hey " + currUser.getUsername() + "do you want to transfer card?",
-                "delete account question",
+                "Hey " + user.getUsername() + "do you want to transfer card?",
+                "Transfer Card Question",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon
                 options,  //the titles of buttons
                 options[0]);
-        if(n1 == 0) transferCard(currUser);
-        int n2 = JOptionPane.showOptionDialog(null, "Hey " + duelistName + "do you want to transfer card?",
-                "transfer Card question",
-                JOptionPane.YES_NO_OPTION,
-                JOptionPane.QUESTION_MESSAGE,
-                null,     //do not use a custom Icon
-                options,  //the titles of buttons
-                options[0]);
-        if(n2 == 0) transferCard(Objects.requireNonNull(User.getUserByUsername(duelistName)));
+        if(n1 == 0) transferCard(user, how);
+        else{
+            if (user == ProgramController.currUser){
+                transferPermission(Objects.requireNonNull(User.getUserByUsername(duelistName)), how);
+            }
+            else{
+                Duelist duelist1 = new Duelist(ProgramController.currUser);
+                Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
+                Battlefield battlefield;
+                if (how.equals("oneToTwo")) {
+                    battlefield = new Battlefield(duelist1, duelist2, 2);
+                    battlefield.isOneRound = false;
+                }
+                else{
+                    battlefield = new Battlefield(duelist1, duelist2, 3);
+                    battlefield.isOneRound = false;
+                }
+            }
+        }
     }
 
-    private void transferCard(User user){
-        String sideName = JOptionPane.showInputDialog("enter name of the card from side deck : ");
-        boolean sideExist = false;
-        Card tempSide = null;
-        for (Card card: user.activeDeck.sideDeck) {
-            if(card.getName().equals(sideName)){
-                tempSide = card;
-                user.activeDeck.sideDeck.remove(card);
-                sideExist = true;
-            }
-        }
-        if(!sideExist){
-            UserInterface.printResponse("you don't have this card in your side deck");
-            return;
-        }
-
-        String mainName = JOptionPane.showInputDialog("enter name of the card from main deck : ");
-        boolean mainExist = false;
-        Card tempMain = null;
-        for (Card card: user.activeDeck.mainDeck) {
-            if(card.getName().equals(mainName)){
-                tempMain = card;
-                user.activeDeck.mainDeck.remove(card);
-                mainExist = true;
-            }
-        }
-        if(!mainExist){
-            UserInterface.printResponse("you don't have this card in your main deck");
-            return;
-        }
-        user.activeDeck.mainDeck.add(tempSide);
-        user.activeDeck.sideDeck.add(tempMain);
+    public void transferCard(User user, String how){
+        new ChangeMainAndSideCards(user.activeDeck, user, this, how);
     }
 }
