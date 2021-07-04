@@ -5,6 +5,14 @@ import controllers.Database.DataBase;
 import controllers.Menu;
 import controllers.ProgramController;
 import controllers.Regex;
+import javafx.scene.Scene;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import models.*;
 import view.Main;
 import view.Responses;
@@ -13,6 +21,7 @@ import view.menus.ChangeMainAndSideCards;
 import view.menus.DuelMenu;
 
 import javax.swing.*;
+import java.io.File;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
@@ -77,6 +86,11 @@ public class DuelMenuController {
     }
 
     public void oneRoundDuel(String duelistName) {
+//        ImageView imageView = new ImageView();
+//        imageView.setImage(new Image(this.getClass().getResource("tenor.gif").toExternalForm()));
+//        VBox vbox = new VBox ();
+//        vbox.getChildren().add(imageView);
+//        Main.stage.setScene(new Scene(vbox));
         //round1
         Duelist duelist1 = new Duelist(currUser);
         Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));

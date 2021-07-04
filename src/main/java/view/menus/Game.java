@@ -253,37 +253,33 @@ public class Game {
 
             img = new ImageView(image2);
             img.setOnMouseClicked(event -> {
-                Popup popup = new Popup();
                 VBox vBox1 = new VBox();
+
                 Label label2 = new Label("Set Or Summon");
                 label2.setTextFill(Color.web("black"));
                 label2.setFont(Font.font(20));
-                MenuItem menuItem1 = new MenuItem("Summon");
+
+                Button menuItem1 = new Button("Summon");
                 menuItem1.setOnAction(actionEvent -> {
                     battlefield.selectedCard = card;
                     battlefield.summon();
                     addChanges();
                 });
-                MenuItem menuItem2 = new MenuItem("Set");
+
+                Button menuItem2 = new Button("Set");
                 menuItem2.setOnAction(actionEvent -> {
                     battlefield.selectedCard = card;
                     battlefield.set();
                     addChanges();
                 });
-                MenuButton menuButton = new MenuButton("Summon", null, menuItem1);
-                Image imageForButton = new Image(getClass().getResource("/view/menus/game/attack.png").toExternalForm());
-                ImageView imageView = new ImageView(imageForButton);
-                menuButton.setGraphic(imageView);
-                MenuButton menuButton2 = new MenuButton("Set", null, menuItem2);
-                Image imageForButton2 = new Image(getClass().getResource("/view/menus/game/attack.png").toExternalForm());
-                ImageView imageView2 = new ImageView(imageForButton2);
-                menuButton2.setGraphic(imageView2);
-                vBox1.getChildren().addAll(label2, menuButton, menuButton2);
-                popup.getContent().add(vBox1);
-                popup.setAnchorX(1150);
-                popup.setAnchorY(600);
-                popup.show(Main.stage);
-                popup.setAutoHide(true);
+
+                vBox1.getChildren().addAll(label2, menuItem1, menuItem2);
+                Scene pop = new Scene(vBox1, 400, 500);
+
+                String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
+                pop.getStylesheets().add(style);
+
+                new subStage("Set & Summon", pop);
             });
 
             handTurn.getChildren().add(img);
