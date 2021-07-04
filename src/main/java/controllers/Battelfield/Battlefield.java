@@ -315,6 +315,7 @@ public class Battlefield {
             scene.getStylesheets().add(style);
             subStage sub = new subStage("Attack Gui",scene);
             currStage = sub.getStage();
+
         }
     }
 
