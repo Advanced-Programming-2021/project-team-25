@@ -1,7 +1,6 @@
 package view.menus;
 
 import controllers.Database.DataBase;
-import controllers.ProgramController;
 import controllers.menues.DeckMenu;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -25,6 +24,7 @@ import models.User;
 import view.CreateGrid;
 import view.Main;
 
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -152,6 +152,26 @@ public class DeckView {
         eye.setFitHeight(50);
         eye.setFitWidth(50);
         eye.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> new ShowDeck(deck,currUser).start());
+        //adding tool tip
+        String toolTip = "";
+        ArrayList<String> cardsName = new ArrayList<>();
+        for (int j = 0; j<deck.mainDeck.size(); ++j){
+            if (!cardsName.contains(deck.mainDeck.get(j).getName())){
+                cardsName.add(deck.mainDeck.get(j).getName());
+                int counter = 0;
+                for (int k = 0; k<deck.mainDeck.size(); ++k){
+                    if (deck.mainDeck.get(k).getName().equals(deck.mainDeck.get(j).getName()))
+                        counter += 1;
+                }
+                for (int k = 0; k<deck.sideDeck.size(); ++k){
+                    if (deck.sideDeck.get(k).getName().equals(deck.mainDeck.get(j).getName()))
+                        counter += 1;
+                }
+                toolTip += deck.mainDeck.get(j).getName() + " X" + counter + "\n";
+            }
+        }
+        Tooltip.install(eye, new Tooltip(toolTip));
+        //end of adding tool tip
 
         Image deleteImage = new Image(Objects.requireNonNull(getClass().getResource("deck/delete.png")).toExternalForm());
         ImageView delete = new ImageView(deleteImage);
