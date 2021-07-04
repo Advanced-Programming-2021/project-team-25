@@ -41,7 +41,7 @@ import java.util.Objects;
 
 public class Game {
 
-    final String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
+    String backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_normal.bmp")).toExternalForm();
     final String mainPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/Main.png")).toExternalForm();
     final String endPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/EndPhase.png")).toExternalForm();
     final String drawPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/DrawPhase.png")).toExternalForm();
@@ -83,6 +83,8 @@ public class Game {
     public void addChanges(){
 
         mouseEventClick();
+
+        setFieldZoneBackground();
 
         graphic.clearRect(0, 0, 500, 450);
         graphic.drawImage(backGroundIMG,0,0,500,450);
@@ -335,6 +337,30 @@ public class Game {
 
         Main.stage.setScene(gameScene);
         checkEnd();
+    }
+
+    private void setFieldZoneBackground() {
+        if(battlefield.opponent.field.fieldZone != null){
+            switch (battlefield.opponent.field.fieldZone.getName()) {
+                case "Yami" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_yami.bmp")).toExternalForm();
+                case "Forest" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_mori.bmp")).toExternalForm();
+                case "Closed Forest" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_sougen.bmp")).toExternalForm();
+                case "Umiiruka" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_umi.bmp")).toExternalForm();
+                case "Sword of dark destruction" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_yama.bmp")).toExternalForm();
+            }
+            backGroundIMG = new Image(backGroundPath);
+        }
+
+        if(battlefield.turn.field.fieldZone != null){
+            switch (battlefield.turn.field.fieldZone.getName()) {
+                case "Yami" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_yami.bmp")).toExternalForm();
+                case "Forest" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_mori.bmp")).toExternalForm();
+                case "Closed Forest" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_sougen.bmp")).toExternalForm();
+                case "Umiiruka" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_umi.bmp")).toExternalForm();
+                case "Sword of dark destruction" -> backGroundPath = Objects.requireNonNull(this.getClass().getResource("field/fie_yama.bmp")).toExternalForm();
+            }
+            backGroundIMG = new Image(backGroundPath);
+        }
     }
 
     private void checkEnd() {
