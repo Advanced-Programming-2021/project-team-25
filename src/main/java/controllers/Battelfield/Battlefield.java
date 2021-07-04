@@ -712,7 +712,7 @@ public class Battlefield {
     }
 
     //summon
-    public void summon() {
+    public void summon(int position) {
         //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         //checking that if we have monster
@@ -732,29 +732,29 @@ public class Battlefield {
                 UserInterface.printResponse("you already summoned/set on this turn");
             //exception for King Barbaros
             else if (monster.getName().equals("Beast King Barbaros"))
-                summonKingBarbaros(monster);
+                summonKingBarbaros(monster,position);
             //exception for gate guardian
             else if (monster.getName().equals("Gate Guardian"))
-                summonOrSetGateGuardian("summoned successfully");
+                summonOrSetGateGuardian("summoned successfully",position);
             else if (monster.getName().equals("Command Knight"))
-                summonOrFlipSummonCommandKnight("summoned successfully");
+                summonOrFlipSummonCommandKnight("summoned successfully",position);
             //summon level 5 or 6 monsters
             else if (monster.getLevel() == 5 || monster.getLevel() == 6) {
-                summonLevel6Or5("summoned successfully");
+                summonLevel6Or5("summoned successfully",position);
                 selectedCard = null;
             }
             //summon level 7 , 8 monsters
             else if (monster.getLevel() == 7 || monster.getLevel() == 8) {
-                summonLevel8Or7(monster, "summoned successfully");
+                summonLevel8Or7(monster, "summoned successfully",position);
                 selectedCard = null;
             }
             //normal summon
             else if (monster.getLevel() <= 4) {
-                summonedMonster("summoned successfully");
+                summonedMonster("summoned successfully",position);
             }
         }
     }
-    private void summonKingBarbaros(Monster monster) {
+    private void summonKingBarbaros(Monster monster,int position) {
         String command;
         UserInterface.printResponse("""
                 you can summon this card without tribute two monster by normal summon
@@ -769,7 +769,7 @@ public class Battlefield {
             command = UserInterface.getUserInput();
             if (command.equals("Y")) {
                 getThreeMonsterForTribute();
-            } else if (command.equals("N")) summonLevel8Or7(monster, "summoned successfully");
+            } else if (command.equals("N")) summonLevel8Or7(monster, "summoned successfully",position);
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
         } else UserInterface.printResponse(Responses.INVALID_COMMAND);
 
@@ -796,7 +796,7 @@ public class Battlefield {
             }
         }
     }
-    public void summonOrSetGateGuardian(String message) {
+    public void summonOrSetGateGuardian(String message,int position) {
         int counter = 0;
         for (int i = 0; i < 5; ++i)
             if (turn.field.monsterZone.get(i) != null)
@@ -818,20 +818,22 @@ public class Battlefield {
             monster2.removeMonster(this);
             monster3.removeMonster(this);
 
-            for (int i = 0; i < 5; ++i)
-                if (turn.field.monsterZone.get(i) == null) {
-                    turn.field.monsterZone.set(i, selectedCard);
-                    turn.field.hand.remove(selectedCard);
-                    selectedCard.setIsSetThisTurn(true);
-                    turn.hasPutMonster = true;
-                    if (message.equals("summon successfully"))
-                        selectedCard.setCardsFace(FaceUp.ATTACK);
-                    else
-                        selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
-                    selectedCard = null;
-                    UserInterface.printResponse(message);
-                    break;
-                }
+
+            if (turn.field.monsterZone.get(position) == null) {
+                turn.field.monsterZone.set(position, selectedCard);
+                turn.field.hand.remove(selectedCard);
+                selectedCard.setIsSetThisTurn(true);
+                turn.hasPutMonster = true;
+                if (message.equals("summon successfully"))
+                    selectedCard.setCardsFace(FaceUp.ATTACK);
+                else
+                    selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                selectedCard = null;
+                UserInterface.printResponse(message);
+
+            }
+            else
+                UserInterface.printResponse("place is full!");
         }
     }
     public Monster getMonsterForTributeForGateGuardian() {
@@ -861,7 +863,7 @@ public class Battlefield {
             }
         return null;
     }
-    public void summonOrFlipSummonCommandKnight(String message) {
+    public void summonOrFlipSummonCommandKnight(String message,int position) {
         CommandKnight commandKnight = (CommandKnight) selectedCard;
 
         for (int i = 0; i < 5; ++i) {
@@ -878,24 +880,25 @@ public class Battlefield {
         }
 
         if (message.equals("summoned successfully")) {
-            for (int i = 0; i < 5; ++i)
-                if (turn.field.monsterZone.get(i) == null) {
-                    turn.field.monsterZone.set(i, commandKnight);
-                    turn.field.hand.remove(commandKnight);
-                    commandKnight.setIsSetThisTurn(true);
-                    turn.hasPutMonster = true;
-                    commandKnight.setCardsFace(FaceUp.ATTACK);
-                    selectedCard = null;
-                    UserInterface.printResponse(message);
-                    break;
-                }
+
+            if (turn.field.monsterZone.get(position) == null) {
+                turn.field.monsterZone.set(position, commandKnight);
+                turn.field.hand.remove(commandKnight);
+                commandKnight.setIsSetThisTurn(true);
+                turn.hasPutMonster = true;
+                commandKnight.setCardsFace(FaceUp.ATTACK);
+                selectedCard = null;
+                UserInterface.printResponse(message);
+            }
+            else
+                UserInterface.printResponse("place is full!");
         } else {
             selectedCard.setCardsFace(FaceUp.ATTACK);
             UserInterface.printResponse(message);
         }
 
     }
-    private void summonLevel8Or7(Monster monster, String message) {
+    private void summonLevel8Or7(Monster monster, String message,int position) {
         //checking if can tribute happened
         if (getSizeOfMonsterZone() < 2) UserInterface.printResponse("there are not enough cards for tribute");
         else {
@@ -916,7 +919,7 @@ public class Battlefield {
                 moveMonsterToGraveYard(monsterForTribute1);
                 moveMonsterToGraveYard(monsterForTribute2);
                 //summon
-                summonedMonster(message);
+                summonedMonster(message,position);
                 //check that monster put
                 turn.hasPutMonster = true;
             }
@@ -925,7 +928,7 @@ public class Battlefield {
     private void moveMonsterToGraveYard(Monster monsterForTribute1) {
         monsterForTribute1.removeMonster(this);
     }
-    private void summonLevel6Or5(String message) {
+    private void summonLevel6Or5(String message,int position) {
         //get tribute Monster
         Monster monsterForTribute = null;
         //checking if can tribute happened
@@ -940,12 +943,12 @@ public class Battlefield {
             }
             moveMonsterToGraveYard(monsterForTribute);
             //summon
-            summonedMonster(message);
+            summonedMonster(message,position);
             //check monster put
             turn.hasPutMonster = true;
         }
     }
-    private void summonedMonster(String message) {
+    private void summonedMonster(String message,int position) {
         //set turn put the monster
         turn.hasPutMonster = true;
         //change FaceUp
@@ -957,7 +960,7 @@ public class Battlefield {
         else
             selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
         //putting card in last monster zone
-        turn.field.monsterZone.set(getSizeOfMonsterZone(), selectedCard);
+        turn.field.monsterZone.set(position, selectedCard);
         //delete monster from hand
         turn.field.hand.remove(selectedCard);
         UserInterface.printResponse(message);
@@ -995,7 +998,7 @@ public class Battlefield {
     }
     public void specialSummon(Monster monster) {
         selectedCard = monster;
-        summon();
+        summon(game.dragPosition);
     }
     public void flipSummon() {
         if (Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
@@ -1009,7 +1012,7 @@ public class Battlefield {
             if (selectedCard.getName().equals("Man-Eater Bug")) {
                 flipSummonForManEaterBug();
             } else if (selectedCard.getName().equals("Command Knight"))
-                summonOrFlipSummonCommandKnight("flip summoned successfully");
+                summonOrFlipSummonCommandKnight("flip summoned successfully",game.dragPosition);
             else {
                 selectedCard.setCardsFace(FaceUp.ATTACK);
                 UserInterface.printResponse("flip summoned successfully");
@@ -1058,6 +1061,7 @@ public class Battlefield {
         }
     }
     public void ritualSummon() {
+        int position = game.dragPosition;
         String command;
         //getting the ritual monster in hand if exist
         Monster ritualMonster = getRitualMonsterInHand();
@@ -1074,7 +1078,7 @@ public class Battlefield {
             while (!command.equals("summon"))
                 UserInterface.printResponse("you should ritual summon right now");
 
-            summonLevel8Or7(ritualMonster, "summoned successfully");
+            summonLevel8Or7(ritualMonster, "summoned successfully",position);
         }
     }
     private Monster getRitualMonsterInHand() {
@@ -1093,7 +1097,7 @@ public class Battlefield {
         return sum;
     }
 
-    public void set() {
+    public void set(int position) {
         if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
         else if (!turn.field.hand.contains(selectedCard))
             UserInterface.printResponse("you can't set this card");
@@ -1106,26 +1110,25 @@ public class Battlefield {
             else if (turn.hasPutMonster)
                 UserInterface.printResponse("you already summoned/set on this turn");
             else if (((Monster) selectedCard).getLevel() == 5 || ((Monster) selectedCard).getLevel() == 6) {
-                summonLevel6Or5("set successfully");
+                summonLevel6Or5("set successfully",position);
                 selectedCard = null;
             } else if (((Monster) selectedCard).getLevel() == 7 || ((Monster) selectedCard).getLevel() == 8) {
-                summonLevel8Or7((Monster) selectedCard, "set successfully");
+                summonLevel8Or7((Monster) selectedCard, "set successfully",position);
                 selectedCard = null;
             } else if (selectedCard.getName().equals("Gate Guardian")) {
-                summonOrSetGateGuardian("set successfully");
+                summonOrSetGateGuardian("set successfully",position);
             } else {
                 UserInterface.printResponse("set successfully");
-                for (int i = 0; i < 5; ++i) {
-                    if (turn.field.monsterZone.get(i) == null) {
-                        turn.field.monsterZone.set(i, selectedCard);
+                    if (turn.field.monsterZone.get(position) == null) {
+                        turn.field.monsterZone.set(position, selectedCard);
                         selectedCard.setIsSetThisTurn(true);
                         selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
                         selectedCard.setCardsLocation(Location.MONSTER_AREA);
                         turn.field.hand.remove(selectedCard);
                         selectedCard = null;
-                        break;
                     }
-                }
+                    else
+                        UserInterface.printResponse("place is full!");
                 turn.hasPutMonster = true;
             }
         } else if (selectedCard.getCardsType() == Type.SPELL || selectedCard.getCardsType() == Type.TRAP) {
@@ -1136,16 +1139,13 @@ public class Battlefield {
                 UserInterface.printResponse("spell card zone is full");
             else {
                 UserInterface.printResponse("set successfully");
-                for (int i = 0; i < 5; ++i) {
-                    if (turn.field.spellTrapZone.get(i) == null) {
-                        turn.field.spellTrapZone.set(i, selectedCard);
-                        selectedCard.setIsSetThisTurn(true);
-                        selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
-                        selectedCard.setCardsLocation(Location.SPELL_AREA);
-                        turn.field.hand.remove(selectedCard);
-                        selectedCard = null;
-                        break;
-                    }
+                if (turn.field.spellTrapZone.get(position) == null) {
+                    turn.field.spellTrapZone.set(position, selectedCard);
+                    selectedCard.setIsSetThisTurn(true);
+                    selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                    selectedCard.setCardsLocation(Location.SPELL_AREA);
+                    turn.field.hand.remove(selectedCard);
+                    selectedCard = null;
                 }
             }
         }
