@@ -15,6 +15,7 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
@@ -285,10 +286,8 @@ public class Game {
                 Button summonBtn = new Button("Summon");
                 summonBtn.setOnAction(actionEvent -> {
                     battlefield.tributeBtn.setDisable(false);
-//                    String path = "sfx_psychic_type.mp3";
-//                    Media media = new Media(new File(path).toURI().toString());
-//                    MediaPlayer mediaPlayer = new MediaPlayer(media);
-//                    mediaPlayer.setAutoPlay(true);
+                    AudioClip audioClip = new AudioClip(getClass().getResource("/music/SUMMON&SET.mp3").toExternalForm());
+                    audioClip.play();
                     battlefield.selectedCard = card;
                     if(dragPosition != -1) battlefield.summon(dragPosition);
                     addChanges();
@@ -296,10 +295,8 @@ public class Game {
                 });
                 Button setBtn = new Button("Set");
                 setBtn.setOnAction(actionEvent -> {
-                    String path = "sfx_psychic_type.mp3";
-                    Media media = new Media(new File(path).toURI().toString());
-                    MediaPlayer mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.setAutoPlay(true);
+                    AudioClip audioClip = new AudioClip(getClass().getResource("/music/SUMMON&SET.mp3").toExternalForm());
+                    audioClip.play();
                     battlefield.selectedCard = card;
                     if(dragPosition != -1) battlefield.set(dragPosition);
                     addChanges();

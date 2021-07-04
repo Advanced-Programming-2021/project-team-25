@@ -9,6 +9,7 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
@@ -55,10 +56,8 @@ public class CoinTossing{
 
         Button loginBtn = new Button("toss a coin");
         loginBtn.setOnAction(actionEvent -> {
-            String path = "COIN.mp3";
-            Media media = new Media(new File(path).toURI().toString());
-            MediaPlayer mediaPlayer = new MediaPlayer(media);
-            mediaPlayer.setAutoPlay(true);
+            AudioClip audioClip = new AudioClip(getClass().getResource("/music/COIN.mp3").toExternalForm());
+            audioClip.play();
             tossButtonAction();
         });
 
