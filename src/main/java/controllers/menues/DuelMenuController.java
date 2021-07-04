@@ -83,9 +83,10 @@ public class DuelMenuController {
         battlefield.isOneRound = true;
     }
 
-    public void finishround1(int duelist1Wins, int duelist2Wins, Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
+    public void finishround1( Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
+        int duelist1Wins = 0, duelist2Wins = 0;
         //round1Finish
-        if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
+        if(battlefield.getWinner().getName().equals(duelist1.getName())) duelist1Wins++;
         else duelist2Wins++;
         UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " + duelist2Wins);
 
@@ -202,10 +203,9 @@ public class DuelMenuController {
     }
 
     private void transferPermission(String duelistName) {
-        UserInterface.printResponse("Hey " + currUser.getUsername() + "do you want to transfer card?");
         Object[] options = {"Yes", "No"};
         int n1 = JOptionPane.showOptionDialog(null,
-                "Are you sure to Delete account?",
+                "Hey " + currUser.getUsername() + "do you want to transfer card?",
                 "delete account question",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
@@ -213,10 +213,8 @@ public class DuelMenuController {
                 options,  //the titles of buttons
                 options[0]);
         if(n1 == 0) transferCard(currUser);
-        UserInterface.printResponse("Hey " + duelistName + "do you want to transfer card?");
-        int n2 = JOptionPane.showOptionDialog(null,
-                "Are you sure to Delete account?",
-                "delete account question",
+        int n2 = JOptionPane.showOptionDialog(null, "Hey " + duelistName + "do you want to transfer card?",
+                "transfer Card question",
                 JOptionPane.YES_NO_OPTION,
                 JOptionPane.QUESTION_MESSAGE,
                 null,     //do not use a custom Icon

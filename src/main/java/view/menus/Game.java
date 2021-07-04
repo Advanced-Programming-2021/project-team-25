@@ -72,7 +72,7 @@ public class Game {
     }
 
     public void addChanges(){
-        checkEnd();
+
         mouseEventClick();
 
         graphic.clearRect(0, 0, 500, 450);
@@ -313,6 +313,7 @@ public class Game {
         stylingGame();
 
         Main.stage.setScene(gameScene);
+        checkEnd();
     }
 
     private void checkEnd() {
@@ -320,7 +321,7 @@ public class Game {
             battlefield.winner = battlefield.opponent;
             DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
             if(battlefield.isOneRound) {
-                duelMenuController.finishround1(0, 0, battlefield.getOpponent(), battlefield.getWinner(), battlefield);
+                duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
@@ -339,7 +340,7 @@ public class Game {
             battlefield.winner = battlefield.turn;
             DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
             if(battlefield.isOneRound) {
-                duelMenuController.finishround1(0, 0, battlefield.getOpponent(), battlefield.getWinner(), battlefield);
+                duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
@@ -598,7 +599,7 @@ public class Game {
             battlefield.winner = battlefield.getOpponent();
             DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
             if(battlefield.isOneRound) {
-                duelMenuController.finishround1(0, 0, battlefield.getOpponent(), battlefield.getWinner(), battlefield);
+                duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
