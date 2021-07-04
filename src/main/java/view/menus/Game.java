@@ -68,6 +68,7 @@ public class Game {
     Image graveYardIMG = new Image(graveYardPath);
     Image fieldIMG = new Image(fieldPath);
     Image dragDropImg = new Image(dragDropPath);
+    AudioClip audioClip;
 
     public String stringForCheat = "";
 
@@ -85,6 +86,9 @@ public class Game {
     Battlefield battlefield;
     public Game(Battlefield battlefield){
         this.battlefield = battlefield;
+        audioClip = new AudioClip(getClass().getResource("/music/game.mp3").toExternalForm());
+        audioClip.setCycleCount(-1);
+        audioClip.play();
     }
 
     public void addChanges(){
@@ -386,6 +390,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                audioClip.stop();
                 Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
@@ -396,6 +401,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.turn,battlefield.opponent,battlefield);
                     duelMenuController.matchFinish(battlefield.turn,battlefield.opponent);
                     DataBase.saveTheUserList(User.getUsers());
+                    audioClip.stop();
                     Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }
@@ -407,6 +413,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                audioClip.stop();
                 Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
@@ -417,6 +424,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.turn,battlefield.opponent,battlefield);
                     duelMenuController.matchFinish(battlefield.turn,battlefield.opponent);
                     DataBase.saveTheUserList(User.getUsers());
+                    audioClip.stop();
                     Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }
@@ -768,6 +776,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                audioClip.stop();
                 Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
@@ -778,6 +787,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.getOpponent(),battlefield.getWinner(),battlefield);
                     duelMenuController.matchFinish(battlefield.getOpponent(),battlefield.getWinner());
                     DataBase.saveTheUserList(User.getUsers());
+                    audioClip.stop();
                     Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }
