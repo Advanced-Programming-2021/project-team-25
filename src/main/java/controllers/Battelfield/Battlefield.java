@@ -714,6 +714,7 @@ public class Battlefield {
 
     //summon
     public void summon(int position) {
+
         //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
         //checking that if we have monster
