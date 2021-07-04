@@ -13,6 +13,7 @@ import javafx.scene.SnapshotParameters;
 import javafx.scene.control.*;
 import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
@@ -64,6 +65,9 @@ public class Game {
     Image fieldIMG = new Image(fieldPath);
     Image dragDropImg = new Image(dragDropPath);
 
+    public String stringForCheat = "";
+    int counter = 0;
+
     public Canvas canvas = new Canvas(500, 450);
     GraphicsContext graphic = canvas.getGraphicsContext2D();
     private Scene gameScene;
@@ -81,6 +85,8 @@ public class Game {
     }
 
     public void addChanges(){
+
+        keyPressed();
 
         mouseEventClick();
 
@@ -404,6 +410,37 @@ public class Game {
         }
     }
 
+
+    public void keyPressed (){
+        canvas.setFocusTraversable(true);
+        canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent keyEvent) {
+                stringForCheat += keyEvent.getCode().getName();
+                counter += 1;
+                if (counter == 3){
+                    counter = 0;
+                    if (stringForCheat.equalsIgnoreCase("ctrlshiftc")){
+                        String command = UserInterface.getUserInput();
+                        if(Objects.isNull(command));
+                        else if(command.startsWith("select")) {
+                            //play Sound needed
+                            battlefield.forceAddedToHand(Regex.getMatcher(command, Regex.forceAddedCardToHand));
+                            UserInterface.printResponse("force added to hand!");
+                        }
+                        else if(command.startsWith("duel set-winner")){
+                            battlefield.duelWinCheat(Regex.getMatcher(command,Regex.duelWinCheat));
+                        }
+                        else if(command.startsWith("increase"))
+                            battlefield.increaseLPCheat(Regex.getMatcher(command,Regex.increaseLPCheat));
+                    }
+                    stringForCheat = "";
+                }
+            }
+        });
+    }
+
+
     public void mouseEventClick (){
 
         canvas.setOnDragOver(e->{
@@ -707,21 +744,21 @@ public class Game {
                 }
             }
         });
-        Button btnCheat = new Button("Cheat!");
-        btnCheat.setOnMouseClicked(e->{
-            String command = UserInterface.getUserInput();
-            if(Objects.isNull(command));
-            else if(command.startsWith("select")) {
-                //play Sound needed
-                battlefield.forceAddedToHand(Regex.getMatcher(command, Regex.forceAddedCardToHand));
-                UserInterface.printResponse("force added to hand!");
-            }
-            else if(command.startsWith("duel set-winner")){
-                battlefield.duelWinCheat(Regex.getMatcher(command,Regex.duelWinCheat));
-            }
-            else if(command.startsWith("increase"))
-                battlefield.increaseLPCheat(Regex.getMatcher(command,Regex.increaseLPCheat));
-        });
+//        Button btnCheat = new Button("Cheat!");
+//        btnCheat.setOnMouseClicked(e->{
+//            String command = UserInterface.getUserInput();
+//            if(Objects.isNull(command));
+//            else if(command.startsWith("select")) {
+//                //play Sound needed
+//                battlefield.forceAddedToHand(Regex.getMatcher(command, Regex.forceAddedCardToHand));
+//                UserInterface.printResponse("force added to hand!");
+//            }
+//            else if(command.startsWith("duel set-winner")){
+//                battlefield.duelWinCheat(Regex.getMatcher(command,Regex.duelWinCheat));
+//            }
+//            else if(command.startsWith("increase"))
+//                battlefield.increaseLPCheat(Regex.getMatcher(command,Regex.increaseLPCheat));
+//        });
         Button btnNextPhase = new Button("next Phase!");
         btnNextPhase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -735,7 +772,7 @@ public class Game {
         VBox vBoxLeft = new VBox();
         vBoxLeft.setAlignment(Pos.CENTER);
 
-        vBoxLeft.getChildren().addAll(btnCheat,btnNextPhase,btnMuteSounds,btnExit);
+        vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
         vBoxLeft.setSpacing(10);
         return vBoxLeft;
     }
