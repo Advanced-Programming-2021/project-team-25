@@ -443,10 +443,10 @@ public class LowLevelHandler extends AIHandler implements functions{
 
 
     public void activateSpells (Battlefield battlefield){
-        if (whereIsSpellInHand(battlefield, "monster reborn") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0 && howManyPlacesAreEmpty(battlefield) > 0) {
+        if (whereIsSpellInHand(battlefield, "monster reborn") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0 && howManyPlacesAreEmpty(battlefield) > 0 && doesAnyMonsterInGraveyard(battlefield)) {
             activeMonsterReborn(battlefield, 1);
         }
-        else if (whereIsSpellInSpellZone(battlefield, "monster reborn") != -1 && howManyPlacesAreEmpty(battlefield) > 0) {
+        else if (whereIsSpellInSpellZone(battlefield, "monster reborn") != -1 && howManyPlacesAreEmpty(battlefield) > 0 && doesAnyMonsterInGraveyard(battlefield)) {
             activeMonsterReborn(battlefield, 2);
         }
         else if (whereIsSpellInHand(battlefield, "harpie’s feather duster") != -1 && howManyPlacesAreEmptyInSpellZone(battlefield) > 0) {
@@ -528,7 +528,7 @@ public class LowLevelHandler extends AIHandler implements functions{
         }
         else{
             for (int i = 0; i<battlefield.getOpponent().field.hand.size(); ++i){
-                if (battlefield.getOpponent().field.hand.get(i).getCardsType() != Type.MONSTER){
+                if (battlefield.getOpponent().field.hand.get(i).getCardsType() != Type.MONSTER && battlefield.getOpponent().field.hand.get(i).getCardsType() != Type.TRAP){
                     summonASpellOrTrap(battlefield, battlefield.getOpponent().field.hand.get(i).getName(), "set");
                     break;
                 }
@@ -560,7 +560,7 @@ public class LowLevelHandler extends AIHandler implements functions{
         int indexOpponent = -1;
         int priceOpponent = -1;
         for (int i = 0; i<battlefield.getOpponent().field.graveYard.size(); ++i){
-            if (battlefield.getOpponent().field.graveYard.get(i).getPrice() > priceOpponent){
+            if (battlefield.getOpponent().field.graveYard.get(i).getPrice() > priceOpponent && battlefield.getOpponent().field.graveYard.get(i).getCardsType() == Type.MONSTER){
                 indexOpponent = i;
                 priceOpponent = battlefield.getOpponent().field.graveYard.get(i).getPrice();
             }
@@ -569,7 +569,7 @@ public class LowLevelHandler extends AIHandler implements functions{
         int indexTurn = -1;
         int priceTurn = -1;
         for (int i = 0; i<battlefield.getTurn().field.graveYard.size(); ++i){
-            if (battlefield.getTurn().field.graveYard.get(i).getPrice() > priceTurn){
+            if (battlefield.getTurn().field.graveYard.get(i).getPrice() > priceTurn && battlefield.getTurn().field.graveYard.get(i).getCardsType() == Type.MONSTER){
                 indexTurn = i;
                 priceTurn = battlefield.getTurn().field.graveYard.get(i).getPrice();
             }
@@ -602,6 +602,19 @@ public class LowLevelHandler extends AIHandler implements functions{
                 battlefield.getOpponent().field.spellTrapZone.remove(whereIsSpellInSpellZone(battlefield, "monster reborn"));
             }
         }
+    }
+
+
+    public boolean doesAnyMonsterInGraveyard (Battlefield battlefield){
+        for (int i = 0; i<battlefield.getTurn().field.graveYard.size(); ++i){
+            if (battlefield.getTurn().field.graveYard.get(i).getCardsType() == Type.MONSTER)
+                return true;
+        }
+        for (int i = 0; i<battlefield.getOpponent().field.graveYard.size(); ++i){
+            if (battlefield.getOpponent().field.graveYard.get(i).getCardsType() == Type.MONSTER)
+                return true;
+        }
+        return false;
     }
 
 

@@ -22,7 +22,7 @@ public class BeastKingBarbaros extends Monster implements Serializable {
                 ((BeastKingBarbaros)object).getAttack(), ((BeastKingBarbaros)object).getDefence());
     }
     public void action(Battlefield battlefield) {
-        turn = battlefield.getTurn();
+        super.action(battlefield);
     }
     @Override
     public void removeMonster(Battlefield battlefield){
