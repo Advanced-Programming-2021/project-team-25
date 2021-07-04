@@ -306,6 +306,7 @@ public class Game {
                 content.putImage(img.getImage());
                 db.setContent(content);
             });
+
             handTurn.getChildren().add(img);
             handTurn.setAlignment(Pos.CENTER);
         }
