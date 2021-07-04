@@ -32,10 +32,10 @@ public class DuelMenuController {
     private static DuelMenuController singleToneClass = null;
     private User currUser;
     public String duelistName;
-    public int duelist1Wins = 0 , duelist2Wins = 0;
-    int round1Duelist1Lp , round1Duelist2Lp;
-    int round2Duelist1Lp , round2Duelist2Lp;
-    int round3Duelist1Lp , round3Duelist2Lp;
+    public int currWins = 0 , notCurrWins = 0;
+    int round1currLp , round1notCurrLp;
+    int round2currLp , round2notCurrLp;
+    int round3currLp , round3notCurrLp;
     public static DuelMenuController getInstance (User currUser){
         if (singleToneClass == null) singleToneClass = new DuelMenuController(currUser);
         singleToneClass.currUser = currUser;
@@ -132,11 +132,17 @@ public class DuelMenuController {
 
     public void finishRound1(Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
         //round1Finish
-        if (battlefield.getWinner().getName().equals(duelist1.getName())) duelist1Wins++;
-        else duelist2Wins++;
-        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " + duelist2Wins);
-        round1Duelist1Lp = duelist1.LP;
-        round1Duelist2Lp = duelist2.LP;
+        if (battlefield.getWinner().getName().equals(currUser.getNickName())) currWins++;
+        else notCurrWins++;
+        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + currWins + " - " + notCurrWins);
+        if (duelist1.getName().equals(currUser.getNickName())) {
+            round1currLp = duelist1.LP;
+            round1notCurrLp = duelist2.LP;
+        }
+        else{
+            round1currLp = duelist2.LP;
+            round1notCurrLp = duelist1.LP;
+        }
 
         //add card from side
         transferPermission(currUser, "oneToTwo");
@@ -144,22 +150,38 @@ public class DuelMenuController {
 
     public void finishRound2(Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
         //round2Finish
-        if (battlefield.getWinner().getName().equals(duelist1.getName())) duelist1Wins++;
-        else duelist2Wins++;
-        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " + duelist2Wins);
-        round2Duelist1Lp = duelist1.LP;
-        round2Duelist2Lp = duelist2.LP;
-        if (round2Duelist1Lp < round1Duelist1Lp) round2Duelist1Lp = round1Duelist1Lp;
-        if (round2Duelist2Lp < round1Duelist2Lp) round2Duelist2Lp = round1Duelist2Lp;
+        if (battlefield.getWinner().getName().equals(currUser.getNickName())) currWins++;
+        else notCurrWins++;
+        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + currWins + " - " + notCurrWins);
+        if (duelist1.getName().equals(currUser.getNickName())) {
+            round2currLp = duelist1.LP;
+            round2notCurrLp = duelist2.LP;
+        }
+        else{
+            round2currLp = duelist2.LP;
+            round2notCurrLp = duelist1.LP;
+        }
+        if (round2currLp < round1currLp) round2currLp = round1currLp;
+        if (round2notCurrLp < round1notCurrLp) round2notCurrLp = round1notCurrLp;
 
         //checkMatchIsFinished
-        if (duelist1Wins == 2) {
-            finish2Round(duelist2, duelist1);
+        if (currWins == 2) {
+            if (duelist1.getName().equals(currUser.getNickName())){
+                finish2Round(duelist1, duelist2);
+            }
+            else{
+                finish2Round(duelist2, duelist1);
+            }
             DataBase.saveTheUserList(User.getUsers());
             DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             return;
-        } else if (duelist2Wins == 2) {
-            finish2Round(duelist1, duelist2);
+        } else if (notCurrWins == 2) {
+            if (duelist1.getName().equals(currUser.getNickName())){
+                finish2Round(duelist2, duelist1);
+            }
+            else{
+                finish2Round(duelist1, duelist2);
+            }
             DataBase.saveTheUserList(User.getUsers());
             DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             return;
@@ -170,37 +192,54 @@ public class DuelMenuController {
     }
 
     private void finish2Round(Duelist duelist1, Duelist duelist2) {
-        UserInterface.printResponse(duelist2.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
-        duelist2.getUser().setScore(duelist2.getUser().getScore() + 3000);
-        duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 3000 + 3 * round2Duelist2Lp);
-        duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 300);
+        if (duelist1.getName().equals(currUser.getNickName())) {
+            UserInterface.printResponse(duelist1.getName() + " won the whole match with score: " + currWins + " - " + notCurrWins);
+            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 3000 + 3 * round2currLp);
+        }
+        else{
+            UserInterface.printResponse(duelist1.getName() + " won the whole match with score: " + notCurrWins + " - " + currWins);
+            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 3000 + 3 * round2notCurrLp);
+        }
+        duelist1.getUser().setScore(duelist1.getUser().getScore() + 3000);
+        duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 300);
         DataBase.saveTheUserList(User.getUsers());
     }
 
     public void finishRound3(Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
         //round3Finish
-        if (battlefield.getWinner().getName().equals(duelist1.getName())) duelist1Wins++;
-        else duelist2Wins++;
-        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " + duelist2Wins);
-        round3Duelist1Lp = duelist1.LP;
-        round3Duelist2Lp = duelist2.LP;
-        if (round3Duelist1Lp < round2Duelist1Lp) round3Duelist1Lp = round2Duelist1Lp;
-        if (round3Duelist2Lp < round2Duelist2Lp) round3Duelist2Lp = round2Duelist2Lp;
+        if (battlefield.getWinner().getName().equals(currUser.getNickName())) currWins++;
+        else notCurrWins++;
+        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + currWins + " - " + notCurrWins);
+        if (duelist1.getName().equals(currUser.getNickName())){
+            round3currLp = duelist1.LP;
+            round3notCurrLp = duelist2.LP;
+        }
+        else{
+            round3currLp = duelist2.LP;
+            round3notCurrLp = duelist1.LP;
+        }
+        if (round3currLp < round2currLp) round3currLp = round2currLp;
+        if (round3notCurrLp < round2notCurrLp) round3notCurrLp = round2notCurrLp;
     }
 
     public void matchFinish(Duelist duelist1, Duelist duelist2){
         //matchFinish
-        if(duelist1Wins == 2) {
-            UserInterface.printResponse(duelist1.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
-            duelist1.getUser().setScore(duelist1.getUser().getScore() + 3000);
-            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 3000 + 3 * round3Duelist1Lp);
-            duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 300 );
+        if(currWins == 2) {
+            UserInterface.printResponse(currUser.getNickName() + " won the whole match with score: " + currWins + " - " + notCurrWins);
+            currUser.setScore(currUser.getScore() + 3000);
+            currUser.setMoney(currUser.getMoney() + 3000 + 3 * round3currLp);
+            if (duelist1.getName().equals(currUser.getNickName()))
+                duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 300);
+            else
+                duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 300);
         }
         else {
-            UserInterface.printResponse(duelist2.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
-            duelist2.getUser().setScore(duelist2.getUser().getScore() + 3000);
-            duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 3000 + 3 * round3Duelist2Lp);
-            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 300 );
+            if (duelist1.getName().equals(currUser.getNickName())) {
+                UserInterface.printResponse(duelist2.getName() + " won the whole match with score: " + notCurrWins + " - " + currWins);
+                duelist2.getUser().setScore(duelist2.getUser().getScore() + 3000);
+                duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 3000 + 3 * round3notCurrLp);
+                duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 300);
+            }
         }
         DataBase.saveTheUserList(User.getUsers());
     }
