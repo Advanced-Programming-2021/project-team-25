@@ -386,6 +386,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
             else {
@@ -395,6 +396,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.turn,battlefield.opponent,battlefield);
                     duelMenuController.matchFinish(battlefield.turn,battlefield.opponent);
                     DataBase.saveTheUserList(User.getUsers());
+                    Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }
             }
@@ -405,6 +407,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
             else {
@@ -414,6 +417,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.turn,battlefield.opponent,battlefield);
                     duelMenuController.matchFinish(battlefield.turn,battlefield.opponent);
                     DataBase.saveTheUserList(User.getUsers());
+                    Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }
             }
@@ -764,6 +768,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
             else {
@@ -773,6 +778,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.getOpponent(),battlefield.getWinner(),battlefield);
                     duelMenuController.matchFinish(battlefield.getOpponent(),battlefield.getWinner());
                     DataBase.saveTheUserList(User.getUsers());
+                    Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }
             }
