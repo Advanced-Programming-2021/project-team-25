@@ -44,7 +44,9 @@ public class Game {
     final String duelPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/DuelPhase.png")).toExternalForm();
     final String standbyPhasePath = Objects.requireNonNull(this.getClass().getResource("game/phases/Standby.png")).toExternalForm();
     final String graveYardPath = Objects.requireNonNull(this.getClass().getResource("elements/graveYard.png")).toExternalForm();
+
     final String fieldPath = Objects.requireNonNull(this.getClass().getResource("elements/field.png")).toExternalForm();
+    final String dragDropPath = Objects.requireNonNull(this.getClass().getResource("img.png")).toExternalForm();
 
     Image backGroundIMG = new Image(backGroundPath);
     Image mainPhaseIMG = new Image(mainPhasePath,200,100,false,false);
@@ -55,17 +57,19 @@ public class Game {
     Image standbyPhaseIMG = new Image(standbyPhasePath);
     Image graveYardIMG = new Image(graveYardPath);
     Image fieldIMG = new Image(fieldPath);
+    Image dragDropImg = new Image(dragDropPath);
 
     public Canvas canvas = new Canvas(500, 450);
     GraphicsContext graphic = canvas.getGraphicsContext2D();
     private Scene gameScene;
-
+    private Card dragCard = null;
+    public int dragPosition = -1;
     Canvas canvasHealthBar1 = new Canvas(100,15);
     GraphicsContext graphic1 = canvasHealthBar1.getGraphicsContext2D();
     Canvas canvasHealthBar2 = new Canvas(100,15);
     GraphicsContext graphic2 = canvasHealthBar2.getGraphicsContext2D();
     BorderPane root = new BorderPane();
-
+    private Stage currStage;
     Battlefield battlefield;
     public Game(Battlefield battlefield){
         this.battlefield = battlefield;
@@ -240,8 +244,7 @@ public class Game {
         //update left
         VBox vBoxLeft = makeLeftBar(battlefield.getTurn(), battlefield.getOpponent());
 
-        //update Turn hand
-        HBox handTurn = new HBox();
+HBox handTurn = new HBox();
         for (int i = 0; i < battlefield.getTurn().field.hand.size(); i++) {
             Card card = battlefield.getTurn().field.hand.get(i);
             Image image2;
@@ -252,39 +255,55 @@ public class Game {
                 image2 = new Image(Objects.requireNonNull(getClass().getResource("/view/menus/shop/SpellTrap/" + card.getName() + ".jpg")).toExternalForm(), 50, 100, false, false);
 
             img = new ImageView(image2);
-            img.setOnMouseClicked(event -> {
+            img.setOnDragDone(event -> {
+                BorderPane borderPane = new BorderPane();
                 VBox vBox1 = new VBox();
-
                 Label label2 = new Label("Set Or Summon");
                 label2.setTextFill(Color.web("black"));
                 label2.setFont(Font.font(20));
-
-                Button menuItem1 = new Button("Summon");
-                menuItem1.setOnAction(actionEvent -> {
+                Button summonBtn = new Button("Summon");
+                summonBtn.setOnAction(actionEvent -> {
                     battlefield.selectedCard = card;
-                    battlefield.summon();
+                    if(dragPosition != -1)
+                        battlefield.summon(dragPosition);
                     addChanges();
+                    currStage.close();
                 });
-
-                Button menuItem2 = new Button("Set");
-                menuItem2.setOnAction(actionEvent -> {
+                Button setBtn = new Button("Set");
+                setBtn.setOnAction(actionEvent -> {
                     battlefield.selectedCard = card;
-                    battlefield.set();
+                    if(dragPosition != -1)
+                         battlefield.set(dragPosition);
                     addChanges();
+                    currStage.close();
                 });
-
-                vBox1.getChildren().addAll(label2, menuItem1, menuItem2);
-                Scene pop = new Scene(vBox1, 400, 500);
-
-                String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
-                pop.getStylesheets().add(style);
-
-                new subStage("Set & Summon", pop);
+                Button backBtn = new Button("Back");
+                backBtn.setOnMouseClicked(e->{
+                    currStage.close();
+                });
+                Label textField = new Label("Place of your card : " + dragPosition);
+                vBox1.getChildren().addAll(label2, setBtn, summonBtn,textField);
+                borderPane.setLeft(vBox1);
+                borderPane.setBottom(backBtn);
+                Image imageOfCard = new Image(img.getImage().getUrl(),200,200,false,false);
+                borderPane.setRight(new ImageView(imageOfCard));
+                Scene scene = new Scene(borderPane,500,400);
+                String style = Objects.requireNonNull(this.getClass().getResource("game/game.css")).toExternalForm();
+                scene.getStylesheets().add(style);
+                subStage stg = new subStage("Set/Summon",scene);
+                currStage = stg.getStage();
             });
-
+            img.setOnDragDetected(e->{
+                System.out.println("image on drag");
+                Dragboard db = img.startDragAndDrop(TransferMode.ANY);
+                ClipboardContent content = new ClipboardContent();
+                content.putImage(img.getImage());
+                db.setContent(content);
+            });
             handTurn.getChildren().add(img);
             handTurn.setAlignment(Pos.CENTER);
         }
+
 
         //update Opponent hand
         HBox handOpponent = new HBox();
@@ -354,6 +373,51 @@ public class Game {
     }
 
     public void mouseEventClick (){
+         canvas.setOnDragOver(e->{
+            double x = e.getSceneX();
+            double y = e.getSceneY();
+            //5 | 3 | 1 | 2 | 4
+            if (x >= 518 && x <= 575 && y >= 355 && y <= 413) {
+                dragPosition = 3;
+                dragCard = battlefield.turn.field.monsterZone.get(3);
+            }
+            else if (x >= 382 && x <= 438 && y >= 352 && y <= 412) {
+                dragPosition = 1;
+                dragCard = battlefield.turn.field.monsterZone.get(1);
+            }
+            else if (x >= 444.0 && x <= 511 && y >= 345 && y <= 421) {
+                dragPosition = 2;
+                dragCard = battlefield.turn.field.monsterZone.get(2);
+            }
+            else if (x >= 315 && x <= 373 && y >= 353 && y <= 415) {
+                dragPosition = 0;
+                dragCard = battlefield.turn.field.monsterZone.get(0);
+            }
+            else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421) {
+                dragPosition = 4;
+                dragCard = battlefield.turn.field.monsterZone.get(4);
+            }
+            else if (x >= 311 && x <= 370 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
+                dragPosition = 0;
+                dragCard = battlefield.turn.field.spellTrapZone.get(0);
+            }
+            else if (x >= 378 && x <= 441 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
+                dragPosition = 1;
+                dragCard = battlefield.turn.field.spellTrapZone.get(1);
+            }
+            else if (x >= 447 && x <= 507 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
+                dragPosition = 2;
+                dragCard = battlefield.turn.field.spellTrapZone.get(2);
+            }
+            else if (x >= 516 && x <= 575 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
+                dragPosition = 3;
+                dragCard = battlefield.turn.field.spellTrapZone.get(3);
+            }
+            else if (x >= 585 && x <= 642 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
+                dragPosition = 4;
+                dragCard = battlefield.turn.field.spellTrapZone.get(4);
+            }
+        });
         canvas.setOnMouseClicked(event -> {
             double x = event.getSceneX();
             double y = event.getSceneY();
