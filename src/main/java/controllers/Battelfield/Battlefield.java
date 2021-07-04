@@ -145,14 +145,26 @@ public class Battlefield {
         else chooseStarter(duelist1, duelist2);
     }
     private void chooseStarter(Duelist duelist1, Duelist duelist2) {
-        UserInterface.printResponse("I flipped a coin and " + duelist2.getName() + " can decide who start’s\n1." + duelist2.getName() + "\n2." + duelist1.getName());
-        String num = UserInterface.getUserInput();
-        if (num.equals("1")) {
-            turn = duelist2;
-            opponent = duelist1;
-        } else {
-            turn = duelist1;
-            opponent = duelist2;
+        if (!duelist1.getName().equals("Game") && !duelist2.getName().equals("Game")) {
+            UserInterface.printResponse("I flipped a coin and " + duelist2.getName() + " can decide who start’s\n1." + duelist2.getName() + "\n2." + duelist1.getName());
+            String num = UserInterface.getUserInput();
+            if (num.equals("1")) {
+                turn = duelist2;
+                opponent = duelist1;
+            } else {
+                turn = duelist1;
+                opponent = duelist2;
+            }
+        }
+        else{
+            if (duelist1.getName().equals("Game")){
+                turn = duelist2;
+                opponent = duelist1;
+            }
+            else{
+                turn = duelist1;
+                opponent = duelist2;
+            }
         }
     }
     public void startGame() {
