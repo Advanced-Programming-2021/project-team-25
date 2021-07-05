@@ -336,7 +336,10 @@ public class Game {
                         AudioClip audioClip = new AudioClip(getClass().getResource("/music/SUMMON&SET.mp3").toExternalForm());
                         audioClip.play();
                         battlefield.selectedCard = card;
-                        if (dragPosition != -1) battlefield.set(dragPosition);
+                        if (dragPosition != -1) {
+                            System.out.println("heheheheheheheheh");
+                            battlefield.set(dragPosition);
+                        }
                         addChanges();
                         currStage.close();
                     });
@@ -512,43 +515,43 @@ public class Game {
             double x = e.getSceneX();
             double y = e.getSceneY();
             //5 | 3 | 1 | 2 | 4
-            if (x >= 518 && x <= 575 && y >= 355 && y <= 413) {
-                dragPosition = 3;
-                dragCard = battlefield.turn.field.monsterZone.get(3);
-            }
-            else if (x >= 382 && x <= 438 && y >= 352 && y <= 412) {
-                dragPosition = 1;
-                dragCard = battlefield.turn.field.monsterZone.get(1);
-            }
-            else if (x >= 444.0 && x <= 511 && y >= 345 && y <= 421) {
-                dragPosition = 2;
-                dragCard = battlefield.turn.field.monsterZone.get(2);
-            }
-            else if (x >= 315 && x <= 373 && y >= 353 && y <= 415) {
+            if (x >= 315 && x <= 373 && y >= 355 && y <= 413 && battlefield.getTurn().field.monsterZone.get(0) == null) {
                 dragPosition = 0;
                 dragCard = battlefield.turn.field.monsterZone.get(0);
             }
-            else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421) {
+            else if (x >= 382 && x <= 438 && y >= 352 && y <= 412 && battlefield.getTurn().field.monsterZone.get(1) == null) {
+                dragPosition = 1;
+                dragCard = battlefield.turn.field.monsterZone.get(1);
+            }
+            else if (x >= 444.0 && x <= 511 && y >= 345 && y <= 421 && battlefield.getTurn().field.monsterZone.get(2) == null) {
+                dragPosition = 2;
+                dragCard = battlefield.turn.field.monsterZone.get(2);
+            }
+            else if (x >= 518 && x <= 575 && y >= 353 && y <= 415 && battlefield.getTurn().field.monsterZone.get(3) == null) {
+                dragPosition = 3;
+                dragCard = battlefield.turn.field.monsterZone.get(3);
+            }
+            else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421 && battlefield.getTurn().field.monsterZone.get(4) == null) {
                 dragPosition = 4;
                 dragCard = battlefield.turn.field.monsterZone.get(4);
             }
-            else if (x >= 431 && x <= 489 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
+            else if (x >= 294 && x <= 361 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) == null){
                 dragPosition = 0;
                 dragCard = battlefield.turn.field.spellTrapZone.get(0);
             }
-            else if (x >= 501 && x <= 556 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
+            else if (x >= 362 && x <= 420 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) == null){
                 dragPosition = 1;
                 dragCard = battlefield.turn.field.spellTrapZone.get(1);
             }
-            else if (x >= 362 && x <= 420 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
+            else if (x >= 421 && x <= 489 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) == null){
                 dragPosition = 2;
                 dragCard = battlefield.turn.field.spellTrapZone.get(2);
             }
-            else if (x >= 569 && x <= 626 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
+            else if (x >= 501 && x <= 556 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) == null){
                 dragPosition = 3;
                 dragCard = battlefield.turn.field.spellTrapZone.get(3);
             }
-            else if (x >= 294 && x <= 361 && y >= 430 && y <= 427 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
+            else if (x >= 569 && x <= 626 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(4) == null){
                 dragPosition = 4;
                 dragCard = battlefield.turn.field.spellTrapZone.get(4);
             }
