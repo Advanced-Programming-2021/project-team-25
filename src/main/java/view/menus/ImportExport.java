@@ -1,6 +1,5 @@
 package view.menus;
 
-import controllers.ProgramController;
 import controllers.Regex;
 import controllers.ShowCard;
 import javafx.event.ActionEvent;
@@ -9,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -24,18 +22,12 @@ import view.CreateGrid;
 import view.Main;
 import view.UserInterface;
 
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardCopyOption;
-import java.util.List;
+import java.io.*;
 import java.util.Objects;
 import java.util.Scanner;
 import java.util.regex.Matcher;
+
+import org.json.simple.JSONObject;
 
 public class ImportExport {
     private static ImportExport singleToneClass = null;
@@ -92,55 +84,248 @@ public class ImportExport {
         if (!Card.allCards.containsKey(name)) UserInterface.printResponse("there is no card with this name");
         else {
             getFile(stage);
+            if(fileForSave.getName().contains(".txt")){
+                saveTxt(name);
+            }
+            else if(fileForSave.getName().contains(".csv")){
+                saveCsv(name);
+            }
+            else if(fileForSave.getName().contains(".json")){
+                saveJson(name);
+            }
 
-            if (Card.allCards.get(name).getCardsType() == Type.MONSTER) {
-                Monster monster = (Monster) Card.allCards.get(name);
+        }
+    }
+    private void saveJson(String name) {
+        if (Card.allCards.get(name).getCardsType() == Type.MONSTER) {
+            Monster monster = (Monster) Card.allCards.get(name);
+            //Creating a JSONObject object
+            JSONObject jsonObject = new JSONObject();
+            //Inserting key-value pairs into the json object
+            jsonObject.put("Name:", name);
+            jsonObject.put("Level:", monster.getLevel());
+            jsonObject.put("Attribute:", monster.getAttribute());
+            jsonObject.put("Monster Type:", monster.getMonsterType());
+            jsonObject.put("Type:", monster.getCardTypeInExel());
+            jsonObject.put("ATK:", monster.getAttack());
+            jsonObject.put("DEF:", monster.getDefence());
+            jsonObject.put("Description:", monster.getDescription());
+            jsonObject.put("Price:", monster.getPrice());
+            try {
+                FileWriter file = new FileWriter(name + ".json");
+                file.write(jsonObject.toJSONString());
+                file.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            System.out.println("JSON file created: "+jsonObject);
+
+        } else {
+            SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(name);
+            if (spellAndTrap.getCardsType() == Type.SPELL) {
+                //Creating a JSONObject object
+                JSONObject jsonObject = new JSONObject();
+                //Inserting key-value pairs into the json object
+                jsonObject.put("Name:", name);
+                jsonObject.put("Type:", "Trap");
+                SimilarPartInSpellAndTrapJson(name, spellAndTrap, jsonObject);
+            } else {
+                //Creating a JSONObject object
+                JSONObject jsonObject = new JSONObject();
+                //Inserting key-value pairs into the json object
+                jsonObject.put("Name:", name);
+                jsonObject.put("Type:", "Spell");
+                SimilarPartInSpellAndTrapJson(name, spellAndTrap, jsonObject);
+            }
+        }
+    }
+
+    private void SimilarPartInSpellAndTrapJson(String name, SpellAndTrap spellAndTrap, JSONObject jsonObject) {
+        jsonObject.put("Icon (Property):", spellAndTrap.getIcon());
+        jsonObject.put("Status:", spellAndTrap.getStatus());
+        jsonObject.put("Description:", spellAndTrap.getDescription());
+        jsonObject.put("Price:", spellAndTrap.getPrice());
+        try {
+            FileWriter file = new FileWriter(name + ".json");
+            file.write(jsonObject.toJSONString());
+            file.close();
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+        System.out.println("JSON file created: "+jsonObject);
+    }
+
+    private void saveCsv(String name) {
+        if (Card.allCards.get(name).getCardsType() == Type.MONSTER) {
+            Monster monster = (Monster) Card.allCards.get(name);
+            try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
+
+                StringBuilder sb = new StringBuilder();
+                sb.append("Name,");
+                sb.append(',');
+                sb.append("name");
+                sb.append('\n');
+
+                sb.append("Level");
+                sb.append(',');
+                sb.append(monster.getLevel());
+                sb.append('\n');
+
+                sb.append("Attribute");
+                sb.append(',');
+                sb.append(monster.getAttribute());
+                sb.append('\n');
+
+                sb.append("Monster Type");
+                sb.append(',');
+                sb.append(monster.getMonsterType());
+                sb.append('\n');
+
+                sb.append("Type");
+                sb.append(',');
+                sb.append(monster.getCardTypeInExel());
+                sb.append('\n');
+
+                sb.append("ATK");
+                sb.append(',');
+                sb.append(monster.getAttack());
+                sb.append('\n');
+
+                sb.append("DEF");
+                sb.append(',');
+                sb.append(monster.getDefence());
+                sb.append('\n');
+
+                sb.append("Description");
+                sb.append(',');
+                sb.append(monster.getDescription());
+                sb.append('\n');
+
+                sb.append("Price");
+                sb.append(',');
+                sb.append(monster.getPrice());
+                sb.append('\n');
+                writer.write(sb.toString());
+
+                System.out.println("done!");
+            } catch (FileNotFoundException e) {
+                System.out.println(e.getMessage());
+            }
+        } else {
+            SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(name);
+            if (spellAndTrap.getCardsType() == Type.SPELL) {
+                try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Name,");
+                    sb.append(',');
+                    sb.append("name");
+                    sb.append('\n');
+
+                    sb.append("Type");
+                    sb.append(',');
+                    sb.append("Trap");
+                    similarPartInSpellAndTrap(spellAndTrap, writer, sb);
+                } catch (FileNotFoundException e) {
+                    System.out.println(e.getMessage());
+                }
+            } else {
+                try (PrintWriter writer = new PrintWriter(new File("test.csv"))) {
+
+                    StringBuilder sb = new StringBuilder();
+                    sb.append("Name,");
+                    sb.append(',');
+                    sb.append("name");
+                    sb.append('\n');
+
+                    sb.append("Type");
+                    sb.append(',');
+                    sb.append("Spell");
+                    similarPartInSpellAndTrap(spellAndTrap, writer, sb);
+                } catch (FileNotFoundException e) {
+                    System.out.println(e.getMessage());
+                }
+            }
+        }
+    }
+
+    private void similarPartInSpellAndTrap(SpellAndTrap spellAndTrap, PrintWriter writer, StringBuilder sb) {
+        sb.append('\n');
+
+        sb.append("Icon (Property)");
+        sb.append(',');
+        sb.append(spellAndTrap.getIcon());
+        sb.append('\n');
+
+        sb.append("Description");
+        sb.append(',');
+        sb.append(spellAndTrap.getDescription());
+        sb.append('\n');
+
+        sb.append("Status");
+        sb.append(',');
+        sb.append(spellAndTrap.getStatus());
+        sb.append('\n');
+
+        sb.append("Price");
+        sb.append(',');
+        sb.append(spellAndTrap.getPrice());
+        sb.append('\n');
+        writer.write(sb.toString());
+
+        System.out.println("done!");
+    }
+
+    private void saveTxt(String name) {
+        if (Card.allCards.get(name).getCardsType() == Type.MONSTER) {
+            Monster monster = (Monster) Card.allCards.get(name);
+            try {
+                FileWriter myWriter = new FileWriter(name + ".txt");
+                myWriter.write("Name: " + name + "\n" +
+                        "Level: " + monster.getLevel() + "\n" +
+                        "Attribute: " + monster.getAttribute() + "\n" +
+                        "Monster Type: " + monster.getMonsterType() + "\n" +
+                        "Type: " + monster.getCardTypeInExel() + "\n" +
+                        "ATK: " + monster.getAttack() + "\n" +
+                        "DEF: " + monster.getDefence() + "\n" +
+                        "Description: " + monster.getDescription() + "\n" +
+                        "Price: " + monster.getPrice());
+                myWriter.close();
+            } catch (IOException e) {
+                System.out.println("An error occurred.");
+                e.printStackTrace();
+            }
+        } else {
+            SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(name);
+            if (spellAndTrap.getCardsType() == Type.SPELL) {
                 try {
                     FileWriter myWriter = new FileWriter(name + ".txt");
                     myWriter.write("Name: " + name + "\n" +
-                            "Level: " + monster.getLevel() + "\n" +
-                            "Attribute: " + monster.getAttribute() + "\n" +
-                            "Monster Type: " + monster.getMonsterType() + "\n" +
-                            "Type: " + monster.getCardTypeInExel() + "\n" +
-                            "ATK: " + monster.getAttack() + "\n" +
-                            "DEF: " + monster.getDefence() + "\n" +
-                            "Description: " + monster.getDescription() + "\n" +
-                            "Price: " + monster.getPrice());
+                            "Type: Spell\n" +
+                            "Icon (Property): " + spellAndTrap.getIcon() + "\n" +
+                            "Description: " + spellAndTrap.getDescription() + "\n" +
+                            "Status: " + spellAndTrap.getStatus() + "\n" +
+                            "Price: " + spellAndTrap.getPrice());
                     myWriter.close();
                 } catch (IOException e) {
                     System.out.println("An error occurred.");
                     e.printStackTrace();
                 }
             } else {
-                SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(name);
-                if (spellAndTrap.getCardsType() == Type.SPELL) {
-                    try {
-                        FileWriter myWriter = new FileWriter(name + ".txt");
-                        myWriter.write("Name: " + name + "\n" +
-                                "Type: Spell\n" +
-                                "Icon (Property): " + spellAndTrap.getIcon() + "\n" +
-                                "Description: " + spellAndTrap.getDescription() + "\n" +
-                                "Status: " + spellAndTrap.getStatus() + "\n" +
-                                "Price: " + spellAndTrap.getPrice());
-                        myWriter.close();
-                    } catch (IOException e) {
-                        System.out.println("An error occurred.");
-                        e.printStackTrace();
-                    }
-                } else {
-                    try {
-                        FileWriter myWriter = new FileWriter(name + ".txt");
-                        myWriter.write("Name: " + name + "\n" +
-                                "Type: Trap\n" +
-                                "Icon (Property): " + spellAndTrap.getIcon() + "\n" +
-                                "Description: " + spellAndTrap.getDescription() + "\n" +
-                                "Status: " + spellAndTrap.getStatus() + "\n" +
-                                "Price: " + spellAndTrap.getPrice());
-                        myWriter.close();
-                    } catch (IOException e) {
-                        System.out.println("An error occurred.");
-                        e.printStackTrace();
-                    }
+                try {
+                    FileWriter myWriter = new FileWriter(name + ".txt");
+                    myWriter.write("Name: " + name + "\n" +
+                            "Type: Spell\n" +
+                            "Icon (Property): " + spellAndTrap.getIcon() + "\n" +
+                            "Description: " + spellAndTrap.getDescription() + "\n" +
+                            "Status: " + spellAndTrap.getStatus() + "\n" +
+                            "Price: " + spellAndTrap.getPrice());
+                    myWriter.close();
+                } catch (IOException e) {
+                    System.out.println("An error occurred.");
+                    e.printStackTrace();
                 }
             }
         }
@@ -162,8 +347,11 @@ public class ImportExport {
                 FileChooser fileChooser = new FileChooser();
 
                 //Set extension filter
-                FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-                fileChooser.getExtensionFilters().add(extFilter);
+                fileChooser.getExtensionFilters().addAll(
+                        new FileChooser.ExtensionFilter("TXT", "*.txt"),
+                        new FileChooser.ExtensionFilter("Csv", "*.csv"),
+                        new FileChooser.ExtensionFilter("Json", "*.json")
+                );
 
                 //Show save file dialog
                 File file = fileChooser.showSaveDialog(stage);
@@ -237,7 +425,9 @@ public class ImportExport {
                 new File(System.getProperty("user.home"))
         );
         fileChooser.getExtensionFilters().addAll(
-                new FileChooser.ExtensionFilter("TXT", "*.txt")
+                new FileChooser.ExtensionFilter("TXT", "*.txt"),
+                new FileChooser.ExtensionFilter("Csv", "*.csv"),
+                new FileChooser.ExtensionFilter("Json", "*.json")
         );
     }
 
@@ -248,7 +438,14 @@ public class ImportExport {
             Matcher nameMatcher = Regex.getMatcher(data, Regex.extractName);
             String nameInFile = nameMatcher.group(1);
             if (!file.getName().equals(nameInFile + ".txt")) UserInterface.printResponse("Bad File chossen");
-            else ShowCard.Cards(file.getName().replace(".txt", ""));
+            else {
+                if(file.getName().contains(".txt"))
+                    ShowCard.Cards(file.getName().replace(".txt", ""));
+                else if(file.getName().contains(".csv"))
+                    ShowCard.Cards(file.getName().replace(".csv", ""));
+                else if(file.getName().contains(".json"))
+                    ShowCard.Cards(file.getName().replace(".json", ""));
+            }
             myReader.close();
         } catch (FileNotFoundException e) {
             System.out.println("An error occurred.");
