@@ -75,7 +75,12 @@ public class Battlefield {
     public boolean isOneRound;
     private Stage currStage;
     public int round;
-
+    public int selectedCardPosition;
+    public Card tributeCard = null;
+    public ArrayList<Card> tributeCards = new ArrayList<>();
+    public ArrayList<Integer> tributeCardsPosition = new ArrayList<>();
+    public Button tributeBtn = new Button("Tribute");
+    //needed to be active when user click on summon btn@!
     public Battlefield(Duelist duelist1, Duelist duelist2, int round) {
         this.round = round;
         whoStart(duelist1, duelist2);
@@ -177,6 +182,14 @@ public class Battlefield {
             addCardToPlayersHands(turn, i);
             addCardToOpponentsHand();
         }
+        turn.field.hand.set(0,(Monster) Card.getCardByName("Crawling dragon"));
+        turn.field.hand.set(1,(Monster) Card.getCardByName("Skull Guardian"));
+        turn.field.hand.set(2,(Monster) Card.getCardByName("Blue-Eyes white dragon"));
+
+        turn.field.monsterZone.set(1,(Monster) Card.getCardByName("Hero of the east"));
+        turn.field.monsterZone.set(2,(Monster) Card.getCardByName("Hero of the east"));
+        turn.field.monsterZone.set(3,(Monster) Card.getCardByName("Hero of the east"));
+        turn.field.monsterZone.set(4,(Monster) Card.getCardByName("Hero of the east"));
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
@@ -241,9 +254,9 @@ public class Battlefield {
     //rival monster zone number 2 = index 3 of rival ArrayList in range of x = (379,440) and y = (258,325)
     //rival monster zone number 4 = index 4 of rival ArrayList in range of x = (312,373) and y = (258,325)
     public void attackGui (int index){
+
         if (turn.field.monsterZone.get(index) != null || turn.field.spellTrapZone.get(index) != null) {
             Button actionBtn = new Button("Action");
-
             actionBtn.setOnMouseClicked(e->{
                 game.canvas.setOnMouseClicked(event -> {
                     mouseClicked(index, event);
@@ -291,6 +304,20 @@ public class Battlefield {
 
 
             Button flipBtn = new Button("FlipSummon");
+
+            tributeBtn.setOnMouseClicked(e->{
+                if(!tributeCardsPosition.contains(selectedCardPosition)){
+                    tributeCards.add(selectedCard);
+                    tributeCardsPosition.add(selectedCardPosition);
+                    UserInterface.printResponse("Ok one tribute selected!");
+                }
+                else
+                    UserInterface.printResponse("you already selected this card!");
+
+                currStage.close();
+                game.mouseEventClick();
+            });
+
             Button back = new Button("back");
             back.setOnMouseClicked(e->{
                 currStage.close();
@@ -327,6 +354,7 @@ public class Battlefield {
             scene.getStylesheets().add(style);
             subStage sub = new subStage("Attack Gui",scene);
             currStage = sub.getStage();
+            //tributeBtn.setDisable(true);
 
         }
     }
@@ -335,15 +363,15 @@ public class Battlefield {
         double x = event.getSceneX();
         double y = event.getSceneY();
         if (x >= 312 && x <= 373 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(4) != null) {
-            selectedCard = turn.field.monsterZone.get(index);
+            selectedCard = opponent.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 4");
             matcher.find();
             attack(matcher);
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
-        } else if (x >= 379 && x <= 448 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(3) != null) {
-            selectedCard = turn.field.monsterZone.get(index);
+        } else if (x >= 379 && x <= 448 && y >= 258 && y <= 325 && turn.field.monsterZone.get(3) != null) {
+            selectedCard = opponent.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 2");
             matcher.find();
@@ -351,7 +379,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 447 && x <= 508 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(2) != null) {
-            selectedCard = turn.field.monsterZone.get(index);
+            selectedCard = opponent.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 1");
             matcher.find();
@@ -359,7 +387,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 517 && x <= 576 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(1) != null) {
-            selectedCard = turn.field.monsterZone.get(index);
+            selectedCard = opponent.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 3");
             matcher.find();
@@ -367,7 +395,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 585 && x <= 644 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(0) != null) {
-            selectedCard = turn.field.monsterZone.get(index);
+            selectedCard = opponent.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 5");
             matcher.find();
@@ -375,7 +403,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 408 && x <= 545 && y >= 125 && y <= 214 && isOpponentEmptyOfMonsters()) {
-            selectedCard = turn.field.monsterZone.get(index);
+            selectedCard = opponent.field.monsterZone.get(index);
             directAttack();
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
@@ -423,7 +451,7 @@ public class Battlefield {
         hBox4.setSpacing(60);
         hBox4.getChildren().addAll(back,addToGraveYard,saveChanges);
         VBox vboxLeft = new VBox();
-        vboxLeft.getChildren().addAll(hBox1,hBox2,hBox3);
+        vboxLeft.getChildren().addAll(hBox1,hBox2,hBox3,tributeBtn);
         VBox vboxRight = new VBox();
         vboxLeft.setSpacing(40);
         vboxRight.getChildren().addAll(imageView);
@@ -570,118 +598,6 @@ public class Battlefield {
         else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) System.out.print("DO\t");
         else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK) System.out.print("OO\t");
     }
-    public void showGraveyard() {
-        if (turn.field.graveYard.isEmpty()) UserInterface.printResponse("graveyard empty");
-        else {
-            int i = 1;
-            for (Card card : turn.field.graveYard)
-                UserInterface.printResponse(i + ". " + card.getName() + " : " + card.getDescription());
-        }
-        UserInterface.getUserInput();
-    }
-    public void showSelectedCard() {
-        if (selectedCard == null) UserInterface.printResponse("no card is selected yet");
-        else if (selectedCard.getCardsFace() == FaceUp.DEFENSE_BACK &&
-                (opponent.field.monsterZone.contains(selectedCard) ||
-                        opponent.field.spellTrapZone.contains(selectedCard)))
-            UserInterface.printResponse("card is not visible");
-        else ShowCard.showCard(selectedCard.getName());
-    }
-
-    //select & deselect
-    public void selectCard(Matcher matcher) {
-        String restOfCommand = matcher.group(1);
-        String[] temp = restOfCommand.split(" ");
-        String[] brokenCommand = new String[5];
-        int counter = 0;
-        for (int i = 0; i < temp.length; ++i) {
-            if (temp[i].length() > 0) {
-                brokenCommand[counter] = temp[i];
-                counter += 1;
-            }
-        }
-        if (brokenCommand[0].equals("--monster")) {
-            if (Integer.parseInt(brokenCommand[1]) < 1 || Integer.parseInt(brokenCommand[1]) > 5)
-                UserInterface.printResponse("invalid selection");
-            else if (turn.field.monsterZone.get(Integer.parseInt(brokenCommand[1]) - 1) == null)
-                UserInterface.printResponse("no card found in the given position");
-            else {
-                selectedCard = turn.field.monsterZone.get(Integer.parseInt(brokenCommand[1]) - 1);
-                UserInterface.printResponse("card selected");
-            }
-        } else if (brokenCommand[0].equals("--spell")) {
-            if (Integer.parseInt(brokenCommand[1]) < 1 || Integer.parseInt(brokenCommand[1]) > 5)
-                UserInterface.printResponse("invalid selection");
-            else if (turn.field.spellTrapZone.get(Integer.parseInt(brokenCommand[1]) - 1) == null)
-                UserInterface.printResponse("no card found in the given position");
-            else {
-                selectedCard = turn.field.spellTrapZone.get(Integer.parseInt(brokenCommand[1]) - 1);
-                UserInterface.printResponse("card selected");
-            }
-        } else if (brokenCommand[0].equals("--field")) {
-            if (turn.field.fieldZone == null)
-                UserInterface.printResponse("no card found in the given position");
-            else
-                selectedCard = turn.field.fieldZone;
-        } else if (brokenCommand[0].equals("--hand")) {
-            if (Integer.parseInt(brokenCommand[1]) < 1 || Integer.parseInt(brokenCommand[1]) > turn.field.hand.size())
-                UserInterface.printResponse("invalid selection");
-            else if (turn.field.hand.get(Integer.parseInt(brokenCommand[1]) - 1) == null)
-                UserInterface.printResponse("no card found in the given position");
-            else {
-                selectedCard = turn.field.hand.get(Integer.parseInt(brokenCommand[1]) - 1);
-                UserInterface.printResponse("card selected");
-            }
-        } else {
-            UserInterface.printResponse("invalid selection");
-        }
-    }
-    public void selectOpponentCard(Matcher matcher) {
-        String restOfCommand = matcher.group(1);
-        String[] temp = restOfCommand.split(" ");
-        String[] breakedCommand = new String[5];
-        int counter = 0;
-        for (int i = 0; i < temp.length; ++i) {
-            if (temp[i].length() > 0) {
-                breakedCommand[counter] = temp[i];
-                counter += 1;
-            }
-        }
-        if (breakedCommand[0].equals("--monster")) {
-            if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
-                UserInterface.printResponse("invalid selection");
-            else if (opponent.field.monsterZone.get(Integer.parseInt(breakedCommand[1]) - 1) == null)
-                UserInterface.printResponse("no card found in the given position");
-            else {
-                selectedCard = opponent.field.monsterZone.get(Integer.parseInt(breakedCommand[1]) - 1);
-                UserInterface.printResponse("card selected");
-            }
-        } else if (breakedCommand[0].equals("--spell")) {
-            if (Integer.parseInt(breakedCommand[1]) < 1 || Integer.parseInt(breakedCommand[1]) > 5)
-                UserInterface.printResponse("invalid selection");
-            else if (opponent.field.spellTrapZone.get(Integer.parseInt(breakedCommand[1]) - 1) == null)
-                UserInterface.printResponse("no card found in the given position");
-            else {
-                selectedCard = opponent.field.spellTrapZone.get(Integer.parseInt(breakedCommand[1]) - 1);
-                UserInterface.printResponse("card selected");
-            }
-        } else if (breakedCommand[0].equals("--field")) {
-            if (opponent.field.fieldZone == null)
-                UserInterface.printResponse("no card found in the given position");
-            else
-                selectedCard = opponent.field.fieldZone;
-        } else {
-            UserInterface.printResponse("invalid selection");
-        }
-    }
-    public void deselectCard() {
-        if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
-        else {
-            UserInterface.printResponse("card deselected");
-            selectedCard = null;
-        }
-    }
-
     //end phase & turn
     public void nextPhase() {
         // to active all needed spells
@@ -745,13 +661,16 @@ public class Battlefield {
             else if (turn.hasPutMonster)
                 UserInterface.printResponse("you already summoned/set on this turn");
             //exception for King Barbaros
-            else if (monster.getName().equals("Beast King Barbaros"))
-                summonKingBarbaros(monster,position);
+            else if (monster.getName().equals("Beast King Barbaros")) {
+                summonKingBarbaros(monster, position);
+            }
             //exception for gate guardian
-            else if (monster.getName().equals("Gate Guardian"))
-                summonOrSetGateGuardian("summoned successfully",position);
-            else if (monster.getName().equals("Command Knight"))
-                summonOrFlipSummonCommandKnight("summoned successfully",position);
+            else if (monster.getName().equals("Gate Guardian")) {
+                summonOrSetGateGuardian("summoned successfully", position);
+            }
+            else if (monster.getName().equals("Command Knight")) {
+                summonOrFlipSummonCommandKnight("summoned successfully", position);
+            }
             //summon level 5 or 6 monsters
             else if (monster.getLevel() == 5 || monster.getLevel() == 6) {
                 summonLevel6Or5("summoned successfully",position);
@@ -791,23 +710,25 @@ public class Battlefield {
     private void getThreeMonsterForTribute() {
         if (getSizeOfMonsterZone() < 3) UserInterface.printResponse("not enough monster");
         else {
-            Monster monsterForTribute1, monsterForTribute2, monsterForTribute3;
-            UserInterface.printResponse("please select there card to tribute!");
-            UserInterface.printResponse("please select the first one");
-            monsterForTribute1 = tributeOneMonster();
-            UserInterface.printResponse("please select the next one");
-            monsterForTribute2 = tributeOneMonster();
-            UserInterface.printResponse("please select the next one");
-            monsterForTribute3 = tributeOneMonster();
-            //checking is error happened or not
-            if (Objects.isNull(monsterForTribute1) || Objects.isNull(monsterForTribute2)
-                    || Objects.isNull(monsterForTribute3))
-                UserInterface.printResponse("no Valid monster has inputted");
-            else {
-                monsterForTribute1.removeMonster(this);
-                monsterForTribute2.removeMonster(this);
-                monsterForTribute3.removeMonster(this);
+            Monster monsterForTribute1 = null, monsterForTribute2 = null, monsterForTribute3 = null;
+            if(tributeCards.size() >= 3){
+                monsterForTribute1 = (Monster)tributeCards.get(0);
+                monsterForTribute2 = (Monster)tributeCards.get(1);
+                monsterForTribute3 = (Monster)tributeCards.get(2);
+                tributeCards.clear();
+                //checking is error happened or not
+                if (Objects.isNull(monsterForTribute1) || Objects.isNull(monsterForTribute2)
+                        || Objects.isNull(monsterForTribute3))
+                    UserInterface.printResponse("no Valid monster has inputted");
+                else {
+                    monsterForTribute1.removeMonster(this);
+                    monsterForTribute2.removeMonster(this);
+                    monsterForTribute3.removeMonster(this);
+                }
             }
+            else
+                UserInterface.printResponse("please select three monster for tribute");
+
         }
     }
     public void summonOrSetGateGuardian(String message,int position) {
@@ -916,27 +837,29 @@ public class Battlefield {
         //checking if can tribute happened
         if (getSizeOfMonsterZone() < 2) UserInterface.printResponse("there are not enough cards for tribute");
         else {
-            Monster monsterForTribute1, monsterForTribute2;
-            UserInterface.printResponse("please select two card to tribute!");
-            UserInterface.printResponse("please select the first one");
-            monsterForTribute1 = tributeOneMonster();
-            UserInterface.printResponse("please select the next one");
-            monsterForTribute2 = tributeOneMonster();
-            //checking is error happened or not
-            if (Objects.isNull(monsterForTribute1) || Objects.isNull(monsterForTribute2))
-                return;
-            //checking the levels is enough or not
-            assert false;
-            if (monsterForTribute1.getLevel() + monsterForTribute2.getLevel() < monster.getLevel() && !message.equals("set successfully"))
-                UserInterface.printResponse("selected monster levels don`t match with ritual monster");
-            else {
-                moveMonsterToGraveYard(monsterForTribute1);
-                moveMonsterToGraveYard(monsterForTribute2);
-                //summon
-                summonedMonster(message,position);
-                //check that monster put
-                turn.hasPutMonster = true;
+            Monster monsterForTribute1 = null, monsterForTribute2 = null;
+            if(tributeCards.size() >= 2 ){
+                monsterForTribute1 = (Monster)tributeCards.get(0);
+                monsterForTribute2 = (Monster)tributeCards.get(1);
+                tributeCards.clear();
+                //checking is error happened or not
+                if (Objects.isNull(monsterForTribute1) || Objects.isNull(monsterForTribute2))
+                    return;
+                //checking the levels is enough or not
+                assert false;
+                if (monsterForTribute1.getLevel() + monsterForTribute2.getLevel() < monster.getLevel() && !message.equals("set successfully"))
+                    UserInterface.printResponse("selected monster levels don`t match with ritual monster");
+                else {
+                    moveMonsterToGraveYard(monsterForTribute1);
+                    moveMonsterToGraveYard(monsterForTribute2);
+                    //summon
+                    summonedMonster(message,position);
+                    //check that monster put
+                    turn.hasPutMonster = true;
+                }
             }
+            else
+                UserInterface.printResponse("please select two card for tribute");
         }
     }
     private void moveMonsterToGraveYard(Monster monsterForTribute1) {
@@ -948,18 +871,18 @@ public class Battlefield {
         //checking if can tribute happened
         if (turn.field.monsterZone.isEmpty()) UserInterface.printResponse("there are not enough cards for tribute");
         else {
-            while (Objects.isNull(monsterForTribute)) {
-                UserInterface.printResponse("""
-                        please select one card to tribute!\s
-                         by entering the address by this way\s
-                         5 | 3 | 1 | 2 | 4""");
-                monsterForTribute = tributeOneMonster();
+            if(tributeCards.size()>=1){
+                monsterForTribute = (Monster) tributeCards.get(0);
+                tributeCards.clear();
+                moveMonsterToGraveYard(monsterForTribute);
+                //summon
+                summonedMonster(message,position);
+                //check monster put
+                turn.hasPutMonster = true;
             }
-            moveMonsterToGraveYard(monsterForTribute);
-            //summon
-            summonedMonster(message,position);
-            //check monster put
-            turn.hasPutMonster = true;
+            else
+                UserInterface.printResponse("please select one card for tribute");
+
         }
     }
     private void summonedMonster(String message,int position) {
@@ -979,23 +902,10 @@ public class Battlefield {
         turn.field.hand.remove(selectedCard);
         UserInterface.printResponse(message);
     }
-    private Monster tributeOneMonster() {
-        //selecting card to tribute
-        String command = UserInterface.getUserInput();
-        //getting card address
-        Matcher matcher = Regex.getMatcher(command, Regex.select);
-
-        if (matcher.find()) {
-            //get monster
-            Monster monsterForTribute = (Monster) turn.field.monsterZone.get(getIndex(Integer.parseInt(matcher.group(1))));
-            //checking not empty
-            if (Objects.isNull(monsterForTribute))
-                UserInterface.printResponse("no card found in the given position");
-            //send tribute monster back
-            return monsterForTribute;
-        } else {
-            UserInterface.printResponse(Responses.INVALID_CARD_SELECTION_ADDRESS);
-            return null;
+    private void tributeOneMonster() {
+        if(tributeCard!=null) {
+            tributeCards.add(tributeCard);
+            tributeCard = null;
         }
     }
     public int getSizeOfMonsterZone() {

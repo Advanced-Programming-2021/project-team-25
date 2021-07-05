@@ -285,10 +285,11 @@ public class Game {
                 label2.setFont(Font.font(20));
                 Button summonBtn = new Button("Summon");
                 summonBtn.setOnAction(actionEvent -> {
-                    String path = "sfx_psychic_type.mp3";
-                    Media media = new Media(new File(path).toURI().toString());
-                    MediaPlayer mediaPlayer = new MediaPlayer(media);
-                    mediaPlayer.setAutoPlay(true);
+                    battlefield.tributeBtn.setDisable(false);
+//                    String path = "sfx_psychic_type.mp3";
+//                    Media media = new Media(new File(path).toURI().toString());
+//                    MediaPlayer mediaPlayer = new MediaPlayer(media);
+//                    mediaPlayer.setAutoPlay(true);
                     battlefield.selectedCard = card;
                     if(dragPosition != -1) battlefield.summon(dragPosition);
                     addChanges();
@@ -507,16 +508,31 @@ public class Game {
             System.out.println(x);
             System.out.println(y);
             //turn monster zone
-            if (x >= 309.0 && x <= 375 && y >= 345 && y <= 421)
+            if (x >= 309.0 && x <= 375 && y >= 345 && y <= 421) {
+                battlefield.selectedCard = battlefield.turn.field.monsterZone.get(0);
+                battlefield.selectedCardPosition = 0;
                 battlefield.attackGui(0);
-            else if (x >= 377.0 && x <= 442 && y >= 345 && y <= 421)
+            }
+            else if (x >= 377.0 && x <= 442 && y >= 345 && y <= 421) {
+                battlefield.selectedCard = battlefield.turn.field.monsterZone.get(1);
+                battlefield.selectedCardPosition = 1;
                 battlefield.attackGui(1);
-            else if (x >= 444.0 && x <= 511 && y >= 345 && y <= 421)
+            }
+            else if (x >= 444.0 && x <= 511 && y >= 345 && y <= 421) {
+                battlefield.selectedCard = battlefield.turn.field.monsterZone.get(2);
+                battlefield.selectedCardPosition = 2;
                 battlefield.attackGui(2);
-            else if (x >= 513.0 && x <= 580 && y >= 345 && y <= 421)
+            }
+            else if (x >= 513.0 && x <= 580 && y >= 345 && y <= 421) {
+                battlefield.selectedCard = battlefield.turn.field.monsterZone.get(3);
+                battlefield.selectedCardPosition = 3;
                 battlefield.attackGui(3);
-            else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421)
+            }
+            else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421) {
+                battlefield.selectedCard = battlefield.turn.field.monsterZone.get(4);
+                battlefield.selectedCardPosition = 4;
                 battlefield.attackGui(4);
+            }
             //turn graveyard
             else if (x >= 656 && x <= 710 && y >= 347 && y <= 419)
                 showGraveyard(battlefield.getTurn());
