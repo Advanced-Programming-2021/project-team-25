@@ -69,7 +69,6 @@ public class Game {
     Image dragDropImg = new Image(dragDropPath);
 
     public String stringForCheat = "";
-    int counter = 0;
 
     public Canvas canvas = new Canvas(500, 450);
     GraphicsContext graphic = canvas.getGraphicsContext2D();
@@ -430,11 +429,17 @@ public class Game {
         canvas.setOnKeyPressed(new EventHandler<KeyEvent>() {
             @Override
             public void handle(KeyEvent keyEvent) {
-                stringForCheat += keyEvent.getCode().getName();
-                counter += 1;
-                if (counter == 3){
-                    counter = 0;
-                    if (stringForCheat.equalsIgnoreCase("ctrlshiftc")){
+                if (keyEvent.getCode().getName().equalsIgnoreCase("ctrl")){
+                    stringForCheat += keyEvent.getCode().getName();
+                }
+                if (keyEvent.getCode().getName().equalsIgnoreCase("shift")){
+                    if (stringForCheat.equalsIgnoreCase("ctrl"))
+                        stringForCheat += keyEvent.getCode().getName();
+                    else
+                        stringForCheat = "";
+                }
+                if (keyEvent.getCode().getName().equalsIgnoreCase("c")){
+                    if (stringForCheat.equalsIgnoreCase("ctrlshift")){
                         String command = UserInterface.getUserInput();
                         if(Objects.isNull(command));
                         else if(command.startsWith("select")) {
@@ -447,8 +452,10 @@ public class Game {
                         }
                         else if(command.startsWith("increase"))
                             battlefield.increaseLPCheat(Regex.getMatcher(command,Regex.increaseLPCheat));
+                        stringForCheat = "";
                     }
-                    stringForCheat = "";
+                    else
+                        stringForCheat = "";
                 }
             }
         });
