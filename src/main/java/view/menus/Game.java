@@ -277,44 +277,84 @@ public class Game {
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-                BorderPane borderPane = new BorderPane();
-                VBox vBox1 = new VBox();
-                Label label2 = new Label("Set Or Summon");
-                label2.setTextFill(Color.web("black"));
-                label2.setFont(Font.font(20));
-                Button summonBtn = new Button("Summon");
-                summonBtn.setOnAction(actionEvent -> {
-                    battlefield.tributeBtn.setDisable(false);
-                    AudioClip audioClip = new AudioClip(getClass().getResource("/music/SUMMON&SET.mp3").toExternalForm());
-                    audioClip.play();
-                    battlefield.selectedCard = card;
-                    if(dragPosition != -1) battlefield.summon(dragPosition);
-                    addChanges();
-                    currStage.close();
-                });
-                Button setBtn = new Button("Set");
-                setBtn.setOnAction(actionEvent -> {
-                    AudioClip audioClip = new AudioClip(getClass().getResource("/music/SUMMON&SET.mp3").toExternalForm());
-                    audioClip.play();
-                    battlefield.selectedCard = card;
-                    if(dragPosition != -1) battlefield.set(dragPosition);
-                    addChanges();
-                    currStage.close();
-                });
-                Button backBtn = new Button("Back");
-                backBtn.setOnMouseClicked(e-> currStage.close());
+                if (card.getCardsType() == Type.MONSTER) {
+                    BorderPane borderPane = new BorderPane();
+                    VBox vBox1 = new VBox();
+                    Label label2 = new Label("Set Or Summon");
+                    label2.setTextFill(Color.web("black"));
+                    label2.setFont(Font.font(20));
+                    Button summonBtn = new Button("Summon");
+                    summonBtn.setOnAction(actionEvent -> {
+                        battlefield.tributeBtn.setDisable(false);
+                        AudioClip audioClip = new AudioClip(getClass().getResource("/music/SUMMON&SET.mp3").toExternalForm());
+                        audioClip.play();
+                        battlefield.selectedCard = card;
+                        if (dragPosition != -1) battlefield.summon(dragPosition);
+                        addChanges();
+                        currStage.close();
+                    });
+                    Button setBtn = new Button("Set");
+                    setBtn.setOnAction(actionEvent -> {
+                        AudioClip audioClip = new AudioClip(getClass().getResource("/music/SUMMON&SET.mp3").toExternalForm());
+                        audioClip.play();
+                        battlefield.selectedCard = card;
+                        if (dragPosition != -1) battlefield.set(dragPosition);
+                        addChanges();
+                        currStage.close();
+                    });
+                    Button backBtn = new Button("Back");
+                    backBtn.setOnMouseClicked(e -> currStage.close());
 
-                Label textField = new Label("Place of your card : " + dragPosition);
-                vBox1.getChildren().addAll(label2, setBtn, summonBtn,textField);
-                borderPane.setLeft(vBox1);
-                borderPane.setBottom(backBtn);
-                Image imageOfCard = new Image(img.getImage().getUrl(),200,200,false,false);
-                borderPane.setRight(new ImageView(imageOfCard));
-                Scene scene = new Scene(borderPane,500,400);
-                String style = Objects.requireNonNull(this.getClass().getResource("game/game.css")).toExternalForm();
-                scene.getStylesheets().add(style);
-                subStage stg = new subStage("Set/Summon",scene);
-                currStage = stg.getStage();
+                    Label textField = new Label("Place of your card : " + dragPosition);
+                    vBox1.getChildren().addAll(label2, setBtn, summonBtn, textField);
+                    borderPane.setLeft(vBox1);
+                    borderPane.setBottom(backBtn);
+                    Image imageOfCard = new Image(img.getImage().getUrl(), 200, 200, false, false);
+                    borderPane.setRight(new ImageView(imageOfCard));
+                    Scene scene = new Scene(borderPane, 500, 400);
+                    String style = Objects.requireNonNull(this.getClass().getResource("game/game.css")).toExternalForm();
+                    scene.getStylesheets().add(style);
+                    subStage stg = new subStage("Set/Summon", scene);
+                    currStage = stg.getStage();
+                }
+                else{
+                    BorderPane borderPane = new BorderPane();
+                    VBox vBox1 = new VBox();
+                    Label label2 = new Label("Set Or Active");
+                    label2.setTextFill(Color.web("black"));
+                    label2.setFont(Font.font(20));
+                    Button summonBtn = new Button("Active");
+                    summonBtn.setOnAction(actionEvent -> {
+                        battlefield.selectedCard = card;
+                        card.setCardsFace(FaceUp.ATTACK);
+                        if (dragPosition != -1) battlefield.activeSpell("firstTime");
+                        addChanges();
+                        currStage.close();
+                    });
+                    Button setBtn = new Button("Set");
+                    setBtn.setOnAction(actionEvent -> {
+                        AudioClip audioClip = new AudioClip(getClass().getResource("/music/SUMMON&SET.mp3").toExternalForm());
+                        audioClip.play();
+                        battlefield.selectedCard = card;
+                        if (dragPosition != -1) battlefield.set(dragPosition);
+                        addChanges();
+                        currStage.close();
+                    });
+                    Button backBtn = new Button("Back");
+                    backBtn.setOnMouseClicked(e -> currStage.close());
+
+                    Label textField = new Label("Place of your card : " + dragPosition);
+                    vBox1.getChildren().addAll(label2, setBtn, summonBtn, textField);
+                    borderPane.setLeft(vBox1);
+                    borderPane.setBottom(backBtn);
+                    Image imageOfCard = new Image(img.getImage().getUrl(), 200, 200, false, false);
+                    borderPane.setRight(new ImageView(imageOfCard));
+                    Scene scene = new Scene(borderPane, 500, 400);
+                    String style = Objects.requireNonNull(this.getClass().getResource("game/game.css")).toExternalForm();
+                    scene.getStylesheets().add(style);
+                    subStage stg = new subStage("Set/Active", scene);
+                    currStage = stg.getStage();
+                }
             });
             img.setOnDragDetected(e->{
                 System.out.println("image on drag");
@@ -604,23 +644,23 @@ public class Game {
                 addChanges();
             }
             //turn spell and trap zone
-            else if (x >= 431 && x <= 489 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
+            else if (x >= 294 && x <= 361 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
                 battlefield.isSpellSelected = true;
                 battlefield.attackGui(0);
             }
-            else if (x >= 501 && x <= 556 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
+            else if (x >= 362 && x <= 420 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
                 battlefield.isSpellSelected = true;
                 battlefield.attackGui(1);
             }
-            else if (x >= 362 && x <= 420 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
+            else if (x >= 431 && x <= 489 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
                 battlefield.isSpellSelected = true;
                 battlefield.attackGui(2);
             }
-            else if (x >= 569 && x <= 626 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
+            else if (x >= 501 && x <= 556 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
                 battlefield.isSpellSelected = true;
                 battlefield.attackGui(3);
             }
-            else if (x >= 294 && x <= 361 && y >= 430 && y <= 427 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
+            else if (x >= 569 && x <= 626 && y >= 430 && y <= 427 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
                 battlefield.isSpellSelected = true;
                 battlefield.attackGui(4);
             }
@@ -798,21 +838,6 @@ public class Game {
                 }
             }
         });
-//        Button btnCheat = new Button("Cheat!");
-//        btnCheat.setOnMouseClicked(e->{
-//            String command = UserInterface.getUserInput();
-//            if(Objects.isNull(command));
-//            else if(command.startsWith("select")) {
-//                //play Sound needed
-//                battlefield.forceAddedToHand(Regex.getMatcher(command, Regex.forceAddedCardToHand));
-//                UserInterface.printResponse("force added to hand!");
-//            }
-//            else if(command.startsWith("duel set-winner")){
-//                battlefield.duelWinCheat(Regex.getMatcher(command,Regex.duelWinCheat));
-//            }
-//            else if(command.startsWith("increase"))
-//                battlefield.increaseLPCheat(Regex.getMatcher(command,Regex.increaseLPCheat));
-//        });
         Button btnNextPhase = new Button("next Phase!");
         btnNextPhase.setOnAction(new EventHandler<ActionEvent>() {
             @Override

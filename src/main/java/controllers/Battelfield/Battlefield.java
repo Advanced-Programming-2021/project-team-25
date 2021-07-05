@@ -1,7 +1,5 @@
 package controllers.Battelfield;
 
-import controllers.Regex;
-import controllers.ShowCard;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -9,8 +7,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ChoiceBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
@@ -18,9 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
-import javafx.scene.text.Font;
-import javafx.stage.Modality;
-import javafx.stage.Popup;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -37,19 +30,12 @@ import models.Monster.Scanner;
 import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
 
-import view.Main;
-import view.menus.DuelMenu;
 import view.menus.Game;
 import view.Responses;
 import view.UserInterface;
 import view.menus.subStage;
 
-import javax.imageio.ImageIO;
 import javax.swing.*;
-import java.awt.*;
-import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.IOException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -149,6 +135,7 @@ public class Battlefield {
             addCardToPlayersHands(turn, i);
             addCardToOpponentsHand();
         }
+        turn.field.hand.set(0, Card.getCardByName("United We Stand"));
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
@@ -215,12 +202,6 @@ public class Battlefield {
     public void attackGui (int index){
 
         if (turn.field.monsterZone.get(index) != null || turn.field.spellTrapZone.get(index) != null) {
-            Button actionBtn = new Button("Action");
-            actionBtn.setOnMouseClicked(e->{
-                game.canvas.setOnMouseClicked(event -> {
-                    mouseClicked(index, event);
-                });
-            });
 
             javafx.scene.control.Button attackBtn = new javafx.scene.control.Button("Attack");
             attackBtn.setOnMouseClicked(e-> {
@@ -303,8 +284,14 @@ public class Battlefield {
             if(selectedCard.getCardsType().equals(Type.MONSTER))
                 borderPane = getBorderPane(addToGravYard,attackBtn, imageView, lblPositions, lblAttack, lblFlipSummon, flipBtn, back, saveChanges, position);
             else {
+                Button summonBtn = new Button("Active");
+                summonBtn.setOnAction(actionEvent -> {
+                    activeSpell("notFirstTime");
+                    game.addChanges();
+                    currStage.close();
+                });
                 VBox vBox = new VBox();
-                vBox.getChildren().addAll(lblAction,actionBtn);
+                vBox.getChildren().addAll(lblAction, summonBtn);
                 vBox.setSpacing(15);
                 borderPane.setLeft(vBox);
                 borderPane.setRight(imageView);
@@ -368,32 +355,8 @@ public class Battlefield {
             directAttack();
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
-        } //turn spell and trap zone
-        else if (x >= 431 && x <= 489 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(0) != null){
-            this.selectedCard = this.getTurn().field.spellTrapZone.get(0);
-            this.activeSpell("notFirstTime");
-            game.addChanges();
         }
-        else if (x >= 501 && x <= 556 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(1) != null){
-            this.selectedCard = this.getTurn().field.spellTrapZone.get(1);
-            this.activeSpell("notFirstTime");
-            game.addChanges();
-        }
-        else if (x >= 362 && x <= 420 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(2) != null){
-            this.selectedCard = this.getTurn().field.spellTrapZone.get(2);
-            this.activeSpell("notFirstTime");
-            game.addChanges();
-        }
-        else if (x >= 569 && x <= 626 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(3) != null){
-            this.selectedCard = this.getTurn().field.spellTrapZone.get(3);
-            this.activeSpell("notFirstTime");
-            game.addChanges();
-        }
-        else if (x >= 294 && x <= 361 && y >= 430 && y <= 427 && this.getTurn().field.spellTrapZone.get(4) != null){
-            this.selectedCard = this.getTurn().field.spellTrapZone.get(4);
-            this.activeSpell("notFirstTime");
-            game.addChanges();
-        } else
+        else
             game.addChanges();
         game.mouseEventClick();
     }
@@ -499,66 +462,7 @@ public class Battlefield {
         }
     }
 
-    //showBattleField
-    public void showBattleField() {
-        UserInterface.printResponse(opponent.getName() + " : " + opponent.LP);
-        for (Card card : opponent.field.hand) System.out.print("c\t");
-        UserInterface.printResponse("\n" + opponent.field.deck.size() + "");
 
-        System.out.print("\t");
-        showSpellAndTrapsZone(3, opponent);
-        showSpellAndTrapsZone(1, opponent);
-        showSpellAndTrapsZone(0, opponent);
-        showSpellAndTrapsZone(2, opponent);
-        showSpellAndTrapsZone(4, opponent);
-
-        System.out.print("\n\t");
-        showMonsterZone(3, opponent);
-        showMonsterZone(1, opponent);
-        showMonsterZone(0, opponent);
-        showMonsterZone(2, opponent);
-        showMonsterZone(4, opponent);
-
-        System.out.print("\n" + opponent.field.graveYard.size() + "\t\t\t\t\t\t");
-        if (opponent.field.fieldZone == null) System.out.print("O\n");
-        else System.out.print("E\n");
-
-        UserInterface.printResponse("___________________________");
-
-        if (turn.field.fieldZone == null) System.out.print("O");
-        else System.out.print("E");
-        System.out.print("\t\t\t\t\t\t" + turn.field.graveYard.size());
-
-        System.out.print("\n\t");
-        showMonsterZone(4, turn);
-        showMonsterZone(2, turn);
-        showMonsterZone(0, turn);
-        showMonsterZone(1, turn);
-        showMonsterZone(3, turn);
-
-        System.out.print("\n\t");
-        showSpellAndTrapsZone(4, turn);
-        showSpellAndTrapsZone(2, turn);
-        showSpellAndTrapsZone(0, turn);
-        showSpellAndTrapsZone(1, turn);
-        showSpellAndTrapsZone(3, turn);
-
-        UserInterface.printResponse("\n\t\t\t\t\t\t" + turn.field.deck.size());
-        for (Card card : turn.field.hand) System.out.print("c\t");
-
-        UserInterface.printResponse("\n" + turn.getName() + " : " + turn.LP);
-    }
-    private void showSpellAndTrapsZone(int i, Duelist duelist) {
-        if (duelist.field.spellTrapZone.get(i) == null) System.out.print("E\t");
-        else if (duelist.field.spellTrapZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) System.out.print("H\t");
-        else if (duelist.field.spellTrapZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) System.out.print("O\t");
-    }
-    private void showMonsterZone(int i, Duelist duelist) {
-        if (duelist.field.monsterZone.get(i) == null) System.out.print("E\t");
-        else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_BACK) System.out.print("DH\t");
-        else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.DEFENSE_FRONT) System.out.print("DO\t");
-        else if (duelist.field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK) System.out.print("OO\t");
-    }
     //end phase & turn
     public void nextPhase() {
         // to active all needed spells
@@ -811,8 +715,8 @@ public class Battlefield {
                 if (monsterForTribute1.getLevel() + monsterForTribute2.getLevel() < monster.getLevel() && !message.equals("set successfully"))
                     UserInterface.printResponse("selected monster levels don`t match with ritual monster");
                 else {
-                    moveMonsterToGraveYard(monsterForTribute1);
-                    moveMonsterToGraveYard(monsterForTribute2);
+                    monsterForTribute1.removeMonster(this);
+                    monsterForTribute2.removeMonster(this);
                     //summon
                     summonedMonster(message,position);
                     //check that monster put
@@ -823,9 +727,7 @@ public class Battlefield {
                 UserInterface.printResponse("please select two card for tribute");
         }
     }
-    private void moveMonsterToGraveYard(Monster monsterForTribute1) {
-        monsterForTribute1.removeMonster(this);
-    }
+
     private void summonLevel6Or5(String message,int position) {
         //get tribute Monster
         Monster monsterForTribute = null;
@@ -835,7 +737,7 @@ public class Battlefield {
             if(tributeCards.size()>=1){
                 monsterForTribute = (Monster) tributeCards.get(0);
                 tributeCards.clear();
-                moveMonsterToGraveYard(monsterForTribute);
+                monsterForTribute.removeMonster(this);
                 //summon
                 summonedMonster(message,position);
                 //check monster put
@@ -1098,8 +1000,8 @@ public class Battlefield {
     public void activeSpell(String how) {
         SpellAndTrap spellAndTrap;
         if (Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
-//        else if (!selectedCard.getCardsType().equals(Type.SPELL))
-//            UserInterface.printResponse("active effect is only for spell cards.");
+        else if (!selectedCard.getCardsType().equals(Type.SPELL))
+            UserInterface.printResponse("active effect is only for spell cards.");
         else if (!phase.equals(Phase.MAIN1_PHASE))
             UserInterface.printResponse("you cant active an effect on this turn");
         else {
@@ -1113,8 +1015,8 @@ public class Battlefield {
             else {
                 activeSpellAndTraps.add(spellAndTrap);
                 spellAndTrap.action(this);
-//                if (how.equals("firstTime"))
-//                    turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone() + 1, selectedCard);
+                if (how.equals("firstTime"))
+                    turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone(), selectedCard);
             }
         }
     }
@@ -1256,50 +1158,5 @@ public class Battlefield {
     public void increaseLPCheat(Matcher matcher){
         int amount = Integer.parseInt(matcher.group(1));
         turn.LP += amount ;
-    }
-
-    public void rotateBoard(){
-        Image imageBase = new Image(Objects.requireNonNull(this.getClass().getResource("elements/deck.png")).toExternalForm());
-        Image image;
-
-        GraphicsContext graphicsContext = game.getMainGraphic();
-        graphicsContext.drawImage(game.getBackGroundIMG(),0,0,500,450);
-
-        if (turn.field.monsterZone.get(0) != null)
-            ImageAdapter.setMonsterOn4Rival(graphicsContext, imageBase);
-        else if (turn.field.monsterZone.get(1) != null)
-            ImageAdapter.setMonsterOn2Rival(graphicsContext, imageBase);
-        else if (turn.field.monsterZone.get(2) != null)
-            ImageAdapter.setMonsterOn1Rival(graphicsContext, imageBase);
-        else if (turn.field.monsterZone.get(3) != null)
-            ImageAdapter.setMonsterOn3Rival(graphicsContext, imageBase);
-        else if (turn.field.monsterZone.get(4) != null)
-            ImageAdapter.setMonsterOn5Rival(graphicsContext, imageBase);
-
-        if (opponent.field.monsterZone.get(0) != null) {
-            image = getImageOfOpponent(0);
-            ImageAdapter.setMonsterOn5(graphicsContext, image);
-        }
-        else if (opponent.field.monsterZone.get(1) != null) {
-            image = getImageOfOpponent(1);
-            ImageAdapter.setMonsterOn3(graphicsContext, image);
-        }
-        else if (opponent.field.monsterZone.get(2) != null) {
-            image = getImageOfOpponent(2);
-            ImageAdapter.setMonsterOn2(graphicsContext, image);
-        }
-        else if (opponent.field.monsterZone.get(3) != null) {
-            image = getImageOfOpponent(3);
-            ImageAdapter.setMonsterOn1(graphicsContext, image);
-        }
-        else if (opponent.field.monsterZone.get(4) != null) {
-            image = getImageOfOpponent(4);
-            ImageAdapter.setMonsterOn5(graphicsContext, image);
-        }
-        game.initGraveYardAndFieldZone();
-    }
-
-    private Image getImageOfOpponent(int i) {
-        return new Image(Objects.requireNonNull(this.getClass().getResource("Monsters/" + opponent.field.monsterZone.get(i).getName().replace(" ","") + ".jpg")).toExternalForm(), 275, 275, false, false);
     }
 }
