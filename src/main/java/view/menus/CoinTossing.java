@@ -9,12 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import view.Main;
 import view.UserInterface;
 
+import java.io.File;
 import java.util.Objects;
 import java.util.Random;
 
@@ -51,7 +54,13 @@ public class CoinTossing{
         welcomeText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
 
         Button loginBtn = new Button("toss a coin");
-        loginBtn.setOnAction(actionEvent -> tossButtonAction());
+        loginBtn.setOnAction(actionEvent -> {
+            String path = "COIN.mp3";
+            Media media = new Media(new File(path).toURI().toString());
+            MediaPlayer mediaPlayer = new MediaPlayer(media);
+            mediaPlayer.setAutoPlay(true);
+            tossButtonAction();
+        });
 
         Button duelBtn = new Button("Start");
         duelBtn.setOnAction(actionEvent -> duel());
