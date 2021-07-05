@@ -182,14 +182,6 @@ public class Battlefield {
             addCardToPlayersHands(turn, i);
             addCardToOpponentsHand();
         }
-        turn.field.hand.set(0,(Monster) Card.getCardByName("Crawling dragon"));
-        turn.field.hand.set(1,(Monster) Card.getCardByName("Skull Guardian"));
-        turn.field.hand.set(2,(Monster) Card.getCardByName("Blue-Eyes white dragon"));
-
-        turn.field.monsterZone.set(1,(Monster) Card.getCardByName("Hero of the east"));
-        turn.field.monsterZone.set(2,(Monster) Card.getCardByName("Hero of the east"));
-        turn.field.monsterZone.set(3,(Monster) Card.getCardByName("Hero of the east"));
-        turn.field.monsterZone.set(4,(Monster) Card.getCardByName("Hero of the east"));
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
