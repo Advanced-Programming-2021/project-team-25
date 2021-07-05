@@ -99,8 +99,14 @@ public class DuelMenu {
                         currUser.getUsername() + "'s deck is not valid");
                 else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck.getDeckName()))
                     JOptionPane.showMessageDialog(null,txtRival.getText() + "'s deck is not valid");
-                else if(rounds.getValue().equals("1")) duelMenuController.oneRoundDuel(txtRival.getText());
-                else duelMenuController.threeRoundDuel(txtRival.getText());
+                else if(rounds.getValue().equals("1")){
+                    new CoinTossing().start(1,txtRival.getText());
+                    //duelMenuController.oneRoundDuel(txtRival.getText());
+                }
+                else{
+                    new CoinTossing().start(3,txtRival.getText());
+                    //duelMenuController.threeRoundDuel(txtRival.getText());
+                }
             }
         });
         checkBoxEvent(gameWithAi, lblUsername, txtRival);
