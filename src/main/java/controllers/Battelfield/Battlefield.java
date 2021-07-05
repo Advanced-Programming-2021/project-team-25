@@ -80,6 +80,7 @@ public class Battlefield {
     public ArrayList<Card> tributeCards = new ArrayList<>();
     public ArrayList<Integer> tributeCardsPosition = new ArrayList<>();
     public Button tributeBtn = new Button("Tribute");
+    public boolean isSpellSelected = false;
     //needed to be active when user click on summon btn@!
     public Battlefield(Duelist duelist1, Duelist duelist2, int round) {
         this.round = round;
@@ -233,7 +234,7 @@ public class Battlefield {
                 });
                 currStage.close();
             });
-            if(turn.field.monsterZone.get(index) != null)
+            if(!isSpellSelected)
                 selectedCard =  turn.field.monsterZone.get(index);
             else
                 selectedCard =  turn.field.spellTrapZone.get(index);
@@ -365,27 +366,27 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } //turn spell and trap zone
-        else if (x >= 311 && x <= 370 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(0) != null){
+        else if (x >= 431 && x <= 489 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(0) != null){
             this.selectedCard = this.getTurn().field.spellTrapZone.get(0);
             this.activeSpell("notFirstTime");
             game.addChanges();
         }
-        else if (x >= 378 && x <= 441 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(1) != null){
+        else if (x >= 501 && x <= 556 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(1) != null){
             this.selectedCard = this.getTurn().field.spellTrapZone.get(1);
             this.activeSpell("notFirstTime");
             game.addChanges();
         }
-        else if (x >= 447 && x <= 507 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(2) != null){
+        else if (x >= 362 && x <= 420 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(2) != null){
             this.selectedCard = this.getTurn().field.spellTrapZone.get(2);
             this.activeSpell("notFirstTime");
             game.addChanges();
         }
-        else if (x >= 516 && x <= 575 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(3) != null){
+        else if (x >= 569 && x <= 626 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(3) != null){
             this.selectedCard = this.getTurn().field.spellTrapZone.get(3);
             this.activeSpell("notFirstTime");
             game.addChanges();
         }
-        else if (x >= 585 && x <= 642 && y >= 426 && y <= 490 && this.getTurn().field.spellTrapZone.get(4) != null){
+        else if (x >= 294 && x <= 361 && y >= 430 && y <= 427 && this.getTurn().field.spellTrapZone.get(4) != null){
             this.selectedCard = this.getTurn().field.spellTrapZone.get(4);
             this.activeSpell("notFirstTime");
             game.addChanges();

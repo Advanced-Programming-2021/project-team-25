@@ -16,11 +16,7 @@ import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
 import javafx.scene.media.AudioClip;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
-import javafx.scene.text.Text;
-import javafx.stage.Popup;
 import javafx.stage.Stage;
 import models.Card;
 import models.CardStufs.FaceUp;
@@ -39,7 +35,6 @@ import models.User;
 import view.Main;
 import view.UserInterface;
 
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -489,23 +484,23 @@ public class Game {
                 dragPosition = 4;
                 dragCard = battlefield.turn.field.monsterZone.get(4);
             }
-            else if (x >= 450 && x <= 508 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
+            else if (x >= 431 && x <= 489 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
                 dragPosition = 0;
                 dragCard = battlefield.turn.field.spellTrapZone.get(0);
             }
-            else if (x >= 519 && x <= 575 && y >= 429 && y <= 489 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
+            else if (x >= 501 && x <= 556 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
                 dragPosition = 1;
                 dragCard = battlefield.turn.field.spellTrapZone.get(1);
             }
-            else if (x >= 380 && x <= 438 && y >= 428 && y <= 487 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
+            else if (x >= 362 && x <= 420 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
                 dragPosition = 2;
                 dragCard = battlefield.turn.field.spellTrapZone.get(2);
             }
-            else if (x >= 589 && x <= 645 && y >= 429 && y <= 487 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
+            else if (x >= 569 && x <= 626 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
                 dragPosition = 3;
                 dragCard = battlefield.turn.field.spellTrapZone.get(3);
             }
-            else if (x >= 314 && x <= 373 && y >= 428 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
+            else if (x >= 294 && x <= 361 && y >= 430 && y <= 427 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
                 dragPosition = 4;
                 dragCard = battlefield.turn.field.spellTrapZone.get(4);
             }
@@ -517,26 +512,31 @@ public class Game {
             System.out.println(y);
             //turn monster zone
             if (x >= 309.0 && x <= 375 && y >= 345 && y <= 421) {
+                battlefield.isSpellSelected = false;
                 battlefield.selectedCard = battlefield.turn.field.monsterZone.get(0);
                 battlefield.selectedCardPosition = 0;
                 battlefield.attackGui(0);
             }
             else if (x >= 377.0 && x <= 442 && y >= 345 && y <= 421) {
+                battlefield.isSpellSelected = false;
                 battlefield.selectedCard = battlefield.turn.field.monsterZone.get(1);
                 battlefield.selectedCardPosition = 1;
                 battlefield.attackGui(1);
             }
             else if (x >= 444.0 && x <= 511 && y >= 345 && y <= 421) {
+                battlefield.isSpellSelected = false;
                 battlefield.selectedCard = battlefield.turn.field.monsterZone.get(2);
                 battlefield.selectedCardPosition = 2;
                 battlefield.attackGui(2);
             }
             else if (x >= 513.0 && x <= 580 && y >= 345 && y <= 421) {
+                battlefield.isSpellSelected = false;
                 battlefield.selectedCard = battlefield.turn.field.monsterZone.get(3);
                 battlefield.selectedCardPosition = 3;
                 battlefield.attackGui(3);
             }
             else if (x >= 582.0 && x <= 646 && y >= 345 && y <= 421) {
+                battlefield.isSpellSelected = false;
                 battlefield.selectedCard = battlefield.turn.field.monsterZone.get(4);
                 battlefield.selectedCardPosition = 4;
                 battlefield.attackGui(4);
@@ -596,19 +596,24 @@ public class Game {
                 addChanges();
             }
             //turn spell and trap zone
-            else if (x >= 311 && x <= 370 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
+            else if (x >= 431 && x <= 489 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
+                battlefield.isSpellSelected = true;
                 battlefield.attackGui(0);
             }
-            else if (x >= 378 && x <= 441 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
+            else if (x >= 501 && x <= 556 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
+                battlefield.isSpellSelected = true;
                 battlefield.attackGui(1);
             }
-            else if (x >= 447 && x <= 507 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
+            else if (x >= 362 && x <= 420 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
+                battlefield.isSpellSelected = true;
                 battlefield.attackGui(2);
             }
-            else if (x >= 516 && x <= 575 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
+            else if (x >= 569 && x <= 626 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
+                battlefield.isSpellSelected = true;
                 battlefield.attackGui(3);
             }
-            else if (x >= 585 && x <= 642 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
+            else if (x >= 294 && x <= 361 && y >= 430 && y <= 427 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
+                battlefield.isSpellSelected = true;
                 battlefield.attackGui(4);
             }
         });
