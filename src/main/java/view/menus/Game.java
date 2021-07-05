@@ -562,44 +562,44 @@ public class Game {
             else if (x >= 233 && x <= 295 && y >= 251 && y <= 317)
                 showGraveyard(battlefield.getOpponent());
             //opponent monster zone
-            else if (x >= 311 && x <= 370 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(4) != null){
+            else if (x >= 311 && x <= 370 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(4) != null && battlefield.getOpponent().field.monsterZone.get(4).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(4);
                 addChanges();
             }
-            else if (x >= 378 && x <= 441 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(3) != null){
+            else if (x >= 378 && x <= 441 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(3) != null && battlefield.getOpponent().field.monsterZone.get(3).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(3);
                 addChanges();
             }
-            else if (x >= 447 && x <= 507 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(2) != null){
+            else if (x >= 447 && x <= 507 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(2) != null && battlefield.getOpponent().field.monsterZone.get(2).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(2);
                 addChanges();
             }
-            else if (x >= 516 && x <= 575 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(1) != null){
+            else if (x >= 516 && x <= 575 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(1) != null && battlefield.getOpponent().field.monsterZone.get(1).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(1);
                 addChanges();
             }
-            else if (x >= 585 && x <= 642 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(0) != null){
+            else if (x >= 585 && x <= 642 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(0) != null && battlefield.getOpponent().field.monsterZone.get(0).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(0);
                 addChanges();
             }
             //opponent spell and trap zone
-            else if (x >= 311 && x <= 370 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(4) != null){
+            else if (x >= 311 && x <= 370 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(4) != null && battlefield.getOpponent().field.spellTrapZone.get(4).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(4);
                 addChanges();
             }
-            else if (x >= 378 && x <= 441 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(3) != null){
+            else if (x >= 378 && x <= 441 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(3) != null && battlefield.getOpponent().field.spellTrapZone.get(3).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(3);
                 addChanges();
             }
-            else if (x >= 447 && x <= 507 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(2) != null){
+            else if (x >= 447 && x <= 507 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(2) != null && battlefield.getOpponent().field.spellTrapZone.get(2).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(2);
                 addChanges();
             }
-            else if (x >= 516 && x <= 575 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(1) != null){
+            else if (x >= 516 && x <= 575 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(1) != null && battlefield.getOpponent().field.spellTrapZone.get(1).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(1);
                 addChanges();
             }
-            else if (x >= 585 && x <= 642 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(0) != null){
+            else if (x >= 585 && x <= 642 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(0) != null && battlefield.getOpponent().field.spellTrapZone.get(0).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(0);
                 addChanges();
             }
