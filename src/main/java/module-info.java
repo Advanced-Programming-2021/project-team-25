@@ -5,6 +5,7 @@ module AP {
     requires org.junit.jupiter.api;
     requires java.desktop;
     requires java.logging;
+    requires json.simple;
     //requires opencv;
 
 
@@ -16,4 +17,5 @@ module AP {
 
     opens models to javafx.fxml;
     exports models;
+
 }
