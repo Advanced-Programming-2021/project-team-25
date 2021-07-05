@@ -270,6 +270,11 @@ public class Game {
 
             img = new ImageView(image2);
             img.setOnDragDone(event -> {
+                try {
+                    Thread.sleep(20);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
                 BorderPane borderPane = new BorderPane();
                 VBox vBox1 = new VBox();
                 Label label2 = new Label("Set Or Summon");
@@ -467,23 +472,23 @@ public class Game {
                 dragPosition = 4;
                 dragCard = battlefield.turn.field.monsterZone.get(4);
             }
-            else if (x >= 311 && x <= 370 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
+            else if (x >= 450 && x <= 508 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(0) != null){
                 dragPosition = 0;
                 dragCard = battlefield.turn.field.spellTrapZone.get(0);
             }
-            else if (x >= 378 && x <= 441 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
+            else if (x >= 519 && x <= 575 && y >= 429 && y <= 489 && battlefield.getTurn().field.spellTrapZone.get(1) != null){
                 dragPosition = 1;
                 dragCard = battlefield.turn.field.spellTrapZone.get(1);
             }
-            else if (x >= 447 && x <= 507 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
+            else if (x >= 380 && x <= 438 && y >= 428 && y <= 487 && battlefield.getTurn().field.spellTrapZone.get(2) != null){
                 dragPosition = 2;
                 dragCard = battlefield.turn.field.spellTrapZone.get(2);
             }
-            else if (x >= 516 && x <= 575 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
+            else if (x >= 589 && x <= 645 && y >= 429 && y <= 487 && battlefield.getTurn().field.spellTrapZone.get(3) != null){
                 dragPosition = 3;
                 dragCard = battlefield.turn.field.spellTrapZone.get(3);
             }
-            else if (x >= 585 && x <= 642 && y >= 426 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
+            else if (x >= 314 && x <= 373 && y >= 428 && y <= 490 && battlefield.getTurn().field.spellTrapZone.get(4) != null){
                 dragPosition = 4;
                 dragCard = battlefield.turn.field.spellTrapZone.get(4);
             }
