@@ -34,7 +34,8 @@ public class ImportExport {
     private File fileForSave = null;
     private Scene impExpScene;
     private TextArea textArea = new TextArea();
-
+    TextField txtName = new TextField();
+    private Stage currStage;
     public static ImportExport getInstance() {
         if (singleToneClass == null) singleToneClass = new ImportExport();
         return singleToneClass;
@@ -48,7 +49,6 @@ public class ImportExport {
         gridPane.addRow(1, welcomeText);
         Label lblName = new Label("name of card");
         Label showCard = new Label("Selected Card is: ");
-        TextField txtName = new TextField();
         txtName.setPromptText("card Name...");
         gridPane.addRow(2, lblName, txtName);
 
@@ -70,7 +70,7 @@ public class ImportExport {
             if (txtName.getText().isEmpty() || txtName.getText().isBlank()) {
                 UserInterface.printResponse("please enter a name");
             } else
-                export(txtName.getText(), stage);
+                getFile(stage);
         });
         Scene scene = new Scene(gridPane, 800, 650);
         impExpScene = scene;
@@ -81,20 +81,7 @@ public class ImportExport {
     }
 
     public void export(String name, Stage stage) {
-        if (!Card.allCards.containsKey(name)) UserInterface.printResponse("there is no card with this name");
-        else {
-            getFile(stage);
-            if(fileForSave.getName().contains(".txt")){
-                saveTxt(name);
-            }
-            else if(fileForSave.getName().contains(".csv")){
-                saveCsv(name);
-            }
-            else if(fileForSave.getName().contains(".json")){
-                saveJson(name);
-            }
 
-        }
     }
     private void saveJson(String name) {
         if (Card.allCards.get(name).getCardsType() == Type.MONSTER) {
@@ -279,56 +266,61 @@ public class ImportExport {
     }
 
     private void saveTxt(String name) {
-        if (Card.allCards.get(name).getCardsType() == Type.MONSTER) {
-            Monster monster = (Monster) Card.allCards.get(name);
-            try {
-                FileWriter myWriter = new FileWriter(name + ".txt");
-                myWriter.write("Name: " + name + "\n" +
-                        "Level: " + monster.getLevel() + "\n" +
-                        "Attribute: " + monster.getAttribute() + "\n" +
-                        "Monster Type: " + monster.getMonsterType() + "\n" +
-                        "Type: " + monster.getCardTypeInExel() + "\n" +
-                        "ATK: " + monster.getAttack() + "\n" +
-                        "DEF: " + monster.getDefence() + "\n" +
-                        "Description: " + monster.getDescription() + "\n" +
-                        "Price: " + monster.getPrice());
-                myWriter.close();
-            } catch (IOException e) {
-                System.out.println("An error occurred.");
-                e.printStackTrace();
-            }
-        } else {
-            SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(name);
-            if (spellAndTrap.getCardsType() == Type.SPELL) {
+        try {
+            if (Card.allCards.get(name).getCardsType() == Type.MONSTER) {
+                Monster monster = (Monster) Card.allCards.get(name);
                 try {
                     FileWriter myWriter = new FileWriter(name + ".txt");
                     myWriter.write("Name: " + name + "\n" +
-                            "Type: Spell\n" +
-                            "Icon (Property): " + spellAndTrap.getIcon() + "\n" +
-                            "Description: " + spellAndTrap.getDescription() + "\n" +
-                            "Status: " + spellAndTrap.getStatus() + "\n" +
-                            "Price: " + spellAndTrap.getPrice());
+                            "Level: " + monster.getLevel() + "\n" +
+                            "Attribute: " + monster.getAttribute() + "\n" +
+                            "Monster Type: " + monster.getMonsterType() + "\n" +
+                            "Type: " + monster.getCardTypeInExel() + "\n" +
+                            "ATK: " + monster.getAttack() + "\n" +
+                            "DEF: " + monster.getDefence() + "\n" +
+                            "Description: " + monster.getDescription() + "\n" +
+                            "Price: " + monster.getPrice());
                     myWriter.close();
                 } catch (IOException e) {
                     System.out.println("An error occurred.");
                     e.printStackTrace();
                 }
             } else {
-                try {
-                    FileWriter myWriter = new FileWriter(name + ".txt");
-                    myWriter.write("Name: " + name + "\n" +
-                            "Type: Spell\n" +
-                            "Icon (Property): " + spellAndTrap.getIcon() + "\n" +
-                            "Description: " + spellAndTrap.getDescription() + "\n" +
-                            "Status: " + spellAndTrap.getStatus() + "\n" +
-                            "Price: " + spellAndTrap.getPrice());
-                    myWriter.close();
-                } catch (IOException e) {
-                    System.out.println("An error occurred.");
-                    e.printStackTrace();
+                SpellAndTrap spellAndTrap = (SpellAndTrap) Card.allCards.get(name);
+                if (spellAndTrap.getCardsType() == Type.SPELL) {
+                    try {
+                        FileWriter myWriter = new FileWriter(name + ".txt");
+                        myWriter.write("Name: " + name + "\n" +
+                                "Type: Spell\n" +
+                                "Icon (Property): " + spellAndTrap.getIcon() + "\n" +
+                                "Description: " + spellAndTrap.getDescription() + "\n" +
+                                "Status: " + spellAndTrap.getStatus() + "\n" +
+                                "Price: " + spellAndTrap.getPrice());
+                        myWriter.close();
+                    } catch (IOException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        FileWriter myWriter = new FileWriter(name + ".txt");
+                        myWriter.write("Name: " + name + "\n" +
+                                "Type: Spell\n" +
+                                "Icon (Property): " + spellAndTrap.getIcon() + "\n" +
+                                "Description: " + spellAndTrap.getDescription() + "\n" +
+                                "Status: " + spellAndTrap.getStatus() + "\n" +
+                                "Price: " + spellAndTrap.getPrice());
+                        myWriter.close();
+                    } catch (IOException e) {
+                        System.out.println("An error occurred.");
+                        e.printStackTrace();
+                    }
                 }
             }
+        }catch (Exception ex){
+            ex.printStackTrace();
         }
+
     }
 
     public void getFile(Stage stage) {
@@ -355,10 +347,21 @@ public class ImportExport {
 
                 //Show save file dialog
                 File file = fileChooser.showSaveDialog(stage);
-
+                fileForSave = file;
                 if (file != null) {
-                    fileForSave = file;
+                    if(fileForSave.getName().contains(".txt")){
+                        saveTxt(txtName.getText());
+                    }
+                    else if(fileForSave.getName().contains(".csv")){
+                        saveCsv(txtName.getText());
+                    }
+                    else if(fileForSave.getName().contains(".json")){
+                        saveJson(txtName.getText());
+                    }
+
                 }
+                currStage.close();
+                txtName.clear();
             }
         });
 
@@ -369,10 +372,8 @@ public class ImportExport {
         String style = Objects.requireNonNull(this.getClass().getResource("login/Login.css")).toExternalForm();
         Scene scene = new Scene(root, 300, 300);
         scene.getStylesheets().add(style);
-        stage.setScene(scene);
-
-        stage.show();
-
+        subStage stage1 = new subStage("Import/Export",scene);
+        currStage = stage1.getStage();
     }
 
     public void importFile(final Stage stage) {
