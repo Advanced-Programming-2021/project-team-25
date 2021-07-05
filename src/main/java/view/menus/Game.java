@@ -15,6 +15,8 @@ import javafx.scene.input.ClipboardContent;
 import javafx.scene.input.Dragboard;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.TransferMode;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Popup;
@@ -36,6 +38,7 @@ import models.User;
 import view.Main;
 import view.UserInterface;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
@@ -282,24 +285,29 @@ public class Game {
                 label2.setFont(Font.font(20));
                 Button summonBtn = new Button("Summon");
                 summonBtn.setOnAction(actionEvent -> {
+                    String path = "sfx_psychic_type.mp3";
+                    Media media = new Media(new File(path).toURI().toString());
+                    MediaPlayer mediaPlayer = new MediaPlayer(media);
+                    mediaPlayer.setAutoPlay(true);
                     battlefield.selectedCard = card;
-                    if(dragPosition != -1)
-                        battlefield.summon(dragPosition);
+                    if(dragPosition != -1) battlefield.summon(dragPosition);
                     addChanges();
                     currStage.close();
                 });
                 Button setBtn = new Button("Set");
                 setBtn.setOnAction(actionEvent -> {
+                    String path = "sfx_psychic_type.mp3";
+                    Media media = new Media(new File(path).toURI().toString());
+                    MediaPlayer mediaPlayer = new MediaPlayer(media);
+                    mediaPlayer.setAutoPlay(true);
                     battlefield.selectedCard = card;
-                    if(dragPosition != -1)
-                         battlefield.set(dragPosition);
+                    if(dragPosition != -1) battlefield.set(dragPosition);
                     addChanges();
                     currStage.close();
                 });
                 Button backBtn = new Button("Back");
-                backBtn.setOnMouseClicked(e->{
-                    currStage.close();
-                });
+                backBtn.setOnMouseClicked(e-> currStage.close());
+
                 Label textField = new Label("Place of your card : " + dragPosition);
                 vBox1.getChildren().addAll(label2, setBtn, summonBtn,textField);
                 borderPane.setLeft(vBox1);
