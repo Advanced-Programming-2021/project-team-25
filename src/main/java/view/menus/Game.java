@@ -63,6 +63,7 @@ public class Game {
     Image graveYardIMG = new Image(graveYardPath);
     Image fieldIMG = new Image(fieldPath);
     Image dragDropImg = new Image(dragDropPath);
+    AudioClip audioClip;
 
     public String stringForCheat = "";
 
@@ -80,6 +81,9 @@ public class Game {
     Battlefield battlefield;
     public Game(Battlefield battlefield){
         this.battlefield = battlefield;
+        audioClip = new AudioClip(getClass().getResource("/music/game.mp3").toExternalForm());
+        audioClip.setCycleCount(-1);
+        audioClip.play();
     }
 
     public void addChanges(){
@@ -381,6 +385,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                audioClip.stop();
                 Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
@@ -391,6 +396,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.turn,battlefield.opponent,battlefield);
                     duelMenuController.matchFinish(battlefield.turn,battlefield.opponent);
                     DataBase.saveTheUserList(User.getUsers());
+                    audioClip.stop();
                     Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }
@@ -402,6 +408,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                audioClip.stop();
                 Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
@@ -412,6 +419,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.turn,battlefield.opponent,battlefield);
                     duelMenuController.matchFinish(battlefield.turn,battlefield.opponent);
                     DataBase.saveTheUserList(User.getUsers());
+                    audioClip.stop();
                     Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }
@@ -554,44 +562,44 @@ public class Game {
             else if (x >= 233 && x <= 295 && y >= 251 && y <= 317)
                 showGraveyard(battlefield.getOpponent());
             //opponent monster zone
-            else if (x >= 311 && x <= 370 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(4) != null){
+            else if (x >= 311 && x <= 370 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(4) != null && battlefield.getOpponent().field.monsterZone.get(4).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(4);
                 addChanges();
             }
-            else if (x >= 378 && x <= 441 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(3) != null){
+            else if (x >= 378 && x <= 441 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(3) != null && battlefield.getOpponent().field.monsterZone.get(3).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(3);
                 addChanges();
             }
-            else if (x >= 447 && x <= 507 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(2) != null){
+            else if (x >= 447 && x <= 507 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(2) != null && battlefield.getOpponent().field.monsterZone.get(2).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(2);
                 addChanges();
             }
-            else if (x >= 516 && x <= 575 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(1) != null){
+            else if (x >= 516 && x <= 575 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(1) != null && battlefield.getOpponent().field.monsterZone.get(1).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(1);
                 addChanges();
             }
-            else if (x >= 585 && x <= 642 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(0) != null){
+            else if (x >= 585 && x <= 642 && y >= 259 && y <= 325 && battlefield.getOpponent().field.monsterZone.get(0) != null && battlefield.getOpponent().field.monsterZone.get(0).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.monsterZone.get(0);
                 addChanges();
             }
             //opponent spell and trap zone
-            else if (x >= 311 && x <= 370 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(4) != null){
+            else if (x >= 311 && x <= 370 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(4) != null && battlefield.getOpponent().field.spellTrapZone.get(4).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(4);
                 addChanges();
             }
-            else if (x >= 378 && x <= 441 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(3) != null){
+            else if (x >= 378 && x <= 441 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(3) != null && battlefield.getOpponent().field.spellTrapZone.get(3).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(3);
                 addChanges();
             }
-            else if (x >= 447 && x <= 507 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(2) != null){
+            else if (x >= 447 && x <= 507 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(2) != null && battlefield.getOpponent().field.spellTrapZone.get(2).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(2);
                 addChanges();
             }
-            else if (x >= 516 && x <= 575 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(1) != null){
+            else if (x >= 516 && x <= 575 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(1) != null && battlefield.getOpponent().field.spellTrapZone.get(1).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(1);
                 addChanges();
             }
-            else if (x >= 585 && x <= 642 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(0) != null){
+            else if (x >= 585 && x <= 642 && y >= 183 && y <= 253 && battlefield.getOpponent().field.spellTrapZone.get(0) != null && battlefield.getOpponent().field.spellTrapZone.get(0).getCardsFace() != FaceUp.DEFENSE_BACK){
                 battlefield.selectedCard = battlefield.getOpponent().field.spellTrapZone.get(0);
                 addChanges();
             }
@@ -773,6 +781,7 @@ public class Game {
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
                 DataBase.saveTheUserList(User.getUsers());
+                audioClip.stop();
                 Main.audioClip.play();
                 DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
             }
@@ -783,6 +792,7 @@ public class Game {
                     duelMenuController.finishRound3(battlefield.getOpponent(),battlefield.getWinner(),battlefield);
                     duelMenuController.matchFinish(battlefield.getOpponent(),battlefield.getWinner());
                     DataBase.saveTheUserList(User.getUsers());
+                    audioClip.stop();
                     Main.audioClip.play();
                     DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
                 }

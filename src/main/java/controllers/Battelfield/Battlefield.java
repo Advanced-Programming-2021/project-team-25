@@ -16,6 +16,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
+import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Font;
 import javafx.stage.Modality;
@@ -223,6 +224,8 @@ public class Battlefield {
 
             javafx.scene.control.Button attackBtn = new javafx.scene.control.Button("Attack");
             attackBtn.setOnMouseClicked(e-> {
+                AudioClip audioClip = new AudioClip(getClass().getResource("/music/CARD_CRASH.mp3").toExternalForm());
+                audioClip.play();
                 game.addChanges();
                 if (index == 0) drawLines(342, 345);
                 if (index == 1) drawLines(409, 345);
