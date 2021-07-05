@@ -16,6 +16,7 @@ import models.Deck;
 import models.Duelist;
 import models.User;
 import view.CreateGrid;
+import view.Main;
 import view.Responses;
 import view.UserInterface;
 
@@ -84,7 +85,10 @@ public class DuelMenu {
                 if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
                 else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
                 else if(!(rounds.getValue().equals("1") || rounds.getValue().equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
-                else new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")), 1);
+                else{
+                    Main.audioClip.stop();
+                    new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")), 1);
+                }
             }
             else{
                 if(User.getUserByUsername(txtRival.getText()) == null) JOptionPane.showMessageDialog(null,
@@ -100,10 +104,12 @@ public class DuelMenu {
                 else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck.getDeckName()))
                     JOptionPane.showMessageDialog(null,txtRival.getText() + "'s deck is not valid");
                 else if(rounds.getValue().equals("1")){
+                    Main.audioClip.stop();
                     new CoinTossing().start(1,txtRival.getText());
                     //duelMenuController.oneRoundDuel(txtRival.getText());
                 }
                 else{
+                    Main.audioClip.stop();
                     new CoinTossing().start(3,txtRival.getText());
                     //duelMenuController.threeRoundDuel(txtRival.getText());
                 }

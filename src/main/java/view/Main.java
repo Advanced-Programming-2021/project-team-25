@@ -12,13 +12,14 @@ import java.io.File;
 
 public class Main extends Application {
     public static Stage stage;
+    public static AudioClip audioClip;
 
     @Override
     public void start(Stage stage) {
         Main.stage = new Stage();
 
         //Music
-        AudioClip audioClip = new AudioClip(getClass().getResource("/music/firstMusic.mp3").toExternalForm());
+        audioClip = new AudioClip(getClass().getResource("/music/firstMusic.mp3").toExternalForm());
         audioClip.setCycleCount(-1);
         audioClip.play();
 
