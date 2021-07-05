@@ -108,41 +108,6 @@ public class Battlefield {
         this.phase = phase;
     }
 
-    public void runBattleField() {
-        while (winner == null) {
-
-            if (countDraw6Cards < 2 && isTurnChanged) startGame();
-
-            if(turn.getName().equals(opponent.getName())) return;
-
-//            String command = UserInterface.getUserInput();
-//
-//            Matcher matcher;
-//
-//            if (isRitualSummoned) UserInterface.printResponse("you should ritual summon right now");
-//            else if ((matcher = Regex.getMatcher(command, Regex.selectOpponent)).matches()) selectOpponentCard(matcher);
-//            else if (Regex.getMatcher(command, Regex.deselect).matches()) deselectCard();
-//            else if ((matcher = Regex.getMatcher(command, Regex.select)).matches()) selectCard(matcher);
-//            else if (Regex.getMatcher(command, Regex.nextPhase).matches()) nextPhase();
-//            else if (Regex.getMatcher(command, Regex.summon).matches()) summon();
-//            else if (Regex.getMatcher(command, Regex.set).matches()) set();
-//            else if ((matcher = Regex.getMatcher(command, Regex.setPosition)).matches()) setPosition(matcher);
-//            else if (Regex.getMatcher(command, Regex.flipSummon).matches()) flipSummon();
-//            else if (Regex.getMatcher(command, Regex.attackDirect).matches()) directAttack();
-//            else if ((matcher = Regex.getMatcher(command, Regex.attack)).matches()) attack(matcher);
-//            else if (Regex.getMatcher(command, Regex.activateEffect).matches()) activeSpell();
-//            else if (Regex.getMatcher(command, Regex.showGraveyard).matches()) showGraveyard();
-//            else if (Regex.getMatcher(command, Regex.showSelectedCard).matches()) showSelectedCard();
-//            else if ((matcher = Regex.getMatcher(command, Regex.cardShow)).matches()) showCard(matcher.group(1));
-//            else if (Regex.getMatcher(command, Regex.surrender).matches()) winner = opponent;
-//            else if (Regex.getMatcher(command, Regex.forceAddedCardToHand).matches()) forceAddedToHand(matcher);
-//            else if (Regex.getMatcher(command, Regex.duelWinCheat).matches()) duelWinCheat(matcher);
-//            else if (Regex.getMatcher(command, Regex.increaseLPCheat).matches()) increaseLPCheat(matcher);
-//            else UserInterface.printResponse(Responses.INVALID_COMMAND);
-//            showBattleField();
-        }
-    }
-
     //start & clean
     private void whoStart(Duelist duelist1, Duelist duelist2) {
         Random ran = new Random();
@@ -355,7 +320,7 @@ public class Battlefield {
         double x = event.getSceneX();
         double y = event.getSceneY();
         if (x >= 312 && x <= 373 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(4) != null) {
-            selectedCard = opponent.field.monsterZone.get(index);
+            selectedCard = turn.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 4");
             matcher.find();
@@ -363,7 +328,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 379 && x <= 448 && y >= 258 && y <= 325 && turn.field.monsterZone.get(3) != null) {
-            selectedCard = opponent.field.monsterZone.get(index);
+            selectedCard = turn.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 2");
             matcher.find();
@@ -371,7 +336,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 447 && x <= 508 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(2) != null) {
-            selectedCard = opponent.field.monsterZone.get(index);
+            selectedCard = turn.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 1");
             matcher.find();
@@ -379,7 +344,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 517 && x <= 576 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(1) != null) {
-            selectedCard = opponent.field.monsterZone.get(index);
+            selectedCard = turn.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 3");
             matcher.find();
@@ -387,7 +352,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 585 && x <= 644 && y >= 258 && y <= 325 && opponent.field.monsterZone.get(0) != null) {
-            selectedCard = opponent.field.monsterZone.get(index);
+            selectedCard = turn.field.monsterZone.get(index);
             Pattern pattern = Pattern.compile("^attack (.+)$");
             Matcher matcher = pattern.matcher("attack 5");
             matcher.find();
@@ -395,7 +360,7 @@ public class Battlefield {
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
         } else if (x >= 408 && x <= 545 && y >= 125 && y <= 214 && isOpponentEmptyOfMonsters()) {
-            selectedCard = opponent.field.monsterZone.get(index);
+            selectedCard = turn.field.monsterZone.get(index);
             directAttack();
             game.refreshHealthBar(turn, opponent);
             game.addChanges();
