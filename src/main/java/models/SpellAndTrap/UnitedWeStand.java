@@ -7,8 +7,10 @@ import models.Duelist;
 import models.Monster.Monster;
 import view.UserInterface;
 
+import javax.swing.*;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class UnitedWeStand extends SpellAndTrap implements Serializable {
     private static Duelist turn;
@@ -27,7 +29,7 @@ public class UnitedWeStand extends SpellAndTrap implements Serializable {
     @Override
     public void action(Battlefield battlefield) {
         turn = battlefield.getTurn();
-
+        String[] monsters = new String[6];
         int numberToIncrease = 0;
         for (int i = 0; i<5; ++i){
             if (turn.field.monsterZone.get(i) != null && (turn.field.monsterZone.get(i).getCardsFace() == FaceUp.ATTACK
@@ -56,12 +58,20 @@ public class UnitedWeStand extends SpellAndTrap implements Serializable {
             UserInterface.printResponse("You don't have any monster in your monster zone");
         else{
             UserInterface.printResponse("Now select one of these monsters to equip it");
+            int i=0;
             for (Monster trueMonster : trueMonsters) {
-                UserInterface.printResponse(trueMonster.getName() + ":" + trueMonster.getDescription());
+                monsters[i] = trueMonster.getName();
+                i++;
             }
+            monsters[5] = "Cancel";
+            JList list = new JList(monsters);
+            JOptionPane.showMessageDialog(
+                    null, list, "Select Monster", JOptionPane.PLAIN_MESSAGE);
+            System.out.println(Arrays.toString(list.getSelectedIndices()));
             String name = " ";
             while (true){
-                String command = UserInterface.getUserInput();
+                String command = (String) list.getSelectedValue();
+
                 for (Monster trueMonster : trueMonsters) {
                     if (trueMonster.getName().equals(command)) {
                         name = command;
