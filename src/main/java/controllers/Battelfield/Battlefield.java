@@ -1129,8 +1129,12 @@ public class Battlefield {
             }
         } else {
             //action all spells based on which phase they want
-            for (SpellAndTrap spellAndTrap : activeSpellAndTraps)
+            for (SpellAndTrap spellAndTrap : activeSpellAndTraps) {
+                if(spellAndTrap.getName().equals("United We Stand") || spellAndTrap.getName().equals("Magnum Shield") ||
+                        spellAndTrap.getName().equals("Black Pendant") || spellAndTrap.getName().equals("Sword of Dark Destruction"))
+                    continue;
                 spellAndTrap.action(this);
+            }
             if (phase.equals(Phase.END_TURN))
                 lastChangedTurn = changedTurnTime;
         }
