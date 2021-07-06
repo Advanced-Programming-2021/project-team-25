@@ -1014,6 +1014,7 @@ public class Battlefield {
                 UserInterface.printResponse("preparation of this spell are not done yet");
             else {
                 activeSpellAndTraps.add(spellAndTrap);
+                spellAndTrap.setCardsFace(FaceUp.ATTACK);
                 spellAndTrap.action(this);
                 if (how.equals("firstTime"))
                     turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone(), selectedCard);
