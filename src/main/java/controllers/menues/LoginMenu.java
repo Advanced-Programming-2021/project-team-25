@@ -25,9 +25,7 @@ public class LoginMenu {
             else if (command.equals("menu show-current")) UserInterface.printResponse("Login Menu");
             else if (command.equals("menu exit")) return;
             else if (!Objects.isNull(currUser)) {
-                //restore all data
-                DataBase.saveTheUserList(User.getUsers());
-                User.setUsers(DataBase.loadTheList());
+
             }
             else UserInterface.printResponse(Responses.INVALID_COMMAND);
         }

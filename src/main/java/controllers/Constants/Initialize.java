@@ -8,7 +8,6 @@ import models.SpellAndTrap.*;
 import models.User;
 import view.SendReceiveData;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.Objects;
 
@@ -28,12 +27,6 @@ public class Initialize {
     }
 
     public static void initUserList(){
-//        File tmpDir = new File("savedList.list");
-//        if(tmpDir.exists()) User.setUsers(DataBase.loadTheList());
-//        else {
-//            new User("admin","admin","Game");
-//            makeAI();
-//        }
         String result = SendReceiveData.sendReceiveData("initUserList ");
         assert result != null;
         if (result.startsWith("success") && User.getUserByUsername("admin") == null){
@@ -140,8 +133,6 @@ public class Initialize {
     }
 
     public static void initDeckList(){
-//        File tmpDir = new File("Decks.list");
-//        if(tmpDir.exists()) Deck.allDecks = DataBase.restoreDecks();
         SendReceiveData.sendReceiveData("initDeckList ");
     }
 }

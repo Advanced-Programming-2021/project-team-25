@@ -1,11 +1,14 @@
 package controllers.Database;
 
+import com.google.gson.Gson;
+import controllers.ProgramController;
 import models.Card;
 import models.CardStufs.Type;
 import models.Monster.*;
 import models.Deck;
 import models.SpellAndTrap.*;
 import models.User;
+import view.SendReceiveData;
 
 import java.io.*;
 import java.util.ArrayList;
@@ -19,58 +22,62 @@ public class DataBase {
     public static final String savedDeckName = "Decks.list";
 
     public static void saveTheUserList(ArrayList<User> users) {
-        try {
-            FileOutputStream fileOut = new FileOutputStream(savedArrayListName, false);
-            ObjectOutputStream oos = new ObjectOutputStream(fileOut);
-            oos.writeObject(users);
-            oos.close();
-            fileOut.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FileOutputStream fileOut = new FileOutputStream(savedArrayListName, false);
+//            ObjectOutputStream oos = new ObjectOutputStream(fileOut);
+//            oos.writeObject(users);
+//            oos.close();
+//            fileOut.flush();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        Gson gson = new Gson();
+        String json = gson.toJson(ProgramController.currUser);
+        SendReceiveData.sendReceiveData("saveTheUserList " + json + " ");
     }
 
-    public static ArrayList<User> loadTheList() {
-        try {
-            FileInputStream fin = new FileInputStream(savedArrayListName);
-            ObjectInputStream ois = new ObjectInputStream(fin);
-
-            ArrayList<User> myClassObj = (ArrayList<User>) ois.readObject();
-            ois.close();
-            System.out.println("Loaded Data from file");
-            return myClassObj;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    public static ArrayList<User> loadTheList() {
+//        try {
+//            FileInputStream fin = new FileInputStream(savedArrayListName);
+//            ObjectInputStream ois = new ObjectInputStream(fin);
+//
+//            ArrayList<User> myClassObj = (ArrayList<User>) ois.readObject();
+//            ois.close();
+//            System.out.println("Loaded Data from file");
+//            return myClassObj;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     static public void storeDecks(ArrayList<Deck> decks){
-        try {
-            FileOutputStream fileOut = new FileOutputStream(savedDeckName, false);
-            ObjectOutputStream oos = new ObjectOutputStream(fileOut);
-            oos.writeObject(decks);
-            oos.close();
-            fileOut.flush();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        try {
+//            FileOutputStream fileOut = new FileOutputStream(savedDeckName, false);
+//            ObjectOutputStream oos = new ObjectOutputStream(fileOut);
+//            oos.writeObject(decks);
+//            oos.close();
+//            fileOut.flush();
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+        SendReceiveData.sendReceiveData("storeDecks ");
     }
 
-    static public ArrayList<Deck> restoreDecks(){
-        try {
-            FileInputStream fin = new FileInputStream(savedDeckName);
-            ObjectInputStream ois = new ObjectInputStream(fin);
-
-            ArrayList<Deck> myClassObj = (ArrayList<Deck>) ois.readObject();
-            ois.close();
-            System.out.println("Loaded Data of Decks from file");
-            return myClassObj;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
-    }
+//    static public ArrayList<Deck> restoreDecks(){
+//        try {
+//            FileInputStream fin = new FileInputStream(savedDeckName);
+//            ObjectInputStream ois = new ObjectInputStream(fin);
+//
+//            ArrayList<Deck> myClassObj = (ArrayList<Deck>) ois.readObject();
+//            ois.close();
+//            System.out.println("Loaded Data of Decks from file");
+//            return myClassObj;
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return null;
+//    }
 
     public static void loadCards() throws IOException {
         HashMap<String,Card> temp = new HashMap<>();

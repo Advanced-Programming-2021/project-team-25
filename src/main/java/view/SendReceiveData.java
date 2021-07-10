@@ -28,7 +28,7 @@ public class SendReceiveData {
     }
     public static String sendReceiveData(String command){
         try {
-            dataOutputStream.writeUTF(command + "--token" + token);
+            dataOutputStream.writeUTF(command + "--token " + token);
             dataOutputStream.flush();
             return dataInputStream.readUTF();
         } catch (IOException x) {
