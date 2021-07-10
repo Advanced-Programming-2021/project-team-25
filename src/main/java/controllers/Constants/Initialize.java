@@ -6,6 +6,7 @@ import models.Deck;
 import models.Monster.*;
 import models.SpellAndTrap.*;
 import models.User;
+import view.SendReceiveData;
 
 import java.io.File;
 import java.io.IOException;
@@ -14,6 +15,7 @@ import java.util.Objects;
 import static models.Deck.allDecks;
 
 public class Initialize {
+
 
     public static void init() {
         try {

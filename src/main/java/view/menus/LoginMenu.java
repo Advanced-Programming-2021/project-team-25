@@ -1,6 +1,7 @@
 package view.menus;
 
 import controllers.ProgramController;
+import controllers.Regex;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -14,8 +15,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Window;
 import view.CreateGrid;
 import view.Main;
+import view.SendReceiveData;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 public class LoginMenu{
 
@@ -70,13 +73,23 @@ public class LoginMenu{
     }
 
     private void loginFunc(GridPane grid, TextField txtUsername, PasswordField txtPassword) {
-        if(User.getUserByUsername(txtUsername.getText()) == null)
-            showAlert(grid.getScene().getWindow(), "There is not user with this username");
-        else if(!txtPassword.getText().equals(Objects.requireNonNull(User.getUserByUsername(txtUsername.getText())).getPassword()))
-            showAlert(grid.getScene().getWindow(), "Wrong Password!");
-        else {
-            ProgramController.currUser = User.getUserByUsername(txtUsername.getText());
-            new MainMenu().start();
+        String result = SendReceiveData.sendReceiveData("user login --username "+
+                txtUsername.getText()+
+                " --password "+txtPassword.getText());
+        if(Objects.isNull(result) || result.isBlank() || result.isEmpty())
+            showAlert(grid.getScene().getWindow(), "An Error occurred");
+        else if(result.startsWith("error")){
+            Matcher matcherDesc = Regex.getMatcher(result,"description=\"(.+)\"");
+            if(matcherDesc.find())
+                showAlert(grid.getScene().getWindow(), matcherDesc.group(1));
+        }
+        else if(result.startsWith("success")) {
+            Matcher matcherDesc = Regex.getMatcher(result,"description=\"(.+)\"");
+            if(matcherDesc.find()) {
+                SendReceiveData.token = matcherDesc.group(1);
+                ProgramController.currUser = User.getUserByUsername(txtUsername.getText());
+                new MainMenu().start();
+            }
         }
     }
 
