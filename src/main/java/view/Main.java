@@ -14,6 +14,8 @@ public class Main extends Application {
     public void start(Stage stage) {
         Main.stage = new Stage();
 
+        //init network
+        SendReceiveData.initializeNetwork();
         //Music
         audioClip = new AudioClip(getClass().getResource("/music/menu.mp3").toExternalForm());
         audioClip.setCycleCount(-1);
