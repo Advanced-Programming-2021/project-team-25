@@ -1,14 +1,9 @@
 package view;
 
-import java.io.BufferedInputStream;
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
-
-import static controllers.Regex.changeNickname;
 
 public class API{
 
@@ -18,7 +13,6 @@ public class API{
     public static API getInstance (){
         if (singleToneClass == null) singleToneClass = new API();
         return singleToneClass;
-
     }
     public void run() {
         try {
@@ -27,7 +21,6 @@ public class API{
                 Socket socket = serverSocket.accept();
                 MyThread myThread = new MyThread(serverSocket, socket);
                 myThread.start();
-
             }
         }catch (SocketException socketException){
             System.out.println("socket closed!");
@@ -35,7 +28,6 @@ public class API{
         catch (IOException e) {
             e.printStackTrace();
         }
-
     }
 
     String process(String command) {

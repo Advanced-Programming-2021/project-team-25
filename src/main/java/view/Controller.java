@@ -1,9 +1,6 @@
 package view;
 
-import controllers.Menu;
-import controllers.ProgramController;
 import controllers.Regex;
-import controllers.menues.MainMenu;
 import models.User;
 
 import java.util.HashMap;
@@ -105,7 +102,7 @@ public class Controller {
             }
         }
         else
-                return "error description=\""+Responses.INVALID_COMMAND.getMessage()+"\"";
+            return "error description=\""+Responses.INVALID_COMMAND.getMessage()+"\"";
     }
 
     private static boolean isExistUsername(String username){
