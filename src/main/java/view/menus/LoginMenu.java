@@ -90,6 +90,8 @@ public class LoginMenu{
                 ProgramController.currUser = User.getUserByUsername(txtUsername.getText());
                 new MainMenu().start();
             }
+            //get curr User
+            ProgramController.currUser = SendReceiveData.getCurrUserFromServer();
         }
     }
 
