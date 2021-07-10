@@ -10,6 +10,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class MyThread extends Thread{
+
     DataInputStream dataInputStream;
     DataOutputStream dataOutputStream;
     Socket socket;
