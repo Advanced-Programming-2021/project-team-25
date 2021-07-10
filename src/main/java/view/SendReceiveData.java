@@ -14,7 +14,7 @@ public class SendReceiveData {
 
     public static void initializeNetwork() {
         try {
-            socket = new Socket("localhost", 7777);
+            socket = new Socket("localhost", 7185);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
         } catch (IOException x) {
