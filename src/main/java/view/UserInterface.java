@@ -13,6 +13,9 @@ public class UserInterface {
     public static String printResponse(String type,String response) {
         return type+" description=\""+response+"\"";
     }
+    public static void printResponse(String response) {
+        System.out.println(response);
+    }
     public static String getUserInput(){
         return JOptionPane.showInputDialog("input");
     }
