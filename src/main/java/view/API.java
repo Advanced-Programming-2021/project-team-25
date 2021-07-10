@@ -27,7 +27,6 @@ public class API{
                 Socket socket = serverSocket.accept();
                 MyThread myThread = new MyThread(serverSocket, socket);
                 myThread.start();
-
             }
         }catch (SocketException socketException){
             System.out.println("socket closed!");

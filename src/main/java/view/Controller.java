@@ -7,6 +7,7 @@ import controllers.menues.MainMenu;
 import models.User;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.UUID;
 import java.util.regex.Matcher;
@@ -14,7 +15,6 @@ import java.util.regex.Pattern;
 
 public class Controller {
     private static HashMap<String, User> loggedInUsers;
-    private static User currUser = null;
 
     private static Controller singleToneClass = null;
 
@@ -23,13 +23,26 @@ public class Controller {
         return singleToneClass;
 
     }
-
+    public User getUSerByToken(String token){
+        for (Map.Entry<String, User> set : loggedInUsers.entrySet()) {
+            if(set.getKey().equals(token))
+                return set.getValue();
+        }
+        return null;
+    }
     public String changeNickname(String command){
         Matcher matcher = Regex.getMatcher(command,Regex.changeNickname);
         if(matcher.find()){
             String newNickname = matcher.group("nickname");
-            currUser.setNickName(newNickname);
-            return UserInterface.printResponse("success","User nickname changed successfully");
+            Matcher matcherToken = Regex.getMatcher(command,"--token (.+)");
+            if(matcherToken.find()){
+                User currUser = getUSerByToken(matcherToken.group(1));
+                currUser.setNickName(newNickname);
+                return UserInterface.printResponse("success","User nickname changed successfully");
+            }
+            else
+                return UserInterface.printResponse("error","token not valid");
+
         }
         else  return UserInterface.printResponse("error",Responses.INVALID_COMMAND.getMessage());
     }
@@ -39,14 +52,20 @@ public class Controller {
         if(matcher.find()){
             String currentPass = matcher.group("curr");
             String newPass = matcher.group("new");
-            if(!currUser.getPassword().equals(currentPass))
-                return UserInterface.printResponse("error","current password is invalid");
-            else if(currUser.getPassword().equals(newPass))
-                return UserInterface.printResponse("error","please enter a new password");
-            else{
-                currUser.setPassword(newPass);
-                return UserInterface.printResponse("success","password changed successfully!");
+            Matcher matcherToken = Regex.getMatcher(command,"--token (.+)");
+            if(matcherToken.find()){
+                User currUser = getUSerByToken(matcherToken.group(1));
+                if(!currUser.getPassword().equals(currentPass))
+                    return UserInterface.printResponse("error","current password is invalid");
+                else if(currUser.getPassword().equals(newPass))
+                    return UserInterface.printResponse("error","please enter a new password");
+                else{
+                    currUser.setPassword(newPass);
+                    return UserInterface.printResponse("success","password changed successfully!");
+                }
             }
+            else
+                return UserInterface.printResponse("error","token not valid");
         }
         else return UserInterface.printResponse("error",Responses.INVALID_COMMAND.getMessage());
     }
@@ -74,7 +93,7 @@ public class Controller {
             return "error description=\""+Responses.INVALID_COMMAND.getMessage()+"\"";
     }
 
-    public String loginUser(String command){
+    public synchronized String loginUser(String command){
         String username;
         String password;
         Matcher matcher = Pattern.compile(Regex.userLogin).matcher(command);
@@ -100,7 +119,6 @@ public class Controller {
                 String token = UUID.randomUUID().toString();
                 loggedInUsers.put(token, user);
                 //update curr user
-                currUser = user;
                 return "success description=\""+token+"\"";
             }
         }
