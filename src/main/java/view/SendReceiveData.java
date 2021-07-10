@@ -1,9 +1,14 @@
 package view;
 
+import models.User;
+
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
+import java.nio.file.Paths;
+import com.google.gson.*;
+import com.google.gson.reflect.TypeToken;
 
 public class SendReceiveData {
     public static String token = "";
@@ -28,6 +33,17 @@ public class SendReceiveData {
             return dataInputStream.readUTF();
         } catch (IOException x) {
             x.printStackTrace();
+            return null;
+        }
+    }
+    public static User getCurrUserFromServer(){
+        try {
+            dataOutputStream.writeUTF("get currUser --token" + token);
+            dataOutputStream.flush();
+            Gson gson = new Gson();
+            return gson.fromJson(dataInputStream.readUTF(),User.class);
+        } catch (IOException e) {
+            e.printStackTrace();
             return null;
         }
     }

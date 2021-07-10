@@ -1,5 +1,7 @@
 package view.menus;
 
+import controllers.ProgramController;
+import controllers.Regex;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 import models.User;
@@ -12,8 +14,10 @@ import javafx.scene.text.Text;
 import javafx.stage.Window;
 import view.CreateGrid;
 import view.Main;
+import view.SendReceiveData;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 public class SignUpMenu {
 
@@ -69,16 +73,23 @@ public class SignUpMenu {
     }
 
     private void signupFunc(GridPane grid, TextField txtUsername, TextField txtNickname, PasswordField txtPassword) {
-        if(User.getUserByUsername(txtUsername.getText()) != null)
-            showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is a user with this username");
-        else if(User.getUserByNickName(txtNickname.getText()) != null)
-            showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is a user with this Nickname");
-        else if(txtPassword.getText().isEmpty())
-            showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "Please enter a password");
-        else{
-            new User(txtUsername.getText(), txtPassword.getText(), txtNickname.getText());
-            showAlert(Alert.AlertType.CONFIRMATION, grid.getScene().getWindow(), "Registration Successful!", "Welcome " + txtUsername.getText());
-            new WelcomeMenu().start();
+        String result = SendReceiveData.sendReceiveData("user create --username "+
+                txtUsername.getText()+
+                " --nickname "+txtNickname.getText()+
+                " --password "+txtPassword.getText());
+        if(Objects.isNull(result) || result.isBlank() || result.isEmpty())
+            showAlert(Alert.AlertType.ERROR,grid.getScene().getWindow(),"error","An Error occurred");
+        else if(result.startsWith("error")){
+            Matcher matcherDesc = Regex.getMatcher(result,"description=\"(.+)\"");
+            if(matcherDesc.find())
+                showAlert(Alert.AlertType.ERROR,grid.getScene().getWindow(),"error",matcherDesc.group(1));
+        }
+        else if(result.startsWith("success")) {
+            Matcher matcherDesc = Regex.getMatcher(result,"description=\"(.+)\"");
+            if(matcherDesc.find()) {
+                showAlert(Alert.AlertType.INFORMATION,grid.getScene().getWindow(),"success",matcherDesc.group(1));
+                new WelcomeMenu().start();
+            }
         }
     }
 
