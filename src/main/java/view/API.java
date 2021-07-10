@@ -41,9 +41,9 @@ public class API extends Thread{
     private String process(String command) {
         String[] parts = command.split(" ");
         if (command.startsWith("create")) {
-            controller.createNewUser(command);
+            return controller.createNewUser(command);
         } else if (command.startsWith("login")) {
-            controller.loginUser(command);
+            return controller.loginUser(command);
         } else if (command.startsWith("getTasks")) {
 
         } else if (command.startsWith("addTask")) {
