@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+import static controllers.Regex.changeNickname;
+
 public class API extends Thread{
 
     private static API singleToneClass = null;
@@ -44,10 +46,10 @@ public class API extends Thread{
             return controller.createNewUser(command);
         } else if (command.startsWith("login")) {
             return controller.loginUser(command);
-        } else if (command.startsWith("getTasks")) {
-
-        } else if (command.startsWith("addTask")) {
-
+        } else if (command.startsWith("profile change --nickname")) {
+            return controller.changeNickname(command);
+        } else if (command.startsWith("profile change --password")) {
+            return controller.changPass(command);
         } else if (command.startsWith("getHelp")) {
         }
         return "";

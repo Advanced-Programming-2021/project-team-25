@@ -23,6 +23,34 @@ public class Controller {
         return singleToneClass;
 
     }
+
+    public String changeNickname(String command){
+        Matcher matcher = Regex.getMatcher(command,Regex.changeNickname);
+        if(matcher.find()){
+            String newNickname = matcher.group("nickname");
+            currUser.setNickName(newNickname);
+            return UserInterface.printResponse("success","User nickname changed successfully");
+        }
+        else  return UserInterface.printResponse("error",Responses.INVALID_COMMAND.getMessage());
+    }
+
+    public String changPass(String command){
+        Matcher matcher = Regex.getMatcher(command,Regex.changePassword);
+        if(matcher.find()){
+            String currentPass = matcher.group("curr");
+            String newPass = matcher.group("new");
+            if(!currUser.getPassword().equals(currentPass))
+                return UserInterface.printResponse("error","current password is invalid");
+            else if(currUser.getPassword().equals(newPass))
+                return UserInterface.printResponse("error","please enter a new password");
+            else{
+                currUser.setPassword(newPass);
+                return UserInterface.printResponse("success","password changed successfully!");
+            }
+        }
+        else return UserInterface.printResponse("error",Responses.INVALID_COMMAND.getMessage());
+    }
+
     public String createNewUser(String command){
         Matcher matcher = Regex.getMatcher(command, Regex.userCreate);
         if(matcher.find()) {
