@@ -41,7 +41,6 @@ public class API extends Thread{
     }
 
     private String process(String command) {
-        String[] parts = command.split(" ");
         if (command.startsWith("create")) {
             return controller.createNewUser(command);
         } else if (command.startsWith("login")) {
