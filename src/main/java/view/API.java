@@ -13,6 +13,7 @@ public class API extends Thread{
 
     private static API singleToneClass = null;
     private Controller controller = Controller.getInstance();
+    Socket socket;
     public static API getInstance (){
         if (singleToneClass == null) singleToneClass = new API();
         return singleToneClass;
@@ -24,6 +25,7 @@ public class API extends Thread{
             try {
                 ServerSocket serverSocket = new ServerSocket(7185);
                 Socket socket = serverSocket.accept();
+                this.socket = socket;
                 DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
                 DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
                 while (!serverSocket.isClosed()) {
@@ -52,5 +54,9 @@ public class API extends Thread{
         } else if (command.startsWith("getHelp")) {
         }
         return "";
+    }
+
+    public Socket getSocket() {
+        return socket;
     }
 }
