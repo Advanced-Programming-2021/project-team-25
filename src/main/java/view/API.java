@@ -21,9 +21,14 @@ public class API extends Thread{
     }
     @Override
     public void run() {
+        ServerSocket serverSocket = null;
+        try {
+            serverSocket = new ServerSocket(7185);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         while (true) {
             try {
-                ServerSocket serverSocket = new ServerSocket(7185);
                 Socket socket = serverSocket.accept();
                 this.socket = socket;
                 DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
