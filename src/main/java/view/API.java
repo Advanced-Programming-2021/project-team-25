@@ -39,6 +39,10 @@ public class API{
             return controller.changeNickname(command);
         } else if (command.startsWith("profile change --password")) {
             return controller.changPass(command);
+        } else if (command.startsWith("initUserList")){
+            return controller.initUserList();
+        } else if (command.startsWith("initDeckList")){
+            return controller.initDeckList();
         } else if (command.startsWith("getHelp")) {
         }
         return "";

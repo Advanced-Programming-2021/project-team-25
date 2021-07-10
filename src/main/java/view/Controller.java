@@ -1,5 +1,6 @@
 package view;
 
+import controllers.Constants.Initialize;
 import controllers.Regex;
 import models.User;
 
@@ -11,7 +12,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Controller {
-    private static HashMap<String, User> loggedInUsers;
+    private static HashMap<String, User> loggedInUsers = new HashMap<>();
 
     private static Controller singleToneClass = null;
 
@@ -122,6 +123,20 @@ public class Controller {
         else
             return "error description=\""+Responses.INVALID_COMMAND.getMessage()+"\"";
     }
+
+
+    public String initUserList (){
+        Initialize.initUserList();
+        return "success description=\"successfully initiated users\"";
+    }
+
+
+    public String initDeckList (){
+        Initialize.initDeckList();
+        return "success description=\"successfully initiated decks\"";
+    }
+
+
 
     private static boolean isExistUsername(String username){
         return !Objects.isNull(User.getUserByUsername(username));
