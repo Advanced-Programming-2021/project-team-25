@@ -10,10 +10,11 @@ import java.net.Socket;
 public class API extends Thread{
 
     private static API singleToneClass = null;
-
+    private Controller controller = Controller.getInstance();
     public static API getInstance (){
         if (singleToneClass == null) singleToneClass = new API();
         return singleToneClass;
+
     }
     @Override
     public void run() {
@@ -39,10 +40,10 @@ public class API extends Thread{
 
     private String process(String command) {
         String[] parts = command.split(" ");
-        if (command.startsWith("register")) {
-
+        if (command.startsWith("create")) {
+            controller.createNewUser(command);
         } else if (command.startsWith("login")) {
-
+            controller.loginUser(command);
         } else if (command.startsWith("getTasks")) {
 
         } else if (command.startsWith("addTask")) {

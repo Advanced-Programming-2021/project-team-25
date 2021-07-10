@@ -10,8 +10,8 @@ public class UserInterface {
     public static void printResponse(Responses response) {
         System.out.println(response.getMessage());
     }
-    public static void printResponse(String response) {
-        JOptionPane.showMessageDialog(null,response);
+    public static String printResponse(String type,String response) {
+        return type+" description=\""+response+"\"";
     }
     public static String getUserInput(){
         return JOptionPane.showInputDialog("input");
