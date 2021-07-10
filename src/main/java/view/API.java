@@ -6,10 +6,11 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.net.SocketException;
 
 import static controllers.Regex.changeNickname;
 
-public class API extends Thread{
+public class API{
 
     private static API singleToneClass = null;
     private Controller controller = Controller.getInstance();
@@ -19,35 +20,24 @@ public class API extends Thread{
         return singleToneClass;
 
     }
-    @Override
     public void run() {
-        ServerSocket serverSocket = null;
         try {
-            serverSocket = new ServerSocket(7185);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        while (true) {
-            try {
+            ServerSocket serverSocket = new ServerSocket(7185);
+            while (true) {
                 Socket socket = serverSocket.accept();
-                this.socket = socket;
-                DataInputStream dataInputStream = new DataInputStream(new BufferedInputStream(socket.getInputStream()));
-                DataOutputStream dataOutputStream = new DataOutputStream(socket.getOutputStream());
-                while (!serverSocket.isClosed()) {
-                    String input = dataInputStream.readUTF();
-                    String result = process(input);
-                    dataOutputStream.writeUTF(result);
-                    dataOutputStream.flush();
-                }
-                dataInputStream.close();
-            } catch (Exception e) {
-                e.printStackTrace();
+                MyThread myThread = new MyThread(serverSocket, socket);
+                myThread.start();
             }
+        }catch (SocketException socketException){
+            System.out.println("socket closed!");
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
 
     }
 
-    private String process(String command) {
+    String process(String command) {
         if (command.startsWith("create")) {
             return controller.createNewUser(command);
         } else if (command.startsWith("login")) {
