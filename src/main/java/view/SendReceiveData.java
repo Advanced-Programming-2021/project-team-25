@@ -38,7 +38,7 @@ public class SendReceiveData {
     }
     public static User getCurrUserFromServer(){
         try {
-            dataOutputStream.writeUTF("get currUser --token" + token);
+            dataOutputStream.writeUTF("get currUser --token " + token);
             dataOutputStream.flush();
             Gson gson = new Gson();
             return gson.fromJson(dataInputStream.readUTF(),User.class);
