@@ -56,16 +56,4 @@ public class MyThread extends Thread{
             }
         }
     }
-
-    @Override
-    public void run() {
-        try {
-            processInputData(dataInputStream, dataOutputStream);
-            dataInputStream.close();
-            socket.close();
-            serverSocket.close();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 }
