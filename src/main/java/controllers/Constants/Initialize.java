@@ -22,8 +22,8 @@ public class Initialize {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        initUserList();
-        initDeckList();
+//        initUserList();
+//        initDeckList();
     }
 
     public static void initUserList(){

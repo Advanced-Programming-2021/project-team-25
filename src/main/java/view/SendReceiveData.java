@@ -18,12 +18,17 @@ public class SendReceiveData {
     public static Socket socket;
     public static DataInputStream dataInputStream;
     public static DataOutputStream dataOutputStream;
+    public static InputStream inputStream;
+    public static ObjectInputStream objectInputStream;
 
     public static void initializeNetwork() {
         try {
-            socket = new Socket("localhost", 7185);
+            socket = new Socket("localhost", 7184);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            inputStream = socket.getInputStream();
+            // create a DataInputStream so we can read data from it.
+            objectInputStream = new ObjectInputStream(inputStream);
         } catch (IOException x) {
             x.printStackTrace();
         }
@@ -32,8 +37,9 @@ public class SendReceiveData {
         try {
             dataOutputStream.writeUTF(command + " --token " + token);
             dataOutputStream.flush();
-            return dataInputStream.readUTF();
-        } catch (IOException x) {
+            String ss = (String) objectInputStream.readObject();
+            return ss;
+        } catch (IOException | ClassNotFoundException x) {
             x.printStackTrace();
             return null;
         }
@@ -41,13 +47,9 @@ public class SendReceiveData {
     public static void getCurrUserFromServer(){
         try {
             // get the input stream from the connected socket
-            InputStream inputStream = socket.getInputStream();
-            // create a DataInputStream so we can read data from it.
-            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            dataOutputStream.writeUTF("get currUser"+ " --token " + token);
+            dataOutputStream.flush();
             ProgramController.currUser = (User) objectInputStream.readObject();
-//            dataOutputStream.writeUTF("get currUser --token " + token);
-//            dataOutputStream.flush();
-//            return new Gson().fromJson(dataInputStream.readUTF(),User.class);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }
