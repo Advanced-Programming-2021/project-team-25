@@ -1,6 +1,10 @@
 package view;
 
 
+import controllers.Database.DataBase;
+import models.Deck;
+import models.User;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -42,6 +46,12 @@ public class API{
             return controller.changPass(command);
         } else if (command.startsWith("initUserList")){
             return controller.initUserList();
+        } else if (command.startsWith("saveTheUserList")){
+            DataBase.saveTheUserList(User.getUsers());
+            return "success description=\"successfully the users list saved\"";
+        } else if (command.startsWith("storeDecks")){
+            DataBase.storeDecks(Deck.allDecks);
+            return "success description=\"successfully the decks list saved\"";
         } else if (command.startsWith("initDeckList")){
             return controller.initDeckList();
         } else if (command.startsWith("get currUser")) {
