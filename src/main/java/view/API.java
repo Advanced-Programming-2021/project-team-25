@@ -36,9 +36,9 @@ public class API{
     }
 
     String process(String command) {
-        if (command.startsWith("create")) {
+        if (command.startsWith("user create")) {
             return controller.createNewUser(command);
-        } else if (command.startsWith("login")) {
+        } else if (command.startsWith("user login")) {
             return controller.loginUser(command);
         } else if (command.startsWith("profile change --nickname")) {
             return controller.changeNickname(command);
@@ -55,6 +55,8 @@ public class API{
             return controller.initDeckList();
         } else if (command.startsWith("get currUser")) {
             return controller.getUserToJson(command);
+        } else if (command.startsWith("get currDecks")) {
+            return controller.getDecksOfUser(command);
         }
         return "";
     }

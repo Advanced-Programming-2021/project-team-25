@@ -2,7 +2,9 @@ package view;
 
 import com.google.gson.Gson;
 import controllers.Constants.Initialize;
+import controllers.Database.DataBase;
 import controllers.Regex;
+import models.Deck;
 import models.User;
 
 import java.util.HashMap;
@@ -84,6 +86,7 @@ public class Controller {
             {
                 //creating new user
                 new User(username,password,nickname);
+                DataBase.saveTheUserList(User.getUsers());
                 // by default user be logged in
                 return "success description=\""+Responses.USER_CREATE_SUCCESS.getMessage()+"\"";
             }
@@ -164,5 +167,24 @@ public class Controller {
             return gson.toJson(user);
         }
         else return UserInterface.printResponse("error","token not valid");
+    }
+
+
+    public String getDecksOfUser(String command) {
+        Gson gson = new Gson();
+        Matcher matcher = Regex.getMatcher(command, "--token (.+)");
+        if (matcher.find()){
+            String token = matcher.group(1);
+            User user = getUSerByToken(token);
+            String toReturn = "";
+            for (int i = 0; i< Deck.allDecks.size(); ++i){
+                if (Deck.allDecks.get(i).getOwnerName().equals(user.getUsername())){
+                    toReturn += gson.toJson(Deck.allDecks.get(i));
+                    toReturn += "&&&";
+                }
+            }
+            return toReturn;
+        }
+        else return "error description=\"token not valid\"";
     }
 }

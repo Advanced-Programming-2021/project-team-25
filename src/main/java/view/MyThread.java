@@ -50,7 +50,8 @@ public class MyThread extends Thread{
             }catch (EOFException eofException){
                 return;
             }catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("Client disconnected");
+                break;
             }
         }
     }
