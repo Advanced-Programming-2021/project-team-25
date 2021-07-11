@@ -5,6 +5,7 @@ import controllers.Constants.Initialize;
 import controllers.Database.DataBase;
 import controllers.Regex;
 import controllers.menues.DeckMenu;
+import models.Card;
 import models.Deck;
 import models.User;
 
@@ -205,8 +206,10 @@ public class Controller {
                     return UserInterface.printResponse("error","deck not found or Deck is not yours!");
                 else{
                     String result = DeckMenu.getInstance(user).addCardToSide(cardName, deck.getDeckName());
-                    if(result.contains("successfully"))
-                        return UserInterface.printResponse("success",result);
+                    if(result.contains("successfully")) {
+                        DataBase.storeDecks(Deck.allDecks);
+                        return UserInterface.printResponse("success", result);
+                    }
                     else
                         return UserInterface.printResponse("error",result);
                 }
@@ -229,8 +232,10 @@ public class Controller {
                     return UserInterface.printResponse("error","deck not found or Deck is not yours!");
                 else{
                     String result = DeckMenu.getInstance(user).addCard(cardName, deck.getDeckName());
-                    if(result.contains("successfully"))
-                        return UserInterface.printResponse("success",result);
+                    if(result.contains("successfully")) {
+                        DataBase.storeDecks(Deck.allDecks);
+                        return UserInterface.printResponse("success", result);
+                    }
                     else
                         return UserInterface.printResponse("error",result);
                 }
@@ -248,8 +253,10 @@ public class Controller {
             if(loggedInUsers.containsKey(token)){
                 User user = getUSerByToken(token);
                 String result = DeckMenu.getInstance(user).createDeck(deckName);
-                if (result.contains("successfully"))
+                if (result.contains("successfully")) {
+                    DataBase.storeDecks(Deck.allDecks);
                     return UserInterface.printResponse("success", result);
+                }
                 else
                     return UserInterface.printResponse("error", result);
 
@@ -257,5 +264,21 @@ public class Controller {
                 return "error description=\"token not valid\"";
         }else
             return "error description=\"command not found\"";
+    }
+
+
+    public String buyCard (String command){
+        Pattern pattern = Pattern.compile("card buy (.+)? --token (.+)?");
+        Matcher matcher = pattern.matcher(command);
+        if (matcher.find()){
+            String cardsName = matcher.group(1);
+            String token = matcher.group(2);
+            User user = getUSerByToken(token);
+            user.cardsBought.add(cardsName);
+            user.money -= Card.allCards.get(cardsName).getPrice();
+            DataBase.saveTheUserList(User.getUsers());
+            return "success description=\"card was bought successfully\"";
+        }
+        return "error description\"mission failed\"";
     }
 }

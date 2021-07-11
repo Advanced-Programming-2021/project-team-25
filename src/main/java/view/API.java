@@ -59,6 +59,10 @@ public class API{
         } else if(command.startsWith("addNewDeck")){
             return controller.addNewDeck(command);
         }
+        //in shop menu
+        else if (command.startsWith("card buy")){
+            return controller.buyCard(command);
+        }
         return "";
     }
 
