@@ -130,13 +130,13 @@ public class Controller {
 
 
     public String initUserList (){
-        Initialize.initUserList();
+        //Initialize.initUserList();
         return "success description=\"successfully initiated users\"";
     }
 
 
     public String initDeckList (){
-        Initialize.initDeckList();
+        //Initialize.initDeckList();
         return "success description=\"successfully initiated decks\"";
     }
 
@@ -163,8 +163,9 @@ public class Controller {
         if(mather.find()){
             String token = mather.group(1);
             User user = getUSerByToken(token);
-            Gson gson = new Gson();
-            return gson.toJson(user);
+            MyThread.user = user;
+            MyThread.wantToSendObj = true;
+            return "success";
         }
         else return UserInterface.printResponse("error","token not valid");
     }

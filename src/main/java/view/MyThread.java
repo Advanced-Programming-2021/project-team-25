@@ -1,10 +1,9 @@
 package view;
 
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.EOFException;
-import java.io.IOException;
+import models.User;
+
+import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -14,11 +13,18 @@ public class MyThread extends Thread{
     DataOutputStream dataOutputStream;
     Socket socket;
     ServerSocket serverSocket;
-
+    // get the output stream from the socket.
+    OutputStream outputStream;
+    // create an object output stream from the output stream so we can send an object through it
+    ObjectOutputStream objectOutputStream;
+    public static boolean wantToSendObj = false;
+    public static User user;
     public MyThread(ServerSocket serverSocket, Socket socket) {
         try {
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
+            outputStream = socket.getOutputStream();
+            objectOutputStream = new ObjectOutputStream(outputStream);
             this.socket = socket;
             this.serverSocket = serverSocket;
         } catch (IOException e) {
@@ -32,6 +38,7 @@ public class MyThread extends Thread{
         try {
             processInputData(dataInputStream, dataOutputStream);
             dataInputStream.close();
+            objectOutputStream.close();
             socket.close();
         } catch (IOException e) {
             e.printStackTrace();
@@ -45,8 +52,22 @@ public class MyThread extends Thread{
             try {
                 input = dataInputStream.readUTF();
                 String result = API.getInstance().process(input);
-                dataOutputStream.writeUTF(result);
-                dataOutputStream.flush();
+                if(!wantToSendObj) {
+                    objectOutputStream.writeObject(result);
+                    objectOutputStream.flush();
+                }
+                else{
+                    objectOutputStream.writeObject(user);
+                    objectOutputStream.flush();
+                    wantToSendObj = false;
+                }
+//                if(!wantToSendObj){
+//                    dataOutputStream.writeUTF(result);
+//                    dataOutputStream.flush();
+//                }
+//                else{
+//                    objectOutputStream.writeObject(user);
+//                }
             }catch (EOFException eofException){
                 return;
             }catch (IOException e) {
