@@ -13,7 +13,11 @@ import javafx.stage.Window;
 import view.CreateGrid;
 import view.Main;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.Objects;
+import java.util.Random;
 
 public class SignUpMenu {
 
@@ -76,9 +80,25 @@ public class SignUpMenu {
         else if(txtPassword.getText().isEmpty())
             showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "Please enter a password");
         else{
-            new User(txtUsername.getText(), txtPassword.getText(), txtNickname.getText());
+            User user = new User(txtUsername.getText(), txtPassword.getText(), txtNickname.getText());
+            getImageRandom(user);
             showAlert(Alert.AlertType.CONFIRMATION, grid.getScene().getWindow(), "Registration Successful!", "Welcome " + txtUsername.getText());
             new WelcomeMenu().start();
+        }
+    }
+
+    private void getImageRandom(User user) {
+        Random random = new Random();
+        int number = random.nextInt(29);
+        number += 1;
+        String from = Objects.requireNonNull(this.getClass().getResource("/models/UserImages/"+number + ".png")).getPath();
+        String to = Objects.requireNonNull(this.getClass().getResource("/models/Images/1.png")).getPath();
+        try{
+            BufferedImage bi = ImageIO.read(new File(from));
+            ImageIO.write(bi, "png", new File(user.getUsername()+".png"));
+            System.out.println("Copied!");
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
