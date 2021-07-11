@@ -12,8 +12,8 @@ public class Regex {
     public static String userLogin = "user login (?<group1>(--password|-p) (?<password>\\S+) (--username|-u) (?<username>\\S+))|(?<group2>(--username|-u) (?<username2>\\S+) (--password|-p) (?<password2>\\S+))";
     public static String userLogout = "^user logout$";
     public static String scoreBoardShow = "^scoreboard show$";
-    public static String changeNickname = "^profile change (--nickname|-n) (?<nickname>\\S+)$";
-    public static String changePassword = "^profile change (--password|-p) (--current|-c) (?<curr>\\S+) (--new|-n) (?<new>\\S+)$";
+    public static String changeNickname = "profile change (--nickname|-n) (?<nickname>\\S+)";
+    public static String changePassword = "profile change (--password|-p) (--current|-c) (?<curr>\\S+) (--new|-n) (?<new>\\S+)";
     public static String cardShow = "^card show (.+)$";
     public static String deckCreate = "^deck create (.+)$";
     public static String deckDelete = "^deck delete (.+)$";
