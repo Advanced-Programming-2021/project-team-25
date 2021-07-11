@@ -48,8 +48,17 @@ public class API{
             return controller.getUserToJson(command);
         } else if (command.startsWith("get currDecks")) {
             return controller.getDecksOfUser(command);
-        } else if(command.startsWith("logout"))
+        } else if(command.startsWith("logout")) {
             return controller.logoutUSer(command);
+        }
+        //in deck menu
+        else if(command.startsWith("addCardToSide")){
+            return controller.addCardToSideDeck(command);
+        } else if(command.startsWith("addCardToMain")){
+            return controller.addCardToMainDeck(command);
+        } else if(command.startsWith("addNewDeck")){
+            return controller.addNewDeck(command);
+        }
         return "";
     }
 

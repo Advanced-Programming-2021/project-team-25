@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import controllers.Constants.Initialize;
 import controllers.Database.DataBase;
 import controllers.Regex;
+import controllers.menues.DeckMenu;
 import models.Deck;
 import models.User;
 
@@ -189,5 +190,72 @@ public class Controller {
             return UserInterface.printResponse("success","logout successfully");
         }
         else return "error description=\"token not valid\"";
+    }
+
+    public Object addCardToSideDeck(String command) {
+        Matcher matcher = Regex.getMatcher(command,"addCardToSide --cardName (.+) --deckName (.+) --token (.+)");
+        if(matcher.find()){
+            String token = matcher.group(3);
+            String deckName = matcher.group(2);
+            String cardName = matcher.group(1);
+            if(loggedInUsers.containsKey(token)){
+                User user = getUSerByToken(token);
+                Deck deck = Deck.getDeckByName(deckName);
+                if(Objects.isNull(deck) || !deck.getOwnerName().equals(user.getUsername()))
+                    return UserInterface.printResponse("error","deck not found or Deck is not yours!");
+                else{
+                    String result = DeckMenu.getInstance(user).addCardToSide(cardName, deck.getDeckName());
+                    if(result.contains("successfully"))
+                        return UserInterface.printResponse("success",result);
+                    else
+                        return UserInterface.printResponse("error",result);
+                }
+            }else
+                return "error description=\"token not valid\"";
+        }else
+            return "error description=\"command not found\"";
+    }
+
+    public Object addCardToMainDeck(String command) {
+        Matcher matcher = Regex.getMatcher(command,"addCardToMain --cardName (.+) --deckName (.+) --token (.+)");
+        if(matcher.find()){
+            String token = matcher.group(3);
+            String deckName = matcher.group(2);
+            String cardName = matcher.group(1);
+            if(loggedInUsers.containsKey(token)){
+                User user = getUSerByToken(token);
+                Deck deck = Deck.getDeckByName(deckName);
+                if(Objects.isNull(deck) || !deck.getOwnerName().equals(user.getUsername()))
+                    return UserInterface.printResponse("error","deck not found or Deck is not yours!");
+                else{
+                    String result = DeckMenu.getInstance(user).addCard(cardName, deck.getDeckName());
+                    if(result.contains("successfully"))
+                        return UserInterface.printResponse("success",result);
+                    else
+                        return UserInterface.printResponse("error",result);
+                }
+            }else
+                return "error description=\"token not valid\"";
+        }else
+            return "error description=\"command not found\"";
+    }
+
+    public Object addNewDeck(String command) {
+        Matcher matcher = Regex.getMatcher(command,"addNewDeck --deckName (.+) --token (.+)");
+        if(matcher.find()){
+            String token = matcher.group(2);
+            String deckName = matcher.group(1);
+            if(loggedInUsers.containsKey(token)){
+                User user = getUSerByToken(token);
+                String result = DeckMenu.getInstance(user).createDeck(deckName);
+                if (result.contains("successfully"))
+                    return UserInterface.printResponse("success", result);
+                else
+                    return UserInterface.printResponse("error", result);
+
+            }else
+                return "error description=\"token not valid\"";
+        }else
+            return "error description=\"command not found\"";
     }
 }
