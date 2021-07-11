@@ -35,7 +35,7 @@ public class API{
         }
     }
 
-    String process(String command) {
+    Object process(String command) {
         if (command.startsWith("user create")) {
             return controller.createNewUser(command);
         } else if (command.startsWith("user login")) {
