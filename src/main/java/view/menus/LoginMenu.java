@@ -1,10 +1,12 @@
 package view.menus;
 
+import com.google.gson.Gson;
 import controllers.ProgramController;
 import controllers.Regex;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
+import models.Deck;
 import models.User;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -92,8 +94,25 @@ public class LoginMenu{
             }
             //get curr User
             ProgramController.currUser = SendReceiveData.getCurrUserFromServer();
+            //get curr Decks
+            parseDecks(Objects.requireNonNull(SendReceiveData.getDecksOfUser()));
         }
     }
+
+    private void parseDecks (String decks){
+        //
+        System.out.println("^^^^^^^^^^^^^^" + decks);
+        //
+        Gson gson = new Gson();
+        if (!decks.equals("")) {
+            String[] myDecksArray = decks.split("&&&");
+            for (String s : myDecksArray) {
+                Deck deck = gson.fromJson(s, Deck.class);
+                Deck.allDecks.add(deck);
+            }
+        }
+    }
+
 
     private void showAlert(Window owner, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
