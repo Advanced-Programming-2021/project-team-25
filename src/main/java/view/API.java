@@ -1,5 +1,7 @@
 package view;
 
+import controllers.Constants.Initialize;
+import controllers.Database.DataBase;
 import controllers.Regex;
 
 import java.io.IOException;
@@ -43,6 +45,11 @@ public class API{
         } else if (command.startsWith("profile change --password")) {
             return controller.changPass(command);
         } else if (command.startsWith("initUserList")){
+            try {
+                DataBase.loadCards();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
             return controller.initUserList();
         } else if (command.startsWith("initDeckList")){
             return controller.initDeckList();
