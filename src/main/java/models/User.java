@@ -1,17 +1,9 @@
 package models;
 
 import controllers.Database.DataBase;
-
-import java.awt.*;
-import java.awt.image.BufferedImage;
 import java.io.*;
-import java.net.URL;
-import java.nio.file.*;
 import java.util.ArrayList;
 import java.util.Objects;
-import java.util.Random;
-
-import javax.imageio.ImageIO;
 
 public class User implements Serializable {
     private static ArrayList<User> users = new ArrayList<>();
@@ -29,25 +21,8 @@ public class User implements Serializable {
         this.password = password;
         this.nickName = nickname;
         this.isLoggedIn = true; //When a User created by default be logged in
-        getImageRandom();
         users.add(this);
         DataBase.saveTheUserList(users);
-    }
-
-    private void getImageRandom() {
-        Random random = new Random();
-        int number = random.nextInt(29);
-        number += 1;
-        String from = Objects.requireNonNull(this.getClass().getResource("/models/UserImages/"+number + ".png")).getPath();
-        String to = Objects.requireNonNull(this.getClass().getResource("/models/Images/1.png")).getPath();
-        try{
-            //BufferedImage bi = ImageIO.read(new File(from));
-            //ImageIO.write(bi, "png", new File("asqar.png"));
-            Files.copy(Path.of(from), Path.of(to.replace("1.png", this.username+".png")));
-            System.out.println("Copied!");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public User(String username , String nickName , int score){
