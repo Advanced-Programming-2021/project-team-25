@@ -7,10 +7,7 @@ import controllers.Regex;
 import models.Deck;
 import models.User;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -130,13 +127,13 @@ public class Controller {
 
 
     public String initUserList (){
-        //Initialize.initUserList();
+        Initialize.initUserList();
         return "success description=\"successfully initiated users\"";
     }
 
 
     public String initDeckList (){
-        //Initialize.initDeckList();
+        Initialize.initDeckList();
         return "success description=\"successfully initiated decks\"";
     }
 
@@ -168,20 +165,18 @@ public class Controller {
     }
 
 
-    public String getDecksOfUser(String command) {
-        Gson gson = new Gson();
+    public Object getDecksOfUser(String command) {
+        ArrayList<Deck> decks = new ArrayList<>();
         Matcher matcher = Regex.getMatcher(command, "--token (.+)");
         if (matcher.find()){
             String token = matcher.group(1);
             User user = getUSerByToken(token);
-            String toReturn = "";
             for (int i = 0; i< Deck.allDecks.size(); ++i){
                 if (Deck.allDecks.get(i).getOwnerName().equals(user.getUsername())){
-                    toReturn += gson.toJson(Deck.allDecks.get(i));
-                    toReturn += "&&&";
+                    decks.add(Deck.allDecks.get(i));
                 }
             }
-            return toReturn;
+            return decks;
         }
         else return "error description=\"token not valid\"";
     }
