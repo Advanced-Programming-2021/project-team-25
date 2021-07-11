@@ -158,14 +158,11 @@ public class Controller {
         return !Objects.isNull(User.getUserByNickName(nickname));
     }
 
-    public String getUserToJson(String command) {
+    public Object getUserToJson(String command) {
         Matcher mather = Regex.getMatcher(command,"--token (.+)");
         if(mather.find()){
             String token = mather.group(1);
-            User user = getUSerByToken(token);
-            MyThread.user = user;
-            MyThread.wantToSendObj = true;
-            return "success";
+            return getUSerByToken(token);
         }
         else return UserInterface.printResponse("error","token not valid");
     }

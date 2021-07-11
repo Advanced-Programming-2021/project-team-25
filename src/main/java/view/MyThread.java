@@ -51,23 +51,10 @@ public class MyThread extends Thread{
             String input = null;
             try {
                 input = dataInputStream.readUTF();
-                String result = API.getInstance().process(input);
-                if(!wantToSendObj) {
-                    objectOutputStream.writeObject(result);
-                    objectOutputStream.flush();
-                }
-                else{
-                    objectOutputStream.writeObject(user);
-                    objectOutputStream.flush();
-                    wantToSendObj = false;
-                }
-//                if(!wantToSendObj){
-//                    dataOutputStream.writeUTF(result);
-//                    dataOutputStream.flush();
-//                }
-//                else{
-//                    objectOutputStream.writeObject(user);
-//                }
+                Object result = API.getInstance().process(input);
+                objectOutputStream.writeObject(result);
+                objectOutputStream.flush();
+
             }catch (EOFException eofException){
                 return;
             }catch (IOException e) {
