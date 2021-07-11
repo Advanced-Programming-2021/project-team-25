@@ -3,6 +3,7 @@ package view.menus;
 
 import com.google.gson.Gson;
 import controllers.ProgramController;
+import controllers.Regex;
 import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.control.Label;
@@ -18,6 +19,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 import javafx.application.Application;
 import javafx.event.ActionEvent;
@@ -33,6 +35,7 @@ import javafx.stage.Stage;
 import javafx.scene.image.Image;
 import view.CreateGrid;
 import view.Main;
+import view.SendReceiveData;
 import view.UserInterface;
 
 public class ProfileMenu {
@@ -93,8 +96,13 @@ public class ProfileMenu {
         });
 
         btnChangeNickname.setOnMouseClicked(e->{
-            currUser.setNickName(txtNickname.getText());
-            UserInterface.printResponse("User nickname changed successfully");
+            String nickname = txtNickname.getText();
+            if(nickname.isEmpty() || nickname.isBlank())
+                UserInterface.printResponse("please fill all textFields");
+            //profile change (--nickname|-n) (?<nickname>\S+)
+            String result = SendReceiveData.sendReceiveData("profile change --nickname "+
+                    nickname);
+            checkResult(result);
         });
 
         btnChangePassword.setOnMouseClicked(e->{
@@ -102,14 +110,10 @@ public class ProfileMenu {
             String newPass = txtNewPassword.getText();
             if(currentPass.isEmpty() || currentPass.isBlank() || newPass.isEmpty() || currentPass.isBlank())
                 UserInterface.printResponse("please fill all textFields");
-            else if(!currUser.getPassword().equals(currentPass))
-                UserInterface.printResponse("current password is invalid");
-            else if(currUser.getPassword().equals(newPass))
-                UserInterface.printResponse("new password and old password are same!");
-            else{
-                currUser.setPassword(txtNewPassword.getText());
-                UserInterface.printResponse("password changed successfully!");
-            }
+            String result = SendReceiveData.sendReceiveData("profile change --password --current "+
+                    currentPass+
+                    " --new "+newPass);
+            checkResult(result);
         });
 
         btnUploadImage.setOnMouseClicked(e->{
@@ -123,6 +127,21 @@ public class ProfileMenu {
         stage.setScene(scene);
         stage.centerOnScreen();
         stage.show();
+    }
+
+    private void checkResult(String result) {
+        if (Objects.isNull(result) || result.isBlank() || result.isEmpty())
+            LoginMenu.showAlert(null, "An Error occurred");
+        else if (result.startsWith("error")) {
+            Matcher matcherDesc = Regex.getMatcher(result, "description=\"(.+)\"");
+            if (matcherDesc.find())
+                LoginMenu.showAlert(null, matcherDesc.group(1));
+        } else if (result.startsWith("success")) {
+            Matcher matcherDesc = Regex.getMatcher(result, "description=\"(.+)\"");
+            if (matcherDesc.find()) {
+                LoginMenu.showAlert(null, matcherDesc.group(1));
+            }
+        }
     }
 
     public class FileChooserSample {
