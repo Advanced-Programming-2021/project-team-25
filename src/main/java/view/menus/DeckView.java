@@ -23,6 +23,7 @@ import models.Deck;
 import models.User;
 import view.CreateGrid;
 import view.Main;
+import view.SendReceiveData;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -97,7 +98,8 @@ public class DeckView {
 
         Button addDeckButton = new Button("Add New Deck");
         addDeckButton.setOnAction(event -> {
-            showAlert(grid.getScene().getWindow(), "Add New Deck", DeckMenu.getInstance(currUser).createDeck(deckName.getText()));
+            showAlert(grid.getScene().getWindow(), "Add New Deck",
+                    SendReceiveData.sendReceiveData("addNewDeck --deckName " + deckName.getText()));
             DataBase.storeDecks(allDecks);
             DataBase.saveTheUserList(User.getUsers());
             start();

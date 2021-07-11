@@ -99,7 +99,6 @@ public class ProfileMenu {
             String nickname = txtNickname.getText();
             if(nickname.isEmpty() || nickname.isBlank())
                 UserInterface.printResponse("please fill all textFields");
-            //profile change (--nickname|-n) (?<nickname>\S+)
             String result = SendReceiveData.sendReceiveData("profile change --nickname "+
                     nickname);
             checkResult(result);

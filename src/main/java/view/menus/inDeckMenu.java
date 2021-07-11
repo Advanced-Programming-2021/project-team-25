@@ -25,6 +25,7 @@ import models.CardStufs.Type;
 import models.Deck;
 import models.User;
 import view.Main;
+import view.SendReceiveData;
 
 import java.util.HashMap;
 import java.util.Objects;
@@ -148,7 +149,8 @@ public class inDeckMenu {
                 "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
                 "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
         button1.setOnAction(actionEvent -> {
-            showAlert(vBox.getScene().getWindow(), "add Card To Main Deck", DeckMenu.getInstance(user).addCard(cardName, deck.getDeckName()));
+            showAlert(vBox.getScene().getWindow(), "add Card To Main Deck",
+                    SendReceiveData.sendReceiveData("addCardToMain --cardName "+cardName+" --deckName "+deck.getDeckName()));
             DataBase.storeDecks(allDecks);
             DataBase.saveTheUserList(User.getUsers());
             new inDeckMenu(deck,user).start();
@@ -161,7 +163,8 @@ public class inDeckMenu {
                 "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
                 "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
         button2.setOnAction(actionEvent -> {
-            showAlert(vBox.getScene().getWindow(), "add Card To Side Deck", DeckMenu.getInstance(user).addCardToSide(cardName, deck.getDeckName()));
+            showAlert(vBox.getScene().getWindow(), "add Card To Side Deck",
+                    SendReceiveData.sendReceiveData("addCardToSide --cardName "+cardName+" --deckName "+deck.getDeckName()));
             DataBase.storeDecks(allDecks);
             DataBase.saveTheUserList(User.getUsers());
             new inDeckMenu(deck,user).start();
