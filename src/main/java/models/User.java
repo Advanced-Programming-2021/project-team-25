@@ -43,14 +43,12 @@ public class User implements Serializable {
         try{
             //BufferedImage bi = ImageIO.read(new File(from));
             //ImageIO.write(bi, "png", new File("asqar.png"));
-            Files.copy(Path.of(from), Path.of(to.replace("1.png", "asqar.png")));
+            Files.copy(Path.of(from), Path.of(to.replace("1.png", this.username+".png")));
             System.out.println("Copied!");
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
-
-
 
     public User(String username , String nickName , int score){
         this.username = username;
