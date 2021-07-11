@@ -20,6 +20,7 @@ import view.Main;
 import view.SendReceiveData;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
@@ -94,24 +95,16 @@ public class LoginMenu{
                 SendReceiveData.token = matcherDesc.group(1);
                 //get curr User
                 SendReceiveData.getCurrUserFromServer();
+                //get curr Decks
+                parseDecks((ArrayList<Deck>)SendReceiveData.getDecksOfUser());
 
                 new MainMenu().start();
             }
         }
     }
 
-    private void parseDecks (String decks){
-        //
-        System.out.println("^^^^^^^^^^^^^^" + decks);
-        //
-        Gson gson = new Gson();
-        if (!decks.equals("")) {
-            String[] myDecksArray = decks.split("&&&");
-            for (String s : myDecksArray) {
-                Deck deck = gson.fromJson(s, Deck.class);
-                Deck.allDecks.add(deck);
-            }
-        }
+    private void parseDecks (ArrayList<Deck> decks){
+        Deck.allDecks.addAll(decks);
     }
 
 

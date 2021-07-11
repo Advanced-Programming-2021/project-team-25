@@ -5,13 +5,7 @@ import models.User;
 
 import java.io.*;
 import java.net.Socket;
-import java.nio.file.Paths;
-import java.util.Map;
 
-import com.google.gson.*;
-import com.google.gson.reflect.TypeToken;
-import view.menus.MainMenu;
-import view.menus.ProfileMenu;
 
 public class SendReceiveData {
     public static String token = "";
@@ -56,12 +50,12 @@ public class SendReceiveData {
     }
 
 
-    public static String getDecksOfUser(){
+    public static Object getDecksOfUser(){
         try {
             dataOutputStream.writeUTF("get currDecks --token " + token);
             dataOutputStream.flush();
-            return dataInputStream.readUTF();
-        } catch (IOException e) {
+            return objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
         }
