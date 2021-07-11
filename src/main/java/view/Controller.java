@@ -180,4 +180,14 @@ public class Controller {
         }
         else return "error description=\"token not valid\"";
     }
+
+    public Object logoutUSer(String command) {
+        Matcher matcher = Regex.getMatcher(command, "--token (.+)");
+        if (matcher.find()){
+            String token = matcher.group(1);
+            loggedInUsers.remove(token);
+            return UserInterface.printResponse("success","logout successfully");
+        }
+        else return "error description=\"token not valid\"";
+    }
 }
