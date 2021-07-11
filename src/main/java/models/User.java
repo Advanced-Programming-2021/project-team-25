@@ -11,7 +11,6 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
-import javax.imageio.ImageIO;
 
 public class User implements Serializable {
     private static ArrayList<User> users = new ArrayList<>();

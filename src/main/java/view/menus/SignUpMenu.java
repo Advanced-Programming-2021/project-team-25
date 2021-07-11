@@ -73,6 +73,7 @@ public class SignUpMenu {
     }
 
     private void signupFunc(GridPane grid, TextField txtUsername, TextField txtNickname, PasswordField txtPassword) {
+
         if(User.getUserByUsername(txtUsername.getText()) != null)
             showAlert(Alert.AlertType.INFORMATION, grid.getScene().getWindow(), "Form Error!", "There is a user with this username");
         else if(User.getUserByNickName(txtNickname.getText()) != null)
