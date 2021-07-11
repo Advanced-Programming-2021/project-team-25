@@ -1,5 +1,6 @@
 package view;
 
+import com.google.gson.Gson;
 import controllers.Constants.Initialize;
 import controllers.Regex;
 import models.User;
@@ -136,6 +137,14 @@ public class Controller {
         return "success description=\"successfully initiated decks\"";
     }
 
+    public boolean checkToken(String command) {
+        Matcher mather = Regex.getMatcher(command,"--token (.+)");
+        if(mather.find()){
+            String token = mather.group(1);
+            return loggedInUsers.containsKey(token);
+        }
+        else return false;
+    }
 
 
     private static boolean isExistUsername(String username){
@@ -144,5 +153,16 @@ public class Controller {
 
     private static boolean isExistNickname(String nickname){
         return !Objects.isNull(User.getUserByNickName(nickname));
+    }
+
+    public String getUserToJson(String command) {
+        Matcher mather = Regex.getMatcher(command,"--token (.+)");
+        if(mather.find()){
+            String token = mather.group(1);
+            User user = getUSerByToken(token);
+            Gson gson = new Gson();
+            return gson.toJson(user);
+        }
+        else return UserInterface.printResponse("error","token not valid");
     }
 }

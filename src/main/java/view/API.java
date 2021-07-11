@@ -1,9 +1,12 @@
 package view;
 
+import controllers.Regex;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketException;
+import java.util.regex.Matcher;
 
 public class API{
 
@@ -43,10 +46,12 @@ public class API{
             return controller.initUserList();
         } else if (command.startsWith("initDeckList")){
             return controller.initDeckList();
-        } else if (command.startsWith("getHelp")) {
+        } else if (command.startsWith("get currUser")) {
+            return controller.getUserToJson(command);
         }
         return "";
     }
+
 
     public Socket getSocket() {
         return socket;
