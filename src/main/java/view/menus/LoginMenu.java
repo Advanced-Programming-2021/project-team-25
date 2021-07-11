@@ -1,13 +1,10 @@
 package view.menus;
 
-import com.google.gson.Gson;
-import controllers.ProgramController;
 import controllers.Regex;
 import javafx.scene.ImageCursor;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import models.Deck;
-import models.User;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
@@ -19,12 +16,10 @@ import view.CreateGrid;
 import view.Main;
 import view.SendReceiveData;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
-import static view.SendReceiveData.dataOutputStream;
 
 public class LoginMenu{
 

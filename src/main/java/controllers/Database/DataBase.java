@@ -31,9 +31,7 @@ public class DataBase {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        Gson gson = new Gson();
-        String json = gson.toJson(ProgramController.currUser);
-        SendReceiveData.sendReceiveData("saveTheUserList " + json + " ");
+        SendReceiveData.sendReceiveData("saveTheUserList");
     }
 
 //    public static ArrayList<User> loadTheList() {
@@ -61,7 +59,7 @@ public class DataBase {
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        SendReceiveData.sendReceiveData("storeDecks ");
+        SendReceiveData.sendReceiveData("storeDecks");
     }
 
 //    static public ArrayList<Deck> restoreDecks(){
