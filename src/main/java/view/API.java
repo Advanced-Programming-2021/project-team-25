@@ -21,7 +21,7 @@ public class API{
     }
     public void run() {
         try {
-            ServerSocket serverSocket = new ServerSocket(7185);
+            ServerSocket serverSocket = new ServerSocket(7184);
             while (true) {
                 Socket socket = serverSocket.accept();
                 MyThread myThread = new MyThread(serverSocket, socket);
@@ -45,11 +45,6 @@ public class API{
         } else if (command.startsWith("profile change --password")) {
             return controller.changPass(command);
         } else if (command.startsWith("initUserList")){
-            try {
-                DataBase.loadCards();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
             return controller.initUserList();
         } else if (command.startsWith("initDeckList")){
             return controller.initDeckList();
