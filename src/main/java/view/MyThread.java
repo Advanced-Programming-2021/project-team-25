@@ -45,7 +45,6 @@ public class MyThread extends Thread{
             try {
                 input = dataInputStream.readUTF();
                 String result = API.getInstance().process(input);
-                if (result.equals("")) break;
                 dataOutputStream.writeUTF(result);
                 dataOutputStream.flush();
             }catch (EOFException eofException){
