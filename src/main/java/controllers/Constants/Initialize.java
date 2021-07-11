@@ -27,7 +27,7 @@ public class Initialize {
     }
 
     public static void initUserList(){
-        String result = SendReceiveData.sendReceiveData("initUserList ");
+        String result = SendReceiveData.sendReceiveData("initUserList");
         assert result != null;
         if (result.startsWith("success") && User.getUserByUsername("admin") == null){
             makeAI();
@@ -135,6 +135,6 @@ public class Initialize {
     }
 
     public static void initDeckList(){
-        SendReceiveData.sendReceiveData("initDeckList ");
+        SendReceiveData.sendReceiveData("initDeckList");
     }
 }
