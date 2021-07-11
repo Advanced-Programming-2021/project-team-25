@@ -115,7 +115,7 @@ public class LoginMenu{
     }
 
 
-    private void showAlert(Window owner, String message) {
+    public static void showAlert(Window owner, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle("Form Error!");
         alert.setHeaderText(null);

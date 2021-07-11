@@ -3,6 +3,7 @@ package view.menus;
 import com.google.gson.Gson;
 import controllers.Battelfield.Battlefield;
 import controllers.ProgramController;
+import controllers.Regex;
 import javafx.scene.ImageCursor;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -17,6 +18,9 @@ import models.User;
 import view.*;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
+
+import static view.menus.LoginMenu.showAlert;
 
 public class MainMenu {
     public static Scene mainMenuScene;
@@ -78,7 +82,20 @@ public class MainMenu {
         grid.add(ImportExportBtn,0,6);
 
         Button LogoutBtn = new Button("Logout");
-        LogoutBtn.setOnAction(actionEvent -> new WelcomeMenu().start());
+        LogoutBtn.setOnAction(actionEvent -> {
+            String result = SendReceiveData.sendReceiveData("logout");
+            if(Objects.isNull(result) || result.isBlank() || result.isEmpty())
+                showAlert(grid.getScene().getWindow(), "An Error occurred");
+            else if(result.startsWith("error")){
+                Matcher matcherDesc = Regex.getMatcher(result,"description=\"(.+)\"");
+                if(matcherDesc.find())
+                    showAlert(grid.getScene().getWindow(), matcherDesc.group(1));
+            }
+            else if(result.startsWith("success")) {
+                showAlert(grid.getScene().getWindow(), "Logout successfully!");
+            }
+            new WelcomeMenu().start();
+        });
         grid.add(LogoutBtn,0,7);
     }
 
