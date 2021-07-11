@@ -53,4 +53,16 @@ public class SendReceiveData {
         }
     }
 
+
+    public static String getDecksOfUser(){
+        try {
+            dataOutputStream.writeUTF("get currDecks --token " + token);
+            dataOutputStream.flush();
+            return dataInputStream.readUTF();
+        } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
