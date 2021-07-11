@@ -1,21 +1,23 @@
 package view;
 
+import controllers.ProgramController;
 import models.User;
 
-import java.io.DataInputStream;
-import java.io.DataOutputStream;
-import java.io.IOException;
+import java.io.*;
 import java.net.Socket;
 import java.nio.file.Paths;
+import java.util.Map;
+
 import com.google.gson.*;
 import com.google.gson.reflect.TypeToken;
+import view.menus.MainMenu;
+import view.menus.ProfileMenu;
 
 public class SendReceiveData {
     public static String token = "";
-
-    private static Socket socket;
-    private static DataInputStream dataInputStream;
-    private static DataOutputStream dataOutputStream;
+    public static Socket socket;
+    public static DataInputStream dataInputStream;
+    public static DataOutputStream dataOutputStream;
 
     public static void initializeNetwork() {
         try {
@@ -28,7 +30,7 @@ public class SendReceiveData {
     }
     public static String sendReceiveData(String command){
         try {
-            dataOutputStream.writeUTF(command + "--token " + token);
+            dataOutputStream.writeUTF(command + " --token " + token);
             dataOutputStream.flush();
             return dataInputStream.readUTF();
         } catch (IOException x) {
@@ -36,15 +38,18 @@ public class SendReceiveData {
             return null;
         }
     }
-    public static User getCurrUserFromServer(){
+    public static void getCurrUserFromServer(){
         try {
-            dataOutputStream.writeUTF("get currUser --token " + token);
-            dataOutputStream.flush();
-            Gson gson = new Gson();
-            return gson.fromJson(dataInputStream.readUTF(),User.class);
-        } catch (IOException e) {
+            // get the input stream from the connected socket
+            InputStream inputStream = socket.getInputStream();
+            // create a DataInputStream so we can read data from it.
+            ObjectInputStream objectInputStream = new ObjectInputStream(inputStream);
+            ProgramController.currUser = (User) objectInputStream.readObject();
+//            dataOutputStream.writeUTF("get currUser --token " + token);
+//            dataOutputStream.flush();
+//            return new Gson().fromJson(dataInputStream.readUTF(),User.class);
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-            return null;
         }
     }
 

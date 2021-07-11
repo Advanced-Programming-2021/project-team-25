@@ -1,5 +1,6 @@
 package view.menus;
 
+import com.google.gson.Gson;
 import controllers.ProgramController;
 import controllers.Regex;
 import javafx.scene.ImageCursor;
@@ -17,8 +18,11 @@ import view.CreateGrid;
 import view.Main;
 import view.SendReceiveData;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.regex.Matcher;
+
+import static view.SendReceiveData.dataOutputStream;
 
 public class LoginMenu{
 
@@ -87,11 +91,11 @@ public class LoginMenu{
             Matcher matcherDesc = Regex.getMatcher(result,"description=\"(.+)\"");
             if(matcherDesc.find()) {
                 SendReceiveData.token = matcherDesc.group(1);
-                ProgramController.currUser = User.getUserByUsername(txtUsername.getText());
+                //get curr User
+                SendReceiveData.getCurrUserFromServer();
+
                 new MainMenu().start();
             }
-            //get curr User
-            ProgramController.currUser = SendReceiveData.getCurrUserFromServer();
         }
     }
 
