@@ -44,6 +44,7 @@ public class SendReceiveData {
             dataOutputStream.writeUTF("get currUser"+ " --token " + token);
             dataOutputStream.flush();
             ProgramController.currUser = (User) objectInputStream.readObject();
+            User.getUsers().add(ProgramController.currUser);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
         }

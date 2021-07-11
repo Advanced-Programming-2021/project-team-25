@@ -17,6 +17,7 @@ import javafx.stage.Window;
 import models.Card;
 import models.CardStufs.Type;
 import models.User;
+import view.SendReceiveData;
 
 import java.util.*;
 import java.util.regex.Matcher;
@@ -281,6 +282,9 @@ class ShowCard{
                                 public void handle(ActionEvent actionEvent) {
                                     String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
                                     showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
+                                    if (response.startsWith("card")){
+                                        SendReceiveData.sendReceiveData("card buy " + cardsName);
+                                    }
                                 }
                             });
                         }
@@ -575,6 +579,9 @@ class ShowAllCards{
                                 public void handle(ActionEvent actionEvent) {
                                     String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
                                     showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
+                                    if (response.startsWith("card")){
+                                        SendReceiveData.sendReceiveData("card buy " + name);
+                                    }
                                     ShowAllCards showAllCards = new ShowAllCards();
                                     showAllCards.username = username;
                                     try {
