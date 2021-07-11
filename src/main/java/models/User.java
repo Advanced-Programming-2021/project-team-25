@@ -22,7 +22,8 @@ public class User implements Serializable {
         this.nickName = nickname;
         this.isLoggedIn = true; //When a User created by default be logged in
         users.add(this);
-        DataBase.saveTheUserList(users);
+        if (users.size() > 1)
+            DataBase.saveTheUserList(users);
     }
 
     public User(String username , String nickName , int score){

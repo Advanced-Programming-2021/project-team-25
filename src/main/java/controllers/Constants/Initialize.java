@@ -126,8 +126,10 @@ public class Initialize {
 
 
             user.setActiveDeck(currDeck);
-            DataBase.saveTheUserList(User.getUsers());
-            DataBase.storeDecks(allDecks);
+            if (User.getUsers().size() > 1)
+                DataBase.saveTheUserList(User.getUsers());
+            if (allDecks.size() > 0)
+                DataBase.storeDecks(allDecks);
         }
         user.setActiveDeck(currDeck);
     }
