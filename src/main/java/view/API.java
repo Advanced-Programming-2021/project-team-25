@@ -68,6 +68,14 @@ public class API{
             return controller.addCardToMainDeck(command);
         } else if(command.startsWith("addNewDeck")){
             return controller.addNewDeck(command);
+        } else if(command.startsWith("deleteDeck")){
+            return controller.deleteDeck(command);
+        } else if(command.startsWith("setActive")){
+            return controller.setActiveDeck(command);
+        } else if(command.startsWith("removeCardFromSide")){
+            return controller.removeCardDeck(command);
+        } else if(command.startsWith("removeCardFromMain")){
+            return controller.removeCardDeck(command);
         }
         //in shop menu
         else if (command.startsWith("card buy")){

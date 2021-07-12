@@ -265,7 +265,88 @@ public class Controller {
         }else
             return "error description=\"command not found\"";
     }
+    public Object deleteDeck(String command) {
+        Matcher matcher = Regex.getMatcher(command,"deleteDeck --deckName (.+) --token (.+)");
+        if(matcher.find()){
+            String token = matcher.group(2);
+            String deckName = matcher.group(1);
+            User user = getUSerByToken(token);
+            Deck deck = Deck.getDeckByName(deckName);
+            if(!Objects.isNull(user)){
+                if (Objects.isNull(deck) || !deck.getOwnerName().equals(user.getUsername()))
+                    return UserInterface.printResponse("error", "deck not found or Deck is not yours!");
+                else {
+                    String result = DeckMenu.getInstance(user).deleteDeck(deckName);
+                    if (result.contains("successfully")) {
+                        DataBase.storeDecks(Deck.allDecks);
+                        return UserInterface.printResponse("success", result);
+                    } else
+                        return UserInterface.printResponse("error", result);
+                }
+            }
+            else
+                return "error description=\"token not valid\"";
+        }else
+            return "error description=\"command not found\"";
+    }
+    public Object setActiveDeck(String command) {
+        Matcher matcher = Regex.getMatcher(command,"setActive --deckName (.+) --token (.+)");
+        if(matcher.find()){
+            String token = matcher.group(2);
+            String deckName = matcher.group(1);
+            User user = getUSerByToken(token);
+            Deck deck = Deck.getDeckByName(deckName);
+            if(!Objects.isNull(user)){
+                if (Objects.isNull(deck) || !deck.getOwnerName().equals(user.getUsername()))
+                    return UserInterface.printResponse("error", "deck not found or Deck is not yours!");
+                else {
+                    String result = DeckMenu.getInstance(user).setActive(deckName);
+                    if (result.contains("successfully")) {
+                        DataBase.storeDecks(Deck.allDecks);
+                        return UserInterface.printResponse("success", result);
+                    } else
+                        return UserInterface.printResponse("error", result);
+                }
+            }
+            else
+                return "error description=\"token not valid\"";
+        }else
+            return "error description=\"command not found\"";
+    }
 
+    public Object removeCardDeck(String command) {
+        Matcher matcher = Regex.getMatcher(command,"(removeCardFromSide|removeCardFromMain) --cardName (.+) --deckName (.+) --token (.+)");
+        if(matcher.find()){
+            String token = matcher.group(4);
+            String deckName = matcher.group(3);
+            String cardName = matcher.group(2);
+            String type = matcher.group(1);
+            User user = getUSerByToken(token);
+            Deck deck = Deck.getDeckByName(deckName);
+            if(!Objects.isNull(user)){
+                if (Objects.isNull(deck) || !deck.getOwnerName().equals(user.getUsername()))
+                    return UserInterface.printResponse("error", "deck not found or Deck is not yours!");
+                else if(Objects.isNull(Card.allCards.get(cardName)))
+                    return UserInterface.printResponse("error", "card not found");
+                else {
+                    String result;
+                    if(type.equals("removeCardFromSide"))
+                        result = DeckMenu.getInstance(user).removeCardFromSide(cardName, deck.getDeckName());
+                    else
+                        result = DeckMenu.getInstance(user).removeCard(cardName, deck.getDeckName());
+
+                    if (result.contains("successfully")) {
+                        DataBase.storeDecks(Deck.allDecks);
+                        return UserInterface.printResponse("success", result);
+                    } else
+                        return UserInterface.printResponse("error", result);
+                }
+            }
+            else
+                return "error description=\"token not valid\"";
+        }else
+            return "error description=\"command not found\"";
+    }
 
     public String buyCard (String command){
         Pattern pattern = Pattern.compile("card buy (.+)? --token (.+)?");
@@ -281,4 +362,5 @@ public class Controller {
         }
         return "error description\"mission failed\"";
     }
+
 }
