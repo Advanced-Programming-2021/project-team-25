@@ -7,6 +7,7 @@ module AP {
     requires java.logging;
     requires json.simple;
     requires gson;
+    requires javafx.swing;
     //requires opencv;
 
 
