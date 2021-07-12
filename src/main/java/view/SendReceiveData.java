@@ -101,4 +101,16 @@ public class SendReceiveData {
         }
     }
 
+
+    public static Object getAllDecks (){
+        try {
+            dataOutputStream.writeUTF("get allDecks --token " + token);
+            dataOutputStream.flush();
+            return objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }

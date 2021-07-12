@@ -9,16 +9,15 @@ import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
-import javafx.scene.media.AudioClip;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import view.Main;
 import view.UserInterface;
 
-import java.io.File;
 import java.util.Objects;
 import java.util.Random;
 
@@ -28,10 +27,32 @@ public class CoinTossing{
     private final ImageView coinView = new ImageView();
     private int round;
     private String duelistName;
+    private MediaView mediaView;
 
     public void start(int round, String duelistName) {
         this.round = round;
         this.duelistName = duelistName;
+
+
+        //adding video
+        String path = Objects.requireNonNull(getClass().getResource("/music/coin.mp4")).toExternalForm();
+
+        //Instantiating Media class
+        Media media = new Media(path);
+
+        //Instantiating MediaPlayer class
+        MediaPlayer mediaPlayer = new MediaPlayer(media);
+
+        //Instantiating MediaView class
+        mediaView = new MediaView(mediaPlayer);
+        mediaView.setFitHeight(500);
+        mediaView.setFitWidth(700);
+
+        //by setting this property to true, the Video will be played
+        mediaPlayer.setAutoPlay(true);
+        mediaPlayer.setCycleCount(MediaPlayer.INDEFINITE);
+
+
 
         VBox vBox = new VBox();
         addUIControls(vBox);
@@ -54,17 +75,19 @@ public class CoinTossing{
         Text welcomeText = new Text("Let's Duel");
         welcomeText.setFont(Font.font("tahoma", FontWeight.LIGHT ,25));
 
-        Button loginBtn = new Button("toss a coin");
-        loginBtn.setOnAction(actionEvent -> {
-            AudioClip audioClip = new AudioClip(getClass().getResource("/music/COIN.mp3").toExternalForm());
-            audioClip.play();
-            tossButtonAction();
-        });
+        tossButtonAction();
+
+//        Button loginBtn = new Button("toss a coin");
+//        loginBtn.setOnAction(actionEvent -> {
+//            AudioClip audioClip = new AudioClip(getClass().getResource("/music/COIN.mp3").toExternalForm());
+//            audioClip.play();
+//            tossButtonAction();
+//        });
 
         Button duelBtn = new Button("Start");
         duelBtn.setOnAction(actionEvent -> duel());
 
-        vbox.getChildren().addAll(welcomeText, coinView, loginBtn, duelBtn);
+        vbox.getChildren().addAll(welcomeText, mediaView, duelBtn);
     }
 
     public void tossButtonAction() {
