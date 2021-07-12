@@ -78,11 +78,11 @@ public class ProfileMenu {
 
         Label lblOldPassword = new Label("Old Password");
         TextField txtOldPassword = new TextField();
-        txtNickname.setPromptText("old password...");
+        txtOldPassword.setPromptText("old password...");
 
         Label lblNewPassword = new Label("new Password");
         TextField txtNewPassword = new TextField();
-        txtNickname.setPromptText("new password...");
+        txtNewPassword.setPromptText("new password...");
 
         gridPane.addRow(0,imageViewProfile,btnUploadImage);
         gridPane.addRow(1,lblUser);
@@ -99,9 +99,13 @@ public class ProfileMenu {
             String nickname = txtNickname.getText();
             if(nickname.isEmpty() || nickname.isBlank())
                 UserInterface.printResponse("please fill all textFields");
-            String result = SendReceiveData.sendReceiveData("profile change --nickname "+
-                    nickname);
-            checkResult(result);
+            else {
+                String result = SendReceiveData.sendReceiveData("profile change --nickname "+
+                        nickname);
+                currUser.setNickName(txtNickname.getText());
+                checkResult(result);
+            }
+            runProfileMenu(stage);
         });
 
         btnChangePassword.setOnMouseClicked(e->{
@@ -109,10 +113,16 @@ public class ProfileMenu {
             String newPass = txtNewPassword.getText();
             if(currentPass.isEmpty() || currentPass.isBlank() || newPass.isEmpty() || currentPass.isBlank())
                 UserInterface.printResponse("please fill all textFields");
-            String result = SendReceiveData.sendReceiveData("profile change --password --current "+
-                    currentPass+
-                    " --new "+newPass);
-            checkResult(result);
+            else{
+                String result = SendReceiveData.sendReceiveData("profile change --password --current "+
+                        currentPass+
+                        " --new "+newPass);
+                if(result!= null && result.contains("success")){
+                    currUser.setPassword(txtNewPassword.getText());
+                }
+                checkResult(result);
+            }
+            runProfileMenu(stage);
         });
 
         btnUploadImage.setOnMouseClicked(e->{
