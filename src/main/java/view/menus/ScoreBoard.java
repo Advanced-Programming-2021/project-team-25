@@ -20,6 +20,7 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import view.SendReceiveData;
 
 import java.util.ArrayList;
 import java.util.Comparator;
@@ -110,7 +111,7 @@ public class ScoreBoard {
 
 
 
-        ArrayList<User> users = User.getUsers();
+        ArrayList<User> users = (ArrayList<User>) SendReceiveData.getAllUsersForScoreboard();
         //compare users
         Comparator<User> orderedUsers = Comparator.comparing(User::getScore).thenComparing(User::getUsername);
         //sorting users
@@ -213,7 +214,7 @@ class ShowAllUsers {
         ArrayList<String> names = new ArrayList<>();
         ArrayList<Integer> scores = new ArrayList<>();
 
-        ArrayList<User> users = User.getUsers();
+        ArrayList<User> users = (ArrayList<User>) SendReceiveData.getAllUsersForScoreboard();
         //compare users
         Comparator<User> orderedUsers = Comparator.comparing(User::getScore).thenComparing(User::getUsername);
         //sorting users
