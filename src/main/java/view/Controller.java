@@ -5,17 +5,22 @@ import controllers.Constants.Initialize;
 import controllers.Database.DataBase;
 import controllers.Regex;
 import controllers.menues.DeckMenu;
+import javafx.scene.image.Image;
 import models.Card;
 import models.Deck;
 import models.User;
 
+import javax.imageio.ImageIO;
+import java.awt.*;
+import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Controller {
     private static HashMap<String, User> loggedInUsers = new HashMap<>();
-
+    private static HashMap<User, BufferedImage> userImages = new HashMap<>();
     private static Controller singleToneClass = null;
 
     public static Controller getInstance() {
@@ -85,7 +90,8 @@ public class Controller {
                 return UserInterface.printResponse("error", "user with nickname " + nickname + " already exist!");
             else {
                 //creating new user
-                new User(username, password, nickname);
+                User user = new User(username, password, nickname);
+                getImageRandom(user);
                 DataBase.saveTheUserList(User.getUsers());
                 // by default user be logged in
                 return "success description=\"" + Responses.USER_CREATE_SUCCESS.getMessage() + "\"";
@@ -94,6 +100,19 @@ public class Controller {
             return "error description=\"" + Responses.INVALID_COMMAND.getMessage() + "\"";
     }
 
+    private void getImageRandom(User user) {
+        Random random = new Random();
+        int number = random.nextInt(29);
+        number += 1;
+        String from = Objects.requireNonNull(this.getClass().getResource("/models/UserImages/"+number + ".png")).getPath();
+        try{
+            BufferedImage image = ImageIO.read(new File(from));
+            userImages.put(user,image);
+            System.out.println("read Image!");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
     public synchronized String loginUser(String command) {
         String username;
         String password;
@@ -353,4 +372,18 @@ public class Controller {
         return "error description\"mission failed\"";
     }
 
+    public Object getUserImage(String command) {
+        Matcher matcher = Regex.getMatcher(command,"getUserImage (.+)");
+        if(matcher.find()){
+            String username = matcher.group(1);
+            for(Map.Entry<User, BufferedImage> set : userImages.entrySet()){
+                if(set.getKey().getUsername().equals(username)){
+                    return set.getValue();
+                }
+            }
+            return "error description=\"image not found!\"";
+        }
+        else
+            return "error description=\"user not found!\"";
+    }
 }

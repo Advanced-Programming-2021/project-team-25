@@ -3,9 +3,12 @@ package view;
 
 import models.User;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 public class MyThread extends Thread{
 
@@ -52,8 +55,21 @@ public class MyThread extends Thread{
             try {
                 input = dataInputStream.readUTF();
                 Object result = API.getInstance().process(input);
-                objectOutputStream.writeObject(result);
-                objectOutputStream.flush();
+                if(result instanceof BufferedImage){
+                    BufferedImage image = (BufferedImage) result;
+
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    ImageIO.write(image, "png", byteArrayOutputStream);
+
+                    byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
+                    outputStream.write(size);
+                    outputStream.write(byteArrayOutputStream.toByteArray());
+                    outputStream.flush();
+                    System.out.println("Flushed: " + System.currentTimeMillis());
+                }else{
+                    objectOutputStream.writeObject(result);
+                    objectOutputStream.flush();
+                }
 
             }catch (EOFException eofException){
                 return;

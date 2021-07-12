@@ -80,6 +80,8 @@ public class API{
         //in shop menu
         else if (command.startsWith("card buy")){
             return controller.buyCard(command);
+        }else if(command.startsWith("getUserImage")){
+            return controller.getUserImage(command);
         }
         return "";
     }

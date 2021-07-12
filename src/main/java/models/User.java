@@ -1,6 +1,9 @@
 package models;
 
 import controllers.Database.DataBase;
+import javafx.scene.image.Image;
+
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Objects;
@@ -15,14 +18,14 @@ public class User implements Serializable {
     public Deck activeDeck;
     public ArrayList<String> cardsBought = new ArrayList<>();
     public int money = 100000;
-
     public User(String username, String password, String nickname) {
         this.username = username;
         this.password = password;
         this.nickName = nickname;
         this.isLoggedIn = true; //When a User created by default be logged in
         users.add(this);
-        DataBase.saveTheUserList(users);
+        if (users.size() > 1)
+            DataBase.saveTheUserList(users);
     }
 
     public User(String username , String nickName , int score){
