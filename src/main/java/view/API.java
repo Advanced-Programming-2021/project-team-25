@@ -60,6 +60,8 @@ public class API{
             return controller.getDecksOfUser(command);
         } else if (command.startsWith("get allUsers")) {
             return User.getUsers();
+        } else if (command.startsWith("get allDecks")) {
+            return Deck.allDecks;
         } else if(command.startsWith("logout")) {
             return controller.logoutUSer(command);
         }
