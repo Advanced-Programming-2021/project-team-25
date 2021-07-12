@@ -40,9 +40,9 @@ public class User implements Serializable {
         String from = Objects.requireNonNull(this.getClass().getResource("/models/UserImages/"+number + ".png")).getPath();
         String to = Objects.requireNonNull(this.getClass().getResource("/models/Images/1.png")).getPath();
         try{
-            //BufferedImage bi = ImageIO.read(new File(from));
-            //ImageIO.write(bi, "png", new File("asqar.png"));
-            Files.copy(Path.of(from), Path.of(to.replace("1.png", "asqar.png")));
+            BufferedImage bi = ImageIO.read(new File(from));
+            ImageIO.write(bi, "png", new File(this.getUsername()+".png"));
+            //Files.copy(Path.of(from), Path.of(to.replace("1.png", "asqar.png")));
             System.out.println("Copied!");
         } catch (Exception e) {
             e.printStackTrace();
