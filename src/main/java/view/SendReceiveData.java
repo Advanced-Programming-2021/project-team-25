@@ -89,4 +89,16 @@ public class SendReceiveData {
         }
     }
 
+
+    public static Object getAllUsersForScoreboard (){
+        try {
+            dataOutputStream.writeUTF("get allUsers --token " + token);
+            dataOutputStream.flush();
+            return objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
 }
