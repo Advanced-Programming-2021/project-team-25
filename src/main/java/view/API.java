@@ -58,6 +58,8 @@ public class API{
             return controller.getUserToJson(command);
         } else if (command.startsWith("get currDecks")) {
             return controller.getDecksOfUser(command);
+        } else if (command.startsWith("get allUsers")) {
+            return User.getUsers();
         } else if(command.startsWith("logout")) {
             return controller.logoutUSer(command);
         }
