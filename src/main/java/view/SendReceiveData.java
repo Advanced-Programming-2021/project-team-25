@@ -1,10 +1,14 @@
 package view;
-
+import javafx.embed.swing.SwingFXUtils;
 import controllers.ProgramController;
+import javafx.scene.image.Image;
 import models.User;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
+import java.nio.ByteBuffer;
 
 
 public class SendReceiveData {
@@ -49,6 +53,29 @@ public class SendReceiveData {
             e.printStackTrace();
         }
     }
+    public static void getUserIMage(User user){
+        try {
+            // get the input stream from the connected socket
+            dataOutputStream.writeUTF("getUserImage "+user.getUsername());
+            dataOutputStream.flush();
+            System.out.println("Reading: " + System.currentTimeMillis());
+
+            byte[] sizeAr = new byte[4];
+            inputStream.read(sizeAr);
+            int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
+
+            byte[] imageAr = new byte[size];
+            inputStream.read(imageAr);
+
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageAr));
+
+            System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
+            ImageIO.write(image, "png", new File(user.getUsername()+".png"));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
 
     public static Object getDecksOfUser(){

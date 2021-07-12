@@ -1,7 +1,6 @@
 package view.menus;
 
 
-import com.google.gson.Gson;
 import controllers.ProgramController;
 import controllers.Regex;
 import javafx.scene.canvas.Canvas;
@@ -12,16 +11,18 @@ import javafx.scene.layout.GridPane;
 import models.User;
 
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.regex.Matcher;
 
-import javafx.application.Application;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
@@ -37,6 +38,8 @@ import view.CreateGrid;
 import view.Main;
 import view.SendReceiveData;
 import view.UserInterface;
+
+import javax.swing.*;
 
 public class ProfileMenu {
     private static ProfileMenu singleToneClass = null;
@@ -58,7 +61,7 @@ public class ProfileMenu {
 
     public void runProfileMenu(Stage stage){
         GridPane gridPane = CreateGrid.createGridPane();
-
+        SendReceiveData.getUserIMage(currUser);
         userImageProfile = new Image("file:"+currUser.getUsername()+".png");
 
         imageViewProfile = new ImageView(userImageProfile);
