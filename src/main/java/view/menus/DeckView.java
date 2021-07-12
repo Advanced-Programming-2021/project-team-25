@@ -98,11 +98,17 @@ public class DeckView {
 
         Button addDeckButton = new Button("Add New Deck");
         addDeckButton.setOnAction(event -> {
-            showAlert(grid.getScene().getWindow(), "Add New Deck",
-                    SendReceiveData.sendReceiveData("addNewDeck --deckName " + deckName.getText()));
-            DataBase.storeDecks(allDecks);
-            DataBase.saveTheUserList(User.getUsers());
-            start();
+            String resultServer =  SendReceiveData.sendReceiveData("addNewDeck --deckName " + deckName.getText());
+            String resultClient = DeckMenu.getInstance(currUser).createDeck(deckName.getText());
+            if(resultClient.contains("success") && resultServer!=null && resultServer.contains("success")) {
+                showAlert(grid.getScene().getWindow(), "Add New Deck", resultClient );
+                DataBase.storeDecks(allDecks);
+                DataBase.saveTheUserList(User.getUsers());
+                start();
+            }
+            else
+                showAlert(grid.getScene().getWindow(), "Add New Deck", "failed! please try again");
+
         });
 
         grid.addRow(i + 4,lblDeck, deckName, addDeckButton);
@@ -137,10 +143,16 @@ public class DeckView {
         star.setFitHeight(50);
         star.setFitWidth(50);
         star.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            showAlert(grid.getScene().getWindow(), "Activate this Deck", DeckMenu.getInstance(currUser).setActive(deck.getDeckName()));
-            DataBase.storeDecks(allDecks);
-            DataBase.saveTheUserList(User.getUsers());
-            start();
+            String resultServer =  SendReceiveData.sendReceiveData("setActive --deckName " + deck.getDeckName());
+            String resultClient = DeckMenu.getInstance(currUser).setActive(deck.getDeckName());
+            if(resultClient.contains("success") && resultServer!=null && resultServer.contains("success")) {
+                showAlert(grid.getScene().getWindow(), "Activate this Deck", resultClient );
+                DataBase.storeDecks(allDecks);
+                DataBase.saveTheUserList(User.getUsers());
+                start();
+            }
+            else
+                showAlert(grid.getScene().getWindow(), "Activate this Deck", "failed! please try again");
         });
 
         Image pencilImage = new Image(Objects.requireNonNull(getClass().getResource("deck/pencil.png")).toExternalForm());
@@ -180,10 +192,16 @@ public class DeckView {
         delete.setFitHeight(50);
         delete.setFitWidth(50);
         delete.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> {
-            showAlert(grid.getScene().getWindow(), "Delete this Deck", DeckMenu.getInstance(currUser).deleteDeck(deck.getDeckName()));
-            DataBase.storeDecks(allDecks);
-            DataBase.saveTheUserList(User.getUsers());
-            start();
+            String resultServer =  SendReceiveData.sendReceiveData("deleteDeck --deckName " + deck.getDeckName());
+            String resultClient = DeckMenu.getInstance(currUser).deleteDeck(deck.getDeckName());
+            if(resultClient.contains("success") && resultServer!=null && resultServer.contains("success")) {
+                showAlert(grid.getScene().getWindow(), "Delete this Deck", resultClient);
+                DataBase.storeDecks(allDecks);
+                DataBase.saveTheUserList(User.getUsers());
+                start();
+            }
+            else
+                showAlert(grid.getScene().getWindow(), "Delete Deck", "failed! please try again");
         });
 
         hbox.getChildren().addAll(star,pencil,eye,delete);

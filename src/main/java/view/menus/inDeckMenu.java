@@ -149,11 +149,16 @@ public class inDeckMenu {
                 "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
                 "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
         button1.setOnAction(actionEvent -> {
-            showAlert(vBox.getScene().getWindow(), "add Card To Main Deck",
-                    SendReceiveData.sendReceiveData("addCardToMain --cardName "+cardName+" --deckName "+deck.getDeckName()));
-            DataBase.storeDecks(allDecks);
-            DataBase.saveTheUserList(User.getUsers());
-            new inDeckMenu(deck,user).start();
+            String resultServer = SendReceiveData.sendReceiveData("addCardToMain --cardName "+cardName+" --deckName "+deck.getDeckName());
+            String resultClient = DeckMenu.getInstance(user).addCard(cardName, deck.getDeckName());
+            if(resultClient.contains("success") && resultServer!=null && resultServer.contains("success")) {
+                showAlert(vBox.getScene().getWindow(), "add Card To Main Deck", resultClient );
+                DataBase.storeDecks(allDecks);
+                DataBase.saveTheUserList(User.getUsers());
+                new inDeckMenu(deck,user).start();
+            }else
+                showAlert(vBox.getScene().getWindow(), "add Card To Main Deck", "failed! please try again");
+
         });
 
         Button button2 = new Button("Side");
@@ -163,11 +168,16 @@ public class inDeckMenu {
                 "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
                 "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
         button2.setOnAction(actionEvent -> {
-            showAlert(vBox.getScene().getWindow(), "add Card To Side Deck",
-                    SendReceiveData.sendReceiveData("addCardToSide --cardName "+cardName+" --deckName "+deck.getDeckName()));
-            DataBase.storeDecks(allDecks);
-            DataBase.saveTheUserList(User.getUsers());
-            new inDeckMenu(deck,user).start();
+            String resultServer = SendReceiveData.sendReceiveData("addCardToSide --cardName "+cardName+" --deckName "+deck.getDeckName());
+            String resultClient = DeckMenu.getInstance(user).addCardToSide(cardName, deck.getDeckName());
+            if(resultClient.contains("success") && resultServer!=null && resultServer.contains("success")) {
+                showAlert(vBox.getScene().getWindow(), "add Card To Side Deck", resultClient);
+                DataBase.storeDecks(allDecks);
+                DataBase.saveTheUserList(User.getUsers());
+                new inDeckMenu(deck,user).start();
+            }
+            else
+                showAlert(vBox.getScene().getWindow(), "add Card To Side Deck", "failed! please try again");
         });
 
         hBox1.getChildren().addAll(label,button1,button2);

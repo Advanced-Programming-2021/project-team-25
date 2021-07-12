@@ -23,6 +23,7 @@ import models.CardStufs.Type;
 import models.Deck;
 import models.User;
 import view.Main;
+import view.SendReceiveData;
 
 import java.util.Objects;
 
@@ -158,8 +159,22 @@ public class ShowDeck {
                 "-fx-background-radius: 30; -fx-background-insets: 0,1,1;" +
                 "-fx-text-fill: black; -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.6) , 3, 0.0 , 0 , 1 );");
         button1.setOnAction(actionEvent -> {
-            if(loc.equals("Main")) showAlert(vBox.getScene().getWindow(), "Delete Card From Main", DeckMenu.getInstance(user).removeCard(cardName,deck.getDeckName()));
-            else showAlert(vBox.getScene().getWindow(), "Delete Card From Side", DeckMenu.getInstance(user).removeCardFromSide(cardName,deck.getDeckName()));
+            if(loc.equals("Main")) {
+                String resultServer =  SendReceiveData.sendReceiveData("removeCardFromMain --cardName "+ cardName +" --deckName " + deck.getDeckName());
+                String resultClient = DeckMenu.getInstance(user).removeCard(cardName, deck.getDeckName());
+                if(resultClient.contains("success") && resultServer!=null && resultServer.contains("success"))
+                    showAlert(vBox.getScene().getWindow(), "Delete Card From Main", resultClient);
+                else
+                    showAlert(vBox.getScene().getWindow(), "Delete Card From Main", "failed! please try again");
+            }
+            else {
+                String resultServer =  SendReceiveData.sendReceiveData("removeCardFromSide --cardName "+ cardName +" --deckName " + deck.getDeckName());
+                String resultClient = DeckMenu.getInstance(user).removeCardFromSide(cardName,deck.getDeckName());
+                if(resultClient.contains("success") && resultServer!=null && resultServer.contains("success"))
+                    showAlert(vBox.getScene().getWindow(), "Delete Card From Side", resultClient);
+                else
+                    showAlert(vBox.getScene().getWindow(), "Delete Card From Side", "failed! please try again");
+            }
             DataBase.storeDecks(allDecks);
             DataBase.saveTheUserList(User.getUsers());
             new DeckView(user).start();
