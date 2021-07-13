@@ -375,6 +375,9 @@ class ShowCard{
                                 @Override
                                 public void handle(ActionEvent actionEvent) {
                                     String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + cardsName);
+                                    if (response.startsWith("card")){
+                                        SendReceiveData.sendReceiveData("card buy " + cardsName);
+                                    }
                                     showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
                                 }
                             });
@@ -632,6 +635,9 @@ class ShowAllCards{
                                     @Override
                                     public void handle(ActionEvent actionEvent) {
                                         String response = ShopMenu.buyCardForGraphic("buy card --username " + username + " --card " + name);
+                                        if (response.startsWith("card")){
+                                            SendReceiveData.sendReceiveData("card buy " + name);
+                                        }
                                         showAlert(Alert.AlertType.INFORMATION, vBox.getScene().getWindow(), "buy card response", response);
                                         ShowAllCards showAllCards = new ShowAllCards();
                                         showAllCards.username = username;

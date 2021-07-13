@@ -15,10 +15,7 @@ import models.AI;
 import models.Deck;
 import models.Duelist;
 import models.User;
-import view.CreateGrid;
-import view.Main;
-import view.Responses;
-import view.UserInterface;
+import view.*;
 
 import java.util.Objects;
 

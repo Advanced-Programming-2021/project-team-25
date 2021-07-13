@@ -24,6 +24,7 @@ import models.CardStufs.Type;
 import models.Deck;
 import models.Duelist;
 import models.User;
+import view.SendReceiveData;
 
 import java.util.Objects;
 import java.util.Optional;
@@ -224,11 +225,15 @@ public class ChangeMainAndSideCards {
                         if (deck.mainDeck.get(i).getName().equalsIgnoreCase(cardName)){
                             card = deck.mainDeck.get(i);
                             deck.mainDeck.remove(i);
+                            //for server
+                            SendReceiveData.sendReceiveData("removeCardFromMain --cardName "+ cardName +" --deckName " + deck.getDeckName());
                             break;
                         }
                     }
                     deck.sideDeck.add(card);
-                    showAlert(Alert.AlertType.INFORMATION, hBox1.getScene().getWindow(), "buy card response", "Card was transferred from main to side successfully.");
+                    //for server
+                    SendReceiveData.sendReceiveData("addCardToSide --cardName "+cardName+" --deckName "+deck.getDeckName());
+                    showAlert(Alert.AlertType.INFORMATION, hBox1.getScene().getWindow(), "change card response", "Card was transferred from main to side successfully.");
                     myStage.stage.close();
                     start();
                 }
@@ -238,11 +243,15 @@ public class ChangeMainAndSideCards {
                         if (deck.sideDeck.get(i).getName().equalsIgnoreCase(cardName)){
                             card = deck.sideDeck.get(i);
                             deck.sideDeck.remove(i);
+                            //for server
+                            SendReceiveData.sendReceiveData("removeCardFromSide --cardName "+ cardName +" --deckName " + deck.getDeckName());
                             break;
                         }
                     }
                     deck.mainDeck.add(card);
-                    showAlert(Alert.AlertType.INFORMATION, hBox1.getScene().getWindow(), "buy card response", "Card was transferred from side to main successfully.");
+                    //for server
+                    SendReceiveData.sendReceiveData("addCardToMain --cardName "+cardName+" --deckName "+deck.getDeckName());
+                    showAlert(Alert.AlertType.INFORMATION, hBox1.getScene().getWindow(), "change card response", "Card was transferred from side to main successfully.");
                     myStage.stage.close();
                     start();
                 }
