@@ -107,6 +107,7 @@ public class MyThread extends Thread{
             System.out.println(objectInputStream.read(sizeAr));
             int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
 
+
             byte[] imageAr = new byte[size];
             objectInputStream.read(imageAr);
 
