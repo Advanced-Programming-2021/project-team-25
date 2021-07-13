@@ -1,6 +1,7 @@
 package view;
 
 
+import controllers.Regex;
 import models.User;
 
 import javax.imageio.ImageIO;
@@ -9,6 +10,7 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.regex.Matcher;
 
 public class MyThread extends Thread{
 
@@ -20,6 +22,8 @@ public class MyThread extends Thread{
     OutputStream outputStream;
     // create an object output stream from the output stream so we can send an object through it
     ObjectOutputStream objectOutputStream;
+    InputStream inputStream;
+    ObjectInputStream objectInputStream;
     public static boolean wantToSendObj = false;
     public static User user;
     public MyThread(ServerSocket serverSocket, Socket socket) {
@@ -28,6 +32,8 @@ public class MyThread extends Thread{
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             outputStream = socket.getOutputStream();
             objectOutputStream = new ObjectOutputStream(outputStream);
+            inputStream = socket.getInputStream();
+            objectInputStream = new ObjectInputStream(inputStream);
             this.socket = socket;
             this.serverSocket = serverSocket;
         } catch (IOException e) {
@@ -51,21 +57,18 @@ public class MyThread extends Thread{
 
     private void processInputData(DataInputStream dataInputStream, DataOutputStream dataOutputStream) {
         while (true) {
-            String input = null;
+            Object input = null;
             try {
-                input = dataInputStream.readUTF();
-                Object result = API.getInstance().process(input);
+                //download means: serve download image and client upload that!
+                //as upload image by server
+                input = objectInputStream.readObject();
+                Object result = null;
+                if(input instanceof String)
+                    result = API.getInstance().process(input);
+                else
+                    result = DownloadImage(input);
                 if(result instanceof BufferedImage){
-                    BufferedImage image = (BufferedImage) result;
-
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    ImageIO.write(image, "png", byteArrayOutputStream);
-
-                    byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
-                    outputStream.write(size);
-                    outputStream.write(byteArrayOutputStream.toByteArray());
-                    outputStream.flush();
-                    System.out.println("Flushed: " + System.currentTimeMillis());
+                    uploadImage((BufferedImage) result);
                 }else{
                     objectOutputStream.writeObject(result);
                     objectOutputStream.flush();
@@ -74,9 +77,49 @@ public class MyThread extends Thread{
             }catch (EOFException eofException){
                 return;
             }catch (IOException e) {
-                System.out.println("Client disconnected");
+                e.printStackTrace();
                 break;
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
             }
         }
+    }
+
+    private void uploadImage(BufferedImage result) throws IOException {
+        BufferedImage image = result;
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(image, "png", byteArrayOutputStream);
+
+        byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
+        outputStream.write(size);
+        outputStream.write(byteArrayOutputStream.toByteArray());
+        outputStream.flush();
+        System.out.println("Flushed: " + System.currentTimeMillis());
+    }
+
+    private Object DownloadImage(Object input){
+
+        System.out.println("Reading: " + System.currentTimeMillis());
+
+        byte[] sizeAr = new byte[4];
+        try {
+            System.out.println(objectInputStream.read(sizeAr));
+            int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
+
+            byte[] imageAr = new byte[size];
+            objectInputStream.read(imageAr);
+
+            BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageAr));
+
+            System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
+            if (Controller.userImages.containsKey(user))
+                Controller.userImages.replace(user, image);
+            else
+                Controller.userImages.put(user, image);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return "success";
     }
 }

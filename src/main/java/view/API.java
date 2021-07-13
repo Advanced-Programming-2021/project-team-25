@@ -35,56 +35,60 @@ public class API{
         }
     }
 
-    Object process(String command) {
-        if (command.startsWith("user create")) {
-            return controller.createNewUser(command);
-        } else if (command.startsWith("user login")) {
-            return controller.loginUser(command);
-        } else if (command.startsWith("profile change --nickname")) {
-            return controller.changeNickname(command);
-        } else if (command.startsWith("profile change --password")) {
-            return controller.changPass(command);
-        } else if (command.startsWith("initUserList")){
-            return controller.initUserList();
-        } else if (command.startsWith("saveTheUserList")){
-            DataBase.saveTheUserList(User.getUsers());
-            return "success description=\"successfully the users list saved\"";
-        } else if (command.startsWith("storeDecks")){
-            DataBase.storeDecks(Deck.allDecks);
-            return "success description=\"successfully the decks list saved\"";
-        } else if (command.startsWith("initDeckList")){
-            return controller.initDeckList();
-        } else if (command.startsWith("get currUser")) {
-            return controller.getUserToJson(command);
-        } else if (command.startsWith("get currDecks")) {
-            return controller.getDecksOfUser(command);
-        } else if (command.startsWith("get allUsers")) {
-            return User.getUsers();
-        } else if(command.startsWith("logout")) {
-            return controller.logoutUSer(command);
+    Object process(Object input) {
+        if(input instanceof String){
+            String command = (String) input;
+            if (command.startsWith("user create")) {
+                return controller.createNewUser(command);
+            } else if (command.startsWith("user login")) {
+                return controller.loginUser(command);
+            } else if (command.startsWith("profile change --nickname")) {
+                return controller.changeNickname(command);
+            } else if (command.startsWith("profile change --password")) {
+                return controller.changPass(command);
+            } else if (command.startsWith("initUserList")){
+                return controller.initUserList();
+            } else if (command.startsWith("saveTheUserList")){
+                DataBase.saveTheUserList(User.getUsers());
+                return "success description=\"successfully the users list saved\"";
+            } else if (command.startsWith("storeDecks")){
+                DataBase.storeDecks(Deck.allDecks);
+                return "success description=\"successfully the decks list saved\"";
+            } else if (command.startsWith("initDeckList")){
+                return controller.initDeckList();
+            } else if (command.startsWith("get currUser")) {
+                return controller.getUserToJson(command);
+            } else if (command.startsWith("get currDecks")) {
+                return controller.getDecksOfUser(command);
+            } else if (command.startsWith("get allUsers")) {
+                return User.getUsers();
+            } else if(command.startsWith("logout")) {
+                return controller.logoutUSer(command);
+            }
+            //in deck menu
+            else if(command.startsWith("addCardToSide")){
+                return controller.addCardToSideDeck(command);
+            } else if(command.startsWith("addCardToMain")){
+                return controller.addCardToMainDeck(command);
+            } else if(command.startsWith("addNewDeck")){
+                return controller.addNewDeck(command);
+            } else if(command.startsWith("deleteDeck")){
+                return controller.deleteDeck(command);
+            } else if(command.startsWith("setActive")){
+                return controller.setActiveDeck(command);
+            } else if(command.startsWith("removeCardFromSide")){
+                return controller.removeCardDeck(command);
+            } else if(command.startsWith("removeCardFromMain")){
+                return controller.removeCardDeck(command);
+            }
+            //in shop menu
+            else if (command.startsWith("card buy")){
+                return controller.buyCard(command);
+            }else if(command.startsWith("getUserImage")){
+                return controller.getUserImage(command);
+            }
         }
-        //in deck menu
-        else if(command.startsWith("addCardToSide")){
-            return controller.addCardToSideDeck(command);
-        } else if(command.startsWith("addCardToMain")){
-            return controller.addCardToMainDeck(command);
-        } else if(command.startsWith("addNewDeck")){
-            return controller.addNewDeck(command);
-        } else if(command.startsWith("deleteDeck")){
-            return controller.deleteDeck(command);
-        } else if(command.startsWith("setActive")){
-            return controller.setActiveDeck(command);
-        } else if(command.startsWith("removeCardFromSide")){
-            return controller.removeCardDeck(command);
-        } else if(command.startsWith("removeCardFromMain")){
-            return controller.removeCardDeck(command);
-        }
-        //in shop menu
-        else if (command.startsWith("card buy")){
-            return controller.buyCard(command);
-        }else if(command.startsWith("getUserImage")){
-            return controller.getUserImage(command);
-        }
+
         return "";
     }
 

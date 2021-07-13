@@ -20,7 +20,7 @@ import java.util.regex.Pattern;
 
 public class Controller {
     private static HashMap<String, User> loggedInUsers = new HashMap<>();
-    private static HashMap<User, BufferedImage> userImages = new HashMap<>();
+    public static HashMap<User, BufferedImage> userImages = new HashMap<>();
     private static Controller singleToneClass = null;
 
     public static Controller getInstance() {
