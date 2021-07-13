@@ -2,7 +2,6 @@ package models;
 
 import controllers.Database.DataBase;
 
-import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
@@ -12,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Objects;
 import java.util.Random;
 
+import javax.imageio.ImageIO;
 
 public class User implements Serializable {
     private static ArrayList<User> users = new ArrayList<>();
@@ -42,8 +42,7 @@ public class User implements Serializable {
         String to = Objects.requireNonNull(this.getClass().getResource("/models/Images/1.png")).getPath();
         try{
             BufferedImage bi = ImageIO.read(new File(from));
-            ImageIO.write(bi, "png", new File(this.getUsername()+".png"));
-            //Files.copy(Path.of(from), Path.of(to.replace("1.png", "asqar.png")));
+            ImageIO.write(bi, "png", new File(this.username+".png"));
             System.out.println("Copied!");
         } catch (Exception e) {
             e.printStackTrace();
