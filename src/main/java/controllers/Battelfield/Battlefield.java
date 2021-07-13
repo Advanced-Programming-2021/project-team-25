@@ -27,6 +27,7 @@ import models.Duelist;
 import models.Monster.CommandKnight;
 import models.Monster.Monster;
 import models.Monster.Scanner;
+import models.SpellAndTrap.AdvancedRitualArt;
 import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
 
@@ -135,7 +136,8 @@ public class Battlefield {
             addCardToPlayersHands(turn, i);
             addCardToOpponentsHand();
         }
-        turn.field.hand.set(0, Card.getCardByName("United We Stand"));
+        turn.field.hand.set(0, Card.getCardByName("Advanced Ritual Art"));
+        turn.field.hand.set(1, Card.getCardByName("Crab Turtle"));
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
@@ -510,7 +512,7 @@ public class Battlefield {
 
         //checking is a card selected or not
         if (Objects.isNull(selectedCard)) UserInterface.printResponse("no card is selected yet");
-        //checking that if we have monster
+            //checking that if we have monster
         else if (!turn.field.hand.contains(selectedCard)  || !(selectedCard.getCardsType() == Type.MONSTER))
             UserInterface.printResponse("you cant summon this card");
         else {
@@ -519,13 +521,13 @@ public class Battlefield {
             //checking the correct phase
             if (!(phase == Phase.MAIN1_PHASE || phase == Phase.MAIN2_PHASE))
                 UserInterface.printResponse("action not allowed in this phase");
-            //checking is the zone filled
+                //checking is the zone filled
             else if (getSizeOfMonsterZone() == 5)
                 UserInterface.printResponse("monster card zone is full");
-            //checking if turn can summon
+                //checking if turn can summon
             else if (turn.hasPutMonster)
                 UserInterface.printResponse("you already summoned/set on this turn");
-            //exception for King Barbaros
+                //exception for King Barbaros
             else if (monster.getName().equals("Beast King Barbaros")) {
                 summonKingBarbaros(monster, position);
             }
@@ -535,6 +537,10 @@ public class Battlefield {
             }
             else if (monster.getName().equals("Command Knight")) {
                 summonOrFlipSummonCommandKnight("summoned successfully", position);
+            }
+            //exception for ritual monsters
+            else if (monster.getName().equals("Crab Turtle") || monster.getName().equals("Skull Guardian")){
+                UserInterface.printResponse("You can't summon this card in this way because this is a ritual card.");
             }
             //summon level 5 or 6 monsters
             else if (monster.getLevel() == 5 || monster.getLevel() == 6) {
@@ -847,25 +853,62 @@ public class Battlefield {
             selectedCard = null;
         }
     }
-    public void ritualSummon() {
+    public String ritualSummon() {
         int position = game.dragPosition;
         String command;
         //getting the ritual monster in hand if exist
         Monster ritualMonster = getRitualMonsterInHand();
         //getting the sum of levels in monster zone
         int sumOfLevels = getSumOfLevelsInZone();
-        if (Objects.isNull(ritualMonster) || sumOfLevels < 7)
+        if (Objects.isNull(ritualMonster) || sumOfLevels < 7) {
             UserInterface.printResponse("there is no way you could ritual summon a monster");
+            return "there is no way you could ritual summon a monster";
+        }
         else {
             //checking not input another command
             isRitualSummoned = true;
-            //get input command
-            command = UserInterface.getUserInput();
-            //force user to say summon
-            while (!command.equals("summon"))
-                UserInterface.printResponse("you should ritual summon right now");
 
-            summonLevel8Or7(ritualMonster, "summoned successfully",position);
+            Monster monsterForTribute1 = null, monsterForTribute2 = null;
+            //for tribute
+            if(tributeCards.size() >= 2 ){
+                monsterForTribute1 = (Monster)tributeCards.get(0);
+                monsterForTribute2 = (Monster)tributeCards.get(1);
+                tributeCards.clear();
+                //checking is error happened or not
+                if (Objects.isNull(monsterForTribute1) || Objects.isNull(monsterForTribute2))
+                    return "there is no way";
+                //checking the levels is enough or not
+                assert false;
+                monsterForTribute1.removeMonster(this);
+                monsterForTribute2.removeMonster(this);
+                if (turn.field.hand.contains(selectedCard)){
+                    turn.field.graveYard.add(selectedCard);
+                    turn.field.hand.remove(selectedCard);
+                }
+                else {
+                    ((AdvancedRitualArt) selectedCard).removeSpellOrTrap(this);
+                }
+                //check that monster put
+                turn.hasPutMonster = true;
+            }
+            else {
+                UserInterface.printResponse("please select cards for tribute");
+                return "there is no way";
+            }
+            //end of for tribute
+
+            for (int i = 0; i<5; ++i){
+                if (turn.field.monsterZone.get(i) == null){
+                    turn.field.hand.remove(ritualMonster);
+                    turn.field.monsterZone.set(i, ritualMonster);
+                    isRitualSummoned = false;
+                    turn.hasPutMonster = true;
+                    ritualMonster.setIsSetThisTurn(true);
+                    ritualMonster.setCardsFace(FaceUp.ATTACK);
+                    break;
+                }
+            }
+            return "summoned successfully";
         }
     }
     private Monster getRitualMonsterInHand() {
@@ -879,7 +922,8 @@ public class Battlefield {
     private int getSumOfLevelsInZone() {
         int sum = 0;
         for (Card card : turn.field.monsterZone) {
-            sum += ((Monster) card).getLevel();
+            if (card != null)
+                sum += ((Monster) card).getLevel();
         }
         return sum;
     }
@@ -904,18 +948,23 @@ public class Battlefield {
                 selectedCard = null;
             } else if (selectedCard.getName().equals("Gate Guardian")) {
                 summonOrSetGateGuardian("set successfully",position);
-            } else {
+            }
+            //exception for ritual monsters
+            else if (selectedCard.getName().equals("Crab Turtle") || selectedCard.getName().equals("Skull Guardian")){
+                UserInterface.printResponse("You can't set this card in this way because this is a ritual card.");
+            }
+            else {
                 UserInterface.printResponse("set successfully");
-                    if (turn.field.monsterZone.get(position) == null) {
-                        turn.field.monsterZone.set(position, selectedCard);
-                        selectedCard.setIsSetThisTurn(true);
-                        selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
-                        selectedCard.setCardsLocation(Location.MONSTER_AREA);
-                        turn.field.hand.remove(selectedCard);
-                        selectedCard = null;
-                    }
-                    else
-                        UserInterface.printResponse("place is full!");
+                if (turn.field.monsterZone.get(position) == null) {
+                    turn.field.monsterZone.set(position, selectedCard);
+                    selectedCard.setIsSetThisTurn(true);
+                    selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                    selectedCard.setCardsLocation(Location.MONSTER_AREA);
+                    turn.field.hand.remove(selectedCard);
+                    selectedCard = null;
+                }
+                else
+                    UserInterface.printResponse("place is full!");
                 turn.hasPutMonster = true;
             }
         } else if (selectedCard.getCardsType() == Type.SPELL || selectedCard.getCardsType() == Type.TRAP) {
@@ -1013,11 +1062,15 @@ public class Battlefield {
             else if (!canWeActiveSpell())
                 UserInterface.printResponse("preparation of this spell are not done yet");
             else {
-                activeSpellAndTraps.add(spellAndTrap);
-                spellAndTrap.setCardsFace(FaceUp.ATTACK);
-                spellAndTrap.action(this);
-                if (how.equals("firstTime"))
-                    turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone(), selectedCard);
+                if (spellAndTrap.getName().equals("Advanced Ritual Art")){
+                    String response = ritualSummon();
+                }
+                else {
+                    activeSpellAndTraps.add(spellAndTrap);
+                    spellAndTrap.action(this);
+                    if (how.equals("firstTime"))
+                        turn.field.spellTrapZone.set(getSizeOfSpellAndTrapZone(), selectedCard);
+                }
             }
         }
     }

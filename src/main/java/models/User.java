@@ -2,6 +2,7 @@ package models;
 
 import controllers.Database.DataBase;
 
+import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
