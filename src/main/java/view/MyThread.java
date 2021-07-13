@@ -10,6 +10,9 @@ import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
+import java.util.Random;
+import java.util.UUID;
 import java.util.regex.Matcher;
 
 public class MyThread extends Thread{
@@ -26,6 +29,7 @@ public class MyThread extends Thread{
     ObjectInputStream objectInputStream;
     public static boolean wantToSendObj = false;
     public static User user;
+
     public MyThread(ServerSocket serverSocket, Socket socket) {
         try {
             dataInputStream = new DataInputStream(socket.getInputStream());
@@ -61,7 +65,12 @@ public class MyThread extends Thread{
             try {
                 //download means: serve download image and client upload that!
                 //as upload image by server
-                input = objectInputStream.readObject();
+                try {
+                    input = objectInputStream.readObject();
+                }catch (Exception e){
+                    DownloadImage(input);
+                }
+
                 Object result = null;
                 if(input instanceof String)
                     result = API.getInstance().process(input);
@@ -79,8 +88,6 @@ public class MyThread extends Thread{
             }catch (IOException e) {
                 e.printStackTrace();
                 break;
-            } catch (ClassNotFoundException e) {
-                e.printStackTrace();
             }
         }
     }
@@ -104,23 +111,24 @@ public class MyThread extends Thread{
 
         byte[] sizeAr = new byte[4];
         try {
-            System.out.println(objectInputStream.read(sizeAr));
+            inputStream = socket.getInputStream();
+            inputStream.read(sizeAr);
             int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
 
-
             byte[] imageAr = new byte[size];
-            objectInputStream.read(imageAr);
-
+            inputStream.read(imageAr);
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageAr));
 
             System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
-            if (Controller.userImages.containsKey(user))
-                Controller.userImages.replace(user, image);
-            else
-                Controller.userImages.put(user, image);
+            UUID imageName = UUID.randomUUID();
+            ImageIO.write(image, "png", new File(imageName+".png"));
+            return "success description=\""+imageName+"\"";
         } catch (IOException e) {
             e.printStackTrace();
+            return "error";
         }
-        return "success";
+
+
+
     }
 }

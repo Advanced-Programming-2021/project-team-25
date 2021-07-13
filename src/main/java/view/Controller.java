@@ -107,6 +107,7 @@ public class Controller {
         String from = Objects.requireNonNull(this.getClass().getResource("/models/UserImages/"+number + ".png")).getPath();
         try{
             BufferedImage image = ImageIO.read(new File(from));
+            ImageIO.write(image, "png", new File(user.getUsername()+".png"));
             userImages.put(user,image);
             System.out.println("read Image!");
         } catch (Exception e) {

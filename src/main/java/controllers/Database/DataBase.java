@@ -6,7 +6,10 @@ import models.Monster.*;
 import models.Deck;
 import models.SpellAndTrap.*;
 import models.User;
+import view.Controller;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -29,7 +32,20 @@ public class DataBase {
             e.printStackTrace();
         }
     }
+    public static void loadImages(){
+        for (User user : User.getUsers()) {
+            File img = new File(user.getUsername()+".png");
+            BufferedImage buffImg;
+            try {
+                buffImg = ImageIO.read(img );
+                Controller.userImages.put(user,buffImg);
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
 
+    }
     public static ArrayList<User> loadTheList() {
         try {
             FileInputStream fin = new FileInputStream(savedArrayListName);

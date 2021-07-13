@@ -22,6 +22,7 @@ public class Initialize {
         }
         initUserList();
         initDeckList();
+        DataBase.loadImages();
     }
 
     public static void initUserList(){
