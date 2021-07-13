@@ -2,8 +2,6 @@ package models.SpellAndTrap;
 
 import controllers.Battelfield.Battlefield;
 import controllers.Regex;
-import controllers.ShowCard;
-import models.Card;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.Monster.Monster;
@@ -32,11 +30,7 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable , Commo
 
     @Override
     public void action(Battlefield battlefield) {
-        if(expireTime == 0){
-            expireTime = 1;
-            removeSpellOrTrap(battlefield);
-        }
-        else {
+        if (expireTime == 1) {
             //expireTime added
             expireTime--;
 
@@ -58,8 +52,14 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable , Commo
 
                 //get monster from user input
                 if(isFoundMonsterInTurnGraveyard || isFoundMonsterInOpponentGraveyard) initializeForSpell();
+                else expireTime += 1;
 
             }
+            else expireTime += 1;
+        }
+        if(expireTime == 0){
+            expireTime = 1;
+            removeSpellOrTrap(battlefield);
         }
     }
 
@@ -90,7 +90,10 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable , Commo
                 //end choice
                 isChoiceEnded = true;
             }
-            else if(command.equals("exit")) return;
+            else if(command.equals("exit")) {
+                expireTime += 1;
+                return;
+            }
             else{
                 UserInterface.printResponse(Responses.INVALID_COMMAND);
                 command = UserInterface.getUserInput();
@@ -100,12 +103,16 @@ public class MonsterReborn extends SpellAndTrap  implements Serializable , Commo
     }
 
     private void specialSummon(int number, Duelist duelist) {
-        Monster monster = (Monster) duelist.field.graveYard.get(number);
-        if(Objects.isNull(monster)) UserInterface.printResponse("No Monster Found");
-        else{
-            duelist.field.graveYard.remove(number);
-            monster.setActiveSpell(this);
-            battlefield.specialSummon(monster);
+        try {
+            Monster monster = (Monster) duelist.field.graveYard.get(number-1);
+            if(Objects.isNull(monster)) UserInterface.printResponse("No Monster Found");
+            else{
+                monster.setActiveSpell(this);
+                battlefield.specialSummon(monster);
+            }
+        }catch (Exception e){
+            expireTime += 1;
+            UserInterface.printResponse("Please insert a valid number");
         }
     }
 

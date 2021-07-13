@@ -14,7 +14,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.scene.media.AudioClip;
 import javafx.scene.paint.Color;
-import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.stage.Stage;
@@ -136,8 +135,6 @@ public class Battlefield {
             addCardToPlayersHands(turn, i);
             addCardToOpponentsHand();
         }
-        turn.field.hand.set(0, Card.getCardByName("Advanced Ritual Art"));
-        turn.field.hand.set(1, Card.getCardByName("Crab Turtle"));
     }
     public void cleanTurn() {
         turn.hasPutMonster = false;
@@ -790,8 +787,26 @@ public class Battlefield {
         return count;
     }
     public void specialSummon(Monster monster) {
-        selectedCard = monster;
-        summon(game.dragPosition);
+        if (turn.field.graveYard.contains(monster)){
+            monster.setCardsFace(FaceUp.ATTACK);
+            turn.field.graveYard.remove(monster);
+            for (int i = 0; i<5; ++i){
+                if (turn.field.monsterZone.get(i) == null) {
+                    turn.field.monsterZone.set(i, monster);
+                    break;
+                }
+            }
+        }
+        else if (opponent.field.graveYard.contains(monster)){
+            monster.setCardsFace(FaceUp.ATTACK);
+            opponent.field.graveYard.remove(monster);
+            for (int i = 0; i<5; ++i){
+                if (turn.field.monsterZone.get(i) == null) {
+                    turn.field.monsterZone.set(i, monster);
+                    break;
+                }
+            }
+        }
     }
     public void flipSummon() {
         if (Objects.isNull(selectedCard)) UserInterface.printResponse(Responses.NO_CARD_SELECTED_ERROR);
@@ -1064,6 +1079,9 @@ public class Battlefield {
             else {
                 if (spellAndTrap.getName().equals("Advanced Ritual Art")){
                     String response = ritualSummon();
+                }
+                if (spellAndTrap.getName().equals("Monster Reborn")){
+                    spellAndTrap.action(this);
                 }
                 else {
                     activeSpellAndTraps.add(spellAndTrap);

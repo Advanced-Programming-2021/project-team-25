@@ -52,6 +52,18 @@ public class SpellAndTrap extends Card implements Serializable {
                 break;
             }
         }
+        for (int i = 0; i<battlefield.turn.field.hand.size(); ++i){
+            if (battlefield.turn.field.hand.get(i) != null && battlefield.turn.field.hand.get(i) == this){
+                battlefield.turn.field.graveYard.add(this);
+                battlefield.turn.field.hand.remove(this);
+            }
+        }
+        for (int i = 0; i<battlefield.opponent.field.hand.size(); ++i){
+            if (battlefield.opponent.field.hand.get(i) != null && battlefield.opponent.field.hand.get(i) == this){
+                battlefield.opponent.field.graveYard.add(this);
+                battlefield.opponent.field.hand.remove(this);
+            }
+        }
     }
 
     @Override

@@ -17,7 +17,7 @@ public interface CommonFunctions {
         boolean isFoundMonster = false;
         for (Card card : duelist.field.graveYard) {
             if(card.getCardsType().equals(Type.MONSTER)){
-                ShowCard.showCard(card.getName());
+                UserInterface.printResponse(card.getName());
                 isFoundMonster = true;
             }
         }
