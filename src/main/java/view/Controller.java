@@ -1,6 +1,7 @@
 package view;
 
 import com.google.gson.Gson;
+import com.sun.scenario.effect.impl.prism.PrImage;
 import controllers.Constants.Initialize;
 import controllers.Database.DataBase;
 import controllers.Regex;
@@ -8,6 +9,7 @@ import controllers.menues.DeckMenu;
 import javafx.scene.image.Image;
 import models.Card;
 import models.Deck;
+import models.Duelist;
 import models.User;
 
 import javax.imageio.ImageIO;
@@ -21,6 +23,8 @@ import java.util.regex.Pattern;
 public class Controller {
     private static HashMap<String, User> loggedInUsers = new HashMap<>();
     public static HashMap<User, BufferedImage> userImages = new HashMap<>();
+    private static ArrayList<Duelist> availableUsers = new ArrayList<>();
+    private static HashMap<Duelist, Duelist> playingUsers = new HashMap<>();
     private static Controller singleToneClass = null;
 
     public static Controller getInstance() {
@@ -386,5 +390,26 @@ public class Controller {
         }
         else
             return "error description=\"user not found!\"";
+    }
+
+    public Duelist getDuelistFroStartingGame(String command){
+        Matcher mather = Regex.getMatcher(command, "--token (.+)");
+        if (mather.find()) {
+            String token = mather.group(1);
+            User user =  getUSerByToken(token);
+            Duelist duelistUser = new Duelist(user);
+            if(availableUsers.size()>0){
+                playingUsers.put(duelistUser,availableUsers.get(0));
+            }
+            else{
+                availableUsers.add(duelistUser);
+                while (availableUsers.size()<1);
+                playingUsers.put(duelistUser,availableUsers.get(1));
+            }
+            availableUsers.remove(0);
+            availableUsers.remove(duelistUser);
+            return playingUsers.get(duelistUser);
+        } else
+            return null;
     }
 }

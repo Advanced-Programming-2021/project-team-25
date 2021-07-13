@@ -87,6 +87,10 @@ public class API{
             }else if(command.startsWith("getUserImage")){
                 return controller.getUserImage(command);
             }
+            //in Duel menu
+            else if (command.startsWith("startDuel")){
+                return controller.getDuelistFroStartingGame(command);
+            }
         }
 
         return "";
