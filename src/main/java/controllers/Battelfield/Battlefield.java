@@ -24,9 +24,10 @@ import java.util.regex.Matcher;
 
 import static controllers.ShowCard.showCard;
 
-public class Battlefield {
+public class Battlefield extends Thread{
 
     public ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
+    public int roundToPlay;
     private Duelist turn;
     private Duelist opponent;
     private Phase phase = Phase.DRAW_PHASE;
@@ -41,12 +42,13 @@ public class Battlefield {
     public Monster attackedMonster;
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
-
-    public Battlefield(Duelist duelist1, Duelist duelist2) {
-        whoStart(duelist1, duelist2);
+    public void run(){
         startGame();
         showBattleField();
         runBattleField();
+    }
+    public Battlefield(Duelist duelist1, Duelist duelist2) {
+        whoStart(duelist1, duelist2);
     }
 
     //getter methods
@@ -109,18 +111,13 @@ public class Battlefield {
     //start & clean
     private void whoStart(Duelist duelist1, Duelist duelist2) {
         Random ran = new Random();
-        if (ran.nextInt(2) == 0) chooseStarter(duelist2, duelist1);
-        else chooseStarter(duelist1, duelist2);
-    }
-    private void chooseStarter(Duelist duelist1, Duelist duelist2) {
-        UserInterface.printResponse("I flipped a coin and " + duelist2.getName() + " can decide who start’s\n1." + duelist2.getName() + "\n2." + duelist1.getName());
-        String num = UserInterface.getUserInput();
-        if (num.equals("1")) {
-            turn = duelist2;
-            opponent = duelist1;
-        } else {
+        if (ran.nextInt(2) == 0){
             turn = duelist1;
             opponent = duelist2;
+        }
+        else {
+            turn = duelist2;
+            opponent = duelist1;
         }
     }
     public void startGame() {
@@ -1058,5 +1055,13 @@ public class Battlefield {
     private void increaseLPCheat(Matcher matcher){
         int amount = Integer.parseInt(matcher.group(1));
         turn.LP += amount ;
+    }
+
+    public void setOpponent(Duelist opponent) {
+        this.opponent = opponent;
+    }
+
+    public void setTurn(Duelist turn) {
+        this.turn = turn;
     }
 }

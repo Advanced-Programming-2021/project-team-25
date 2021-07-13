@@ -90,6 +90,8 @@ public class API{
             //in Duel menu
             else if (command.startsWith("startDuel")){
                 return controller.getDuelistFroStartingGame(command);
+            } else if(command.startsWith("startGame")){
+                return controller.startNeGame(command);
             }
         }
 

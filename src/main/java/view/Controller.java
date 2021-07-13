@@ -2,10 +2,13 @@ package view;
 
 import com.google.gson.Gson;
 import com.sun.scenario.effect.impl.prism.PrImage;
+import controllers.Battelfield.Battlefield;
+import controllers.Battelfield.BattlefieldController;
 import controllers.Constants.Initialize;
 import controllers.Database.DataBase;
 import controllers.Regex;
 import controllers.menues.DeckMenu;
+import controllers.menues.DuelMenu;
 import javafx.scene.image.Image;
 import models.Card;
 import models.Deck;
@@ -411,5 +414,86 @@ public class Controller {
             return playingUsers.get(duelistUser);
         } else
             return null;
+    }
+
+    public Object startNeGame(String command) {
+        Matcher mather = Regex.getMatcher(command, "--token (.+)");
+        if (mather.find()) {
+            String token = mather.group(1);
+            User user =  getUSerByToken(token);
+            for (Map.Entry<Duelist, Duelist> entry : playingUsers.entrySet()) {
+                if (entry.getKey().getUser().getUsername().equals(user.getUsername())) {
+                    if (user.activeDeck == null)
+                        return "error description=\"you dont have active deck!\"";
+                    else if ((entry.getValue().getUser()).activeDeck == null)
+                        return "error description=\"your rival has no active deck\"";
+                    else if (!Deck.isValid(user.activeDeck.getDeckName()))
+                        return "error description=\"your deck is not valid\"";
+                    else if (!Deck.isValid(entry.getValue().getUser().activeDeck.getDeckName()))
+                        return "error description=\"your rival's deck is not valid\"";
+                    else {
+                        Battlefield currBattlefield = getBattlefield(entry.getKey(), entry.getValue());
+
+                        if (currBattlefield == null) {
+                            Matcher matherRound = Regex.getMatcher(command, "--rounds (\\d+)");
+                            if (matherRound.find()) {
+                                currBattlefield = new Battlefield(entry.getKey(), null);
+                                BattlefieldController.battlefields.put(user, currBattlefield);
+                                currBattlefield.roundToPlay = Integer.parseInt(matherRound.group(1));
+                            }
+                        } else {
+                            Matcher matherRound = Regex.getMatcher(command, "--rounds (\\d+)");
+                            if (matherRound.find()) {
+                                int newRounds = Integer.parseInt(matherRound.group(1));
+                                if (currBattlefield.roundToPlay != newRounds)
+                                    return "error description=\"rounds not same\"";
+                                else {
+                                    if(currBattlefield.getOpponent() == null)
+                                        currBattlefield.setOpponent(new Duelist(user));
+                                    else
+                                        currBattlefield.setTurn(new Duelist(user));
+                                }
+                            }
+                        }
+
+                        assert currBattlefield != null;
+                        if (currBattlefield.roundToPlay == 1) {
+                            //need to play one round!
+                            if(currBattlefield.getTurn()!=null && currBattlefield.getOpponent()!=null) {
+                                DuelMenu.getInstance().oneRoundDuel(currBattlefield);
+                                if (currBattlefield.getTurn().getUser().getUsername().equals(user.getUsername()))
+                                    return "success description=\"turn\"";
+                                else
+                                    return "success description=\"opponent\"";
+                            }
+                        } else {
+                            //3 round play
+                            if(currBattlefield.getTurn()!=null && currBattlefield.getOpponent()!=null) {
+                                DuelMenu.getInstance().threeRoundDuel(currBattlefield);
+                                if (currBattlefield.getTurn().getUser().getUsername().equals(user.getUsername()))
+                                    return "success description=\"turn\"";
+                                else
+                                    return "success description=\"opponent\"";
+                            }
+                        }
+                        return "error description=\"wait for other user to log in\"";
+
+                    }
+                }
+            }
+
+            return "error description=\"user not found!\"";
+        } else
+            return "error description=\"token not valid\"";
+    }
+
+    private Battlefield getBattlefield(Duelist duelist1, Duelist duelist2) {
+        for(Map.Entry<User,Battlefield> entry : BattlefieldController.battlefields.entrySet()){
+            if(entry.getKey().getUsername().equals(duelist1.getUser().getUsername()) ||
+                    entry.getKey().getUsername().equals(duelist2.getUser().getUsername()) ){
+                return entry.getValue();
+            }
+        }
+        return null;
     }
 }

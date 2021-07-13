@@ -17,30 +17,14 @@ public class DuelMenu {
 
     private static DuelMenu singleToneClass = null;
     private User currUser;
-    public static DuelMenu getInstance (User currUser){
-        if (singleToneClass == null) singleToneClass = new DuelMenu(currUser);
-        singleToneClass.currUser = currUser;
+    public static DuelMenu getInstance (){
+        if (singleToneClass == null) singleToneClass = new DuelMenu();
         return singleToneClass;
     }
 
-    public DuelMenu(User currUser){
-        this.currUser=currUser;
+    public DuelMenu(){
     }
 
-    public void runDuelMenu(){
-        while (currentMenu == Menu.DUEL_MENU) {
-
-            String command = UserInterface.getUserInput();
-            Matcher matcher;
-
-            if (Regex.getMatcher(command, Regex.menuShowCurrent).matches()) System.out.println(currentMenu);
-            else if (Regex.getMatcher(command, Regex.menuEnter).matches()) UserInterface.printResponse(Responses.NOT_POSSIBLE_NAVIGATION);
-            else if (Regex.getMatcher(command, Regex.menuExit).matches()) currentMenu = Menu.MAIN_MENU;
-            else if ((matcher = Regex.getMatcher(command, Regex.duelNewAi)).matches()) newDuelAi(matcher);
-            else if ((matcher = Regex.getMatcher(command, Regex.duelNew)).matches()) newDuel(matcher);
-            else UserInterface.printResponse(Responses.INVALID_COMMAND);
-        }
-    }
 
     private void newDuelAi(Matcher matcher){
         String round = matcher.group(1);
@@ -50,27 +34,13 @@ public class DuelMenu {
         else new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")));
     }
 
-    public void newDuel(Matcher matcher){
 
-        String duelistName = matcher.group(1) , round = matcher.group(2);
-
-        if(User.getUserByUsername(duelistName) == null) UserInterface.printResponse("there is no player with this username");
-        else if(duelistName.equals(currUser.getUsername())) UserInterface.printResponse("you can't play with yourself");
-        else if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
-        else if(Objects.requireNonNull(User.getUserByUsername(duelistName)).activeDeck == null) System.out.println(duelistName + " has no active deck");
-        else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
-        else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(duelistName)).activeDeck.getDeckName())) UserInterface.printResponse(duelistName + "'s deck is not valid");
-        else if(!(round.equals("1") || round.equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
-        else if(round.equals("1")) oneRoundDuel(duelistName);
-        else threeRoundDuel(duelistName);
-    }
-
-    private void oneRoundDuel(String duelistName) {
+    public void oneRoundDuel(Battlefield battlefield) {
         int duelist1Wins = 0 , duelist2Wins = 0;
         //round1
-        Duelist duelist1 = new Duelist(currUser);
-        Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        Battlefield battlefield = new Battlefield(duelist1, duelist2);
+        Duelist duelist1 = battlefield.getOpponent();
+        Duelist duelist2 = battlefield.getTurn();
+        battlefield.start();
 
         //round1Finish
         if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
@@ -93,13 +63,13 @@ public class DuelMenu {
         DataBase.saveTheUserList(User.getUsers());
     }
 
-    private void threeRoundDuel(String duelistName) {
+    public void threeRoundDuel(Battlefield battlefield) {
         int duelist1Wins = 0 , duelist2Wins = 0;
-
+        Duelist turn = battlefield.getTurn();
         //round1
-        Duelist duelist1 = new Duelist(currUser);
-        Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        Battlefield battlefield = new Battlefield(duelist1, duelist2);
+        Duelist duelist1 = battlefield.getOpponent();
+        Duelist duelist2 = battlefield.getTurn();
+        battlefield.start();
 
         //round1Finish
         if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
@@ -108,13 +78,22 @@ public class DuelMenu {
         int round1Duelist1Lp = duelist1.LP, round1Duelist2Lp = duelist2.LP;
 
         //add card from side
-        transferPermission(duelistName);
+        transferPermission(duelist1.getName());
 
         //round2
-        duelist1 = new Duelist(currUser);
-        duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        battlefield = new Battlefield(duelist1, duelist2);
+        duelist1 = battlefield.getOpponent();
+        if(turn.equals(duelist1)) {
+            battlefield.setTurn(duelist2);
+            battlefield.setOpponent(duelist1);
+            turn = duelist2;
+        }
+        else{
+            battlefield.setTurn(duelist1);
+            battlefield.setOpponent(duelist2);
+            turn = duelist1;
+        }
 
+        battlefield.start();
         //round2Finish
         if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
         else duelist2Wins++;
@@ -134,12 +113,17 @@ public class DuelMenu {
         }
 
         //add card from side
-        transferPermission(duelistName);
+        transferPermission(duelist2.getName());
 
         //round3
-        duelist1 = new Duelist(currUser);
-        duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        battlefield = new Battlefield(duelist1, duelist2);
+        if(turn.equals(duelist1)) {
+            battlefield.setTurn(duelist2);
+            battlefield.setOpponent(duelist1);
+        }
+        else{
+            battlefield.setTurn(duelist1);
+            battlefield.setOpponent(duelist2);
+        }
 
         //round3Finish
         if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
