@@ -1,7 +1,9 @@
 package view;
+import controllers.menues.DuelMenuController;
 import javafx.embed.swing.SwingFXUtils;
 import controllers.ProgramController;
 import javafx.scene.image.Image;
+import models.Duelist;
 import models.User;
 
 import javax.imageio.ImageIO;
@@ -57,6 +59,24 @@ public class SendReceiveData {
             User.getUsers().add(ProgramController.currUser);
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
+        }
+    }
+    public static String getCurrDuelistFromServer(String command){
+        try {
+            // get the input stream from the connected socket
+            objectOutputStream.writeObject(command+ " --token " + token);
+            objectOutputStream.flush();
+            Object objReceived = objectInputStream.readObject();
+            if(objReceived instanceof  Duelist) {
+                DuelMenuController.duelistRival = (Duelist) objReceived;
+                return "success";
+            }
+            else{
+                return "error description=\"on starting game\"";
+            }
+        } catch (IOException | ClassNotFoundException e) {
+            e.printStackTrace();
+            return null;
         }
     }
     public static void getUserIMage(User user){

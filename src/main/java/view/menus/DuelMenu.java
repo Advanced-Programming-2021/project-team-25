@@ -1,6 +1,7 @@
 package view.menus;
 
 import controllers.Battelfield.Battlefield;
+import controllers.Regex;
 import controllers.menues.DuelMenuController;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
@@ -18,6 +19,7 @@ import models.User;
 import view.*;
 
 import java.util.Objects;
+import java.util.regex.Matcher;
 
 public class DuelMenu {
 
@@ -88,28 +90,42 @@ public class DuelMenu {
                 }
             }
             else{
-                if(User.getUserByUsername(txtRival.getText()) == null) JOptionPane.showMessageDialog(null,
-                        "there is no player with this username");
-                else if(currUser.getUsername().equals(txtRival.getText())) JOptionPane.showMessageDialog(null,
-                        "you can't play with yourself");
-                else if(currUser.activeDeck == null) JOptionPane.showMessageDialog(null,
-                        currUser.getUsername() + " has no active deck");
-                else if(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck == null)
-                    JOptionPane.showMessageDialog(null,txtRival.getText() + " has no active deck");
-                else if(!Deck.isValid(currUser.activeDeck.getDeckName())) JOptionPane.showMessageDialog(null,
-                        currUser.getUsername() + "'s deck is not valid");
-                else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck.getDeckName()))
-                    JOptionPane.showMessageDialog(null,txtRival.getText() + "'s deck is not valid");
-                else if(rounds.getValue().equals("1")){
-                    Main.audioClip.stop();
-                    new CoinTossing().start(1,txtRival.getText());
-                    //duelMenuController.oneRoundDuel(txtRival.getText());
+                String resultOfServer = SendReceiveData.getCurrDuelistFromServer("startDuel --rounds " + rounds);
+                if(Objects.isNull(resultOfServer) || resultOfServer.isBlank() || resultOfServer.isEmpty())
+                    LoginMenu.showAlert(null, "An Error occurred");
+                else if(resultOfServer.startsWith("error")){
+                    Matcher matcherDesc = Regex.getMatcher(resultOfServer,"description=\"(.+)\"");
+                    if(matcherDesc.find())
+                        LoginMenu.showAlert(null, matcherDesc.group(1));
                 }
-                else{
-                    Main.audioClip.stop();
-                    new CoinTossing().start(3,txtRival.getText());
-                    //duelMenuController.threeRoundDuel(txtRival.getText());
+                else if(resultOfServer.startsWith("success")) {
+                        Main.audioClip.stop();
+
+                        new CoinTossing().start(3,txtRival.getText());
+                        //duelMenuController.threeRoundDuel(txtRival.getText());
                 }
+//                if(User.getUserByUsername(txtRival.getText()) == null) JOptionPane.showMessageDialog(null,
+//                        "there is no player with this username");
+//                else if(currUser.getUsername().equals(txtRival.getText())) JOptionPane.showMessageDialog(null,
+//                        "you can't play with yourself");
+//                else if(currUser.activeDeck == null) JOptionPane.showMessageDialog(null,
+//                        currUser.getUsername() + " has no active deck");
+//                else if(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck == null)
+//                    JOptionPane.showMessageDialog(null,txtRival.getText() + " has no active deck");
+//                else if(!Deck.isValid(currUser.activeDeck.getDeckName())) JOptionPane.showMessageDialog(null,
+//                        currUser.getUsername() + "'s deck is not valid");
+//                else if(!Deck.isValid(Objects.requireNonNull(User.getUserByUsername(txtRival.getText())).activeDeck.getDeckName()))
+//                    JOptionPane.showMessageDialog(null,txtRival.getText() + "'s deck is not valid");
+//                else if(rounds.getValue().equals("1")){
+//                    Main.audioClip.stop();
+//                    new CoinTossing().start(1,txtRival.getText());
+//                    //duelMenuController.oneRoundDuel(txtRival.getText());
+//                }
+//                else{
+//                    Main.audioClip.stop();
+//                    new CoinTossing().start(3,txtRival.getText());
+//                    //duelMenuController.threeRoundDuel(txtRival.getText());
+//                }
             }
         });
         checkBoxEvent(gameWithAi, lblUsername, txtRival);

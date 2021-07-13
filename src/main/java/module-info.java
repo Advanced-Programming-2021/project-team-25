@@ -8,6 +8,7 @@ module AP {
     requires gson;
     requires javafx.swing;
     requires javafx.controls;
+    requires javafx.media;
     //requires opencv;
 
 

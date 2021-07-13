@@ -21,6 +21,7 @@ import static controllers.ProgramController.currentMenu;
 public class DuelMenuController {
 
     private static DuelMenuController singleToneClass = null;
+    public static Duelist duelistRival;
     private User currUser;
     public String duelistName;
     public int currWins = 0 , notCurrWins = 0;
@@ -80,9 +81,10 @@ public class DuelMenuController {
     public void oneRoundDuel(String duelistName) {
         //round1
         Duelist duelist1 = new Duelist(currUser);
-        Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        Battlefield battlefield = new Battlefield(duelist1, duelist2, 1);
-        battlefield.isOneRound = true;
+        if(duelistRival != null){
+            Battlefield battlefield = new Battlefield(duelist1, duelistRival, 1);
+            battlefield.isOneRound = true;
+        }
     }
 
     public void finishround1( Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
@@ -112,9 +114,11 @@ public class DuelMenuController {
         this.duelistName = duelistName;
         //round1
         Duelist duelist1 = new Duelist(currUser);
-        Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelistName)));
-        Battlefield battlefield = new Battlefield(duelist1, duelist2, 1);
-        battlefield.isOneRound = false;
+        if(duelistRival != null){
+            Battlefield battlefield = new Battlefield(duelist1, duelistRival, 1);
+            battlefield.isOneRound = false;
+        }
+
     }
 
     public void finishRound1(Duelist duelist1, Duelist duelist2, Battlefield battlefield) {
