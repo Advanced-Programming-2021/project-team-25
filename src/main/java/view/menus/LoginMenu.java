@@ -91,7 +91,7 @@ public class LoginMenu{
                 //get curr User
                 SendReceiveData.getCurrUserFromServer();
                 //get curr Decks
-                parseDecks((ArrayList<Deck>)SendReceiveData.getDecksOfUser());
+               // parseDecks((ArrayList<Deck>)SendReceiveData.getDecksOfUser());
 
                 new MainMenu().start();
             }

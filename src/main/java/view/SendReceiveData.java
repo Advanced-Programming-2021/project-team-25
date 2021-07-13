@@ -9,6 +9,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.net.Socket;
 import java.nio.ByteBuffer;
+import java.util.Arrays;
 
 
 public class SendReceiveData {
@@ -38,8 +39,8 @@ public class SendReceiveData {
     }
     public static String sendReceiveData(String command){
         try {
-            dataOutputStream.writeUTF(command + " --token " + token);
-            dataOutputStream.flush();
+            objectOutputStream.writeObject(command + " --token " + token);
+            objectOutputStream.flush();
             String ss = (String) objectInputStream.readObject();
             return ss;
         } catch (IOException | ClassNotFoundException x) {
@@ -50,8 +51,8 @@ public class SendReceiveData {
     public static void getCurrUserFromServer(){
         try {
             // get the input stream from the connected socket
-            dataOutputStream.writeUTF("get currUser"+ " --token " + token);
-            dataOutputStream.flush();
+            objectOutputStream.writeObject("get currUser"+ " --token " + token);
+            objectOutputStream.flush();
             ProgramController.currUser = (User) objectInputStream.readObject();
             User.getUsers().add(ProgramController.currUser);
         } catch (IOException | ClassNotFoundException e) {
@@ -61,7 +62,7 @@ public class SendReceiveData {
     public static void getUserIMage(User user){
         try {
             // get the input stream from the connected socket
-            dataOutputStream.writeUTF("getUserImage "+user.getUsername());
+            objectOutputStream.writeObject("getUserImage "+user.getUsername());
             dataOutputStream.flush();
             System.out.println("Reading: " + System.currentTimeMillis());
 
@@ -74,26 +75,24 @@ public class SendReceiveData {
 
             BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageAr));
 
-            System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
+            //System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
             ImageIO.write(image, "png", new File(user.getUsername()+".png"));
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     public static String sendImGToServer(BufferedImage image) throws IOException {
-
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        ImageIO.write(image, "png", byteArrayOutputStream);
-
-        byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
         try {
+            ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+            ImageIO.write(image, "png", byteArrayOutputStream);
+            byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
             outputStream.write(size);
+            outputStream.write(byteArrayOutputStream.toByteArray());
+            outputStream.flush();
+            System.out.println("Flushed: " + System.currentTimeMillis());
         } catch (IOException e) {
             e.printStackTrace();
         }
-        outputStream.write(byteArrayOutputStream.toByteArray());
-        outputStream.flush();
-        System.out.println("Flushed: " + System.currentTimeMillis());
         return null;
     }
 

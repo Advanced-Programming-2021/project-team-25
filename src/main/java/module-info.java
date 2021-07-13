@@ -1,13 +1,13 @@
 module AP {
-    requires javafx.controls;
+
     requires javafx.fxml;
-    requires javafx.media;
     requires org.junit.jupiter.api;
     requires java.desktop;
     requires java.logging;
     requires json.simple;
     requires gson;
     requires javafx.swing;
+    requires javafx.controls;
     //requires opencv;
 
 
