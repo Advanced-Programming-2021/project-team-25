@@ -848,12 +848,80 @@ public class Game {
                 addChanges();
             }
         });
-        Button btnMuteSounds = new Button("mute sounds");
+
+        Button settingBtn = new Button("Setting");
+        settingBtn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                HBox hBox = new HBox();
+                hBox.setAlignment(Pos.CENTER);
+                VBox vBox = new VBox();
+                vBox.setAlignment(Pos.CENTER);
+                Button extButton = new Button("Exit!");
+                extButton.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400)," +
+                        "linear-gradient(#ffef84, #f2ba44)," +
+                        "linear-gradient(#ffea6a, #efaa22)," +
+                        "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                        "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));" +
+                        "-fx-background-radius: 30;" +
+                        "-fx-background-insets: 0,1,2,3,0;" +
+                        "-fx-text-fill: #654b00;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-padding: 10 20 10 20;");
+                Button backButton = new Button("Back");
+                backButton.setStyle("-fx-background-color: linear-gradient(#ffd65b, #e68400)," +
+                        "linear-gradient(#ffef84, #f2ba44)," +
+                        "linear-gradient(#ffea6a, #efaa22)," +
+                        "linear-gradient(#ffe657 0%, #f8c202 50%, #eea10b 100%)," +
+                        "linear-gradient(from 0% 0% to 15% 50%, rgba(255,255,255,0.9), rgba(255,255,255,0));" +
+                        "-fx-background-radius: 30;" +
+                        "-fx-background-insets: 0,1,2,3,0;" +
+                        "-fx-text-fill: #654b00;" +
+                        "-fx-font-weight: bold;" +
+                        "-fx-font-size: 14px;" +
+                        "-fx-padding: 10 20 10 20;");
+
+                vBox.getChildren().addAll(backButton, extButton);
+                hBox.getChildren().add(vBox);
+
+                Scene scene = new Scene(hBox, 600, 600);
+                String style= Objects.requireNonNull(this.getClass().getResource("game/game.css")).toExternalForm();
+                scene.getStylesheets().add(style);
+                subStage myStage = new subStage("Setting", scene);
+
+
+
+                backButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        myStage.stage.close();
+                    }
+                });
+
+
+                extButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent actionEvent) {
+                        myStage.stage.close();
+                        battlefield.winner = battlefield.getOpponent();
+                        DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
+                        duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
+                        DataBase.saveTheUserList(User.getUsers());
+                        audioClip.stop();
+                        Main.audioClip.play();
+                        DuelMenu.getInstance(ProgramController.currUser).run(Main.stage);
+                    }
+                });
+
+
+            }
+        });
 
         VBox vBoxLeft = new VBox();
         vBoxLeft.setAlignment(Pos.CENTER);
 
-        vBoxLeft.getChildren().addAll(btnNextPhase,btnMuteSounds,btnExit);
+        vBoxLeft.getChildren().addAll(btnNextPhase,btnExit, settingBtn);
         vBoxLeft.setSpacing(10);
         return vBoxLeft;
     }
