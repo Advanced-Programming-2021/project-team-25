@@ -18,6 +18,9 @@ public class SendReceiveData {
     public static DataOutputStream dataOutputStream;
     public static InputStream inputStream;
     public static ObjectInputStream objectInputStream;
+    public static OutputStream outputStream;
+    // create an object output stream from the output stream so we can send an object through it
+    public static ObjectOutputStream objectOutputStream;
 
     public static void initializeNetwork() {
         try {
@@ -27,6 +30,8 @@ public class SendReceiveData {
             inputStream = socket.getInputStream();
             // create a DataInputStream so we can read data from it.
             objectInputStream = new ObjectInputStream(inputStream);
+            outputStream = socket.getOutputStream();
+            objectOutputStream = new ObjectOutputStream(outputStream);
         } catch (IOException x) {
             x.printStackTrace();
         }
@@ -74,6 +79,22 @@ public class SendReceiveData {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+    public static String sendImGToServer(BufferedImage image) throws IOException {
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        ImageIO.write(image, "png", byteArrayOutputStream);
+
+        byte[] size = ByteBuffer.allocate(4).putInt(byteArrayOutputStream.size()).array();
+        try {
+            outputStream.write(size);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        outputStream.write(byteArrayOutputStream.toByteArray());
+        outputStream.flush();
+        System.out.println("Flushed: " + System.currentTimeMillis());
+        return null;
     }
 
 

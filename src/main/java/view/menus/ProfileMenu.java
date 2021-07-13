@@ -13,6 +13,7 @@ import models.User;
 
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -39,6 +40,7 @@ import view.Main;
 import view.SendReceiveData;
 import view.UserInterface;
 
+import javax.imageio.ImageIO;
 import javax.swing.*;
 
 public class ProfileMenu {
@@ -177,6 +179,12 @@ public class ProfileMenu {
                             //refresh image!
                             userImageProfile = new Image("file:"+currUser.getUsername()+".png");
                             imageViewProfile.setImage(userImageProfile);
+                            try {
+                                BufferedImage buffImg = ImageIO.read(new File(currUser.getUsername()+".png"));
+                                SendReceiveData.sendImGToServer(buffImg);
+                            } catch (IOException ioException) {
+                                ioException.printStackTrace();
+                            }
                             stage.setScene(profileScene);
                         }
                     });
