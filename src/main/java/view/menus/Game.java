@@ -491,8 +491,7 @@ public class Game {
                         if(Objects.isNull(command));
                         else if(command.startsWith("select")) {
                             //play Sound needed
-                            battlefield.forceAddedToHand(Regex.getMatcher(command, Regex.forceAddedCardToHand));
-                            UserInterface.printResponse("force added to hand!");
+                            battlefield.forceAddedToHand(command);
                         }
                         else if(command.startsWith("duel set-winner")){
                             battlefield.duelWinCheat(Regex.getMatcher(command,Regex.duelWinCheat));

@@ -1220,19 +1220,46 @@ public class Battlefield {
     }
 
     //cheats
-    public void forceAddedToHand(Matcher matcher) {
-        String cardName = matcher.group("cardName");
-        turn.field.hand.add(Card.getCardByName(cardName));
+    public void forceAddedToHand(String command) {
+        Pattern pattern = Pattern.compile("select --hand (.+)? --force");
+        Matcher matcher = pattern.matcher(command);
+        boolean didAnyThingFound = false;
+        if (matcher.find()) {
+            String cardName = matcher.group(1);
+            for (int i = 0; i<turn.field.deck.size(); ++i){
+                if (turn.field.deck.get(i).getName().equals(cardName)){
+                    didAnyThingFound = true;
+                    turn.field.hand.add(turn.field.deck.get(i));
+                    turn.field.deck.remove(i);
+                    game.addChanges();
+                    break;
+                }
+            }
+            if (!didAnyThingFound)
+                UserInterface.printResponse("You dont have card with the given name in your deck");
+        }
+        else
+            UserInterface.printResponse("No such cheat");
     }
     public void duelWinCheat(Matcher matcher) {
-        String name = matcher.group("nickname");
-        if (turn.getName().equals(name))
-            winner = turn;
-        else if (opponent.getName().equals(name))
-            winner = opponent;
+        if (matcher.find()) {
+            String name = matcher.group(1);
+            if (turn.getName().equals(name))
+                opponent.LP = 0;
+            else if (opponent.getName().equals(name))
+                turn.LP = 0;
+            else
+                UserInterface.printResponse("No such nickname");
+            game.addChanges();
+        }
+        else UserInterface.printResponse("No such cheat");
     }
     public void increaseLPCheat(Matcher matcher){
-        int amount = Integer.parseInt(matcher.group(1));
-        turn.LP += amount ;
+        if (matcher.find()) {
+            int amount = Integer.parseInt(matcher.group(1));
+            turn.LP += amount;
+            game.addChanges();
+        }
+        else UserInterface.printResponse("No such cheat");
     }
 }

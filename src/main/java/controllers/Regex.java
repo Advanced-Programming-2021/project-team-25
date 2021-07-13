@@ -52,8 +52,8 @@ public class Regex {
     public static String exportCard = "^export (.+)$";
     public static String importCard = "^import (.+)$";
     public static String extractName = "^Name: (.+)$";
-    public static String forceAddedCardToHand = "select (--hand|-h) (?<cardName>\\S+) (--force|-f)";
-    public static String duelWinCheat = "duel set-winner (?<nickname>\\S+)";
+    public static String forceAddedCardToHand = "select --hand (.+)? --force";
+    public static String duelWinCheat = "duel set-winner (.+)?";
     public static String increaseLPCheat = "increase --LP (.+)";
 
     public static Matcher getMatcher(String input, String regex) {
