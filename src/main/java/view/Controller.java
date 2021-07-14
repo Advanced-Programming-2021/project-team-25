@@ -403,14 +403,16 @@ public class Controller {
             Duelist duelistUser = new Duelist(user);
             if(availableUsers.size()>0){
                 playingUsers.put(duelistUser,availableUsers.get(0));
+                availableUsers.remove(0);
+                availableUsers.remove(duelistUser);
             }
             else{
                 availableUsers.add(duelistUser);
                 while (availableUsers.size()<2);
                 playingUsers.put(duelistUser,availableUsers.get(1));
+                availableUsers.remove(1);
+                availableUsers.remove(duelistUser);
             }
-            availableUsers.remove(0);
-            availableUsers.remove(duelistUser);
             return playingUsers.get(duelistUser);
         } else
             return null;
