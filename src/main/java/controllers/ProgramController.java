@@ -13,7 +13,7 @@ public class ProgramController {
         //load data from dataBase
         Initialize.init();
         //start from login menu
-        LoginMenu.runLoginMenu();
+
     }
 
     public static void setLoggedInUsers(User user) {

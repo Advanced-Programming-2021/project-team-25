@@ -406,7 +406,7 @@ public class Controller {
             }
             else{
                 availableUsers.add(duelistUser);
-                while (availableUsers.size()<1);
+                while (availableUsers.size()<2);
                 playingUsers.put(duelistUser,availableUsers.get(1));
             }
             availableUsers.remove(0);
@@ -476,7 +476,7 @@ public class Controller {
                                     return "success description=\"opponent\"";
                             }
                         }
-                        return "error description=\"wait for other user to log in\"";
+                        return "wait description=\"wait for other user to log in\"";
 
                     }
                 }

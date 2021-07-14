@@ -1,6 +1,8 @@
 package models;
 
-public class Duelist {
+import java.io.Serializable;
+
+public class Duelist implements Serializable {
 
     private final User user;
     public Field field = new Field();
@@ -9,6 +11,7 @@ public class Duelist {
 
     public Duelist(User user) {
         this.user = user;
+        if(user.activeDeck != null)
         this.field.deck.addAll(user.activeDeck.mainDeck);
     }
 
