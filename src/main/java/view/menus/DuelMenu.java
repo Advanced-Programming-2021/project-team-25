@@ -100,9 +100,7 @@ public class DuelMenu {
                 }
                 else if(resultOfServer.startsWith("success")) {
                         Main.audioClip.stop();
-                        String resultOfServeInStartGame = SendReceiveData.getCurrDuelistFromServer("startGame --rounds " + rounds);
-                        new CoinTossing().start(3,txtRival.getText());
-                        //duelMenuController.threeRoundDuel(txtRival.getText());
+                        resultOfServerStartGame(rounds);
                 }
             }
         });
@@ -113,6 +111,38 @@ public class DuelMenu {
         scene.getStylesheets().add(style);
         stage.centerOnScreen();
         stage.setScene(scene);
+    }
+
+    private void resultOfServerStartGame(ChoiceBox<String> rounds) {
+        String resultOfServeInStartGame = SendReceiveData.sendReceiveData("startGame --rounds " + rounds);
+        if(Objects.isNull(resultOfServeInStartGame) || resultOfServeInStartGame.isBlank() || resultOfServeInStartGame.isEmpty())
+            LoginMenu.showAlert(null, "An Error occurred");
+        else if(resultOfServeInStartGame.startsWith("error")){
+            Matcher matcherDesc = Regex.getMatcher(resultOfServeInStartGame,"description=\"(.+)\"");
+            if(matcherDesc.find())
+                LoginMenu.showAlert(null, matcherDesc.group(1));
+        }else if(resultOfServeInStartGame.startsWith("wait")){
+            try {
+                Matcher matcherDesc = Regex.getMatcher(resultOfServeInStartGame, "description=\"(.+)\"");
+                if (matcherDesc.find())
+                    LoginMenu.showAlert(null, matcherDesc.group(1));
+                Thread.sleep(100);
+                resultOfServerStartGame(rounds);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }else{
+            //success
+            Matcher matcherSuccess = Regex.getMatcher(resultOfServeInStartGame,"description=\"(.+)\"");
+            if(matcherSuccess.find()){
+                String whoTurn  = matcherSuccess.group(1);
+                if(whoTurn.equals("turn")){
+                    System.out.println("turn");
+                }else{
+                    System.out.println("opponent");
+                }
+            }
+        }
     }
 
 

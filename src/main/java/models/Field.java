@@ -1,8 +1,9 @@
 package models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Field {
+public class Field implements Serializable {
 
     public ArrayList<Card> deck = new ArrayList<>();
     public ArrayList<Card> graveYard = new ArrayList<>();

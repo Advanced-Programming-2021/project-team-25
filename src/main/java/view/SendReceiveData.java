@@ -66,14 +66,8 @@ public class SendReceiveData {
             // get the input stream from the connected socket
             objectOutputStream.writeObject(command+ " --token " + token);
             objectOutputStream.flush();
-            Object objReceived = objectInputStream.readObject();
-            if(objReceived instanceof  Duelist) {
-                DuelMenuController.duelistRival = (Duelist) objReceived;
-                return "success";
-            }
-            else{
-                return "error description=\"on starting game\"";
-            }
+            DuelMenuController.duelistRival = (Duelist) objectInputStream.readObject();
+            return "success";
         } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
             return null;
