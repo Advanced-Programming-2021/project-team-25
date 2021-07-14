@@ -79,6 +79,9 @@ public class MyThread extends Thread{
                 if(result instanceof BufferedImage){
                     uploadImage((BufferedImage) result);
                 }else{
+                    if(result instanceof User){
+                        Controller.userConnected.put((User)result,this.socket);
+                    }
                     objectOutputStream.writeObject(result);
                     objectOutputStream.flush();
                 }

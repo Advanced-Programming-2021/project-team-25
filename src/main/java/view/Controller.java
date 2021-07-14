@@ -19,6 +19,7 @@ import javax.imageio.ImageIO;
 import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.net.Socket;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -28,6 +29,7 @@ public class Controller {
     public static HashMap<User, BufferedImage> userImages = new HashMap<>();
     private static ArrayList<Duelist> availableUsers = new ArrayList<>();
     private static HashMap<Duelist, Duelist> playingUsers = new HashMap<>();
+    public static HashMap<User, Socket> userConnected = new HashMap<>();
     private static Controller singleToneClass = null;
 
     public static Controller getInstance() {
@@ -396,6 +398,7 @@ public class Controller {
     }
 
     public Duelist getDuelistFroStartingGame(String command){
+        //availableUsers.add(new Duelist(User.getUserByUsername("admin")));
         Matcher mather = Regex.getMatcher(command, "--token (.+)");
         if (mather.find()) {
             String token = mather.group(1);
@@ -439,7 +442,7 @@ public class Controller {
                         if (currBattlefield == null) {
                             Matcher matherRound = Regex.getMatcher(command, "--rounds (\\d+)");
                             if (matherRound.find()) {
-                                currBattlefield = new Battlefield(entry.getKey(), null);
+                                currBattlefield = new Battlefield(entry.getKey(), null,userConnected.get(user),null);
                                 BattlefieldController.battlefields.put(user, currBattlefield);
                                 currBattlefield.roundToPlay = Integer.parseInt(matherRound.group(1));
                             }
@@ -454,6 +457,13 @@ public class Controller {
                                         currBattlefield.setOpponent(new Duelist(user));
                                     else
                                         currBattlefield.setTurn(new Duelist(user));
+                                    if(currBattlefield.duelist1 == null){
+                                        currBattlefield.duelist1 = new Duelist(user);
+                                        currBattlefield.connectedDuelists.put(currBattlefield.duelist1,userConnected.get(user));
+                                    }else{
+                                        currBattlefield.duelist2 = new Duelist(user);
+                                        currBattlefield.connectedDuelists.put(currBattlefield.duelist2, userConnected.get(user));
+                                    }
                                 }
                             }
                         }
