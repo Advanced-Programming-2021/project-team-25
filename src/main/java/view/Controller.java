@@ -410,7 +410,7 @@ public class Controller {
                 playingUsers.put(duelistUser,availableUsers.get(1));
             }
             availableUsers.remove(0);
-            availableUsers.remove(0);
+            availableUsers.remove(duelistUser);
             return playingUsers.get(duelistUser);
         } else
             return null;
