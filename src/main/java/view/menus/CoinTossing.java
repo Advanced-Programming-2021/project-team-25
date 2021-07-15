@@ -117,9 +117,9 @@ public class CoinTossing{
         if(tossSide == -1) UserInterface.printResponse("You have to Toss First");
 
         else{
-            DuelMenuController duelMenuController = DuelMenuController.getInstance(ProgramController.currUser);
-            if (round == 1) duelMenuController.oneRoundDuel(duelistName);
-            else duelMenuController.threeRoundDuel(duelistName);
+//            DuelMenuController duelMenuController = DuelMenuController.getInstance(ProgramController.currUser);
+//            if (round == 1) duelMenuController.oneRoundDuel(duelistName);
+//            else duelMenuController.threeRoundDuel(duelistName);
         }
     }
 }

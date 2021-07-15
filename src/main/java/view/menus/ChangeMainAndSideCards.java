@@ -127,12 +127,12 @@ public class ChangeMainAndSideCards {
             public void handle(ActionEvent actionEvent) {
                 if (user == ProgramController.currUser){
                     myStage.stage.close();
-                    duelMenuController.transferPermission(Objects.requireNonNull(User.getUserByUsername(duelMenuController.duelistName)), how);
+                    duelMenuController.transferPermission(Objects.requireNonNull(DuelMenuController.duelistRival.getUser()), how);
                 }
                 else{
                     myStage.stage.close();
                     Duelist duelist1 = new Duelist(ProgramController.currUser);
-                    Duelist duelist2 = new Duelist(Objects.requireNonNull(User.getUserByUsername(duelMenuController.duelistName)));
+                    Duelist duelist2 = new Duelist(Objects.requireNonNull(DuelMenuController.duelistRival.getUser()));
                     Battlefield battlefield;
                     if (how.equals("oneToTwo")) {
                         battlefield = new Battlefield(duelist1, duelist2, 2);

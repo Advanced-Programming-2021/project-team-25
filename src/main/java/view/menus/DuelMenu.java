@@ -90,18 +90,7 @@ public class DuelMenu {
                 }
             }
             else{
-                String resultOfServer = SendReceiveData.getCurrDuelistFromServer("startDuel");
-                if(Objects.isNull(resultOfServer) || resultOfServer.isBlank() || resultOfServer.isEmpty())
-                    LoginMenu.showAlert(null, "An Error occurred");
-                else if(resultOfServer.startsWith("error")){
-                    Matcher matcherDesc = Regex.getMatcher(resultOfServer,"description=\"(.+)\"");
-                    if(matcherDesc.find())
-                        LoginMenu.showAlert(null, matcherDesc.group(1));
-                }
-                else if(resultOfServer.startsWith("success")) {
-                        Main.audioClip.stop();
-                        resultOfServerStartGame(rounds);
-                }
+                startNewDuel(rounds);
             }
         });
         checkBoxEvent(gameWithAi, lblUsername, txtRival);
@@ -113,10 +102,37 @@ public class DuelMenu {
         stage.setScene(scene);
     }
 
-    private void resultOfServerStartGame(ChoiceBox<String> rounds) {
-        String resultOfServeInStartGame = SendReceiveData.sendReceiveData("startGame --rounds " + rounds);
-        if(Objects.isNull(resultOfServeInStartGame) || resultOfServeInStartGame.isBlank() || resultOfServeInStartGame.isEmpty())
+    private void startNewDuel(ChoiceBox<String> rounds) {
+        String resultOfServer = SendReceiveData.getCurrDuelistFromServer("startDuel");
+        if(Objects.isNull(resultOfServer) || resultOfServer.isBlank() || resultOfServer.isEmpty())
             LoginMenu.showAlert(null, "An Error occurred");
+        else if(resultOfServer.startsWith("error")){
+            Matcher matcherDesc = Regex.getMatcher(resultOfServer,"description=\"(.+)\"");
+            if(matcherDesc.find())
+                LoginMenu.showAlert(null, matcherDesc.group(1));
+        }
+        else if(resultOfServer.startsWith("noUserFound")){
+            int dialogResult = JOptionPane.showConfirmDialog (null, "No user found would you like to try again in five second?","information",JOptionPane.YES_NO_OPTION);
+            if(dialogResult == JOptionPane.YES_OPTION){
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                startNewDuel(rounds);
+            }
+        }
+        else if(resultOfServer.startsWith("success")) {
+                resultOfServerStartGame(rounds);
+        }
+    }
+
+    private void resultOfServerStartGame(ChoiceBox<String> rounds) {
+        String resultOfServeInStartGame = SendReceiveData.sendReceiveData("startGame --rounds " + rounds.getValue());
+        if(Objects.isNull(resultOfServeInStartGame) || resultOfServeInStartGame.isBlank() || resultOfServeInStartGame.isEmpty()) {
+            LoginMenu.showAlert(null, "An Error occurred");
+            resultOfServerStartGame(rounds);
+        }
         else if(resultOfServeInStartGame.startsWith("error")){
             Matcher matcherDesc = Regex.getMatcher(resultOfServeInStartGame,"description=\"(.+)\"");
             if(matcherDesc.find())
@@ -131,18 +147,28 @@ public class DuelMenu {
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
-        }else{
+        }else if(resultOfServeInStartGame.contains("success")){
             //success
             Matcher matcherSuccess = Regex.getMatcher(resultOfServeInStartGame,"description=\"(.+)\"");
             if(matcherSuccess.find()){
                 String whoTurn  = matcherSuccess.group(1);
                 if(whoTurn.equals("turn")){
                     System.out.println("turn");
+                    if(rounds.getValue().equals("1"))
+                        DuelMenuController.getInstance(currUser).oneRoundDuel(new Duelist(currUser),new Duelist(currUser));
+                    else
+                        DuelMenuController.getInstance(currUser).threeRoundDuel(new Duelist(currUser),new Duelist(currUser));
                 }else{
                     System.out.println("opponent");
+                    if(rounds.getValue().equals("1"))
+                        DuelMenuController.getInstance(currUser).oneRoundDuel(DuelMenuController.duelistRival,new Duelist(currUser));
+                    else
+                        DuelMenuController.getInstance(currUser).threeRoundDuel(DuelMenuController.duelistRival,new Duelist(currUser));
                 }
             }
         }
+        else
+            resultOfServerStartGame(rounds);
     }
 
 
