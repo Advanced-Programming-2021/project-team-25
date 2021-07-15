@@ -537,8 +537,7 @@ public class Controller {
         } else
             return "error description=\"token not valid\"";
     }
-
-    private Battlefield getBattlefield(Duelist duelist1, Duelist duelist2) {
+    public static Battlefield getBattlefield(Duelist duelist1, Duelist duelist2) {
         for(Map.Entry<User,Battlefield> entry : BattlefieldController.battlefields.entrySet()){
             if(entry.getKey().getUsername().equals(duelist1.getUser().getUsername()) ||
                     entry.getKey().getUsername().equals(duelist2.getUser().getUsername()) ){
