@@ -16,17 +16,14 @@ import models.SpellAndTrap.SupplySquad;
 import view.Responses;
 import view.UserInterface;
 
-import java.io.InputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.net.Socket;
 import java.util.*;
 import java.util.regex.Matcher;
 
 import static controllers.ShowCard.showCard;
 
-public class Battlefield extends Thread{
+public class Battlefield{
 
     public ArrayList<SpellAndTrap> activeSpellAndTraps = new ArrayList<>();
     public HashMap<Duelist,Socket> connectedDuelists = new HashMap<>();
@@ -47,10 +44,51 @@ public class Battlefield extends Thread{
     public Monster attackedMonster;
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
-
+    OutputStream outputStream1;
+    ObjectOutputStream objectOutputStream1;
+    InputStream inputStream1;
+    ObjectInputStream objectInputStream1;
+    OutputStream outputStream2;
+    ObjectOutputStream objectOutputStream2;
+    InputStream inputStream2;
+    ObjectInputStream objectInputStream2;
+    public void initSockets(){
+        Socket socket1 = connectedDuelists.get(duelist1);
+        Socket socket2 = connectedDuelists.get(duelist2);
+        try {
+            outputStream1 = socket1.getOutputStream();
+            objectOutputStream1 = new ObjectOutputStream(outputStream1);
+            inputStream1 = socket1.getInputStream();
+            objectInputStream1 = new ObjectInputStream(inputStream1);
+            outputStream2 = socket2.getOutputStream();
+            objectOutputStream2 = new ObjectOutputStream(outputStream2);
+            inputStream2 = socket2.getInputStream();
+            objectInputStream2 = new ObjectInputStream(inputStream2);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     public void run(){
-
+       // initSockets();
+        try {
+            Thread.sleep(100000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+//        try {
+//            Object input1 = null;
+//            if(turn.equals(duelist1)){
+//                input1 = objectInputStream1.readObject();
+//                Object result = input1;
+//                objectOutputStream1.writeObject(result);
+//                objectOutputStream1.flush();
+//                objectOutputStream2.writeObject(result);
+//                objectOutputStream2.flush();
+//            }
+//        } catch (ClassNotFoundException e) {
+//            e.printStackTrace();
+//        }
     }
     public Battlefield(Duelist duelist1, Duelist duelist2, Socket socDuelist1, Socket socDuelist2) {
         this.duelist1 = duelist1;
@@ -102,5 +140,28 @@ public class Battlefield extends Thread{
 
     public void setTurn(Duelist turn) {
         this.turn = turn;
+    }
+
+    public void specialSummon(Monster monster) {
+    }
+
+    public int getIndex(int attackedMonsterNum) {
+        return 0;
+    }
+
+    public int getIndexOfSelectedCardInMonsterZone() {
+        return 0;
+    }
+
+    public void ritualSummon() {
+    }
+
+    public void set() {
+    }
+
+    public void selectCard(Matcher matcher) {
+    }
+
+    public void summon() {
     }
 }

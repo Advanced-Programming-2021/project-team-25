@@ -397,28 +397,57 @@ public class Controller {
             return "error description=\"user not found!\"";
     }
 
-    public Duelist getDuelistFroStartingGame(String command){
+    public Object getDuelistFroStartingGame(String command){
         //availableUsers.add(new Duelist(User.getUserByUsername("admin")));
         Matcher mather = Regex.getMatcher(command, "--token (.+)");
         if (mather.find()) {
             String token = mather.group(1);
             User user =  getUSerByToken(token);
             Duelist duelistUser = new Duelist(user);
-            if(availableUsers.size()>0){
+            if(availableUsers.size()>0 && checkIfUserFound(user)==null){
                 playingUsers.put(duelistUser,availableUsers.get(0));
                 availableUsers.remove(0);
                 availableUsers.remove(duelistUser);
             }
             else{
                 availableUsers.add(duelistUser);
-                while (availableUsers.size()<2);
-                playingUsers.put(duelistUser,availableUsers.get(1));
-                availableUsers.remove(1);
-                availableUsers.remove(duelistUser);
+                if(isUserFoundInPlayingUsers(user)!= null)
+                    return isUserFoundInPlayingUsers(user);
+                if (availableUsers.size()<2){
+                    return "noUserFound";
+                }
+                else if(availableUsers.size()==2 && checkIfUserFound(user)!=null){
+                    Duelist duelist = checkIfUserFound(user);
+                    availableUsers.remove(duelist);
+                    return "noUserFound";
+                }
+                else{
+                    playingUsers.put(duelistUser,availableUsers.get(1));
+                    availableUsers.remove(1);
+                    availableUsers.remove(duelistUser);
+                }
             }
             return playingUsers.get(duelistUser);
         } else
             return null;
+    }
+
+    private Duelist isUserFoundInPlayingUsers(User user) {
+        for(Map.Entry<Duelist,Duelist> entry : playingUsers.entrySet()){
+            if(entry.getKey().getUser().getUsername().equals(user.getUsername()))
+                return entry.getValue();// always return rival!
+            else if(entry.getValue().getUser().getUsername().equals(user.getUsername()))
+                return entry.getKey();
+        }
+        return null;
+    }
+
+    private Duelist checkIfUserFound(User user) {
+        for (Duelist availableUser : availableUsers) {
+            if(availableUser.getUser().getUsername().equals(user.getUsername()))
+                return availableUser;
+        }
+        return null;
     }
 
     public Object startNeGame(String command) {
@@ -427,7 +456,8 @@ public class Controller {
             String token = mather.group(1);
             User user =  getUSerByToken(token);
             for (Map.Entry<Duelist, Duelist> entry : playingUsers.entrySet()) {
-                if (entry.getKey().getUser().getUsername().equals(user.getUsername())) {
+                if (entry.getKey().getUser().getUsername().equals(user.getUsername()) ||
+                    entry.getValue().getUser().getUsername().equals(user.getUsername())){
                     if (user.activeDeck == null)
                         return "error description=\"you dont have active deck!\"";
                     else if ((entry.getValue().getUser()).activeDeck == null)
@@ -442,27 +472,34 @@ public class Controller {
                         if (currBattlefield == null) {
                             Matcher matherRound = Regex.getMatcher(command, "--rounds (\\d+)");
                             if (matherRound.find()) {
-                                currBattlefield = new Battlefield(entry.getKey(), null,userConnected.get(user),null);
+                                // checking use in key or in value
+                                if(entry.getKey().getUser().getUsername().equals(user.getUsername()))
+                                    currBattlefield = new Battlefield(entry.getKey(), null,userConnected.get(user),null);
+                                else
+                                    currBattlefield = new Battlefield(entry.getValue(), null,userConnected.get(user),null);
                                 BattlefieldController.battlefields.put(user, currBattlefield);
                                 currBattlefield.roundToPlay = Integer.parseInt(matherRound.group(1));
                             }
                         } else {
-                            Matcher matherRound = Regex.getMatcher(command, "--rounds (\\d+)");
-                            if (matherRound.find()) {
-                                int newRounds = Integer.parseInt(matherRound.group(1));
-                                if (currBattlefield.roundToPlay != newRounds)
-                                    return "error description=\"rounds not same\"";
-                                else {
-                                    if(currBattlefield.getOpponent() == null)
-                                        currBattlefield.setOpponent(new Duelist(user));
-                                    else
-                                        currBattlefield.setTurn(new Duelist(user));
-                                    if(currBattlefield.duelist1 == null){
-                                        currBattlefield.duelist1 = new Duelist(user);
-                                        currBattlefield.connectedDuelists.put(currBattlefield.duelist1,userConnected.get(user));
-                                    }else{
-                                        currBattlefield.duelist2 = new Duelist(user);
-                                        currBattlefield.connectedDuelists.put(currBattlefield.duelist2, userConnected.get(user));
+                            if((currBattlefield.getOpponent() == null || !currBattlefield.getOpponent().getUser().getUsername().equals(user.getUsername())) &&
+                                    (currBattlefield.getTurn() == null || !currBattlefield.getTurn().getUser().getUsername().equals(user.getUsername()))){
+                                Matcher matherRound = Regex.getMatcher(command, "--rounds (\\d+)");
+                                if (matherRound.find()) {
+                                    int newRounds = Integer.parseInt(matherRound.group(1));
+                                    if (currBattlefield.roundToPlay != newRounds)
+                                        return "error description=\"rounds not same\"";
+                                    else {
+                                        if(currBattlefield.getOpponent() == null)
+                                            currBattlefield.setOpponent(new Duelist(user));
+                                        else
+                                            currBattlefield.setTurn(new Duelist(user));
+                                        if(currBattlefield.duelist1 == null){
+                                            currBattlefield.duelist1 = new Duelist(user);
+                                            currBattlefield.connectedDuelists.put(currBattlefield.duelist1,userConnected.get(user));
+                                        }else{
+                                            currBattlefield.duelist2 = new Duelist(user);
+                                            currBattlefield.connectedDuelists.put(currBattlefield.duelist2, userConnected.get(user));
+                                        }
                                     }
                                 }
                             }
@@ -473,6 +510,8 @@ public class Controller {
                             //need to play one round!
                             if(currBattlefield.getTurn()!=null && currBattlefield.getOpponent()!=null) {
                                 DuelMenu.getInstance().oneRoundDuel(currBattlefield);
+                                Thread thread = BattlefieldController.threads.get(currBattlefield);
+                                if(!thread.isAlive()) thread.start();
                                 if (currBattlefield.getTurn().getUser().getUsername().equals(user.getUsername()))
                                     return "success description=\"turn\"";
                                 else

@@ -1,6 +1,7 @@
 package controllers.menues;
 
 import controllers.Battelfield.Battlefield;
+import controllers.Battelfield.BattlefieldController;
 import controllers.Database.DataBase;
 import controllers.Menu;
 import controllers.Regex;
@@ -31,36 +32,39 @@ public class DuelMenu {
         if(currUser.activeDeck == null) UserInterface.printResponse(currUser.getUsername() + " has no active deck");
         else if(!Deck.isValid(currUser.activeDeck.getDeckName())) UserInterface.printResponse(currUser.getUsername() + "'s deck is not valid");
         else if(!(round.equals("1") || round.equals("3"))) UserInterface.printResponse(Responses.NOT_SUPPORTED_ROUNDS);
-        else new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")));
+//        else new Battlefield(new Duelist(currUser),new AI(User.getUserByUsername("admin")));
     }
 
 
     public void oneRoundDuel(Battlefield battlefield) {
-        int duelist1Wins = 0 , duelist2Wins = 0;
-        //round1
-        Duelist duelist1 = battlefield.getOpponent();
-        Duelist duelist2 = battlefield.getTurn();
-        battlefield.start();
+        BattlefieldController.threads.put(battlefield,new Thread(()->{
+            int duelist1Wins = 0 , duelist2Wins = 0;
+            //round1
+            Duelist duelist1 = battlefield.getOpponent();
+            Duelist duelist2 = battlefield.getTurn();
+            battlefield.run();
 
-        //round1Finish
-        if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
-        else duelist2Wins++;
-        UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " +  duelist2Wins);
+            //round1Finish
+            if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
+            else duelist2Wins++;
+            UserInterface.printResponse(battlefield.getWinner().getName() + " won the game and the score is: " + duelist1Wins + " - " +  duelist2Wins);
 
-        //matchFinish
-        if(duelist1Wins == 1){
-            UserInterface.printResponse(duelist1.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
-            duelist1.getUser().setScore(duelist1.getUser().getScore() + 1000);
-            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 1000 + duelist1.LP);
-            duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 100 );
-        }
-        else {
-            UserInterface.printResponse(duelist2.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
-            duelist2.getUser().setScore(duelist2.getUser().getScore() + 1000);
-            duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 1000 + duelist2.LP);
-            duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 100 );
-        }
-        DataBase.saveTheUserList(User.getUsers());
+            //matchFinish
+            if(duelist1Wins == 1){
+                UserInterface.printResponse(duelist1.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
+                duelist1.getUser().setScore(duelist1.getUser().getScore() + 1000);
+                duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 1000 + duelist1.LP);
+                duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 100 );
+            }
+            else {
+                UserInterface.printResponse(duelist2.getName() + " won the whole match with score: " + duelist1Wins + " - " + duelist2Wins);
+                duelist2.getUser().setScore(duelist2.getUser().getScore() + 1000);
+                duelist2.getUser().setMoney(duelist2.getUser().getMoney() + 1000 + duelist2.LP);
+                duelist1.getUser().setMoney(duelist1.getUser().getMoney() + 100 );
+            }
+            DataBase.saveTheUserList(User.getUsers());
+        }));
+
     }
 
     public void threeRoundDuel(Battlefield battlefield) {
@@ -69,7 +73,7 @@ public class DuelMenu {
         //round1
         Duelist duelist1 = battlefield.getOpponent();
         Duelist duelist2 = battlefield.getTurn();
-        battlefield.start();
+        battlefield.run();
 
         //round1Finish
         if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
@@ -93,7 +97,7 @@ public class DuelMenu {
             turn = duelist1;
         }
 
-        battlefield.start();
+        battlefield.run();
         //round2Finish
         if(battlefield.getWinner().getName().equals(currUser.getUsername())) duelist1Wins++;
         else duelist2Wins++;

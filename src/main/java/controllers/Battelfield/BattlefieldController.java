@@ -8,5 +8,6 @@ import java.util.HashMap;
 
 public class BattlefieldController {
     public static HashMap<User,Battlefield> battlefields = new HashMap<>();
+    public static HashMap<Battlefield,Thread> threads = new HashMap<>();
 
 }
