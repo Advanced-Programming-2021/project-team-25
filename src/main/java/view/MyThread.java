@@ -1,7 +1,9 @@
 package view;
 
 
+import controllers.Battelfield.Battlefield;
 import controllers.Regex;
+import models.Duelist;
 import models.User;
 
 import javax.imageio.ImageIO;
@@ -28,8 +30,8 @@ public class MyThread extends Thread{
     InputStream inputStream;
     ObjectInputStream objectInputStream;
     public static boolean wantToSendObj = false;
-    public static User user;
-
+    public User user;
+    public Battlefield battlefield;
     public MyThread(ServerSocket serverSocket, Socket socket) {
         try {
             dataInputStream = new DataInputStream(socket.getInputStream());
@@ -76,11 +78,16 @@ public class MyThread extends Thread{
                     result = API.getInstance().process(input);
                 else
                     result = DownloadImage(input);
+
                 if(result instanceof BufferedImage){
                     uploadImage((BufferedImage) result);
-                }else{
-                    if(result instanceof User){
-                        Controller.userConnected.put((User)result,this.socket);
+                }
+                else{
+                    if(result instanceof User) {
+                        Controller.userConnected.put((User) result, this.socket);
+                        this.user = (User) result;
+                    }else if(result instanceof Duelist){
+                        this.battlefield = Controller.getBattlefield(new Duelist(user),new Duelist(user));
                     }
                     objectOutputStream.writeObject(result);
                     objectOutputStream.flush();

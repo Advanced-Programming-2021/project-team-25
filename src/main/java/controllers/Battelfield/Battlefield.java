@@ -44,51 +44,36 @@ public class Battlefield{
     public Monster attackedMonster;
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
-    OutputStream outputStream1;
-    ObjectOutputStream objectOutputStream1;
-    InputStream inputStream1;
-    ObjectInputStream objectInputStream1;
-    OutputStream outputStream2;
-    ObjectOutputStream objectOutputStream2;
-    InputStream inputStream2;
-    ObjectInputStream objectInputStream2;
-    public void initSockets(){
-        Socket socket1 = connectedDuelists.get(duelist1);
-        Socket socket2 = connectedDuelists.get(duelist2);
-        try {
-            outputStream1 = socket1.getOutputStream();
-            objectOutputStream1 = new ObjectOutputStream(outputStream1);
-            inputStream1 = socket1.getInputStream();
-            objectInputStream1 = new ObjectInputStream(inputStream1);
-            outputStream2 = socket2.getOutputStream();
-            objectOutputStream2 = new ObjectOutputStream(outputStream2);
-            inputStream2 = socket2.getInputStream();
-            objectInputStream2 = new ObjectInputStream(inputStream2);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
+    private boolean isEndGame = false;
+    public Object inputObj = null;
+    public OutputStream outputStream1;
+    public ObjectOutputStream objectOutputStream1;
+    public InputStream inputStream1;
+    public ObjectInputStream objectInputStream1;
+    public OutputStream outputStream2;
+    public ObjectOutputStream objectOutputStream2;
+    public InputStream inputStream2;
+    public ObjectInputStream objectInputStream2;
 
     public void run(){
-       // initSockets();
-        try {
-            Thread.sleep(100000);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+        while(!isEndGame) {
+            if(inputObj != null){
+                if(((Duelist)inputObj).getName().equals(turn.getName())){
+                    turn = ((Duelist)inputObj);
+                    if(duelist1.getName().equals(turn.getName()))
+                        duelist1 = turn;
+                    else
+                        duelist2 = turn;
+                }else{
+                    opponent = ((Duelist)inputObj);
+                    if(duelist1.getName().equals(opponent.getName()))
+                        duelist1 = opponent;
+                    else
+                        duelist2 = opponent;
+                }
+            }
         }
-//        try {
-//            Object input1 = null;
-//            if(turn.equals(duelist1)){
-//                input1 = objectInputStream1.readObject();
-//                Object result = input1;
-//                objectOutputStream1.writeObject(result);
-//                objectOutputStream1.flush();
-//                objectOutputStream2.writeObject(result);
-//                objectOutputStream2.flush();
-//            }
-//        } catch (ClassNotFoundException e) {
-//            e.printStackTrace();
-//        }
+
     }
     public Battlefield(Duelist duelist1, Duelist duelist2, Socket socDuelist1, Socket socDuelist2) {
         this.duelist1 = duelist1;
