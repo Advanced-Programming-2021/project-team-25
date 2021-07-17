@@ -33,6 +33,7 @@ import models.Monster.Monster;
 import models.SpellAndTrap.SpellAndTrap;
 import models.User;
 import view.Main;
+import view.SendReceiveData;
 import view.UserInterface;
 
 import java.util.ArrayList;
@@ -424,6 +425,7 @@ public class Game {
     private void checkEnd() {
         if(battlefield.turn.LP <= 0){
             battlefield.winner = battlefield.opponent;
+            SendReceiveData.sendReceiveData("battlefield --winner "+battlefield.winner.getName());
             DuelMenuController duelMenuController =  DuelMenuController.getInstance(ProgramController.currUser);
             if(battlefield.isOneRound) {
                 duelMenuController.finishround1(battlefield.opponent, battlefield.turn, battlefield);
@@ -845,6 +847,25 @@ public class Game {
         btnNextPhase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                User curr = ProgramController.currUser;
+                String result;
+                if(battlefield.getTurn().getUser().equals(curr))
+                    result = SendReceiveData.sendReceiveData("battlefield whoIsTurn --name "+battlefield.getTurn().getName());
+                else
+                    result = SendReceiveData.sendReceiveData("battlefield whoIsTurn --name "+battlefield.getOpponent().getName());
+                if(result != null && result.equals("opponent")){
+                    battlefield.isOpponentsTurn = true;
+                    if(battlefield.getTurn().getUser().equals(curr))
+                        battlefield.setTurn(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getTurn().getName()));
+                    else
+                        battlefield.setOpponent(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getOpponent().getName()));
+                }else if(result!=null){
+                    battlefield.isOpponentsTurn = true;
+                    if(battlefield.getTurn().getUser().equals(curr))
+                        battlefield.setTurn(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getTurn().getName()));
+                    else
+                        battlefield.setOpponent(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getOpponent().getName()));
+                }
                 battlefield.nextPhase();
                 addChanges();
             }

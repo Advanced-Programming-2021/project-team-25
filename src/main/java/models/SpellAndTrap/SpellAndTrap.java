@@ -4,6 +4,7 @@ import controllers.Battelfield.Battlefield;
 import models.Card;
 import models.CardStufs.Type;
 import models.Monster.Monster;
+import view.SendReceiveData;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ public class SpellAndTrap extends Card implements Serializable {
 
 
     public void removeSpellOrTrap (Battlefield battlefield){
+        SendReceiveData.sendReceiveData("battlefield removeCard --name"+this.getName());
         for (int i = 0; i<5; ++i){
             if (battlefield.getTurn().field.spellTrapZone.get(i) != null && battlefield.getTurn().field.spellTrapZone.get(i) == this){
                 battlefield.getTurn().field.spellTrapZone.set(i, null);

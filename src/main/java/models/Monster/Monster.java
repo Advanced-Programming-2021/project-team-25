@@ -6,6 +6,7 @@ import models.CardStufs.FaceUp;
 import models.CardStufs.Type;
 import models.Duelist;
 import models.SpellAndTrap.SpellAndTrap;
+import view.SendReceiveData;
 import view.UserInterface;
 
 import java.io.Serializable;
@@ -99,6 +100,7 @@ public class Monster extends Card implements Serializable {
 
     }
     public void removeMonster(Battlefield battlefield){
+        SendReceiveData.sendReceiveData("battlefield removeCard --name"+this.getName());
         if (battlefield.getTurn().field.monsterZone.contains(this)){
             battlefield.getTurn().field.graveYard.add(this);
             for (int i = 0; i<5; ++i){

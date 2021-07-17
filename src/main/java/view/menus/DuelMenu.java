@@ -160,6 +160,7 @@ public class DuelMenu {
                         DuelMenuController.getInstance(currUser).threeRoundDuel(new Duelist(currUser),new Duelist(currUser));
                 }else{
                     System.out.println("opponent");
+
                     if(rounds.getValue().equals("1"))
                         DuelMenuController.getInstance(currUser).oneRoundDuel(DuelMenuController.duelistRival,new Duelist(currUser));
                     else

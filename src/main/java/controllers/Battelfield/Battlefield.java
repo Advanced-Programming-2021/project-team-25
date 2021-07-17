@@ -30,6 +30,7 @@ import models.Monster.Scanner;
 import models.SpellAndTrap.SpellAndTrap;
 import models.SpellAndTrap.SupplySquad;
 
+import view.SendReceiveData;
 import view.menus.Game;
 import view.Responses;
 import view.UserInterface;
@@ -68,6 +69,7 @@ public class Battlefield {
     public ArrayList<Integer> tributeCardsPosition = new ArrayList<>();
     public Button tributeBtn = new Button("Tribute");
     public boolean isSpellSelected = false;
+    public boolean isOpponentsTurn;
     //needed to be active when user click on summon btn@!
     public Battlefield(Duelist duelist1, Duelist duelist2, int round) {
         this.round = round;
@@ -149,6 +151,7 @@ public class Battlefield {
     //draw
     private void addCardToPlayersHands(Duelist turn,int i) {
         Card card = turn.field.deck.get(0);
+        SendReceiveData.sendReceiveData("battlefield addToHand --name "+card.getName()+" --index "+i);
         turn.field.hand.add(card);
         turn.field.deck.remove(0);
     }
@@ -474,6 +477,7 @@ public class Battlefield {
             } else winner = turn;
             ((AI) opponent).runAi(this);
         } else {
+            SendReceiveData.sendReceiveData("battlefield changeTurn");
             Duelist temp;
             temp = turn;
             turn = opponent;
@@ -596,6 +600,7 @@ public class Battlefield {
 
 
             if (turn.field.monsterZone.get(position) == null) {
+                SendReceiveData.sendReceiveData("battlefield summon --indexHand "+turn.field.hand.indexOf(selectedCard)+" --index "+position);
                 turn.field.monsterZone.set(position, selectedCard);
                 turn.field.hand.remove(selectedCard);
                 selectedCard.setIsSetThisTurn(true);
@@ -659,6 +664,7 @@ public class Battlefield {
 
             if (turn.field.monsterZone.get(position) == null) {
                 turn.field.monsterZone.set(position, commandKnight);
+                SendReceiveData.sendReceiveData("battlefield summon --indexHand "+turn.field.hand.indexOf(selectedCard)+" --index "+position);
                 turn.field.hand.remove(commandKnight);
                 commandKnight.setIsSetThisTurn(true);
                 turn.hasPutMonster = true;
@@ -738,6 +744,7 @@ public class Battlefield {
         //putting card in last monster zone
         turn.field.monsterZone.set(position, selectedCard);
         //delete monster from hand
+        SendReceiveData.sendReceiveData("battlefield summon --indexHand "+turn.field.hand.indexOf(selectedCard)+" --index "+position);
         turn.field.hand.remove(selectedCard);
         UserInterface.printResponse(message);
     }
@@ -883,6 +890,7 @@ public class Battlefield {
             } else {
                 UserInterface.printResponse("set successfully");
                     if (turn.field.monsterZone.get(position) == null) {
+                        SendReceiveData.sendReceiveData("battlefield set --indexHand "+turn.field.hand.indexOf(selectedCard)+" --index "+position);
                         turn.field.monsterZone.set(position, selectedCard);
                         selectedCard.setIsSetThisTurn(true);
                         selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
@@ -903,6 +911,7 @@ public class Battlefield {
             else {
                 UserInterface.printResponse("set successfully");
                 if (turn.field.spellTrapZone.get(position) == null) {
+                    SendReceiveData.sendReceiveData("battlefield set --indexHand "+turn.field.hand.indexOf(selectedCard)+" --index "+position);
                     turn.field.spellTrapZone.set(position, selectedCard);
                     selectedCard.setIsSetThisTurn(true);
                     selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
@@ -1139,5 +1148,13 @@ public class Battlefield {
     public void increaseLPCheat(Matcher matcher){
         int amount = Integer.parseInt(matcher.group(1));
         turn.LP += amount ;
+    }
+
+    public void setTurn(Duelist turn) {
+        this.turn = turn;
+    }
+
+    public void setOpponent(Duelist opponent) {
+        this.opponent = opponent;
     }
 }

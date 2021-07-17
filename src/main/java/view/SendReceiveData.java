@@ -50,6 +50,16 @@ public class SendReceiveData {
             return null;
         }
     }
+    public static Duelist getDuelist(String command){
+        try {
+            objectOutputStream.writeObject(command + " --token " + token);
+            objectOutputStream.flush();
+            return (Duelist) objectInputStream.readObject();
+        } catch (IOException | ClassNotFoundException x) {
+            x.printStackTrace();
+            return null;
+        }
+    }
     public static void getCurrUserFromServer(){
         try {
             // get the input stream from the connected socket
@@ -153,4 +163,15 @@ public class SendReceiveData {
         }
     }
 
+    public static void sendDuelistsToServer(Duelist turn, Duelist opponent) {
+        try {
+            objectOutputStream.writeObject(turn);
+            objectOutputStream.flush();
+            objectOutputStream.writeObject(opponent);
+            objectOutputStream.flush();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
 }
