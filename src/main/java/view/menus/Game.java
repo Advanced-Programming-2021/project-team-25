@@ -855,12 +855,13 @@ public class Game {
                     result = SendReceiveData.sendReceiveData("battlefield whoIsTurn --name "+battlefield.getOpponent().getName());
                 if(result != null && result.equals("opponent")){
                     battlefield.isOpponentsTurn = true;
+                    LoginMenu.showAlert(null,"Please notice you are opponent so you must wait until turn changed");
                     if(battlefield.getTurn().getUser().equals(curr))
                         battlefield.setTurn(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getTurn().getName()));
                     else
                         battlefield.setOpponent(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getOpponent().getName()));
                 }else if(result!=null){
-                    battlefield.isOpponentsTurn = true;
+                    battlefield.isOpponentsTurn = false;
                     if(battlefield.getTurn().getUser().equals(curr))
                         battlefield.setTurn(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getTurn().getName()));
                     else
