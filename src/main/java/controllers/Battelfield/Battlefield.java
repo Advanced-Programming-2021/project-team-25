@@ -92,7 +92,12 @@ public class Battlefield{
         this.phase = phase;
     }
 
-
+    public void changeTurn(){
+        Duelist temp;
+        temp = turn;
+        turn = opponent;
+        opponent = temp;
+    }
     //start & clean
     private void whoStart(Duelist duelist1, Duelist duelist2) {
         Random ran = new Random();

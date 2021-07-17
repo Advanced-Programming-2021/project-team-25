@@ -70,7 +70,7 @@ public class MyThread extends Thread{
                 try {
                     input = objectInputStream.readObject();
                 }catch (Exception e){
-                    DownloadImage(input);
+                    System.out.println("error in input data from client!");
                 }
 
                 Object result = null;

@@ -402,7 +402,7 @@ public class Controller {
             return "error description=\"user not found!\"";
     }
 
-    public Object getDuelistFroStartingGame(String command){
+    public Object getDuelistForStartingGame(String command){
         //availableUsers.add(new Duelist(User.getUserByUsername("admin")));
         Matcher mather = Regex.getMatcher(command, "--token (.+)");
         if (mather.find()) {
@@ -545,7 +545,10 @@ public class Controller {
     public static Battlefield getBattlefield(Duelist duelist1, Duelist duelist2) {
         for(Map.Entry<User,Battlefield> entry : BattlefieldController.battlefields.entrySet()){
             if(entry.getKey().getUsername().equals(duelist1.getUser().getUsername()) ||
-                    entry.getKey().getUsername().equals(duelist2.getUser().getUsername()) ){
+                    entry.getKey().getUsername().equals(duelist2.getUser().getUsername()) ||
+                    (entry.getValue().getTurn() != null && entry.getValue().getOpponent() != null) &&
+                            (entry.getValue().getOpponent().getUser().getUsername().equals(duelist2.getUser().getUsername()) ||
+                    entry.getValue().getTurn().getUser().getUsername().equals(duelist2.getUser().getUsername()))){
                 return entry.getValue();
             }
         }
@@ -575,20 +578,48 @@ public class Controller {
                 winner(command, battlefield);
             }else if(command.contains("addToHand")){
                 addCardToHand(command, user, battlefield);
+            }else if(command.contains("changeTurn")){
+                battlefield.changeTurn();
+            }else if(command.contains("getDuelist")){
+                Matcher matherGetDuelist= Regex.getMatcher(command, "--name (.+)");
+                if(matherGetDuelist.find()){
+                    String name = matherGetDuelist.group(1);
+                    if(battlefield.getTurn().getName().equals(name))
+                        return battlefield.getTurn();
+                    else
+                        return battlefield.getOpponent();
+                }
+            }else if(command.contains("whoIsTurn")){
+                String your = getWhoIsTurn(command, battlefield);
+                if (your != null) return your;
             }
             return "success description=\"process done\"";
         } else
             return "error description=\"token not valid\"";
     }
 
+    private String getWhoIsTurn(String command, Battlefield battlefield) {
+        Matcher matherGetDuelist= Regex.getMatcher(command, "--name (.+)");
+        if(matherGetDuelist.find()){
+            String name = matherGetDuelist.group(1);
+            if(battlefield.getTurn().getName().equals(name))
+                return "your";
+            else
+                return "opponent";
+        }
+        return null;
+    }
+
     private void addCardToHand(String command, User user, Battlefield battlefield) {
         Matcher matherAddToHand = Regex.getMatcher(command, "--name (.+) --index (\\d+)");
-        String name = matherAddToHand.group(1);
-        int index = Integer.parseInt(matherAddToHand.group(2));
-        if(battlefield.getTurn().getUser().getUsername().equals(user.getUsername()))
-            battlefield.getTurn().field.hand.set(index,Card.allCards.get(name));
-        else
-            battlefield.getOpponent().field.hand.set(index,Card.allCards.get(name));
+        if(matherAddToHand.find()){
+            String name = matherAddToHand.group(1);
+            int index = Integer.parseInt(matherAddToHand.group(2));
+            if(battlefield.getTurn().getUser().getUsername().equals(user.getUsername()))
+                battlefield.getTurn().field.hand.add(index,Card.allCards.get(name));
+            else
+                battlefield.getOpponent().field.hand.add(index,Card.allCards.get(name));
+        }
     }
 
     private void winner(String command, Battlefield battlefield) {
