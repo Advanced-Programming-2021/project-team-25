@@ -34,7 +34,7 @@ public class Battlefield{
     public Duelist duelist2;
     private Phase phase = Phase.DRAW_PHASE;
     private boolean isRitualSummoned = false;
-    private Duelist winner;
+    public Duelist winner;
     private boolean isTurnChanged = false;
     private int countDraw6Cards = 0;
     private SpellAndTrap currSpell = null;
@@ -44,7 +44,7 @@ public class Battlefield{
     public Monster attackedMonster;
     public int monsterChangedWithScanner = 0;
     public int attackedMonsterNum;
-    private boolean isEndGame = false;
+    public boolean isEndGame = false;
     public Object inputObj = null;
     public OutputStream outputStream1;
     public ObjectOutputStream objectOutputStream1;
@@ -57,21 +57,8 @@ public class Battlefield{
 
     public void run(){
         while(!isEndGame) {
-            if(inputObj != null){
-                if(((Duelist)inputObj).getName().equals(turn.getName())){
-                    turn = ((Duelist)inputObj);
-                    if(duelist1.getName().equals(turn.getName()))
-                        duelist1 = turn;
-                    else
-                        duelist2 = turn;
-                }else{
-                    opponent = ((Duelist)inputObj);
-                    if(duelist1.getName().equals(opponent.getName()))
-                        duelist1 = opponent;
-                    else
-                        duelist2 = opponent;
-                }
-            }
+            if(winner != null)
+                return;
         }
 
     }

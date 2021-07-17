@@ -118,26 +118,27 @@ public class MyThread extends Thread{
     private Object DownloadImage(Object input){
 
         System.out.println("Reading: " + System.currentTimeMillis());
-
-        byte[] sizeAr = new byte[4];
-        try {
-            inputStream = socket.getInputStream();
-            inputStream.read(sizeAr);
-            int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
-
-            byte[] imageAr = new byte[size];
-            inputStream.read(imageAr);
-            BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageAr));
-
-            System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
-            UUID imageName = UUID.randomUUID();
-            ImageIO.write(image, "png", new File(imageName+".png"));
-            return "success description=\""+imageName+"\"";
-        } catch (IOException e) {
-            e.printStackTrace();
-            return "error";
-        }
-
+        System.out.println(input);
+        return null;
+//        byte[] sizeAr = new byte[4];
+//        try {
+//            inputStream = socket.getInputStream();
+//            inputStream.read(sizeAr);
+//            int size = ByteBuffer.wrap(sizeAr).asIntBuffer().get();
+//
+//            byte[] imageAr = new byte[size];
+//            inputStream.read(imageAr);
+//            BufferedImage image = ImageIO.read(new ByteArrayInputStream(imageAr));
+//
+//            System.out.println("Received " + image.getHeight() + "x" + image.getWidth() + ": " + System.currentTimeMillis());
+//            UUID imageName = UUID.randomUUID();
+//            ImageIO.write(image, "png", new File(imageName+".png"));
+//            return "success description=\""+imageName+"\"";
+//        } catch (IOException e) {
+//            e.printStackTrace();
+//            return "error";
+//        }
+//
 
 
     }

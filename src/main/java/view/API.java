@@ -92,6 +92,8 @@ public class API{
                 return controller.getDuelistFroStartingGame(command);
             } else if(command.startsWith("startGame")){
                 return controller.startNeGame(command);
+            }else if(command.startsWith("battlefield")){
+                return controller.battlefieldCommands(command);
             }
         }
 

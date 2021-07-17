@@ -11,8 +11,13 @@ import controllers.menues.DeckMenu;
 import controllers.menues.DuelMenu;
 import javafx.scene.image.Image;
 import models.Card;
+import models.CardStufs.FaceUp;
+import models.CardStufs.Location;
+import models.CardStufs.Type;
 import models.Deck;
 import models.Duelist;
+import models.Monster.Monster;
+import models.SpellAndTrap.SpellAndTrap;
 import models.User;
 
 import javax.imageio.ImageIO;
@@ -545,5 +550,178 @@ public class Controller {
             }
         }
         return null;
+    }
+
+    public Object battlefieldCommands(String command) {
+        Matcher mather = Regex.getMatcher(command, "--token (.+)");
+        if (mather.find()) {
+            String token = mather.group(1);
+            User user =  getUSerByToken(token);
+            if(user == null)
+                return "error description=\"user not found!\"";
+            Battlefield battlefield = getBattlefieldFromUser(user);
+            if(battlefield == null)
+                return "error description=\"user not playing game yet!\"";
+            if(command.contains("summon")){
+                String result = summonMonster(command, user, battlefield);
+                if (result != null) return result;
+            }
+            else if(command.contains("set")){
+                String result = setCard(command, user, battlefield);
+                if (result != null) return result;
+            }else if(command.contains("removeCard")){
+                removeCard(command, battlefield);
+            }else if(command.contains("winner")){
+                winner(command, battlefield);
+            }else if(command.contains("addToHand")){
+                addCardToHand(command, user, battlefield);
+            }
+            return "success description=\"process done\"";
+        } else
+            return "error description=\"token not valid\"";
+    }
+
+    private void addCardToHand(String command, User user, Battlefield battlefield) {
+        Matcher matherAddToHand = Regex.getMatcher(command, "--name (.+) --index (\\d+)");
+        String name = matherAddToHand.group(1);
+        int index = Integer.parseInt(matherAddToHand.group(2));
+        if(battlefield.getTurn().getUser().getUsername().equals(user.getUsername()))
+            battlefield.getTurn().field.hand.set(index,Card.allCards.get(name));
+        else
+            battlefield.getOpponent().field.hand.set(index,Card.allCards.get(name));
+    }
+
+    private void winner(String command, Battlefield battlefield) {
+        Matcher matherWinner = Regex.getMatcher(command, "--winner (.+)");
+        if(matherWinner.find()){
+            String name = matherWinner.group(1);
+            if(battlefield.getTurn().getName().equals(name)){
+                //turn is winner
+                battlefield.winner = battlefield.getTurn();
+                battlefield.isEndGame = true;
+            }
+            else{
+                //opponent is winner
+                battlefield.winner = battlefield.getOpponent();
+                battlefield.isEndGame = true;
+            }
+        }
+    }
+
+    private String setCard(String command, User user, Battlefield battlefield) {
+        Matcher matherSet = Regex.getMatcher(command, "--indexHand (\\d+) --index (\\d+)");
+        if(matherSet.find()){
+            int indexHand = Integer.parseInt(matherSet.group(1));
+            int indexMonster = Integer.parseInt(matherSet.group(2));
+            if(battlefield.getTurn().equals(getDuelist(user))){
+                Card selectedCard = battlefield.getTurn().field.hand.get(indexHand);
+                if(selectedCard.getCardsType().equals(Type.MONSTER)){
+                    battlefield.getTurn().field.monsterZone.set(indexMonster, selectedCard);
+//                            selectedCard.setIsSetThisTurn(true);
+                    selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                    selectedCard.setCardsLocation(Location.MONSTER_AREA);
+                }
+                else{
+                    battlefield.getTurn().field.spellTrapZone.set(indexMonster, selectedCard);
+//                            selectedCard.setIsSetThisTurn(true);
+                    selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                    selectedCard.setCardsLocation(Location.SPELL_AREA);
+                }
+                battlefield.getTurn().field.hand.remove(selectedCard);
+            }else{
+                Card selectedCard = battlefield.getOpponent().field.hand.get(indexHand);
+                if(selectedCard.getCardsType().equals(Type.MONSTER)){
+                    battlefield.getOpponent().field.monsterZone.set(indexMonster, selectedCard);
+                    selectedCard.setIsSetThisTurn(true);
+                    selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                    selectedCard.setCardsLocation(Location.MONSTER_AREA);
+                }else{
+                    battlefield.getOpponent().field.spellTrapZone.set(indexMonster, selectedCard);
+                    selectedCard.setIsSetThisTurn(true);
+                    selectedCard.setCardsFace(FaceUp.DEFENSE_BACK);
+                    selectedCard.setCardsLocation(Location.SPELL_AREA);
+                }
+                battlefield.getOpponent().field.hand.remove(selectedCard);
+            }
+        }else
+            return "error description=\"card not found\"";
+        return null;
+    }
+
+    private String summonMonster(String command, User user, Battlefield battlefield) {
+        Matcher matherSummon = Regex.getMatcher(command, "--indexHand (\\d+) --index (\\d+)");
+        if(matherSummon.find()){
+            int indexHand = Integer.parseInt(matherSummon.group(1));
+            int indexMonster = Integer.parseInt(matherSummon.group(2));
+            if(battlefield.getTurn().equals(getDuelist(user))){
+                Card selectedCard = battlefield.getTurn().field.hand.get(indexHand);
+                battlefield.getTurn().field.monsterZone.set(indexMonster, selectedCard);
+                battlefield.getTurn().field.hand.remove(indexHand);
+                selectedCard.setCardsLocation(Location.MONSTER_AREA);
+            }else{
+                Card selectedCard = battlefield.getOpponent().field.hand.get(indexHand);
+                battlefield.getOpponent().field.monsterZone.set(indexMonster, selectedCard);
+                battlefield.getOpponent().field.hand.remove(indexHand);
+                selectedCard.setCardsLocation(Location.MONSTER_AREA);
+            }
+        }else
+            return "error description=\"card not found\"";
+        return null;
+    }
+
+    private void removeCard(String command, Battlefield battlefield) {
+        Matcher matherRmMonster = Regex.getMatcher(command, "--name (.+)");
+        if(matherRmMonster.find()){
+            String name = matherRmMonster.group(1);
+            //in turn monster zone
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getTurn().field.monsterZone.get(i)!= null &&
+                        battlefield.getTurn().field.monsterZone.get(i).getName().equals(name)){
+                   ((Monster) battlefield.getTurn().field.monsterZone.get(i)).removeMonster(battlefield);
+                    break;
+                }
+            }
+            //in opponent monster zone
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getOpponent().field.monsterZone.get(i) != null &&
+                        battlefield.getOpponent().field.monsterZone.get(i).getName().equals(name)){
+                    ((Monster) battlefield.getOpponent().field.monsterZone.get(i)).removeMonster(battlefield);
+                    break;
+                }
+            }
+            //in turn spell zone
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getTurn().field.spellTrapZone.get(i)!= null &&
+                        battlefield.getTurn().field.spellTrapZone.get(i).getName().equals(name)){
+                    ((SpellAndTrap) battlefield.getTurn().field.spellTrapZone.get(i)).removeSpellOrTrap(battlefield);
+                    break;
+                }
+            }
+            //in opponent spell zone
+            for (int i = 0; i<5; ++i){
+                if (battlefield.getOpponent().field.spellTrapZone.get(i) != null &&
+                        battlefield.getOpponent().field.spellTrapZone.get(i).getName().equals(name)){
+                    ((SpellAndTrap) battlefield.getOpponent().field.spellTrapZone.get(i)).removeSpellOrTrap(battlefield);
+                    break;
+                }
+            }
+        }
+    }
+
+    public static Battlefield getBattlefieldFromUser(User user) {
+        Duelist duelist = getDuelist(user);
+        Battlefield battlefield = getBattlefield(duelist,duelist);
+        return battlefield;
+    }
+
+    public static Duelist getDuelist(User user) {
+        Duelist duelist = null;
+        for(Map.Entry<Duelist,Duelist> entry : playingUsers.entrySet()){
+            if(entry.getKey().getUser().getUsername().equals(user.getUsername()))
+                duelist = entry.getKey();
+            else if(entry.getValue().getUser().getUsername().equals(user.getUsername()))
+                duelist = entry.getValue();
+        }
+        return duelist;
     }
 }
