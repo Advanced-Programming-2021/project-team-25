@@ -517,19 +517,27 @@ public class Controller {
                                 DuelMenu.getInstance().oneRoundDuel(currBattlefield);
                                 Thread thread = BattlefieldController.threads.get(currBattlefield);
                                 if(!thread.isAlive()) thread.start();
-                                if (currBattlefield.getTurn().getUser().getUsername().equals(user.getUsername()))
+                                if (currBattlefield.getTurn().getUser().getUsername().equals(user.getUsername())) {
+                                    System.out.println(user.getUsername()+" -> turn");
                                     return "success description=\"turn\"";
-                                else
+                                }
+                                else {
+                                    System.out.println(user.getUsername()+" -> opponent");
                                     return "success description=\"opponent\"";
+                                }
                             }
                         } else {
                             //3 round play
                             if(currBattlefield.getTurn()!=null && currBattlefield.getOpponent()!=null) {
                                 DuelMenu.getInstance().threeRoundDuel(currBattlefield);
-                                if (currBattlefield.getTurn().getUser().getUsername().equals(user.getUsername()))
+                                if (currBattlefield.getTurn().getUser().getUsername().equals(user.getUsername())) {
+                                    System.out.println(user.getUsername()+" -> turn");
                                     return "success description=\"turn\"";
-                                else
+                                }
+                                else {
+                                    System.out.println(user.getUsername()+" -> opponent");
                                     return "success description=\"opponent\"";
+                                }
                             }
                         }
                         return "wait description=\"wait for other user to log in\"";
@@ -581,7 +589,7 @@ public class Controller {
             }else if(command.contains("changeTurn")){
                 battlefield.changeTurn();
             }else if(command.contains("getDuelist")){
-                Matcher matherGetDuelist= Regex.getMatcher(command, "--name (.+)");
+                Matcher matherGetDuelist= Regex.getMatcher(command.split(" --token")[0], "--name (.+)");
                 if(matherGetDuelist.find()){
                     String name = matherGetDuelist.group(1);
                     if(battlefield.getTurn().getName().equals(name))
@@ -598,14 +606,18 @@ public class Controller {
             return "error description=\"token not valid\"";
     }
 
-    private String getWhoIsTurn(String command, Battlefield battlefield) {
-        Matcher matherGetDuelist= Regex.getMatcher(command, "--name (.+)");
+    private synchronized String getWhoIsTurn(String command, Battlefield battlefield) {
+        Matcher matherGetDuelist= Regex.getMatcher(command.split(" --token")[0], "--name (.+)");
         if(matherGetDuelist.find()){
             String name = matherGetDuelist.group(1);
-            if(battlefield.getTurn().getName().equals(name))
+            if(battlefield.getTurn().getUser().getUsername().equals(name)) {
+                System.out.println(name+"-> you are turn ");
                 return "your";
-            else
+            }
+            else if(battlefield.getOpponent().getUser().getUsername().equals(name)) {
+                System.out.println(name+"-> you are opponent ");
                 return "opponent";
+            }
         }
         return null;
     }
@@ -636,6 +648,9 @@ public class Controller {
                 battlefield.winner = battlefield.getOpponent();
                 battlefield.isEndGame = true;
             }
+            playingUsers.remove(battlefield.duelist1);
+            playingUsers.remove(battlefield.duelist2);
+
         }
     }
 
