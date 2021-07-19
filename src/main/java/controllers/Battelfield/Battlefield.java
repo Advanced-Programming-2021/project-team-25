@@ -478,10 +478,10 @@ public class Battlefield {
             ((AI) opponent).runAi(this);
         } else {
             SendReceiveData.sendReceiveData("battlefield changeTurn");
-            Duelist temp;
-            temp = turn;
-            turn = opponent;
-            opponent = temp;
+//            Duelist temp;
+//            temp = turn;
+//            turn = opponent;
+//            opponent = temp;
         }
     }
 
@@ -1151,10 +1151,22 @@ public class Battlefield {
     }
 
     public void setTurn(Duelist turn) {
-        this.turn = turn;
+        this.turn.field.hand = (ArrayList<Card>) turn.field.hand.clone();
+        this.turn.field.monsterZone = (ArrayList<Card>) turn.field.monsterZone.clone();
+        this.turn.field.spellTrapZone = (ArrayList<Card>) turn.field.spellTrapZone.clone();
+        this.turn.field.graveYard = (ArrayList<Card>) turn.field.graveYard.clone();
+        this.turn.field.deck = (ArrayList<Card>) turn.field.deck.clone();
+        this.turn.field.fieldZone = turn.field.fieldZone;
+        //this.turn = turn;
     }
 
     public void setOpponent(Duelist opponent) {
-        this.opponent = opponent;
+        this.opponent.field.hand = (ArrayList<Card>) opponent.field.hand.clone();
+        this.opponent.field.monsterZone = (ArrayList<Card>) opponent.field.monsterZone.clone();
+        this.opponent.field.spellTrapZone = (ArrayList<Card>) opponent.field.spellTrapZone.clone();
+        this.opponent.field.graveYard = (ArrayList<Card>) opponent.field.graveYard.clone();
+        this.opponent.field.deck = (ArrayList<Card>) opponent.field.deck.clone();
+        this.turn.field.fieldZone = opponent.field.fieldZone;
+        //this.opponent = opponent;
     }
 }

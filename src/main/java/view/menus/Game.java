@@ -848,25 +848,21 @@ public class Game {
             @Override
             public void handle(ActionEvent actionEvent) {
                 User curr = ProgramController.currUser;
-                String result;
-                if(battlefield.getTurn().getUser().equals(curr))
-                    result = SendReceiveData.sendReceiveData("battlefield whoIsTurn --name "+battlefield.getTurn().getName());
-                else
-                    result = SendReceiveData.sendReceiveData("battlefield whoIsTurn --name "+battlefield.getOpponent().getName());
-                if(result != null && result.equals("opponent")){
+                String whoIsTurn;
+                System.out.println("Battlefield Turn -> "+battlefield.getTurn().getUser().getUsername());
+                System.out.println("Battlefield Opponent -> "+battlefield.getOpponent().getUser().getUsername());
+                whoIsTurn = SendReceiveData.sendReceiveData("battlefield whoIsTurn --name "+battlefield.getTurn().getUser().getUsername());
+                System.out.println(whoIsTurn);
+                if(whoIsTurn != null && whoIsTurn.equals("opponent")){
                     battlefield.isOpponentsTurn = true;
                     LoginMenu.showAlert(null,"Please notice you are opponent so you must wait until turn changed");
-                    if(battlefield.getTurn().getUser().equals(curr))
-                        battlefield.setTurn(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getTurn().getName()));
-                    else
-                        battlefield.setOpponent(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getOpponent().getName()));
-                }else if(result!=null){
-                    battlefield.isOpponentsTurn = false;
-                    if(battlefield.getTurn().getUser().equals(curr))
-                        battlefield.setTurn(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getTurn().getName()));
-                    else
-                        battlefield.setOpponent(SendReceiveData.getDuelist("battlefield getDuelist --name "+battlefield.getOpponent().getName()));
                 }
+                Duelist duelistServerTurn = SendReceiveData.getDuelist("battlefield getDuelist --name " + battlefield.getTurn().getUser().getUsername());
+                Duelist duelistClient = battlefield.getTurn();
+                battlefield.setTurn(duelistServerTurn);
+                Duelist duelistServerOpponent = SendReceiveData.getDuelist("battlefield getDuelist --name " + battlefield.getOpponent().getUser().getUsername());
+                Duelist duelistClient2 = battlefield.getTurn();
+                battlefield.setOpponent(duelistServerOpponent);
                 battlefield.nextPhase();
                 addChanges();
             }

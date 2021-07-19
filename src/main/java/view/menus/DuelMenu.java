@@ -152,6 +152,7 @@ public class DuelMenu {
             Matcher matcherSuccess = Regex.getMatcher(resultOfServeInStartGame,"description=\"(.+)\"");
             if(matcherSuccess.find()){
                 String whoTurn  = matcherSuccess.group(1);
+                System.out.println(currUser.getUsername());
                 if(whoTurn.equals("turn")){
                     System.out.println("turn");
                     if(rounds.getValue().equals("1"))

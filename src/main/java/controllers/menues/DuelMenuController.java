@@ -82,9 +82,9 @@ public class DuelMenuController {
         //round1
         Battlefield battlefield;
         if(turn.equals(client)){
-            battlefield = new Battlefield(client, duelistRival, 1);
-        }else {
             battlefield = new Battlefield(duelistRival, client, 1);
+        }else {
+            battlefield = new Battlefield(client, duelistRival, 1);
         }
         battlefield.isOneRound = true;
     }
