@@ -9,6 +9,7 @@ module AP {
     requires javafx.swing;
     requires javafx.controls;
     requires javafx.media;
+    requires mongo.java.driver;
     //requires opencv;
 
 

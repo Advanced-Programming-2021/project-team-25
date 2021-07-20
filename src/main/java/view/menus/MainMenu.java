@@ -67,19 +67,23 @@ public class MainMenu {
         DeckBtn.setOnAction(actionEvent -> DeckView.getInstance(ProgramController.currUser).start());
         grid.add(DeckBtn,0,3);
 
+        Button ChatBtn = new Button("Chat Menu");
+        ChatBtn.setOnAction(actionEvent -> Chat.getInstance().run(Main.stage));
+        grid.add(ChatBtn,0,4);
+
         Button ProfileBtn = new Button("Profile Menu");
         ProfileBtn.setOnAction(actionEvent -> ProfileMenu.getInstance(ProgramController.currUser).runProfileMenu(Main.stage));
-        grid.add(ProfileBtn,0,4);
+        grid.add(ProfileBtn,0,5);
 
         Button ScoreBoardBtn = new Button("ScoreBoard Menu");
         ScoreBoardBtn.setOnAction(actionEvent -> new ScoreBoard().start(Main.stage));
-        grid.add(ScoreBoardBtn,0,5);
+        grid.add(ScoreBoardBtn,0,6);
 
         Button ImportExportBtn = new Button("Import/Export Menu");
         ImportExportBtn.setOnAction(actionEvent -> {
             ImportExport.getInstance().run(Main.stage);
         });
-        grid.add(ImportExportBtn,0,6);
+        grid.add(ImportExportBtn,0,7);
 
         Button LogoutBtn = new Button("Logout");
         LogoutBtn.setOnAction(actionEvent -> {
@@ -96,7 +100,7 @@ public class MainMenu {
             }
             new WelcomeMenu().start();
         });
-        grid.add(LogoutBtn,0,7);
+        grid.add(LogoutBtn,0,8);
     }
 
 }
