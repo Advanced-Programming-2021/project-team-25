@@ -6,6 +6,10 @@ import controllers.Database.DataBase;
 import controllers.ProgramController;
 import controllers.Regex;
 import controllers.menues.DuelMenuController;
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Pos;
@@ -18,6 +22,7 @@ import javafx.scene.input.TransferMode;
 import javafx.scene.media.AudioClip;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import models.Card;
 import models.CardStufs.FaceUp;
 import javafx.scene.Scene;
@@ -29,6 +34,7 @@ import javafx.scene.layout.*;
 import javafx.scene.paint.Color;
 import models.CardStufs.Type;
 import models.Duelist;
+import models.Field;
 import models.Monster.Monster;
 import models.SpellAndTrap.SpellAndTrap;
 import models.User;
@@ -36,9 +42,7 @@ import view.Main;
 import view.SendReceiveData;
 import view.UserInterface;
 
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.Objects;
+import java.util.*;
 
 public class Game {
 
@@ -85,6 +89,9 @@ public class Game {
         audioClip = new AudioClip(getClass().getResource("/music/game.mp3").toExternalForm());
         audioClip.setCycleCount(-1);
         audioClip.play();
+        MyThread myThread = new MyThread(battlefield,this);
+        myThread.start();
+        myThread.setPriority(1);
     }
 
     public void addChanges(){
@@ -847,26 +854,16 @@ public class Game {
         btnNextPhase.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
-                User curr = ProgramController.currUser;
-                String whoIsTurn;
-                System.out.println("Battlefield Turn -> "+battlefield.getTurn().getUser().getUsername());
-                System.out.println("Battlefield Opponent -> "+battlefield.getOpponent().getUser().getUsername());
-                whoIsTurn = SendReceiveData.sendReceiveData("battlefield whoIsTurn --name "+battlefield.getTurn().getUser().getUsername());
-                System.out.println(whoIsTurn);
-                if(whoIsTurn != null && whoIsTurn.equals("opponent")){
-                    battlefield.isOpponentsTurn = true;
-                    LoginMenu.showAlert(null,"Please notice you are opponent so you must wait until turn changed");
-                }
-                Duelist duelistServerTurn = SendReceiveData.getDuelist("battlefield getDuelist --name " + battlefield.getTurn().getUser().getUsername());
-                Duelist duelistClient = battlefield.getTurn();
-                battlefield.setTurn(duelistServerTurn);
-                Duelist duelistServerOpponent = SendReceiveData.getDuelist("battlefield getDuelist --name " + battlefield.getOpponent().getUser().getUsername());
-                Duelist duelistClient2 = battlefield.getTurn();
-                battlefield.setOpponent(duelistServerOpponent);
                 battlefield.nextPhase();
                 addChanges();
             }
         });
+//        Timeline timeline = new Timeline(new KeyFrame(Duration.millis(20), ev -> {
+//            addChanges();
+//        }));
+//        timeline.setDelay(Duration.seconds(9));
+//        timeline.setCycleCount(Animation.INDEFINITE);
+//        timeline.play();
         Button btnMuteSounds = new Button("mute sounds");
 
         VBox vBoxLeft = new VBox();
@@ -928,4 +925,5 @@ public class Game {
         scrollPane.setContent(vBox);
         root.setCenter(scrollPane);
     }
+
 }
