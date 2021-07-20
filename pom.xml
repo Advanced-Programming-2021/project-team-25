@@ -59,6 +59,11 @@
         <version>17-ea+11</version>
     </dependency>
     <dependency>
+        <groupId>org.mongodb</groupId>
+        <artifactId>mongo-java-driver</artifactId>
+        <version>2.12.3</version>
+    </dependency>
+    <dependency>
         <groupId>nu.pattern</groupId>
         <artifactId>opencv</artifactId>
         <version>2.4.9-4</version>
