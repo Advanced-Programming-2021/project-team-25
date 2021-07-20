@@ -659,7 +659,7 @@ public class Controller {
         if(matherSet.find()){
             int indexHand = Integer.parseInt(matherSet.group(1));
             int indexMonster = Integer.parseInt(matherSet.group(2));
-            if(battlefield.getTurn().equals(getDuelist(user))){
+            if(battlefield.getTurn().getUser().getUsername().equals(user.getUsername())){
                 Card selectedCard = battlefield.getTurn().field.hand.get(indexHand);
                 if(selectedCard.getCardsType().equals(Type.MONSTER)){
                     battlefield.getTurn().field.monsterZone.set(indexMonster, selectedCard);
