@@ -67,6 +67,7 @@ public class Chat {
                     .append("name", ProgramController.currUser.getNickName()).append("message", txtMessage.getText());
             collection.insert(messages);
             printChats(textAreaAllChats);
+            txtMessage.clear();
         });
 
         Scene scene = new Scene(gridPane, 800, 650);
