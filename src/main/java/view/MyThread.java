@@ -56,7 +56,7 @@ public class MyThread extends Thread{
             objectOutputStream.close();
             socket.close();
         } catch (IOException e) {
-            e.printStackTrace();
+
         }
     }
 
@@ -96,7 +96,7 @@ public class MyThread extends Thread{
             }catch (EOFException eofException){
                 return;
             }catch (IOException e) {
-                e.printStackTrace();
+                System.out.println("client disconnected");
                 break;
             }
         }
