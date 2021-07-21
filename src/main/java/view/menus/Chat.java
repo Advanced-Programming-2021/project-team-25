@@ -88,9 +88,9 @@ public class Chat {
             Matcher matcherName = Regex.getMatcher(message,"\"name\": \"(.+)\",");
             Matcher matcherMessage = Regex.getMatcher(message,"\"message\": \"(.+)\"");
             if(matcherMessage.find() && matcherName.find()){
-                textAreaAllChats.appendText(" nickName: " + matcherName.group(1).replace("\"",""));
+                textAreaAllChats.appendText("nickName: " + matcherName.group(1).replace("\"",""));
                 System.out.println(matcherMessage.group(1));
-                textAreaAllChats.appendText("message: " + matcherMessage.group(1)+"\n");
+                textAreaAllChats.appendText(" message: " + matcherMessage.group(1)+"\n");
             }
         }
     }
