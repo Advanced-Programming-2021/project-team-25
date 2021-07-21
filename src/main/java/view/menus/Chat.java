@@ -18,6 +18,7 @@ import view.CreateGrid;
 import view.Main;
 import view.SendReceiveData;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Objects;
 import java.util.regex.Matcher;
@@ -30,6 +31,7 @@ public class Chat {
     MongoClient mongoClient = new MongoClient(new MongoClientURI("mongodb://localhost:27017"));
     DB database = mongoClient.getDB("Chat");
     DBCollection collection = database.getCollection("chats");
+    ArrayList<DBObject> dbObjects = new ArrayList<>();
     public static Chat getInstance() {
         if (singleToneClass == null) singleToneClass = new Chat();
         return singleToneClass;
@@ -77,14 +79,18 @@ public class Chat {
 
     private void printChats(TextArea textAreaAllChats) {
         for (DBObject dbObject : collection.find()) {
+            if(dbObjects.contains(dbObject))
+                continue;
+            else
+                dbObjects.add(dbObject);
             String message = dbObject.toString();
             System.out.println(message);
-            Matcher matcherName = Regex.getMatcher(message,"\"name\": \"(.+)\"");
+            Matcher matcherName = Regex.getMatcher(message,"\"name\": \"(.+)\",");
             Matcher matcherMessage = Regex.getMatcher(message,"\"message\": \"(.+)\"");
             if(matcherMessage.find() && matcherName.find()){
-                textAreaAllChats.appendText("nickName: " + matcherName.group(1).replace("\"",""));
-                textAreaAllChats.appendText(matcherMessage.group(1).replace("\"",""));
-                textAreaAllChats.appendText("\n");
+                textAreaAllChats.appendText(" nickName: " + matcherName.group(1).replace("\"",""));
+                System.out.println(matcherMessage.group(1));
+                textAreaAllChats.appendText("message: " + matcherMessage.group(1)+"\n");
             }
         }
     }
