@@ -27,7 +27,7 @@ public class SendReceiveData {
 
     public static void initializeNetwork() {
         try {
-            socket = new Socket("localhost", 7184);
+            socket = new Socket("127.0.0.1", 7184);
             dataInputStream = new DataInputStream(socket.getInputStream());
             dataOutputStream = new DataOutputStream(socket.getOutputStream());
             inputStream = socket.getInputStream();
@@ -43,8 +43,13 @@ public class SendReceiveData {
         try {
             objectOutputStream.writeObject(command + " --token " + token);
             objectOutputStream.flush();
-            String ss = (String) objectInputStream.readObject();
-            return ss;
+            Object obj = objectInputStream.readObject();
+            if(obj instanceof Integer)
+                return Integer.toString((Integer) obj);
+            else{
+                return (String) obj;
+            }
+
         } catch (IOException | ClassNotFoundException x) {
             x.printStackTrace();
             return null;
