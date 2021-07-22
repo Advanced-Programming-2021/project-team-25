@@ -1,6 +1,8 @@
 package view;
 
 import com.google.gson.Gson;
+import com.mongodb.DBCollection;
+import com.mongodb.MongoClient;
 import com.sun.scenario.effect.impl.prism.PrImage;
 import controllers.Battelfield.Battlefield;
 import controllers.Battelfield.BattlefieldController;
@@ -650,7 +652,6 @@ public class Controller {
             }
             playingUsers.remove(battlefield.duelist1);
             playingUsers.remove(battlefield.duelist2);
-
         }
     }
 
@@ -769,5 +770,9 @@ public class Controller {
                 duelist = entry.getValue();
         }
         return duelist;
+    }
+
+    public Object getOnlinePeople() {
+        return loggedInUsers.size();
     }
 }

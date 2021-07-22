@@ -94,6 +94,8 @@ public class API{
                 return controller.startNeGame(command);
             }else if(command.startsWith("battlefield")){
                 return controller.battlefieldCommands(command);
+            }else if(command.contains("showAllOnline")){
+                return controller.getOnlinePeople();
             }
         }
 
